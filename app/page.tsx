@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <Stack direction="row" spacing={2}>
-        <div>Hello World</div>
+        <div>Hello Brett</div>
         <div>Hello World</div>
       </Stack>
       <Box sx={{ flexGrow: 1 }}>Hello Box</Box>
