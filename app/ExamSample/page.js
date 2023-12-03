@@ -17,6 +17,26 @@ export default function ExamSample() {
           <h1 className="text-3xl text-center mt-24">LAFSMW Theory Test</h1>
         </Grid>
         <Grid item xs={12}>
+          <label className="ml-4 mt-4 text-xl text-center" for="level-select">
+            Choose your Level IV class preference:
+          </label>
+
+          <select name="levels" id="level-select">
+            <option value="">Please choose an option</option>
+            <option value="advanced-theory">Advanced theory</option>
+            <option value="advanced-improvisation">
+              Advanced improvisation
+            </option>
+            <option value="intro-to-arranging">Intro to arranging</option>
+            <option value="intermediate-arranging">
+              Intermediate arranging
+            </option>
+            <option value="advanced-arranging">Advanced arranging</option>
+            <option value="rhythm-class">Rhythm class</option>
+            <option value="sibelius-class">Sibelius class</option>
+          </select>
+        </Grid>
+        <Grid item xs={12}>
           <div>
             <h2 className="ml-4 mt-4">Identify the following 7th chords:</h2>
             <SeventhChords />
