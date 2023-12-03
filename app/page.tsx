@@ -1,18 +1,15 @@
 import Stack from "@mui/material/Stack";
 import { Box, Container } from "@mui/system";
+import Button from "@mui/material/Button";
 
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <Stack direction="row" spacing={2}>
-        <div>Hello Brett</div>
-        <div>Hello World</div>
+      <Stack spacing={4}>
+        <h1>Welcome to the LAFSMW Theory Test</h1>
+        <Button variant="contained">Sign In</Button>
+        <Button variant="contained">Sign Up</Button>
       </Stack>
-      <Box sx={{ flexGrow: 1 }}>Hello Box</Box>
-      <Container maxWidth="sm">
-        <Box sx={{ bgcolor: "grey.300", height: "100vh" }}>Hello Box grey</Box>
-        <Box sx={{ flexGrow: 1 }}>Hello Box flex grow</Box>
-      </Container>
     </main>
   );
 }
