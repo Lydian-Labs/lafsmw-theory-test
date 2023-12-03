@@ -23,7 +23,7 @@ export default function BlankStaff2() {
 
       // Measure 1
       const staveMeasure1 = new Stave(17, 40, 660);
-      staveMeasure1.addClef("treble").addTimeSignature("4/4");
+      staveMeasure1.addClef("treble");
       staveMeasure1.setContext(rendererContext).draw();
 
       // Measure 2
