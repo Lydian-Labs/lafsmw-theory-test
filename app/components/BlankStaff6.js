@@ -99,7 +99,7 @@ export default function BlankStaff6({
         contRefCurrent.innerHTML = "";
       };
     }
-  }, []);
+  }, [addDoubleBarLine, clef, height, noTimeSignature, timeSignature, width]);
 
   return <div ref={containerRef} />;
 }

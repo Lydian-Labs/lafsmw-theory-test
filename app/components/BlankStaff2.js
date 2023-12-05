@@ -67,7 +67,7 @@ export default function BlankStaff2({
         contRefCurrent.innerHTML = "";
       };
     }
-  }, []);
+  }, [addDoubleBarLine, clef, height, noTimeSignature, timeSignature, width]);
 
   return <div ref={containerRef} />;
 }
