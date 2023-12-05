@@ -2,7 +2,12 @@
 import { Vex } from "vexflow";
 import { useEffect, useRef } from "react";
 
-export default function SeventhChords() {
+export default function SeventhChords({
+  clef = "treble",
+  timeSignature = "4/4",
+  width = 1650,
+  height = 200,
+}) {
   const containerRef = useRef(null);
   const rendererRef = useRef();
 
@@ -24,13 +29,13 @@ export default function SeventhChords() {
       const renderer = rendererRef.current;
 
       // Configure the rendering context.
-      renderer.resize(1650, 200);
+      renderer.resize(width, height);
       const rendererContext = renderer.getContext();
       rendererContext.setFont("Arial", 10);
 
       // Measure 1
       const staveMeasure1 = new Stave(17, 40, 250);
-      staveMeasure1.addClef("treble").addTimeSignature("4/4");
+      staveMeasure1.addClef(clef).addTimeSignature(timeSignature);
       staveMeasure1.setContext(rendererContext).draw();
 
       // Create the notes

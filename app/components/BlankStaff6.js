@@ -2,7 +2,14 @@
 import { Vex } from "vexflow";
 import { useEffect, useRef } from "react";
 
-export default function BlankStaff4() {
+export default function BlankStaff6({
+  clef = "treble",
+  timeSignature = "4/4",
+  noTimeSignature = false,
+  width = 1650,
+  height = 200,
+  addDoubleBarLine = false,
+}) {
   const containerRef = useRef(null);
   const rendererRef = useRef();
 
@@ -17,13 +24,15 @@ export default function BlankStaff4() {
       const renderer = rendererRef.current;
 
       // Configure the rendering context.
-      renderer.resize(1650, 200);
+      renderer.resize(width, height);
       const rendererContext = renderer.getContext();
       rendererContext.setFont("Arial", 10);
 
       // Measure 1
       const staveMeasure1 = new Stave(17, 40, 250);
-      staveMeasure1.addClef("treble").addTimeSignature("4/4");
+      noTimeSignature
+        ? staveMeasure1.addClef(clef)
+        : staveMeasure1.addClef(clef).addTimeSignature(timeSignature);
       staveMeasure1.setContext(rendererContext).draw();
 
       // Measure 2
@@ -66,19 +75,24 @@ export default function BlankStaff4() {
       );
       staveMeasure6.setContext(rendererContext).draw();
 
-      // Measure 7
-      const staveMeasure7 = new Stave(
-        staveMeasure6.width + staveMeasure6.x,
-        staveMeasure6.y,
-        1
-      );
-      staveMeasure7.setContext(rendererContext).draw();
+      // Helper function to add double bar lines
+      function addDoubleBar(stave1, stave2) {
+        const connector = new StaveConnector(stave1, stave2);
+        connector.setType(StaveConnector.type.boldDoubleRight);
+        connector.setContext(rendererContext);
+        connector.draw();
+      }
 
-      // Add double barline to the end of the score using StaveConnector
-      const connector = new StaveConnector(staveMeasure7, staveMeasure7);
-      connector.setType(StaveConnector.type.boldDoubleRight);
-      connector.setContext(rendererContext);
-      connector.draw();
+      if (addDoubleBarLine) {
+        // Create Measure 7
+        const staveMeasure7 = new Stave(
+          staveMeasure6.width + staveMeasure6.x,
+          staveMeasure6.y,
+          1
+        );
+        staveMeasure7.setContext(rendererContext).draw();
+        addDoubleBar(staveMeasure7, staveMeasure7);
+      }
 
       // clean up function to remove the svg. Could possibly also handle this with an if statement?
       return () => {
