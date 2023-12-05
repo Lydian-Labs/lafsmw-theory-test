@@ -35,6 +35,9 @@ const Navbar: FC = () => {
         <li className="p-4">
           <Link href="/addAccidentalsToNotes">Add Accidentals</Link>
         </li>
+        <li className="p-4">
+          <Link href="/typeScriptPractice">Typescript Practice</Link>
+        </li>
       </ul>
     </div>
   );
