@@ -45,9 +45,11 @@ const Score: React.FC<ScoreProps> = ({
     }
 
     const renderer = rendererRef.current;
-    renderer.resize(width, height);
-    const context = renderer.getContext();
-    context.setFont("Arial", 10, "").setBackgroundFillStyle("#eed");
+    renderer ? renderer.resize(width, height) : null;
+    const context = renderer ? renderer.getContext() : null;
+    context
+      ? context.setFont("Arial", 10, "").setBackgroundFillStyle("#eed")
+      : null;
 
     const clefAndTimeWidth =
       (clef ? clefWidth : 0) + (timeSignature ? timeWidth : 0);
