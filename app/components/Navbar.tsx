@@ -1,15 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 import { useState, FC } from "react";
 
 const Navbar: FC = () => {
-  const [nav, setNav] = useState<boolean>(false);
-
-  function handleNav() {
-    setNav(!nav);
-  }
+  //const [nav, setNav] = useState<boolean>(false);
 
   return (
     <div className="text-center sm:flex fixed left-0 top-0 w-full z-[3] ease-in duration-300 text-black">
@@ -17,9 +12,6 @@ const Navbar: FC = () => {
         <Link href="/">
           <h1 className="text-2xl sm:text-3xl">Vexflow Projects</h1>
         </Link>
-        {/* <div className="sm:hidden">
-          <AiOutlineMenu size={25} />
-        </div> */}
       </div>
 
       <ul className="hidden sm:text-1xl py-20 sm:py-1 sm:flex">
@@ -29,14 +21,14 @@ const Navbar: FC = () => {
         <li className="p-4">
           <Link href="/addNotesToStaff">Add Notes to a Staff</Link>
         </li>
-        {/* <li className="p-4">
-          <Link href="/addAudioToNotes">Add Audio to Notes</Link>
-        </li> */}
         <li className="p-4">
           <Link href="/addAccidentalsToNotes">Add Accidentals</Link>
         </li>
         <li className="p-4">
           <Link href="/ExamSample">Exam Sample</Link>
+        </li>
+        <li className="p-4">
+          <Link href="/typeScriptPractice">Typescript Practice</Link>
         </li>
       </ul>
     </div>
