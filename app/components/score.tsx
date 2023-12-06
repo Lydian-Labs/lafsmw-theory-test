@@ -10,11 +10,7 @@ let timeWidth = 30;
 let maxStavesPerLine = 4;
 let lineSpacing = 125;
 
-interface Note {
-  key: string;
-  duration?: string;
-  accidental?: string;
-}
+type Note = string | (string | number)[];
 
 interface ScoreProps {
   staves: Note[][];
