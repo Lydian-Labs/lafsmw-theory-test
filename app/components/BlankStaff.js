@@ -13,15 +13,16 @@ export default function BlankStaff({
 }) {
   const containerRef = useRef(null);
   const rendererRef = useRef();
+  width = window.innerWidth;
 
   useEffect(() => {
     const { Renderer, Stave, StaveConnector } = Vex.Flow;
 
     const contRefCurrent = containerRef.current;
 
-    const fullWidth = window.innerWidth <= 1650 ? window.innerWidth : 1650;
+    const fullWidth = width * 0.97;
     const firstWidth = fullWidth / numBars;
-    const otherWidth = firstWidth * 0.9;
+    const otherWidth = (fullWidth - 34 - firstWidth) / (numBars - 1);
     const lastX = firstWidth + (numBars - 1) * otherWidth + 17;
 
     if (contRefCurrent) {
