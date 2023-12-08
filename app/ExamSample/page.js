@@ -1,6 +1,7 @@
 "use client";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
+import BlankStaff from "../components/BlankStaff";
 import BlankStaff2 from "../components/BlankStaff2";
 import BlankStaff4 from "../components/BlankStaff4";
 import BlankStaff6 from "../components/BlankStaff6";
@@ -38,7 +39,7 @@ export default function ExamSample() {
         <Grid item xs={12}>
           <div>
             <h2 className="ml-4 mt-4">Write the following key signatures:</h2>
-            <BlankStaff4 addDoubleBarLine={true} />
+            <BlankStaff addDoubleBarLine={true} />
           </div>
         </Grid>
         <Grid item xs={12}>
