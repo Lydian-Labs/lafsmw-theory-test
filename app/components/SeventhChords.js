@@ -36,6 +36,8 @@ export default function SeventhChords({
       // Measure 1
       const staveMeasure1 = new Stave(17, 40, 250);
       staveMeasure1.addClef(clef).addTimeSignature(timeSignature);
+
+      // Connect it to the rendering context and draw!
       staveMeasure1.setContext(rendererContext).draw();
 
       // Create the notes
@@ -66,6 +68,7 @@ export default function SeventhChords({
         }),
       ];
 
+      // Connect it to the rendering context and draw!
       staveMeasure2.setContext(rendererContext).draw();
 
       Formatter.FormatAndDraw(rendererContext, staveMeasure2, notesMeasure2);

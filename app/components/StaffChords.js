@@ -2,7 +2,7 @@
 import { Vex } from "vexflow";
 import { useEffect, useRef } from "react";
 
-export default function BlankStaff({
+export default function StaffChords({
   clef = "treble",
   timeSignature = "4/4",
   noTimeSignature = false,
@@ -21,8 +21,46 @@ export default function BlankStaff({
   const otherWidth = (fullWidth - 34 - firstWidth) / (numBars - 1);
   const lastX = firstWidth + (numBars - 1) * otherWidth + 17;
 
+  // import notes, but dummy data for now
+  let notesProp = [
+    {
+      keys: ["e#/4", "g#/4", "b/4", "d/5"],
+      duration: "w",
+    },
+    {
+      keys: ["f#/4", "a/4", "c/5", "e/5"],
+      duration: "w",
+    },
+  ];
+
+  function notesPropAccidentalsCheck(notesProp) {
+    let notesPropAccidentals = [];
+    for (let i = 0; i < notesProp.length; i++) {
+      let noteGroup = notesProp[i];
+      let noteAccidentals = [];
+      for (let j = 0; j < noteGroup.keys.length; j++) {
+        let key = noteGroup.keys[j];
+        if (key.includes("b") && key[0] !== "b") {
+          noteAccidentals.push(["b", j]);
+        }
+        if (key.includes("#")) {
+          noteAccidentals.push(["#", j]);
+        }
+      }
+      notesPropAccidentals.push(noteAccidentals);
+    }
+    return notesPropAccidentals;
+  }
+
   useEffect(() => {
-    const { Renderer, Stave, StaveConnector } = Vex.Flow;
+    const {
+      Renderer,
+      Stave,
+      StaveNote,
+      Accidental,
+      Formatter,
+      StaveConnector,
+    } = Vex.Flow;
 
     const contRefCurrent = containerRef.current;
 
@@ -49,6 +87,27 @@ export default function BlankStaff({
         }
         // Connect the stave to the rendering context and draw.
         stave.setContext(rendererContext).draw();
+
+        // Create the notes
+        // let notesMeasure1 = [
+        //   new StaveNote(notesProp[0])
+        //     .addModifier(new Accidental("#"), 0)
+        //     .addModifier(new Accidental("#"), 1),
+        // ];
+        let notesMeasure1 = [
+          new StaveNote(notesProp[i]).addModifier(new Accidental("#"), 0),
+        ];
+        let notesMeasure2 = [
+          new StaveNote(notesProp[i]).addModifier(new Accidental("#"), 1),
+        ];
+
+        // Helper function to justify and draw a 4/4 voice.
+        Formatter.FormatAndDraw(
+          rendererContext,
+          stave,
+          notesMeasure1,
+          notesMeasure2
+        );
       }
 
       // Helper function to add double bar lines

@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import BlankStaff from "../components/BlankStaff";
 import SeventhChords from "../components/SeventhChords";
+import StaffChords from "../components/StaffChords";
 
 export default function ExamSample() {
   return (
@@ -74,6 +75,7 @@ export default function ExamSample() {
           <div>
             <h2 className="ml-4 mt-4">Identify the following 7th chords:</h2>
             <SeventhChords />
+            <StaffChords addDoubleBarLine={true} numBars={2} />
           </div>
         </Grid>
         <Grid item xs={12}>
