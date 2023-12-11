@@ -10,6 +10,7 @@ export default function StaffChords({
   height = 200,
   addDoubleBarLine = false,
   numBars = 4,
+  chords = [],
 }) {
   const containerRef = useRef(null);
   const rendererRef = useRef();
@@ -22,36 +23,7 @@ export default function StaffChords({
   const lastX = firstWidth + (numBars - 1) * otherWidth + 17;
 
   // import notes, but dummy data for now
-  let notesProp = [
-    {
-      keys: ["e#/4", "g#/4", "b/4", "d/5"],
-      duration: "w",
-    },
-    {
-      keys: ["f/4", "a/4", "c/5", "e/5"],
-      duration: "w",
-    },
-    {
-      keys: ["g/4", "bb/4", "d/5", "f#/5"],
-      duration: "w",
-    },
-    {
-      keys: ["b/4", "d#/5", "f#/5", "a/5"],
-      duration: "w",
-    },
-    {
-      keys: ["f#/4", "a/4", "c/5", "e/5"],
-      duration: "w",
-    },
-    {
-      keys: ["ab/4", "cb/5", "eb/5", "gb/5"],
-      duration: "w",
-    },
-    {
-      keys: ["d/4", "f#/4", "a#/4", "c/5"],
-      duration: "w",
-    },
-  ];
+  //let chords = seventhChords;
 
   function noteGroupAccidentalsCheck(keys) {
     let noteAccidentals = [];
@@ -107,19 +79,20 @@ export default function StaffChords({
         stave.setContext(rendererContext).draw();
 
         // Create the notes
-        let notesMeasure1 = [new StaveNote(notesProp[i])];
+        let notesMeasure = [new StaveNote(chords[i])];
 
         // Add accidentals to notes
-        let noteGroupAccidentals = noteGroupAccidentalsCheck(notesProp[i].keys);
+        let noteGroupAccidentals = noteGroupAccidentalsCheck(chords[i].keys);
+
         noteGroupAccidentals.forEach((accidental) => {
-          notesMeasure1[0].addModifier(
+          notesMeasure[0].addModifier(
             new Accidental(accidental[0]),
             accidental[1]
           );
         });
 
         // Helper function to justify and draw a 4/4 voice.
-        Formatter.FormatAndDraw(rendererContext, stave, notesMeasure1);
+        Formatter.FormatAndDraw(rendererContext, stave, notesMeasure);
       }
 
       // Helper function to add double bar lines
@@ -141,7 +114,19 @@ export default function StaffChords({
         contRefCurrent.innerHTML = "";
       };
     }
-  }, [addDoubleBarLine, clef, height, noTimeSignature, timeSignature, width]);
+  }, [
+    addDoubleBarLine,
+    chords,
+    clef,
+    firstWidth,
+    height,
+    lastX,
+    noTimeSignature,
+    numBars,
+    otherWidth,
+    timeSignature,
+    width,
+  ]);
 
   return <div ref={containerRef} />;
 }

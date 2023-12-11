@@ -70,7 +70,18 @@ export default function BlankStaff({
         contRefCurrent.innerHTML = "";
       };
     }
-  }, [addDoubleBarLine, clef, height, noTimeSignature, timeSignature, width]);
+  }, [
+    addDoubleBarLine,
+    clef,
+    firstWidth,
+    height,
+    lastX,
+    noTimeSignature,
+    numBars,
+    otherWidth,
+    timeSignature,
+    width,
+  ]);
 
   return <div ref={containerRef} />;
 }
