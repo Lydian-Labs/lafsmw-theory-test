@@ -28,28 +28,46 @@ export default function StaffChords({
       duration: "w",
     },
     {
+      keys: ["f/4", "a/4", "c/5", "e/5"],
+      duration: "w",
+    },
+    {
+      keys: ["g/4", "bb/4", "d/5", "f#/5"],
+      duration: "w",
+    },
+    {
+      keys: ["b/4", "d#/5", "f#/5", "a/5"],
+      duration: "w",
+    },
+    {
       keys: ["f#/4", "a/4", "c/5", "e/5"],
+      duration: "w",
+    },
+    {
+      keys: ["ab/4", "cb/5", "eb/5", "gb/5"],
+      duration: "w",
+    },
+    {
+      keys: ["d/4", "f#/4", "a#/4", "c/5"],
       duration: "w",
     },
   ];
 
-  function notesPropAccidentalsCheck(notesProp) {
-    let notesPropAccidentals = [];
-    for (let i = 0; i < notesProp.length; i++) {
-      let noteGroup = notesProp[i];
-      let noteAccidentals = [];
-      for (let j = 0; j < noteGroup.keys.length; j++) {
-        let key = noteGroup.keys[j];
-        if (key.includes("b") && key[0] !== "b") {
-          noteAccidentals.push(["b", j]);
-        }
-        if (key.includes("#")) {
-          noteAccidentals.push(["#", j]);
-        }
+  function noteGroupAccidentalsCheck(keys) {
+    let noteAccidentals = [];
+    for (let i = 0; i < keys.length; i++) {
+      let currentKey = keys[i];
+      if (currentKey.includes("bb")) {
+        noteAccidentals.push(["b", i]);
       }
-      notesPropAccidentals.push(noteAccidentals);
+      if (currentKey.includes("b") && currentKey[0] !== "b") {
+        noteAccidentals.push(["b", i]);
+      }
+      if (currentKey.includes("#")) {
+        noteAccidentals.push(["#", i]);
+      }
     }
-    return notesPropAccidentals;
+    return noteAccidentals;
   }
 
   useEffect(() => {
@@ -89,25 +107,19 @@ export default function StaffChords({
         stave.setContext(rendererContext).draw();
 
         // Create the notes
-        // let notesMeasure1 = [
-        //   new StaveNote(notesProp[0])
-        //     .addModifier(new Accidental("#"), 0)
-        //     .addModifier(new Accidental("#"), 1),
-        // ];
-        let notesMeasure1 = [
-          new StaveNote(notesProp[i]).addModifier(new Accidental("#"), 0),
-        ];
-        let notesMeasure2 = [
-          new StaveNote(notesProp[i]).addModifier(new Accidental("#"), 1),
-        ];
+        let notesMeasure1 = [new StaveNote(notesProp[i])];
+
+        // Add accidentals to notes
+        let noteGroupAccidentals = noteGroupAccidentalsCheck(notesProp[i].keys);
+        noteGroupAccidentals.forEach((accidental) => {
+          notesMeasure1[0].addModifier(
+            new Accidental(accidental[0]),
+            accidental[1]
+          );
+        });
 
         // Helper function to justify and draw a 4/4 voice.
-        Formatter.FormatAndDraw(
-          rendererContext,
-          stave,
-          notesMeasure1,
-          notesMeasure2
-        );
+        Formatter.FormatAndDraw(rendererContext, stave, notesMeasure1);
       }
 
       // Helper function to add double bar lines
