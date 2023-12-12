@@ -18,9 +18,10 @@ export default function StaffChords({
   // Gather needed width info
   width = window.innerWidth;
   const fullWidth = width * 0.97;
-  const firstWidth = fullWidth / numBars;
-  const otherWidth = (fullWidth - 34 - firstWidth) / (numBars - 1);
-  const lastX = firstWidth + (numBars - 1) * otherWidth + 17;
+  const widthOfFirstBar = fullWidth / numBars;
+  const widthOfRemainingBars =
+    (fullWidth - 34 - widthOfFirstBar) / (numBars - 1);
+  const lastX = widthOfFirstBar + (numBars - 1) * widthOfRemainingBars + 17;
 
   // helper function to check for accidentals for each note in the "keys" array of each chord ("keys" refers to the notes in the chord)
   function noteGroupAccidentalsCheck(keys) {
@@ -65,9 +66,9 @@ export default function StaffChords({
       for (let i = 0; i < numBars; i++) {
         // Create the staves, determining the width of the first and other staves and providing a clef and time signature for the first stave as needed
         const stave = new Stave(
-          i === 0 ? 17 : firstWidth + (i - 1) * otherWidth + 17,
+          i === 0 ? 17 : widthOfFirstBar + (i - 1) * widthOfRemainingBars + 17,
           40,
-          i === 0 ? firstWidth : otherWidth
+          i === 0 ? widthOfFirstBar : widthOfRemainingBars
         );
         if (i === 0) {
           noTimeSignature
@@ -118,12 +119,12 @@ export default function StaffChords({
     addDoubleBarLine,
     chords,
     clef,
-    firstWidth,
+    widthOfFirstBar,
     height,
     lastX,
     noTimeSignature,
     numBars,
-    otherWidth,
+    widthOfRemainingBars,
     timeSignature,
     width,
   ]);
