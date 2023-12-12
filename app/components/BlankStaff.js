@@ -14,13 +14,12 @@ export default function BlankStaff({
   const containerRef = useRef(null);
   const rendererRef = useRef();
 
-  // Gather needed width info
+  // Gather needed width info.
   width = window.innerWidth;
   const fullWidth = width * 0.97;
-  const widthOfFirstBar = fullWidth / numBars;
+  const widthOfFirstBar = width / numBars;
   const widthOfRemainingBars =
     (fullWidth - 34 - widthOfFirstBar) / (numBars - 1);
-  const lastX = widthOfFirstBar + (numBars - 1) * widthOfRemainingBars + 17;
 
   useEffect(() => {
     const { Renderer, Stave, StaveConnector } = Vex.Flow;
@@ -48,25 +47,14 @@ export default function BlankStaff({
             ? stave.addClef(clef)
             : stave.addClef(clef).addTimeSignature(timeSignature);
         }
+        if (i === numBars - 1 && addDoubleBarLine) {
+          stave.setEndBarType(3);
+        }
         // Connect the stave to the rendering context and draw.
         stave.setContext(rendererContext).draw();
       }
 
-      // Helper function to add double bar lines
-      function addDoubleBar(stave1, stave2) {
-        const connector = new StaveConnector(stave1, stave2);
-        connector.setType(StaveConnector.type.boldDoubleRight);
-        connector.setContext(rendererContext);
-        connector.draw();
-      }
-
-      if (addDoubleBarLine) {
-        const endBar = new Stave(lastX, 40, 1);
-        endBar.setContext(rendererContext).draw();
-        addDoubleBar(endBar, endBar);
-      }
-
-      // clean up function to remove the svg. Could possibly also handle this with an if statement?
+      // clean up function to remove the svg.
       return () => {
         contRefCurrent.innerHTML = "";
       };
@@ -76,7 +64,6 @@ export default function BlankStaff({
     clef,
     widthOfFirstBar,
     height,
-    lastX,
     noTimeSignature,
     numBars,
     widthOfRemainingBars,
