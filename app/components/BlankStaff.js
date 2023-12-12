@@ -17,9 +17,10 @@ export default function BlankStaff({
   // Gather needed width info
   width = window.innerWidth;
   const fullWidth = width * 0.97;
-  const firstWidth = fullWidth / numBars;
-  const otherWidth = (fullWidth - 34 - firstWidth) / (numBars - 1);
-  const lastX = firstWidth + (numBars - 1) * otherWidth + 17;
+  const widthOfFirstBar = fullWidth / numBars;
+  const widthOfRemainingBars =
+    (fullWidth - 34 - widthOfFirstBar) / (numBars - 1);
+  const lastX = widthOfFirstBar + (numBars - 1) * widthOfRemainingBars + 17;
 
   useEffect(() => {
     const { Renderer, Stave, StaveConnector } = Vex.Flow;
@@ -38,9 +39,9 @@ export default function BlankStaff({
 
       for (let i = 0; i < numBars; i++) {
         const stave = new Stave(
-          i === 0 ? 17 : firstWidth + (i - 1) * otherWidth + 17,
+          i === 0 ? 17 : widthOfFirstBar + (i - 1) * widthOfRemainingBars + 17,
           40,
-          i === 0 ? firstWidth : otherWidth
+          i === 0 ? widthOfFirstBar : widthOfRemainingBars
         );
         if (i === 0) {
           noTimeSignature
@@ -73,12 +74,12 @@ export default function BlankStaff({
   }, [
     addDoubleBarLine,
     clef,
-    firstWidth,
+    widthOfFirstBar,
     height,
     lastX,
     noTimeSignature,
     numBars,
-    otherWidth,
+    widthOfRemainingBars,
     timeSignature,
     width,
   ]);
