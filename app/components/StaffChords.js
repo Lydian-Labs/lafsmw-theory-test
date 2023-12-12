@@ -41,14 +41,7 @@ export default function StaffChords({
   }
 
   useEffect(() => {
-    const {
-      Renderer,
-      Stave,
-      StaveNote,
-      Accidental,
-      Formatter,
-      StaveConnector,
-    } = Vex.Flow;
+    const { Renderer, Stave, StaveNote, Accidental, Formatter } = Vex.Flow;
 
     const contRefCurrent = containerRef.current;
 

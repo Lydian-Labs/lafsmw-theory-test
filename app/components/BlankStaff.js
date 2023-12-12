@@ -22,7 +22,7 @@ export default function BlankStaff({
     (fullWidth - 34 - widthOfFirstBar) / (numBars - 1);
 
   useEffect(() => {
-    const { Renderer, Stave, StaveConnector } = Vex.Flow;
+    const { Renderer, Stave } = Vex.Flow;
 
     const contRefCurrent = containerRef.current;
 
