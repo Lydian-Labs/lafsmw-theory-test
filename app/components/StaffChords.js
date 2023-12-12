@@ -22,9 +22,7 @@ export default function StaffChords({
   const otherWidth = (fullWidth - 34 - firstWidth) / (numBars - 1);
   const lastX = firstWidth + (numBars - 1) * otherWidth + 17;
 
-  // import notes, but dummy data for now
-  //let chords = seventhChords;
-
+  // helper function to check for accidentals for each note in the "keys" array of each chord ("keys" refers to the notes in the chord)
   function noteGroupAccidentalsCheck(keys) {
     let noteAccidentals = [];
     for (let i = 0; i < keys.length; i++) {
@@ -65,6 +63,7 @@ export default function StaffChords({
       rendererContext.setFont("Arial", 10);
 
       for (let i = 0; i < numBars; i++) {
+        // Create the staves, determining the width of the first and other staves and providing a clef and time signature for the first stave as needed
         const stave = new Stave(
           i === 0 ? 17 : firstWidth + (i - 1) * otherWidth + 17,
           40,
@@ -78,12 +77,13 @@ export default function StaffChords({
         // Connect the stave to the rendering context and draw.
         stave.setContext(rendererContext).draw();
 
-        // Create the notes
+        // Create each chord as a StaveNote
         let notesMeasure = [new StaveNote(chords[i])];
 
-        // Add accidentals to notes
+        // Determine if any accidentals are needed for the current chord
         let noteGroupAccidentals = noteGroupAccidentalsCheck(chords[i].keys);
 
+        // Add accidentals to notes of each chord as needed
         noteGroupAccidentals.forEach((accidental) => {
           notesMeasure[0].addModifier(
             new Accidental(accidental[0]),
@@ -91,7 +91,7 @@ export default function StaffChords({
           );
         });
 
-        // Helper function to justify and draw a 4/4 voice.
+        // Format and draw the chord on the current stave
         Formatter.FormatAndDraw(rendererContext, stave, notesMeasure);
       }
 
