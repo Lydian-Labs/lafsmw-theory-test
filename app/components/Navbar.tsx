@@ -7,7 +7,7 @@ const Navbar: FC = () => {
   //const [nav, setNav] = useState<boolean>(false);
 
   return (
-    <div className="text-center sm:flex fixed left-0 top-0 w-full z-[3] ease-in duration-300 text-black">
+    <div className="text-center sm:flex left-0 top-0 w-full z-[3] ease-in duration-300 text-black">
       <div className="flex p-4 justify-between">
         <Link href="/">
           <h1 className="text-2xl sm:text-3xl">Vexflow Projects</h1>
