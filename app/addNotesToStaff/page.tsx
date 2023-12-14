@@ -43,18 +43,19 @@ const AddNotesToAStaff = () => {
       const y = rect ? e.clientY - rect.top : 0;
 
       const noteArrayYCoordinates: NoteCoordinate[] = [
-        { note: "e/4", yCoordinateMin: 119, yCoordinateMax: 121 },
-        { note: "f/4", yCoordinateMin: 114, yCoordinateMax: 116 },
-        { note: "g/4", yCoordinateMin: 109, yCoordinateMax: 111 },
-        { note: "a/4", yCoordinateMin: 104, yCoordinateMax: 106 },
-        { note: "b/4", yCoordinateMin: 99, yCoordinateMax: 101 },
-        { note: "c/5", yCoordinateMin: 95, yCoordinateMax: 96 },
-        { note: "d/5", yCoordinateMin: 89, yCoordinateMax: 91 },
-        { note: "e/5", yCoordinateMin: 84, yCoordinateMax: 86 },
+        { note: "e/4", yCoordinateMin: 117.6, yCoordinateMax: 122.5 },
+        { note: "f/4", yCoordinateMin: 114.6, yCoordinateMax: 117.5 },
+        { note: "g/4", yCoordinateMin: 107.6, yCoordinateMax: 113.5 },
+        { note: "a/4", yCoordinateMin: 102.6, yCoordinateMax: 107.5 },
+        { note: "b/4", yCoordinateMin: 97.6, yCoordinateMax: 102.5 },
+        { note: "c/5", yCoordinateMin: 92.6, yCoordinateMax: 97.5 },
+        { note: "d/5", yCoordinateMin: 87.6, yCoordinateMax: 92.5 },
+        { note: "e/5", yCoordinateMin: 83.5, yCoordinateMax: 87.5 },
       ];
 
       let note = noteArrayYCoordinates.find(
         ({ yCoordinateMin, yCoordinateMax }) =>
+          //returns the first true statement, or returns undefined if the coordinate isn't found
           y >= yCoordinateMin && y <= yCoordinateMax
       );
 
