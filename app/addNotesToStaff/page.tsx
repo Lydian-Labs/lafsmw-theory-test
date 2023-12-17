@@ -1,7 +1,7 @@
 "use client";
 import { notDeepEqual } from "assert";
 import React, { useRef, useEffect, useState } from "react";
-import VexFlow, { Accidental } from "vexflow";
+import VexFlow, { Accidental, Note } from "vexflow";
 
 const VF = VexFlow.Flow;
 const { Formatter, Renderer, Stave, StaveNote, StaveModifier, Barline } = VF;
@@ -9,10 +9,10 @@ const { Formatter, Renderer, Stave, StaveNote, StaveModifier, Barline } = VF;
 const AddNotesToAStaff = () => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
-  const [createNote, setCreateNote] = useState({
-    note: "e/4",
-    yCoordinate: 119 || 120 || 121,
-  });
+  // const [createNote, setCreateNote] = useState({
+  //   note: "e/4",
+  //   yCoordinate: 119 || 120 || 121,
+  // });
 
   interface NoteCoordinate {
     note: string;
@@ -29,30 +29,60 @@ const AddNotesToAStaff = () => {
     }
 
     const renderer = rendererRef.current;
-    renderer?.resize(500, 500);
+    renderer?.resize(500, 700);
     const context = renderer ? renderer.getContext() : null;
     context?.setFont("Arial", 10);
     const stave = new Stave(10, 40, 400);
     stave.setEndBarType(3);
     stave.addClef("treble").addTimeSignature("4/4");
     context ? stave.setContext(context).draw() : null;
-
     container.current?.addEventListener("click", (e) => {
       const rect = container.current?.getBoundingClientRect();
       const x = rect ? e.clientX - rect.left : 0;
       const y = rect ? e.clientY - rect.top : 0;
+      console.log(y);
 
-      const noteArrayYCoordinates: NoteCoordinate[] = [
-        { note: "e/4", yCoordinateMin: 117.6, yCoordinateMax: 122.5 },
-        { note: "f/4", yCoordinateMin: 114.6, yCoordinateMax: 117.5 },
-        { note: "g/4", yCoordinateMin: 107.6, yCoordinateMax: 113.5 },
-        { note: "a/4", yCoordinateMin: 102.6, yCoordinateMax: 107.5 },
-        { note: "b/4", yCoordinateMin: 97.6, yCoordinateMax: 102.5 },
-        { note: "c/5", yCoordinateMin: 92.6, yCoordinateMax: 97.5 },
-        { note: "d/5", yCoordinateMin: 87.6, yCoordinateMax: 92.5 },
-        { note: "e/5", yCoordinateMin: 83.5, yCoordinateMax: 87.5 },
+      //68 is 'a/5' above the staff
+      let yMin: number = 35;
+
+      const generateNoteArrayYCoordinates = (
+        yMin: number,
+        notes: string[]
+      ): NoteCoordinate[] => {
+        return notes.map((note, index) => {
+          const yCoordinateMin = yMin + index * 5.1;
+          const yCoordinateMax = yCoordinateMin + 5;
+
+          return { note, yCoordinateMin, yCoordinateMax };
+        });
+      };
+
+      const notes = [
+        "g/6",
+        "f/6",
+        "e/6",
+        "d/6",
+        "c/6",
+        "b/5",
+        "a/5",
+        "g/5",
+        "f/5",
+        "e/5",
+        "d/5",
+        "c/5",
+        "b/4",
+        "a/4",
+        "g/4",
+        "f/4",
+        "e/4",
+        "d/4",
+        "c/4",
+        "b/3",
+        "a/3",
+        "g/3",
       ];
-
+      const noteArrayYCoordinates = generateNoteArrayYCoordinates(yMin, notes);
+      console.log(noteArrayYCoordinates);
       let note = noteArrayYCoordinates.find(
         ({ yCoordinateMin, yCoordinateMax }) =>
           //returns the first true statement, or returns undefined if the coordinate isn't found
@@ -67,7 +97,6 @@ const AddNotesToAStaff = () => {
         keys: [note.note],
         duration: "q",
       });
-
       // Add the note to the stave and redraw
       context &&
         Formatter.FormatAndDraw(context, stave, [newNote], {
@@ -75,7 +104,7 @@ const AddNotesToAStaff = () => {
         });
     });
   }, []);
-  return <div ref={container} className="text-center mt-[20em]"></div>;
+  return <div ref={container} className="text-center mt-[10em]"></div>;
 };
 
 export default AddNotesToAStaff;
