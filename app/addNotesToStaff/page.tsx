@@ -1,23 +1,23 @@
 "use client";
-import { notDeepEqual } from "assert";
-import React, { useRef, useEffect, useState } from "react";
-import VexFlow, { Accidental, Note } from "vexflow";
+import React, { useRef, useEffect } from "react";
+import VexFlow from "vexflow";
 
 const VF = VexFlow.Flow;
-const { Formatter, Renderer, Stave, StaveNote, StaveModifier, Barline } = VF;
+const { Formatter, Renderer, Stave, StaveNote } = VF;
 
 const AddNotesToAStaff = () => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
-  // const [createNote, setCreateNote] = useState({
-  //   note: "e/4",
-  //   yCoordinate: 119 || 120 || 121,
-  // });
 
   interface NoteCoordinate {
     note: string;
     yCoordinateMin: number;
     yCoordinateMax: number;
+  }
+
+  interface staveNote {
+    keys: string;
+    duration: string;
   }
 
   useEffect(() => {
@@ -36,28 +36,19 @@ const AddNotesToAStaff = () => {
     stave.setEndBarType(3);
     stave.addClef("treble").addTimeSignature("4/4");
     context ? stave.setContext(context).draw() : null;
+    const notesToDraw: InstanceType<typeof StaveNote>[] = [];
     container.current?.addEventListener("click", (e) => {
       const rect = container.current?.getBoundingClientRect();
       const x = rect ? e.clientX - rect.left : 0;
       const y = rect ? e.clientY - rect.top : 0;
-      console.log(y);
+      console.log("y:", y);
+      console.log("x:", x);
 
-      //68 is 'a/5' above the staff
+      //35 is 'g/6' above the staff. Need to figure out how to not hard code this number.
       let yMin: number = 35;
 
-      const generateNoteArrayYCoordinates = (
-        yMin: number,
-        notes: string[]
-      ): NoteCoordinate[] => {
-        return notes.map((note, index) => {
-          const yCoordinateMin = yMin + index * 5.1;
-          const yCoordinateMax = yCoordinateMin + 5;
-
-          return { note, yCoordinateMin, yCoordinateMax };
-        });
-      };
-
-      const notes = [
+      //array of notes
+      const notes: string[] = [
         "g/6",
         "f/6",
         "e/6",
@@ -81,7 +72,19 @@ const AddNotesToAStaff = () => {
         "a/3",
         "g/3",
       ];
-      const noteArrayYCoordinates = generateNoteArrayYCoordinates(yMin, notes);
+      //function that maps through array of notes and returns an object with the note and the minimum and maximum y coordinates for each note
+      const generateNoteArrayCoordinates = (
+        yMin: number,
+        notes: string[]
+      ): NoteCoordinate[] => {
+        return notes.map((note, index) => {
+          const yCoordinateMin = yMin + index * 5.1;
+          const yCoordinateMax = yCoordinateMin + 4.9;
+          return { note, yCoordinateMin, yCoordinateMax };
+        });
+      };
+
+      const noteArrayYCoordinates = generateNoteArrayCoordinates(yMin, notes);
       console.log(noteArrayYCoordinates);
       let note = noteArrayYCoordinates.find(
         ({ yCoordinateMin, yCoordinateMax }) =>
@@ -97,9 +100,11 @@ const AddNotesToAStaff = () => {
         keys: [note.note],
         duration: "q",
       });
+      notesToDraw.push(newNote);
+      console.log(notesToDraw);
       // Add the note to the stave and redraw
       context &&
-        Formatter.FormatAndDraw(context, stave, [newNote], {
+        Formatter.FormatAndDraw(context, stave, notesToDraw, {
           auto_beam: true,
         });
     });
