@@ -45,10 +45,10 @@ const AddNotesToAStaff = () => {
       console.log("x:", x);
 
       //35 is 'g/6' above the staff. Need to figure out how to not hard code this number.
-      let yMin: number = 35;
+      let yMin = 35;
 
       //array of notes
-      const notes: string[] = [
+      const notes = [
         "g/6",
         "f/6",
         "e/6",
@@ -85,13 +85,15 @@ const AddNotesToAStaff = () => {
       };
 
       const noteArrayYCoordinates = generateNoteArrayCoordinates(yMin, notes);
-      console.log(noteArrayYCoordinates);
       let note = noteArrayYCoordinates.find(
         ({ yCoordinateMin, yCoordinateMax }) =>
           //returns the first true statement, or returns undefined if the coordinate isn't found
           y >= yCoordinateMin && y <= yCoordinateMax
       );
+      context?.clear();
 
+      // Redraw the stave
+      context ? stave.setContext(context).draw() : null;
       //Create a new StaveNote with the determined note and add it to the staff
       if (!note) {
         throw new Error("Note not found");
@@ -101,7 +103,6 @@ const AddNotesToAStaff = () => {
         duration: "q",
       });
       notesToDraw.push(newNote);
-      console.log(notesToDraw);
       // Add the note to the stave and redraw
       context &&
         Formatter.FormatAndDraw(context, stave, notesToDraw, {
