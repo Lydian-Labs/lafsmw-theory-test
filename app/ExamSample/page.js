@@ -58,10 +58,10 @@ export default function ExamSample() {
             <h2 className="ml-4 mt-4">Write the following key signatures:</h2>
             <BlankStaff addDoubleBarLine={true} />
             <div className="ml-24 grid grid-cols-4">
-              <p className="">Key of F# major:</p>
-              <p className="">Key of F# major:</p>
-              <p className="">Key of F# major:</p>
-              <p className="">Key of F# major:</p>
+              <p>Db Major</p>
+              <p>F# Major</p>
+              <p>G Minor</p>
+              <p>G# Minor</p>
             </div>
           </div>
         </Grid>
@@ -77,24 +77,53 @@ export default function ExamSample() {
           <div>
             <h2 className="ml-4 mt-4">Write the following scales:</h2>
             <BlankStaff numBars={2} />
+            <div className="ml-24 grid grid-cols-2">
+              <p>Db Major</p>
+              <p>B Major</p>
+            </div>
             <BlankStaff numBars={2} noTimeSignature={false} />
+            <div className="ml-24 grid grid-cols-2">
+              <p>C Dorian</p>
+              <p>F# Dorian</p>
+            </div>
             <BlankStaff
               numBars={2}
               noTimeSignature={false}
               addDoubleBarLine={true}
             />
+            <div className="ml-24 grid grid-cols-2">
+              <p>Bb Mixolydian</p>
+              <p>C# Mixolydian</p>
+            </div>
           </div>
         </Grid>
         <Grid item xs={12}>
           <div>
             <h2 className="ml-4 mt-4">Write the following triads:</h2>
             <BlankStaff numBars={6} addDoubleBarLine={true} />
+            <div className="ml-24 grid grid-cols-6">
+              <p>D Major</p>
+              <p>F# Major</p>
+              <p>Db Minor</p>
+              <p>F# Minor</p>
+              <p>Eb Diminished</p>
+              <p>E Augmented</p>
+            </div>
           </div>
         </Grid>
         <Grid item xs={12}>
           <div>
             <h2 className="ml-4 mt-4">Write the following 7th chords:</h2>
             <BlankStaff numBars={7} addDoubleBarLine={true} />
+            <div className="ml-24 grid grid-cols-7">
+              <p>E-dim</p>
+              <p>G-7</p>
+              <p>Db-7</p>
+              <p>D#-7</p>
+              <p>D-dim-7</p>
+              <p>Gb-aug-7</p>
+              <p>Eb-dim</p>
+            </div>
           </div>
         </Grid>
         <Grid item xs={12}>
