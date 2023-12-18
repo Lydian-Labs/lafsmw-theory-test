@@ -1,5 +1,5 @@
 import React from "react";
-import Score from "../components/score";
+import Score from "../components/Score";
 import { Container } from "@mui/system";
 const page = () => {
   return (
