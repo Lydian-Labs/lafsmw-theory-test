@@ -7,7 +7,7 @@ export default function StaffChords({
   timeSignature = "4/4",
   noTimeSignature = false,
   width = 1650,
-  height = 200,
+  height = 140,
   addDoubleBarLine = false,
   numBars = 4,
   chords = [],

@@ -1,6 +1,7 @@
 "use client";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
+import Button from "@mui/material/Button";
 import BlankStaff from "../components/BlankStaff";
 import StaffChords from "../components/StaffChords";
 import seventhChords from "../../lib/seventhChords";
@@ -19,6 +20,12 @@ const initialFormInputState = {
 
 export default function ExamSample() {
   const [formInput, setFormInput] = useState(initialFormInputState);
+
+  function handleFormSubmit(e) {
+    e.preventDefault();
+    console.log(formInput);
+  }
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2} minHeight={500}>
@@ -50,6 +57,12 @@ export default function ExamSample() {
           <div>
             <h2 className="ml-4 mt-4">Write the following key signatures:</h2>
             <BlankStaff addDoubleBarLine={true} />
+            <div className="ml-24 grid grid-cols-4">
+              <h3 className="ml-4 mt-4">Key of F# major:</h3>
+              <h3 className="ml-4 mt-4">Key of F# major:</h3>
+              <h3 className="ml-4 mt-4">Key of F# major:</h3>
+              <h3 className="ml-4 mt-4">Key of F# major:</h3>
+            </div>
           </div>
         </Grid>
         <Grid item xs={12}>
@@ -92,7 +105,11 @@ export default function ExamSample() {
               numBars={7}
               chords={seventhChords}
             />
-            <form className="ml-24 grid grid-cols-7">
+            <form
+              id="submit-form"
+              className="ml-24 grid grid-cols-7"
+              onSubmit={handleFormSubmit}
+            >
               <FormInput
                 name="1"
                 type="text"
@@ -186,6 +203,27 @@ export default function ExamSample() {
             <BlankStaff noTimeSignature={true} />
             <BlankStaff noTimeSignature={true} addDoubleBarLine={true} />
           </div>
+        </Grid>
+        <Grid
+          container
+          direction="column"
+          justifyContent="center"
+          alignItems="center"
+          sx={{ mb: 8 }}
+        >
+          <Button
+            sx={{
+              color: "#2b2b2b",
+              borderColor: "#2b2b2b",
+              borderRadius: "8px",
+              fontSize: "1em",
+            }}
+            type="submit"
+            form="submit-form"
+            variant="outlined"
+          >
+            Submit Answers
+          </Button>
         </Grid>
       </Grid>
     </Box>

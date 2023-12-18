@@ -7,7 +7,7 @@ export default function BlankStaff({
   timeSignature = "4/4",
   noTimeSignature = false,
   width = 1650,
-  height = 200,
+  height = 110,
   addDoubleBarLine = false,
   numBars = 4,
 }) {
@@ -25,6 +25,9 @@ export default function BlankStaff({
     const { Renderer, Stave } = Vex.Flow;
 
     const contRefCurrent = containerRef.current;
+    const spaceAboveStaff = {
+      space_above_staff_ln: -0.5,
+    };
 
     if (contRefCurrent) {
       rendererRef.current = new Renderer(contRefCurrent, Renderer.Backends.SVG);
@@ -40,7 +43,8 @@ export default function BlankStaff({
         const stave = new Stave(
           i === 0 ? 17 : widthOfFirstBar + (i - 1) * widthOfRemainingBars + 17,
           40,
-          i === 0 ? widthOfFirstBar : widthOfRemainingBars
+          i === 0 ? widthOfFirstBar : widthOfRemainingBars,
+          spaceAboveStaff
         );
         if (i === 0) {
           noTimeSignature
@@ -51,6 +55,7 @@ export default function BlankStaff({
           stave.setEndBarType(3);
         }
         // Connect the stave to the rendering context and draw.
+        stave.setY(40);
         stave.setContext(rendererContext).draw();
       }
 
