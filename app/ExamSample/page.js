@@ -1,11 +1,9 @@
 "use client";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import BlankStaff2 from "../components/BlankStaff2";
-import BlankStaff4 from "../components/BlankStaff4";
-import BlankStaff6 from "../components/BlankStaff6";
-import BlankStaff7 from "../components/BlankStaff7";
-import SeventhChords from "../components/SeventhChords";
+import BlankStaff from "../components/BlankStaff";
+import StaffChords from "../components/StaffChords";
+import seventhChords from "../../lib/seventhChords";
 
 export default function ExamSample() {
   return (
@@ -38,7 +36,7 @@ export default function ExamSample() {
         <Grid item xs={12}>
           <div>
             <h2 className="ml-4 mt-4">Write the following key signatures:</h2>
-            <BlankStaff4 addDoubleBarLine={true} />
+            <BlankStaff addDoubleBarLine={true} />
           </div>
         </Grid>
         <Grid item xs={12}>
@@ -46,33 +44,41 @@ export default function ExamSample() {
             <h2 className="ml-4 mt-4">
               Identify the following key signatures:
             </h2>
-            <BlankStaff4 addDoubleBarLine={true} />
+            <BlankStaff addDoubleBarLine={true} />
           </div>
         </Grid>
         <Grid item xs={12}>
           <div>
             <h2 className="ml-4 mt-4">Write the following scales:</h2>
-            <BlankStaff2 />
-            <BlankStaff2 noTimeSignature={false} />
-            <BlankStaff2 noTimeSignature={false} addDoubleBarLine={true} />
+            <BlankStaff numBars={2} />
+            <BlankStaff numBars={2} noTimeSignature={false} />
+            <BlankStaff
+              numBars={2}
+              noTimeSignature={false}
+              addDoubleBarLine={true}
+            />
           </div>
         </Grid>
         <Grid item xs={12}>
           <div>
             <h2 className="ml-4 mt-4">Write the following triads:</h2>
-            <BlankStaff6 addDoubleBarLine={true} />
+            <BlankStaff numBars={6} addDoubleBarLine={true} />
           </div>
         </Grid>
         <Grid item xs={12}>
           <div>
             <h2 className="ml-4 mt-4">Write the following 7th chords:</h2>
-            <BlankStaff7 addDoubleBarLine={true} />
+            <BlankStaff numBars={7} addDoubleBarLine={true} />
           </div>
         </Grid>
         <Grid item xs={12}>
           <div>
             <h2 className="ml-4 mt-4">Identify the following 7th chords:</h2>
-            <SeventhChords />
+            <StaffChords
+              addDoubleBarLine={true}
+              numBars={7}
+              chords={seventhChords}
+            />
           </div>
         </Grid>
         <Grid item xs={12}>
@@ -80,9 +86,9 @@ export default function ExamSample() {
             <h2 className="ml-4 mt-4">
               Write a I-IV-V progression in the following keys:
             </h2>
-            <BlankStaff4 />
-            <BlankStaff4 noTimeSignature={true} />
-            <BlankStaff4 noTimeSignature={true} addDoubleBarLine={true} />
+            <BlankStaff />
+            <BlankStaff noTimeSignature={true} />
+            <BlankStaff noTimeSignature={true} addDoubleBarLine={true} />
           </div>
         </Grid>
         <Grid item xs={12}>
@@ -91,9 +97,9 @@ export default function ExamSample() {
               Write the changes to a Bb blues using ii-V7-I in the last 4
               measures (extra credit for hip reharms in the first 8 measures):
             </h2>
-            <BlankStaff4 />
-            <BlankStaff4 noTimeSignature={true} />
-            <BlankStaff4 noTimeSignature={true} addDoubleBarLine={true} />
+            <BlankStaff />
+            <BlankStaff noTimeSignature={true} />
+            <BlankStaff noTimeSignature={true} addDoubleBarLine={true} />
           </div>
         </Grid>
       </Grid>
