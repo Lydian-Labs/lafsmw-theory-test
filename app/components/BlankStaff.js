@@ -25,6 +25,7 @@ export default function BlankStaff({
     const { Renderer, Stave } = Vex.Flow;
 
     const contRefCurrent = containerRef.current;
+
     const spaceAboveStaff = {
       space_above_staff_ln: -0.5,
     };

@@ -7,7 +7,7 @@ export default function StaffChords({
   timeSignature = "4/4",
   noTimeSignature = false,
   width = 1650,
-  height = 140,
+  height = 110,
   addDoubleBarLine = false,
   numBars = 4,
   chords = [],
@@ -45,6 +45,10 @@ export default function StaffChords({
 
     const contRefCurrent = containerRef.current;
 
+    const spaceAboveStaff = {
+      space_above_staff_ln: -0.5,
+    };
+
     if (contRefCurrent) {
       rendererRef.current = new Renderer(contRefCurrent, Renderer.Backends.SVG);
 
@@ -60,7 +64,8 @@ export default function StaffChords({
         const stave = new Stave(
           i === 0 ? 17 : widthOfFirstBar + (i - 1) * widthOfRemainingBars + 17,
           40,
-          i === 0 ? widthOfFirstBar : widthOfRemainingBars
+          i === 0 ? widthOfFirstBar : widthOfRemainingBars,
+          spaceAboveStaff
         );
         if (i === 0) {
           noTimeSignature

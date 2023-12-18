@@ -28,7 +28,7 @@ export default function ExamSample() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <Grid container spacing={2} minHeight={500}>
+      <Grid container spacing={4} minHeight={500}>
         <Grid item xs={12}></Grid>
         <Grid item xs={12}>
           <h1 className="text-3xl text-center mt-24">LAFSMW Theory Test</h1>
@@ -58,10 +58,10 @@ export default function ExamSample() {
             <h2 className="ml-4 mt-4">Write the following key signatures:</h2>
             <BlankStaff addDoubleBarLine={true} />
             <div className="ml-24 grid grid-cols-4">
-              <h3 className="ml-4 mt-4">Key of F# major:</h3>
-              <h3 className="ml-4 mt-4">Key of F# major:</h3>
-              <h3 className="ml-4 mt-4">Key of F# major:</h3>
-              <h3 className="ml-4 mt-4">Key of F# major:</h3>
+              <p className="">Key of F# major:</p>
+              <p className="">Key of F# major:</p>
+              <p className="">Key of F# major:</p>
+              <p className="">Key of F# major:</p>
             </div>
           </div>
         </Grid>
