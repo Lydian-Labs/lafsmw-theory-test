@@ -4,8 +4,21 @@ import Grid from "@mui/material/Grid";
 import BlankStaff from "../components/BlankStaff";
 import StaffChords from "../components/StaffChords";
 import seventhChords from "../../lib/seventhChords";
+import FormInput from "../components/form/FormInput";
+import { useState } from "react";
+
+const initialFormInputState = {
+  1: "",
+  2: "",
+  3: "",
+  4: "",
+  5: "",
+  6: "",
+  7: "",
+};
 
 export default function ExamSample() {
+  const [formInput, setFormInput] = useState(initialFormInputState);
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2} minHeight={500}>
@@ -79,6 +92,78 @@ export default function ExamSample() {
               numBars={7}
               chords={seventhChords}
             />
+            <form className="ml-24 grid grid-cols-7">
+              <FormInput
+                name="1"
+                type="text"
+                value={formInput[1]}
+                width="50px"
+                onChange={(e) =>
+                  setFormInput({ ...formInput, 1: e.target.value })
+                }
+                required={true}
+              />
+              <FormInput
+                name="2"
+                type="text"
+                value={formInput[2]}
+                width="50px"
+                onChange={(e) =>
+                  setFormInput({ ...formInput, 2: e.target.value })
+                }
+                required={true}
+              />
+              <FormInput
+                name="3"
+                type="text"
+                value={formInput[3]}
+                width="50px"
+                onChange={(e) =>
+                  setFormInput({ ...formInput, 3: e.target.value })
+                }
+                required={true}
+              />
+              <FormInput
+                name="4"
+                type="text"
+                value={formInput[4]}
+                width="50px"
+                onChange={(e) =>
+                  setFormInput({ ...formInput, 4: e.target.value })
+                }
+                required={true}
+              />
+              <FormInput
+                name="5"
+                type="text"
+                value={formInput[5]}
+                width="50px"
+                onChange={(e) =>
+                  setFormInput({ ...formInput, 5: e.target.value })
+                }
+                required={true}
+              />
+              <FormInput
+                name="6"
+                type="text"
+                value={formInput[6]}
+                width="50px"
+                onChange={(e) =>
+                  setFormInput({ ...formInput, 6: e.target.value })
+                }
+                required={true}
+              />
+              <FormInput
+                name="7"
+                type="text"
+                value={formInput[7]}
+                width="50px"
+                onChange={(e) =>
+                  setFormInput({ ...formInput, 7: e.target.value })
+                }
+                required={true}
+              />
+            </form>
           </div>
         </Grid>
         <Grid item xs={12}>
