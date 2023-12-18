@@ -1,5 +1,5 @@
 import { Container } from "@mui/system";
-import Score from "../components/score";
+import Score from "../components/Score";
 const renderNotes = () => {
   return (
     <div>
