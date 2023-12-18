@@ -15,11 +15,6 @@ const AddNotesToAStaff = () => {
     yCoordinateMax: number;
   }
 
-  interface staveNote {
-    keys: string;
-    duration: string;
-  }
-
   useEffect(() => {
     if (!rendererRef.current && container.current) {
       rendererRef.current = new Renderer(
@@ -32,13 +27,23 @@ const AddNotesToAStaff = () => {
     renderer?.resize(500, 700);
     const context = renderer ? renderer.getContext() : null;
     context?.setFont("Arial", 10);
-    const stave = new Stave(10, 40, 400);
+    let numStavesPerLine = 4;
+
+    const createStaves = (x: number) => {
+      for (let i = 0; i < numStavesPerLine; i++) {
+        const stave = new Stave(x, 40, 300);
+        x += 100;
+      }
+    };
+    createStaves(4);
+    const stave = new Stave(10, 40, 300);
     stave.setEndBarType(3);
     stave.addClef("treble").addTimeSignature("4/4");
     context ? stave.setContext(context).draw() : null;
     const notesToDraw: InstanceType<typeof StaveNote>[] = [];
     container.current?.addEventListener("click", (e) => {
       const rect = container.current?.getBoundingClientRect();
+      console.log(rect)
       const x = rect ? e.clientX - rect.left : 0;
       const y = rect ? e.clientY - rect.top : 0;
       console.log("y:", y);
@@ -83,11 +88,9 @@ const AddNotesToAStaff = () => {
           return { note, yCoordinateMin, yCoordinateMax };
         });
       };
-
-      const noteArrayYCoordinates = generateNoteArrayCoordinates(yMin, notes);
-      let note = noteArrayYCoordinates.find(
+      //returns the first true statement, or returns undefined if the coordinate isn't found
+      let note = generateNoteArrayCoordinates(yMin, notes).find(
         ({ yCoordinateMin, yCoordinateMax }) =>
-          //returns the first true statement, or returns undefined if the coordinate isn't found
           y >= yCoordinateMin && y <= yCoordinateMax
       );
       context?.clear();
