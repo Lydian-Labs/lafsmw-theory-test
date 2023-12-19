@@ -6,7 +6,7 @@ import BlankStaff from "../components/BlankStaff";
 import IdentifyChords from "../components/IdentifyChords";
 import WriteProgression from "../components/WriteProgression";
 import WriteBlues from "../components/WriteBlues";
-import seventhChords from "../../lib/seventhChords";
+import seventhChords from "../lib/seventhChords";
 import { useState } from "react";
 
 const initialFormInputState = {
@@ -22,6 +22,10 @@ const initialFormInputState = {
 export default function ExamSample() {
   const [level, setLevel] = useState("");
   const [formInput, setFormInput] = useState(initialFormInputState);
+
+  function handleLevel(input) {
+    setFormInput({ ...formInput, level: input });
+  }
 
   function handleChords(input) {
     setFormInput({ ...formInput, chords: input });

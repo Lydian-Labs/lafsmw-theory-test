@@ -1,12 +1,13 @@
 import { useState } from "react";
 import StaffChords from "./StaffChords";
 import FormInput from "./FormInput";
+import { WriteProps, FormEvent, ChangeEvent } from "../types";
 
 export default function IdentifyChords({
   numBars = 4,
   chords = [],
   handleChords,
-}) {
+}: WriteProps) {
   const initialChordsInputState = Array.from(
     { length: numBars },
     (_, index) => ({
@@ -14,9 +15,11 @@ export default function IdentifyChords({
     })
   ).reduce((acc, curr) => ({ ...acc, ...curr }), {});
 
-  const [chordsInput, setChordsInput] = useState(initialChordsInputState);
+  const [chordsInput, setChordsInput] = useState<Record<string, string>>(
+    initialChordsInputState
+  );
 
-  function handleChordsSubmit(e) {
+  function handleChordsSubmit(e: FormEvent) {
     // prevents browser from refreshing on submit
     e.preventDefault();
     console.log("chordsInput:", chordsInput);
@@ -31,7 +34,7 @@ export default function IdentifyChords({
         type="text"
         value={chordsInput[key]}
         width="70px"
-        onChange={(e) =>
+        onChange={(e: ChangeEvent) =>
           setChordsInput({ ...chordsInput, [key]: e.target.value })
         }
         required={false}
