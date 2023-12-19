@@ -17,9 +17,10 @@ export default function IdentifyChords({
   const [chordsInput, setChordsInput] = useState(initialChordsInputState);
 
   function handleChordsSubmit(e) {
+    // prevents browser from refreshing on submit
     e.preventDefault();
     console.log("chordsInput:", chordsInput);
-    handleChords(e, chordsInput);
+    handleChords(chordsInput);
   }
 
   const renderChordsInputs = () => {

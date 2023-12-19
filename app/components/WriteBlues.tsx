@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import BlankStaff from "./BlankStaff";
 import FormInput from "./FormInput";
 
@@ -12,11 +12,11 @@ export default function WriteProgression({ numBars = 4, handleBlues }) {
 
   const [numeralInput, setNumeralInput] = useState(initialNumeralInputState);
 
-  console.log("Object.keys(numeralInput):", Object.keys(numeralInput));
+  //console.log("Object.keys(numeralInput):", Object.keys(numeralInput));
 
-  function handleNumeralSubmit(e) {
+  function handleNumeralSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    console.log(numeralInput);
+    console.log("numeralInput:", numeralInput);
     handleBlues(e, numeralInput);
   }
 

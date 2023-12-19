@@ -12,12 +12,10 @@ export default function WriteProgression({ numBars = 4, handleProg }) {
 
   const [numeralInput, setNumeralInput] = useState(initialNumeralInputState);
 
-  console.log("Object.keys(numeralInput):", Object.keys(numeralInput));
-
   function handleNumeralSubmit(e) {
     e.preventDefault();
-    console.log(numeralInput);
-    handleProg(e, numeralInput);
+    console.log("numeralInput", numeralInput);
+    handleProg(numeralInput);
   }
 
   const renderNumeralInputs = (start, end) => {

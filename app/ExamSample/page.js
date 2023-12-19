@@ -23,23 +23,19 @@ export default function ExamSample() {
   const [level, setLevel] = useState("");
   const [formInput, setFormInput] = useState(initialFormInputState);
 
-  function handleChords(e, input) {
-    e.preventDefault();
-    setFormInput({ ...formInput, chords: { input } });
-    console.log("formInput from ExamSample:", formInput);
+  function handleChords(input) {
+    setFormInput({ ...formInput, chords: input });
   }
 
-  function handleProg(e, input) {
-    e.preventDefault();
-    setFormInput({ ...formInput, progressions: { input } });
-    console.log("formInput from ExamSample:", formInput);
+  function handleProg(input) {
+    setFormInput({ ...formInput, progressions: input });
   }
 
-  function handleBlues(e, input) {
-    e.preventDefault();
-    setFormInput({ ...formInput, blues: { input } });
-    console.log("formInput from ExamSample:", formInput);
+  function handleBlues(input) {
+    setFormInput({ ...formInput, blues: input });
   }
+
+  console.log("form input", formInput);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -174,7 +170,7 @@ export default function ExamSample() {
           direction="column"
           justifyContent="center"
           alignItems="center"
-          sx={{ mb: 8 }}
+          sx={{ mb: 8, mt: 8 }}
         >
           <Button
             sx={{
