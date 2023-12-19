@@ -4,9 +4,43 @@ import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import BlankStaff from "../components/BlankStaff";
 import IdentifyChords from "../components/IdentifyChords";
+import WriteProgression from "../components/WriteProgression";
+import WriteBlues from "../components/WriteBlues";
 import seventhChords from "../../lib/seventhChords";
+import { useState } from "react";
+
+const initialFormInputState = {
+  level: "",
+  keySignatures: [],
+  scales: [],
+  triads: [],
+  chords: [],
+  progressions: [],
+  blues: [],
+};
 
 export default function ExamSample() {
+  const [level, setLevel] = useState("");
+  const [formInput, setFormInput] = useState(initialFormInputState);
+
+  function handleChords(e, input) {
+    e.preventDefault();
+    setFormInput({ ...formInput, chords: { input } });
+    console.log("formInput from ExamSample:", formInput);
+  }
+
+  function handleProg(e, input) {
+    e.preventDefault();
+    setFormInput({ ...formInput, progressions: { input } });
+    console.log("formInput from ExamSample:", formInput);
+  }
+
+  function handleBlues(e, input) {
+    e.preventDefault();
+    setFormInput({ ...formInput, blues: { input } });
+    console.log("formInput from ExamSample:", formInput);
+  }
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={4} minHeight={500}>
@@ -112,16 +146,18 @@ export default function ExamSample() {
         </Grid>
         <Grid item xs={12}>
           <h2 className="ml-4 mt-4">Identify the following 7th chords:</h2>
-          <IdentifyChords chords={seventhChords} numBars={7} />
+          <IdentifyChords
+            chords={seventhChords}
+            numBars={7}
+            handleChords={handleChords}
+          />
         </Grid>
         <Grid item xs={12}>
           <div>
             <h2 className="ml-4 mt-4">
               Write a I-IV-V progression in the following keys:
             </h2>
-            <BlankStaff />
-            <BlankStaff noTimeSignature={true} />
-            <BlankStaff noTimeSignature={true} addDoubleBarLine={true} />
+            <WriteProgression numBars={12} handleProg={handleProg} />
           </div>
         </Grid>
         <Grid item xs={12}>
@@ -130,9 +166,7 @@ export default function ExamSample() {
               Write the changes to a Bb blues using ii-V7-I in the last 4
               measures (extra credit for hip reharms in the first 8 measures):
             </h2>
-            <BlankStaff />
-            <BlankStaff noTimeSignature={true} />
-            <BlankStaff noTimeSignature={true} addDoubleBarLine={true} />
+            <WriteBlues numBars={12} handleBlues={handleBlues} />
           </div>
         </Grid>
         <Grid
