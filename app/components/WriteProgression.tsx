@@ -1,8 +1,12 @@
 import { useState } from "react";
 import BlankStaff from "./BlankStaff";
 import FormInput from "./FormInput";
+import { WriteProg, FormEvent, ChangeEvent } from "../types";
 
-export default function WriteProgression({ numBars = 4, handleProg }) {
+export default function WriteProgression({
+  numBars = 4,
+  handleProg,
+}: WriteProg) {
   const initialNumeralInputState = Array.from(
     { length: numBars },
     (_, index) => ({
@@ -10,15 +14,20 @@ export default function WriteProgression({ numBars = 4, handleProg }) {
     })
   ).reduce((acc, curr) => ({ ...acc, ...curr }), {});
 
-  const [numeralInput, setNumeralInput] = useState(initialNumeralInputState);
+  const [numeralInput, setNumeralInput] = useState<Record<string, string>>(
+    initialNumeralInputState
+  );
 
-  function handleNumeralSubmit(e) {
+  function handleNumeralSubmit(e: FormEvent) {
     e.preventDefault();
     console.log("numeralInput", numeralInput);
     handleProg(numeralInput);
   }
 
-  const renderNumeralInputs = (start, end) => {
+  const renderNumeralInputs = (
+    start: number | undefined,
+    end: number | undefined
+  ) => {
     return Object.keys(numeralInput)
       .slice(start, end)
       .map((key) => (
@@ -28,7 +37,7 @@ export default function WriteProgression({ numBars = 4, handleProg }) {
           type="text"
           value={numeralInput[key]}
           width="70px"
-          onChange={(e) =>
+          onChange={(e: ChangeEvent) =>
             setNumeralInput({ ...numeralInput, [key]: e.target.value })
           }
           required={false}

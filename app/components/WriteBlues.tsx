@@ -1,8 +1,9 @@
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 import BlankStaff from "./BlankStaff";
 import FormInput from "./FormInput";
+import { WriteBlues, FormEvent, ChangeEvent } from "../types";
 
-export default function WriteProgression({ numBars = 4, handleBlues }) {
+export default function WriteBlues({ numBars = 4, handleBlues }: WriteBlues) {
   const initialNumeralInputState = Array.from(
     { length: numBars },
     (_, index) => ({
@@ -10,17 +11,20 @@ export default function WriteProgression({ numBars = 4, handleBlues }) {
     })
   ).reduce((acc, curr) => ({ ...acc, ...curr }), {});
 
-  const [numeralInput, setNumeralInput] = useState(initialNumeralInputState);
+  const [numeralInput, setNumeralInput] = useState<Record<string, string>>(
+    initialNumeralInputState
+  );
 
-  //console.log("Object.keys(numeralInput):", Object.keys(numeralInput));
-
-  function handleNumeralSubmit(e: FormEvent<HTMLFormElement>) {
+  function handleNumeralSubmit(e: FormEvent) {
     e.preventDefault();
     console.log("numeralInput:", numeralInput);
-    handleBlues(e, numeralInput);
+    handleBlues(numeralInput);
   }
 
-  const renderNumeralInputs = (start, end) => {
+  const renderNumeralInputs = (
+    start: number | undefined,
+    end: number | undefined
+  ) => {
     return Object.keys(numeralInput)
       .slice(start, end)
       .map((key) => (
@@ -30,7 +34,7 @@ export default function WriteProgression({ numBars = 4, handleBlues }) {
           type="text"
           value={numeralInput[key]}
           width="70px"
-          onChange={(e) =>
+          onChange={(e: ChangeEvent) =>
             setNumeralInput({ ...numeralInput, [key]: e.target.value })
           }
           required={false}
