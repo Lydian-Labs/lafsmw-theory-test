@@ -6,6 +6,7 @@ import { WriteProps, FormEvent, ChangeEvent } from "../types";
 export default function IdentifyChords({
   numBars = 4,
   chords = [],
+  width = 1650,
   handleChords,
 }: WriteProps) {
   const initialChordsInputState = Array.from(
@@ -44,9 +45,14 @@ export default function IdentifyChords({
 
   return (
     <div>
-      <StaffChords addDoubleBarLine={true} numBars={numBars} chords={chords} />
+      <StaffChords
+        addDoubleBarLine={true}
+        numBars={numBars}
+        chords={chords}
+        width={width}
+      />
       <form
-        id="submit-form"
+        id="submit-form-chords"
         // this grid-cols-7 is a hacky way to make the form inputs line up with the staff
         className="ml-24 grid grid-cols-7"
         onSubmit={handleChordsSubmit}

@@ -7,7 +7,7 @@ import IdentifyChords from "../components/IdentifyChords";
 import WriteProgression from "../components/WriteProgression";
 import WriteBlues from "../components/WriteBlues";
 import seventhChords from "../lib/seventhChords";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 const initialFormInputState = {
   level: "",
@@ -22,6 +22,10 @@ const initialFormInputState = {
 export default function ExamSample() {
   const [level, setLevel] = useState("");
   const [formInput, setFormInput] = useState(initialFormInputState);
+
+  const width = typeof window !== "undefined" ? window.innerWidth : width;
+
+  const bluesFormRef = useRef(null);
 
   function handleLevel(input) {
     setFormInput({ ...formInput, level: input });
@@ -44,7 +48,6 @@ export default function ExamSample() {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={4} minHeight={500}>
-        <Grid item xs={12}></Grid>
         <Grid item xs={12}>
           <h1 className="text-3xl text-center mt-24">LAFSMW Theory Test</h1>
         </Grid>
@@ -74,7 +77,7 @@ export default function ExamSample() {
         <Grid item xs={12}>
           <div>
             <h2 className="ml-4 mt-4">Write the following key signatures:</h2>
-            <BlankStaff addDoubleBarLine={true} />
+            <BlankStaff addDoubleBarLine={true} width={width} />
             <div className="ml-24 grid grid-cols-4">
               <p>Db Major</p>
               <p>F# Major</p>
@@ -88,18 +91,18 @@ export default function ExamSample() {
             <h2 className="ml-4 mt-4">
               Identify the following key signatures:
             </h2>
-            <BlankStaff addDoubleBarLine={true} />
+            <BlankStaff addDoubleBarLine={true} width={width} />
           </div>
         </Grid>
         <Grid item xs={12}>
           <div>
             <h2 className="ml-4 mt-4">Write the following scales:</h2>
-            <BlankStaff numBars={2} />
+            <BlankStaff numBars={2} width={width} />
             <div className="ml-24 grid grid-cols-2">
               <p>Db Major</p>
               <p>B Major</p>
             </div>
-            <BlankStaff numBars={2} noTimeSignature={false} />
+            <BlankStaff numBars={2} noTimeSignature={false} width={width} />
             <div className="ml-24 grid grid-cols-2">
               <p>C Dorian</p>
               <p>F# Dorian</p>
@@ -108,6 +111,7 @@ export default function ExamSample() {
               numBars={2}
               noTimeSignature={false}
               addDoubleBarLine={true}
+              width={width}
             />
             <div className="ml-24 grid grid-cols-2">
               <p>Bb Mixolydian</p>
@@ -118,7 +122,7 @@ export default function ExamSample() {
         <Grid item xs={12}>
           <div>
             <h2 className="ml-4 mt-4">Write the following triads:</h2>
-            <BlankStaff numBars={6} addDoubleBarLine={true} />
+            <BlankStaff numBars={6} addDoubleBarLine={true} width={width} />
             <div className="ml-24 grid grid-cols-6">
               <p>D Major</p>
               <p>F# Major</p>
@@ -132,7 +136,7 @@ export default function ExamSample() {
         <Grid item xs={12}>
           <div>
             <h2 className="ml-4 mt-4">Write the following 7th chords:</h2>
-            <BlankStaff numBars={7} addDoubleBarLine={true} />
+            <BlankStaff numBars={7} addDoubleBarLine={true} width={width} />
             <div className="ml-24 grid grid-cols-7">
               <p>E-dim</p>
               <p>G-7</p>
@@ -150,6 +154,7 @@ export default function ExamSample() {
             chords={seventhChords}
             numBars={7}
             handleChords={handleChords}
+            width={width}
           />
         </Grid>
         <Grid item xs={12}>
@@ -157,7 +162,11 @@ export default function ExamSample() {
             <h2 className="ml-4 mt-4">
               Write a I-IV-V progression in the following keys:
             </h2>
-            <WriteProgression numBars={12} handleProg={handleProg} />
+            <WriteProgression
+              numBars={12}
+              handleProg={handleProg}
+              width={width}
+            />
           </div>
         </Grid>
         <Grid item xs={12}>
@@ -166,7 +175,12 @@ export default function ExamSample() {
               Write the changes to a Bb blues using ii-V7-I in the last 4
               measures (extra credit for hip reharms in the first 8 measures):
             </h2>
-            <WriteBlues numBars={12} handleBlues={handleBlues} />
+            <WriteBlues
+              numBars={12}
+              handleBlues={handleBlues}
+              ref={bluesFormRef}
+              width={width}
+            />
           </div>
         </Grid>
         <Grid
@@ -183,8 +197,12 @@ export default function ExamSample() {
               borderRadius: "8px",
               fontSize: "1em",
             }}
-            type="submit"
-            form="submit-form"
+            type="button"
+            onClick={() => {
+              console.log("bluesFormRef", bluesFormRef);
+              bluesFormRef.current.requestSubmit();
+            }}
+            form="submit-form-blues1"
             variant="outlined"
           >
             Submit Answers

@@ -16,7 +16,6 @@ export default function StaffChords({
   const rendererRef = useRef();
 
   // Gather needed width info.
-  width = window.innerWidth;
   const fullWidth = width * 0.97;
   const widthOfFirstBar = width / numBars + 50;
   const widthOfRemainingBars =
