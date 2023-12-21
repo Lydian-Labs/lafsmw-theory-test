@@ -2,7 +2,7 @@
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { useRef, useState } from "react";
-import BlankStaff from "../components/BlankStaff";
+import Staff from "../components/Staff";
 import IdentifyChords from "../components/IdentifyChords";
 import IdentifyKeySignatures from "../components/IdentifyKeySignatures";
 import SubmitButton from "../components/SubmitButton";
@@ -83,7 +83,7 @@ export default function ExamSample() {
         <Grid item xs={12}>
           <div>
             <h2 className="ml-4 mt-4">Write the following key signatures:</h2>
-            <BlankStaff addDoubleBarLine={true} width={width} />
+            <Staff addDoubleBarLine={true} width={width} />
             <div className="ml-24 grid grid-cols-4">
               <p>Db Major</p>
               <p>F# Major</p>
@@ -115,17 +115,17 @@ export default function ExamSample() {
         <Grid item xs={12}>
           <div>
             <h2 className="ml-4 mt-4">Write the following scales:</h2>
-            <BlankStaff numBars={2} width={width} />
+            <Staff numBars={2} width={width} />
             <div className="ml-24 grid grid-cols-2">
               <p>Db Major</p>
               <p>B Major</p>
             </div>
-            <BlankStaff numBars={2} noTimeSignature={false} width={width} />
+            <Staff numBars={2} noTimeSignature={false} width={width} />
             <div className="ml-24 grid grid-cols-2">
               <p>C Dorian</p>
               <p>F# Dorian</p>
             </div>
-            <BlankStaff
+            <Staff
               numBars={2}
               noTimeSignature={false}
               addDoubleBarLine={true}
@@ -140,7 +140,7 @@ export default function ExamSample() {
         <Grid item xs={12}>
           <div>
             <h2 className="ml-4 mt-4">Write the following triads:</h2>
-            <BlankStaff numBars={6} addDoubleBarLine={true} width={width} />
+            <Staff numBars={6} addDoubleBarLine={true} width={width} />
             <div className="ml-24 grid grid-cols-6">
               <p>D Major</p>
               <p>F# Major</p>
@@ -154,7 +154,7 @@ export default function ExamSample() {
         <Grid item xs={12}>
           <div>
             <h2 className="ml-4 mt-4">Write the following 7th chords:</h2>
-            <BlankStaff numBars={7} addDoubleBarLine={true} width={width} />
+            <Staff numBars={7} addDoubleBarLine={true} width={width} />
             <div className="ml-24 grid grid-cols-7">
               <p>E-dim</p>
               <p>G-7</p>

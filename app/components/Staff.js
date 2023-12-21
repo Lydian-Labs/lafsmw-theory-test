@@ -2,7 +2,7 @@
 import { useEffect, useRef } from "react";
 import { Vex } from "vexflow";
 
-export default function StaffChords({
+export default function Staff({
   clef = "treble",
   timeSignature = "4/4",
   noTimeSignature = false,
@@ -77,22 +77,24 @@ export default function StaffChords({
         // Connect the stave to the rendering context and draw.
         stave.setContext(rendererContext).draw();
 
-        // Create each chord as a StaveNote.
-        let notesMeasure = [new StaveNote(chords[i])];
+        if (chords.length > 0) {
+          // Create each chord as a StaveNote.
+          let notesMeasure = [new StaveNote(chords[i])];
 
-        // Determine if any accidentals are needed for the current chord.
-        let noteGroupAccidentals = noteGroupAccidentalsCheck(chords[i].keys);
+          // Determine if any accidentals are needed for the current chord.
+          let noteGroupAccidentals = noteGroupAccidentalsCheck(chords[i].keys);
 
-        // Add accidentals to notes of each chord as needed.
-        noteGroupAccidentals.forEach((accidental) => {
-          notesMeasure[0].addModifier(
-            new Accidental(accidental[0]),
-            accidental[1]
-          );
-        });
+          // Add accidentals to notes of each chord as needed.
+          noteGroupAccidentals.forEach((accidental) => {
+            notesMeasure[0].addModifier(
+              new Accidental(accidental[0]),
+              accidental[1]
+            );
+          });
 
-        // Format and draw the chord on the current stave.
-        Formatter.FormatAndDraw(rendererContext, stave, notesMeasure);
+          // Format and draw the chord on the current stave.
+          Formatter.FormatAndDraw(rendererContext, stave, notesMeasure);
+        }
       }
 
       // clean up function to remove the svg.

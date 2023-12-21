@@ -1,6 +1,6 @@
 import { ForwardedRef, forwardRef, useState } from "react";
 import { ChangeEvent, FormEvent, KeySignatureProps } from "../types";
-import BlankStaff from "./BlankStaff";
+import Staff from "./Staff";
 import FormInput from "./FormInput";
 import createInitialState from "../lib/createInitialState";
 
@@ -40,7 +40,7 @@ export default forwardRef(function IdentifyKeySignatures(
   return (
     <div>
       <form ref={ref} id="submit-form-keys" onSubmit={handleKeysSubmit}>
-        <BlankStaff addDoubleBarLine={true} numBars={numBars} width={width} />
+        <Staff addDoubleBarLine={true} numBars={numBars} width={width} />
         {/* this grid-cols-4 is a hacky way to make the form inputs line up with the staff */}
         <div className="grid grid-cols-4 pl-10">{renderKeysInputs()}</div>
       </form>

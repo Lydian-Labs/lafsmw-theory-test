@@ -1,7 +1,7 @@
 import { ForwardedRef, forwardRef, useState } from "react";
 import { ChangeEvent, FormEvent, WriteProps } from "../types";
 import FormInput from "./FormInput";
-import StaffChords from "./StaffChords";
+import Staff from "./Staff";
 import createInitialState from "../lib/createInitialState";
 
 export default forwardRef(function IdentifyChords(
@@ -40,7 +40,7 @@ export default forwardRef(function IdentifyChords(
   return (
     <div>
       <form ref={ref} id="submit-form-chords" onSubmit={handleChordsSubmit}>
-        <StaffChords
+        <Staff
           addDoubleBarLine={true}
           numBars={numBars}
           chords={chords}

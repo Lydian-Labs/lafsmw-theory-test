@@ -1,7 +1,7 @@
 import Stack from "@mui/material/Stack";
 import { ForwardedRef, forwardRef, useState } from "react";
 import { ChangeEvent, FormEvent, WriteBlues } from "../types";
-import BlankStaff from "./BlankStaff";
+import Staff from "./Staff";
 import FormInput from "./FormInput";
 import createInitialState from "../lib/createInitialState";
 
@@ -46,16 +46,16 @@ export default forwardRef(function WriteBlues(
     <div>
       <form ref={ref} id="submit-form-blues" onSubmit={handleNumeralSubmit}>
         <Stack direction="column" spacing={2}>
-          <BlankStaff numBars={4} width={width} />
+          <Staff numBars={4} width={width} />
           {/* this grid-cols-4 is a hacky way to make the form inputs line up with the staff */}
           <div className="grid grid-cols-4 pl-10">
             {renderNumeralInputs(0, 4)}
           </div>
-          <BlankStaff numBars={4} noTimeSignature={true} width={width} />
+          <Staff numBars={4} noTimeSignature={true} width={width} />
           <div className="grid grid-cols-4 pl-10">
             {renderNumeralInputs(4, 8)}
           </div>
-          <BlankStaff
+          <Staff
             numBars={4}
             noTimeSignature={true}
             addDoubleBarLine={true}
