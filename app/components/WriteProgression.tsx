@@ -1,18 +1,15 @@
-import { useState } from "react";
+import Stack from "@mui/material/Stack";
+import { ForwardedRef, forwardRef, useState } from "react";
+import { ChangeEvent, FormEvent, WriteProg } from "../types";
 import BlankStaff from "./BlankStaff";
 import FormInput from "./FormInput";
-import { WriteProg, FormEvent, ChangeEvent } from "../types";
+import createInitialState from "../lib/createInitialState";
 
-export default function WriteProgression({
-  numBars = 4,
-  handleProg,
-}: WriteProg) {
-  const initialNumeralInputState = Array.from(
-    { length: numBars },
-    (_, index) => ({
-      [index]: "",
-    })
-  ).reduce((acc, curr) => ({ ...acc, ...curr }), {});
+export default forwardRef(function WriteProgression(
+  { numBars = 4, width, handleProg }: WriteProg,
+  ref: ForwardedRef<HTMLFormElement>
+) {
+  const initialNumeralInputState = createInitialState(numBars);
 
   const [numeralInput, setNumeralInput] = useState<Record<string, string>>(
     initialNumeralInputState
@@ -47,31 +44,28 @@ export default function WriteProgression({
 
   return (
     <div>
-      <BlankStaff numBars={4} />
-      <form
-        id="submit-form"
-        // this grid-cols-4 is a hacky way to make the form inputs line up with the staff
-        className="ml-24 grid grid-cols-4"
-        onSubmit={handleNumeralSubmit}
-      >
-        {renderNumeralInputs(0, 4)}
-      </form>
-      <BlankStaff numBars={4} noTimeSignature={true} />
-      <form
-        id="submit-form"
-        className="ml-24 grid grid-cols-4"
-        onSubmit={handleNumeralSubmit}
-      >
-        {renderNumeralInputs(4, 8)}
-      </form>
-      <BlankStaff numBars={4} noTimeSignature={true} addDoubleBarLine={true} />
-      <form
-        id="submit-form"
-        className="ml-24 grid grid-cols-4"
-        onSubmit={handleNumeralSubmit}
-      >
-        {renderNumeralInputs(8, 12)}
+      <form ref={ref} id="submit-form-blues" onSubmit={handleNumeralSubmit}>
+        <Stack direction="column" spacing={2}>
+          <BlankStaff numBars={4} width={width} />
+          {/* this grid-cols-4 is a hacky way to make the form inputs line up with the staff */}
+          <div className="grid grid-cols-4 pl-10">
+            {renderNumeralInputs(0, 4)}
+          </div>
+          <BlankStaff numBars={4} noTimeSignature={true} width={width} />
+          <div className="grid grid-cols-4 pl-10">
+            {renderNumeralInputs(4, 8)}
+          </div>
+          <BlankStaff
+            numBars={4}
+            noTimeSignature={true}
+            addDoubleBarLine={true}
+            width={width}
+          />
+          <div className="grid grid-cols-4 pl-10">
+            {renderNumeralInputs(8, 12)}
+          </div>
+        </Stack>
       </form>
     </div>
   );
-}
+});

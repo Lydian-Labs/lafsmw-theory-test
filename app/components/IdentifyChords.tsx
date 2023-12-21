@@ -1,20 +1,14 @@
-import { useState } from "react";
-import StaffChords from "./StaffChords";
+import { ForwardedRef, forwardRef, useState } from "react";
+import { ChangeEvent, FormEvent, WriteProps } from "../types";
 import FormInput from "./FormInput";
-import { WriteProps, FormEvent, ChangeEvent } from "../types";
+import StaffChords from "./StaffChords";
+import createInitialState from "../lib/createInitialState";
 
-export default function IdentifyChords({
-  numBars = 4,
-  chords = [],
-  width = 1650,
-  handleChords,
-}: WriteProps) {
-  const initialChordsInputState = Array.from(
-    { length: numBars },
-    (_, index) => ({
-      [index]: "",
-    })
-  ).reduce((acc, curr) => ({ ...acc, ...curr }), {});
+export default forwardRef(function IdentifyChords(
+  { numBars = 4, chords = [], width = 1650, handleChords }: WriteProps,
+  ref: ForwardedRef<HTMLFormElement>
+) {
+  const initialChordsInputState = createInitialState(numBars);
 
   const [chordsInput, setChordsInput] = useState<Record<string, string>>(
     initialChordsInputState
@@ -45,20 +39,16 @@ export default function IdentifyChords({
 
   return (
     <div>
-      <StaffChords
-        addDoubleBarLine={true}
-        numBars={numBars}
-        chords={chords}
-        width={width}
-      />
-      <form
-        id="submit-form-chords"
-        // this grid-cols-7 is a hacky way to make the form inputs line up with the staff
-        className="ml-24 grid grid-cols-7"
-        onSubmit={handleChordsSubmit}
-      >
-        {renderChordsInputs()}
+      <form ref={ref} id="submit-form-chords" onSubmit={handleChordsSubmit}>
+        <StaffChords
+          addDoubleBarLine={true}
+          numBars={numBars}
+          chords={chords}
+          width={width}
+        />
+        {/* this grid-cols-4 is a hacky way to make the form inputs line up with the staff */}
+        <div className="grid grid-cols-7 pl-10">{renderChordsInputs()}</div>
       </form>
     </div>
   );
-}
+});

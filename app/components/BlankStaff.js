@@ -1,6 +1,6 @@
 "use client";
-import { Vex } from "vexflow";
 import { useEffect, useRef } from "react";
+import { Vex } from "vexflow";
 
 export default function BlankStaff({
   clef = "treble",

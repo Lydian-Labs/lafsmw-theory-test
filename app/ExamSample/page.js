@@ -1,22 +1,21 @@
 "use client";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
+import { useRef, useState } from "react";
 import BlankStaff from "../components/BlankStaff";
 import IdentifyChords from "../components/IdentifyChords";
-import WriteProgression from "../components/WriteProgression";
+import IdentifyKeySignatures from "../components/IdentifyKeySignatures";
+import SubmitButton from "../components/SubmitButton";
 import WriteBlues from "../components/WriteBlues";
+import WriteProgression from "../components/WriteProgression";
 import seventhChords from "../lib/seventhChords";
-import { useRef, useState } from "react";
 
 const initialFormInputState = {
   level: "",
-  keySignatures: [],
-  scales: [],
-  triads: [],
-  chords: [],
-  progressions: [],
-  blues: [],
+  keySignatures: {},
+  chords: {},
+  progressions: {},
+  blues: {},
 };
 
 export default function ExamSample() {
@@ -26,9 +25,16 @@ export default function ExamSample() {
   const width = typeof window !== "undefined" ? window.innerWidth : width;
 
   const bluesFormRef = useRef(null);
+  const progressionFormRef = useRef(null);
+  const chordsFormRef = useRef(null);
+  const keysFormRef = useRef(null);
 
   function handleLevel(input) {
     setFormInput({ ...formInput, level: input });
+  }
+
+  function handleKeySignatures(input) {
+    setFormInput({ ...formInput, keySignatures: input });
   }
 
   function handleChords(input) {
@@ -49,7 +55,7 @@ export default function ExamSample() {
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={4} minHeight={500}>
         <Grid item xs={12}>
-          <h1 className="text-3xl text-center mt-24">LAFSMW Theory Test</h1>
+          <h1 className="text-3xl text-center mt-12">LAFSMW Theory Test</h1>
         </Grid>
         <Grid item xs={12}>
           <label
@@ -91,9 +97,21 @@ export default function ExamSample() {
             <h2 className="ml-4 mt-4">
               Identify the following key signatures:
             </h2>
-            <BlankStaff addDoubleBarLine={true} width={width} />
+            <IdentifyKeySignatures
+              numBars={4}
+              handleKeySignatures={handleKeySignatures}
+              ref={keysFormRef}
+              width={width}
+            />
           </div>
         </Grid>
+        <SubmitButton
+          labelText="Submit"
+          sx={{ mt: 4 }}
+          onClick={() => {
+            keysFormRef.current.requestSubmit();
+          }}
+        />
         <Grid item xs={12}>
           <div>
             <h2 className="ml-4 mt-4">Write the following scales:</h2>
@@ -154,9 +172,17 @@ export default function ExamSample() {
             chords={seventhChords}
             numBars={7}
             handleChords={handleChords}
+            ref={chordsFormRef}
             width={width}
           />
         </Grid>
+        <SubmitButton
+          labelText="Submit"
+          sx={{ mt: 4 }}
+          onClick={() => {
+            chordsFormRef.current.requestSubmit();
+          }}
+        />
         <Grid item xs={12}>
           <div>
             <h2 className="ml-4 mt-4">
@@ -165,10 +191,18 @@ export default function ExamSample() {
             <WriteProgression
               numBars={12}
               handleProg={handleProg}
+              ref={progressionFormRef}
               width={width}
             />
           </div>
         </Grid>
+        <SubmitButton
+          labelText="Submit"
+          sx={{ mt: 4 }}
+          onClick={() => {
+            progressionFormRef.current.requestSubmit();
+          }}
+        />
         <Grid item xs={12}>
           <div>
             <h2 className="ml-4 mt-4">
@@ -183,31 +217,13 @@ export default function ExamSample() {
             />
           </div>
         </Grid>
-        <Grid
-          container
-          direction="column"
-          justifyContent="center"
-          alignItems="center"
-          sx={{ mb: 8, mt: 8 }}
-        >
-          <Button
-            sx={{
-              color: "#2b2b2b",
-              borderColor: "#2b2b2b",
-              borderRadius: "8px",
-              fontSize: "1em",
-            }}
-            type="button"
-            onClick={() => {
-              console.log("bluesFormRef", bluesFormRef);
-              bluesFormRef.current.requestSubmit();
-            }}
-            form="submit-form-blues1"
-            variant="outlined"
-          >
-            Submit Answers
-          </Button>
-        </Grid>
+        <SubmitButton
+          labelText="Submit"
+          sx={{ mb: 8, mt: 4 }}
+          onClick={() => {
+            bluesFormRef.current.requestSubmit();
+          }}
+        />
       </Grid>
     </Box>
   );

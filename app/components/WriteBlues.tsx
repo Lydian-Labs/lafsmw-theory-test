@@ -1,26 +1,19 @@
+import Stack from "@mui/material/Stack";
 import { ForwardedRef, forwardRef, useState } from "react";
+import { ChangeEvent, FormEvent, WriteBlues } from "../types";
 import BlankStaff from "./BlankStaff";
 import FormInput from "./FormInput";
-import { WriteBlues, FormEvent, ChangeEvent } from "../types";
-import { Grid, Stack } from "@mui/material";
+import createInitialState from "../lib/createInitialState";
 
 export default forwardRef(function WriteBlues(
   { numBars = 4, width, handleBlues }: WriteBlues,
   ref: ForwardedRef<HTMLFormElement>
 ) {
-  const initialNumeralInputState = Array.from(
-    { length: numBars },
-    (_, index) => ({
-      [index]: "",
-    })
-  ).reduce((acc, curr) => ({ ...acc, ...curr }), {});
+  const initialNumeralInputState = createInitialState(numBars);
 
   const [numeralInput, setNumeralInput] = useState<Record<string, string>>(
     initialNumeralInputState
   );
-
-  const widthREM = width / 16;
-  const gapOfElement = (widthREM / 4) * 1.15;
 
   function handleNumeralSubmit(e: FormEvent) {
     e.preventDefault();
@@ -51,15 +44,10 @@ export default forwardRef(function WriteBlues(
 
   return (
     <div>
-      <form
-        ref={ref}
-        id="submit-form-blues1"
-        // this grid-cols-4 is a hacky way to make the form inputs line up with the staff
-        //className="grid grid-cols-4"
-        onSubmit={handleNumeralSubmit}
-      >
+      <form ref={ref} id="submit-form-blues" onSubmit={handleNumeralSubmit}>
         <Stack direction="column" spacing={2}>
           <BlankStaff numBars={4} width={width} />
+          {/* this grid-cols-4 is a hacky way to make the form inputs line up with the staff */}
           <div className="grid grid-cols-4 pl-10">
             {renderNumeralInputs(0, 4)}
           </div>

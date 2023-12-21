@@ -14,6 +14,13 @@ export type WriteProps = {
   handleChords: (chords: ObjectInput) => void;
 };
 
+export type KeySignatureProps = {
+  numBars: number;
+  chords: string[];
+  width: number;
+  handleKeySignatures: (keySignatures: ObjectInput) => void;
+};
+
 export type WriteBlues = {
   numBars: number;
   chords: string[];
@@ -26,4 +33,10 @@ export type WriteProg = {
   chords: string[];
   width: number;
   handleProg: (progressions: ObjectInput) => void;
+};
+
+export type ButtonProps = {
+  labelText: string;
+  onClick: (e: MouseEvent) => void;
+  sx?: object;
 };
