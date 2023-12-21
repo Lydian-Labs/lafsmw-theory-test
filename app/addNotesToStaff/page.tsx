@@ -24,7 +24,7 @@ const AddNotesToAStaff = () => {
     }
     //set up renderer and context
     const renderer = rendererRef.current;
-    renderer?.resize(800, 700);
+    renderer?.resize(800, 800);
     const context = renderer ? renderer.getContext() : null;
     context?.setFont("Arial", 10);
     const notes = [
@@ -57,10 +57,10 @@ const AddNotesToAStaff = () => {
     let x = 10;
     let y = 40;
     const firstStaveWidth = clefWidth + timeWidth + 170;
-    const regularStaveWidth = 170;
+    const regularStaveWidth = 180;
 
     //array of notes
-
+    //1st stave is 10-240, 2nd stave is 240-420, stave 3 is 420-600, stave 4 is 600-780
     //for loop to create staves
     const createStaves = (
       numStaves: number,
@@ -73,7 +73,9 @@ const AddNotesToAStaff = () => {
       for (let i = 0; i < numStaves; i++) {
         let staveWidth = i === 0 ? firstStaveWidth : regularStaveWidth;
         let stave = new Stave(x, y, staveWidth);
-        i === 0 ? stave.setClef("treble").setTimeSignature("4/4") : null;
+        i === 0
+          ? stave.setClef("treble", "default").setTimeSignature("4/4")
+          : null;
         i === 3 ? stave.setEndBarType(3) : null;
         context ? stave.setContext(context).draw() : null;
         x += staveWidth;
@@ -96,8 +98,17 @@ const AddNotesToAStaff = () => {
       //35 is 'g/6' above the staff. Need to figure out how to not hard code this number.
       let yMin = 35;
 
-      //determine which measure was clicked
-      const staveIndex = Math.floor(x / regularStaveWidth);
+      //else if block that determines what stave the user clicked in
+      let staveIndex: number = 0;
+      if (x < 240) {
+        staveIndex = 0;
+      } else if (x < 420) {
+        staveIndex = 1;
+      } else if (x < 600) {
+        staveIndex = 2;
+      } else {
+        staveIndex = 3;
+      }
       const staveData = newStaves ? newStaves[staveIndex] : null;
 
       //function that maps through array of notes and returns an object with the note and the minimum and maximum y coordinates for each note
