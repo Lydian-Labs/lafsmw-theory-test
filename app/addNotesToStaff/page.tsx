@@ -1,6 +1,6 @@
 "use client";
-import React, { useRef, useEffect } from "react";
-import VexFlow from "vexflow";
+import React, { useRef, useEffect, FC } from "react";
+import VexFlow, { RenderContext } from "vexflow";
 
 const VF = VexFlow.Flow;
 const { Formatter, Renderer, Stave, StaveNote } = VF;
@@ -22,69 +22,92 @@ const AddNotesToAStaff = () => {
         Renderer.Backends.SVG
       );
     }
-
+    //set up renderer and context
     const renderer = rendererRef.current;
-    renderer?.resize(500, 700);
+    renderer?.resize(800, 700);
     const context = renderer ? renderer.getContext() : null;
     context?.setFont("Arial", 10);
-    let numStavesPerLine = 4;
+    const notes = [
+      "g/6",
+      "f/6",
+      "e/6",
+      "d/6",
+      "c/6",
+      "b/5",
+      "a/5",
+      "g/5",
+      "f/5",
+      "e/5",
+      "d/5",
+      "c/5",
+      "b/4",
+      "a/4",
+      "g/4",
+      "f/4",
+      "e/4",
+      "d/4",
+      "c/4",
+      "b/3",
+      "a/3",
+      "g/3",
+    ];
+    // variables
+    let clefWidth = 30;
+    let timeWidth = 30;
+    let x = 10;
+    let y = 40;
+    const firstStaveWidth = clefWidth + timeWidth + 170;
+    const regularStaveWidth = 170;
 
-    const createStaves = (x: number) => {
-      for (let i = 0; i < numStavesPerLine; i++) {
-        const stave = new Stave(x, 40, 300);
-        x += 100;
+    //array of notes
+
+    //for loop to create staves
+    const createStaves = (
+      numStaves: number,
+      context: InstanceType<typeof RenderContext>
+    ) => {
+      const stavesArray: {
+        stave: InstanceType<typeof Stave>;
+        notes: InstanceType<typeof StaveNote>[];
+      }[] = [];
+      for (let i = 0; i < numStaves; i++) {
+        let staveWidth = i === 0 ? firstStaveWidth : regularStaveWidth;
+        let stave = new Stave(x, y, staveWidth);
+        i === 0 ? stave.setClef("treble").setTimeSignature("4/4") : null;
+        i === 3 ? stave.setEndBarType(3) : null;
+        context ? stave.setContext(context).draw() : null;
+        x += staveWidth;
+        stavesArray.push({ stave, notes: [] });
+        console.log(stavesArray);
       }
+      return stavesArray;
     };
-    createStaves(4);
-    const stave = new Stave(10, 40, 300);
-    stave.setEndBarType(3);
-    stave.addClef("treble").addTimeSignature("4/4");
-    context ? stave.setContext(context).draw() : null;
+
+    const newStaves = context ? createStaves(4, context) : null;
+
+    //logic to draw stave Notes
     const notesToDraw: InstanceType<typeof StaveNote>[] = [];
+
     container.current?.addEventListener("click", (e) => {
       const rect = container.current?.getBoundingClientRect();
-      console.log(rect)
       const x = rect ? e.clientX - rect.left : 0;
       const y = rect ? e.clientY - rect.top : 0;
-      console.log("y:", y);
-      console.log("x:", x);
 
       //35 is 'g/6' above the staff. Need to figure out how to not hard code this number.
       let yMin = 35;
 
-      //array of notes
-      const notes = [
-        "g/6",
-        "f/6",
-        "e/6",
-        "d/6",
-        "c/6",
-        "b/5",
-        "a/5",
-        "g/5",
-        "f/5",
-        "e/5",
-        "d/5",
-        "c/5",
-        "b/4",
-        "a/4",
-        "g/4",
-        "f/4",
-        "e/4",
-        "d/4",
-        "c/4",
-        "b/3",
-        "a/3",
-        "g/3",
-      ];
+      //determine which measure was clicked
+      const staveIndex = Math.floor(x / regularStaveWidth);
+      const staveData = newStaves ? newStaves[staveIndex] : null;
+
       //function that maps through array of notes and returns an object with the note and the minimum and maximum y coordinates for each note
       const generateNoteArrayCoordinates = (
         yMin: number,
         notes: string[]
       ): NoteCoordinate[] => {
         return notes.map((note, index) => {
-          const yCoordinateMin = yMin + index * 5.1;
-          const yCoordinateMax = yCoordinateMin + 4.9;
+          const yCoordinateMin = yMin + index * 5;
+          const yCoordinateMax = yCoordinateMin + 5;
           return { note, yCoordinateMin, yCoordinateMax };
         });
       };
@@ -96,7 +119,6 @@ const AddNotesToAStaff = () => {
       context?.clear();
 
       // Redraw the stave
-      context ? stave.setContext(context).draw() : null;
       //Create a new StaveNote with the determined note and add it to the staff
       if (!note) {
         throw new Error("Note not found");
@@ -105,12 +127,15 @@ const AddNotesToAStaff = () => {
         keys: [note.note],
         duration: "q",
       });
+      staveData?.notes.push(newNote);
       notesToDraw.push(newNote);
       // Add the note to the stave and redraw
-      context &&
-        Formatter.FormatAndDraw(context, stave, notesToDraw, {
-          auto_beam: true,
-        });
+      newStaves?.forEach(({ stave, notes }, i) => {
+        if (context) {
+          stave.setContext(context).draw();
+          Formatter.FormatAndDraw(context, stave, notes);
+        }
+      });
     });
   }, []);
   return <div ref={container} className="text-center mt-[10em]"></div>;
