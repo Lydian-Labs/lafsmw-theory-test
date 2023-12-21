@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef } from "react";
-import { Vex } from "vexflow";
+import { Flow } from "vexflow";
+import { StaffProps } from "../types";
 
 export default function Staff({
   clef = "treble",
@@ -11,9 +12,10 @@ export default function Staff({
   addDoubleBarLine = false,
   numBars = 4,
   chords = [],
-}) {
-  const containerRef = useRef(null);
-  const rendererRef = useRef();
+}: StaffProps) {
+  // The ref is going to hold the Flow.Renderer type
+  const containerRef = useRef<HTMLDivElement>(null);
+  const rendererRef = useRef<Flow.Renderer | null>(null);
 
   // Gather needed width info.
   const fullWidth = width * 0.97;
@@ -22,8 +24,8 @@ export default function Staff({
     (fullWidth - 34 - widthOfFirstBar) / (numBars - 1);
 
   // helper function to check for accidentals for each note in the "keys" array of each chord ("keys" refers to the notes in the chord).
-  function noteGroupAccidentalsCheck(keys) {
-    let noteAccidentals = [];
+  function noteGroupAccidentalsCheck(keys: string[]): [string, number][] {
+    let noteAccidentals: [string, number][] = [];
     for (let i = 0; i < keys.length; i++) {
       let currentKey = keys[i];
       if (currentKey.includes("bb")) {
@@ -40,7 +42,7 @@ export default function Staff({
   }
 
   useEffect(() => {
-    const { Renderer, Stave, StaveNote, Accidental, Formatter } = Vex.Flow;
+    const { Renderer, Stave, StaveNote, Accidental, Formatter } = Flow;
 
     const contRefCurrent = containerRef.current;
 
