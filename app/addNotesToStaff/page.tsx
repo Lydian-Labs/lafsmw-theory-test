@@ -1,7 +1,7 @@
 "use client";
-import React, { useRef, useEffect, FC } from "react";
+import React, { useRef, useEffect } from "react";
 import VexFlow, { RenderContext } from "vexflow";
-
+import KaseyBlankStaves from "../components/KaseyBlankStaves";
 const VF = VexFlow.Flow;
 const { Formatter, Renderer, Stave, StaveNote } = VF;
 
@@ -59,33 +59,9 @@ const AddNotesToAStaff = () => {
     const firstStaveWidth = clefWidth + timeWidth + 170;
     const regularStaveWidth = 180;
 
-    //array of notes
-    //1st stave is 10-240, 2nd stave is 240-420, stave 3 is 420-600, stave 4 is 600-780
-    //for loop to create staves
-    const createStaves = (
-      numStaves: number,
-      context: InstanceType<typeof RenderContext>
-    ) => {
-      const stavesArray: {
-        stave: InstanceType<typeof Stave>;
-        notes: InstanceType<typeof StaveNote>[];
-      }[] = [];
-      for (let i = 0; i < numStaves; i++) {
-        let staveWidth = i === 0 ? firstStaveWidth : regularStaveWidth;
-        let stave = new Stave(x, y, staveWidth);
-        i === 0
-          ? stave.setClef("treble", "default").setTimeSignature("4/4")
-          : null;
-        i === 3 ? stave.setEndBarType(3) : null;
-        context ? stave.setContext(context).draw() : null;
-        x += staveWidth;
-        stavesArray.push({ stave, notes: [] });
-        console.log(stavesArray);
-      }
-      return stavesArray;
-    };
-
-    const newStaves = context ? createStaves(4, context) : null;
+    const newStaves = context
+      ? KaseyBlankStaves(4, context, clefWidth + timeWidth + 170, 180, x, y)
+      : null;
 
     //logic to draw stave Notes
     const notesToDraw: InstanceType<typeof StaveNote>[] = [];
