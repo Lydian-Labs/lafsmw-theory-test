@@ -1,6 +1,6 @@
 import VexFlow, { RenderContext } from "vexflow";
 const VF = VexFlow.Flow;
-const { Formatter, Renderer, Stave, StaveNote } = VF;
+const { Stave, StaveNote } = VF;
 
 const KaseyBlankStaves = (
   numStaves: number,
@@ -9,8 +9,8 @@ const KaseyBlankStaves = (
   regularStaveWidth: number,
   x: number,
   y: number,
-  clef?: "treble",
-  timeSig?: "4/4"
+  clef?: string,
+  timeSig?: string
 ) => {
   const stavesArray: {
     stave: InstanceType<typeof Stave>;
@@ -20,8 +20,8 @@ const KaseyBlankStaves = (
     let staveWidth = i === 0 ? firstStaveWidth : regularStaveWidth;
     let stave = new Stave(x, y, staveWidth);
     i === 0 && clef ? stave.setClef(clef) : null;
-    i === 0 && timeSig ? stave.setClef(timeSig) : null;
-    i === stavesArray.length - 1 ? stave.setEndBarType(3) : null;
+    i === 0 && timeSig ? stave.setTimeSignature(timeSig) : null;
+    i === numStaves - 1 ? stave.setEndBarType(3) : null;
     context ? stave.setContext(context).draw() : null;
     x += staveWidth;
     stavesArray.push({ stave, notes: [] });

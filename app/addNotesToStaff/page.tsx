@@ -2,18 +2,13 @@
 import React, { useRef, useEffect } from "react";
 import VexFlow, { RenderContext } from "vexflow";
 import KaseyBlankStaves from "../components/KaseyBlankStaves";
+import GenerateNoteArrayCoordinates from "../components/GenerateNoteArrayCoordinates";
 const VF = VexFlow.Flow;
 const { Formatter, Renderer, Stave, StaveNote } = VF;
 
 const AddNotesToAStaff = () => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
-
-  interface NoteCoordinate {
-    note: string;
-    yCoordinateMin: number;
-    yCoordinateMax: number;
-  }
 
   useEffect(() => {
     if (!rendererRef.current && container.current) {
@@ -51,16 +46,9 @@ const AddNotesToAStaff = () => {
       "a/3",
       "g/3",
     ];
-    // variables
-    let clefWidth = 30;
-    let timeWidth = 30;
-    let x = 10;
-    let y = 40;
-    const firstStaveWidth = clefWidth + timeWidth + 170;
-    const regularStaveWidth = 180;
-
+    //function to create staves
     const newStaves = context
-      ? KaseyBlankStaves(4, context, clefWidth + timeWidth + 170, 180, x, y)
+      ? KaseyBlankStaves(4, context, 240, 180, 10, 40, "treble", "4/4")
       : null;
 
     //logic to draw stave Notes
@@ -70,9 +58,6 @@ const AddNotesToAStaff = () => {
       const rect = container.current?.getBoundingClientRect();
       const x = rect ? e.clientX - rect.left : 0;
       const y = rect ? e.clientY - rect.top : 0;
-
-      //35 is 'g/6' above the staff. Need to figure out how to not hard code this number.
-      let yMin = 35;
 
       //else if block that determines what stave the user clicked in
       let staveIndex: number = 0;
@@ -87,26 +72,15 @@ const AddNotesToAStaff = () => {
       }
       const staveData = newStaves ? newStaves[staveIndex] : null;
 
-      //function that maps through array of notes and returns an object with the note and the minimum and maximum y coordinates for each note
-      const generateNoteArrayCoordinates = (
-        yMin: number,
-        notes: string[]
-      ): NoteCoordinate[] => {
-        return notes.map((note, index) => {
-          const yCoordinateMin = yMin + index * 5;
-          const yCoordinateMax = yCoordinateMin + 5;
-          return { note, yCoordinateMin, yCoordinateMax };
-        });
-      };
-      //returns the first true statement, or returns undefined if the coordinate isn't found
-      let note = generateNoteArrayCoordinates(yMin, notes).find(
+      //returns the first true statement, or returns undefined if the coordinate isn't found (35 is high G above the staff)
+      let note = GenerateNoteArrayCoordinates(35, notes).find(
         ({ yCoordinateMin, yCoordinateMax }) =>
           y >= yCoordinateMin && y <= yCoordinateMax
       );
       context?.clear();
 
       // Redraw the stave
-      //Create a new StaveNote with the determined note and add it to the staff
+      //Create a new StaveNote with the determined note coordinate and add it to the staff
       if (!note) {
         throw new Error("Note not found");
       }
@@ -115,12 +89,17 @@ const AddNotesToAStaff = () => {
         duration: "q",
       });
       staveData?.notes.push(newNote);
-      notesToDraw.push(newNote);
+      notesToDraw?.push(newNote);
       // Add the note to the stave and redraw
       newStaves?.forEach(({ stave, notes }, i) => {
         if (context) {
           stave.setContext(context).draw();
-          Formatter.FormatAndDraw(context, stave, notes);
+          // Filter out any undefined or invalid notes
+          const validNotes = notes.filter((note) => note instanceof StaveNote);
+          // Only call FormatAndDraw if there are valid notes
+          if (validNotes.length > 0) {
+            Formatter.FormatAndDraw(context, stave, validNotes);
+          }
         }
       });
     });
