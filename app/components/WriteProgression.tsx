@@ -69,7 +69,6 @@ export default forwardRef(function WriteProgression(
       <form ref={ref} id="submit-form-blues" onSubmit={handleNumeralSubmit}>
         <Stack direction="column">
           <Staff numBars={4} width={width} />
-          {/* this grid-cols-4 is a hacky way to make the form inputs line up with the staff */}
           <div style={gridInputInline}>{renderNumeralInputs(0, 4)}</div>
           <Staff numBars={4} noTimeSignature={true} width={width} />
           <div style={gridInputInline}>{renderNumeralInputs(4, 8)}</div>

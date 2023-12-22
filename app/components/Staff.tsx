@@ -24,7 +24,6 @@ export default function Staff({
   numBars = 4,
   chords = [],
 }: StaffProps) {
-  // The ref is going to hold the Flow.Renderer type
   const containerRef = useRef<HTMLDivElement>(null);
   const rendererRef = useRef<Flow.Renderer | null>(null);
 
