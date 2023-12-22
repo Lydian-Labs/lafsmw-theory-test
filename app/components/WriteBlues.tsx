@@ -15,6 +15,22 @@ export default forwardRef(function WriteBlues(
     initialNumeralInputState
   );
 
+  numBars = numBars / 3;
+
+  // Gather needed width info.
+  const fullWidth = width * 0.97;
+  const widthOfFirstBar = width / numBars;
+  const widthOfRemainingBars =
+    (fullWidth - widthOfFirstBar - 90) / (numBars - 1);
+
+  const remainingBarsString = (numBars - 1).toString();
+
+  const gridInputInline = {
+    display: "grid",
+    gridTemplateColumns: `${widthOfFirstBar}px repeat(${remainingBarsString}, ${widthOfRemainingBars}px)`,
+    paddingLeft: "5rem",
+  };
+
   function handleNumeralSubmit(e: FormEvent) {
     e.preventDefault();
     console.log("numeralInput:", numeralInput);
@@ -47,23 +63,16 @@ export default forwardRef(function WriteBlues(
       <form ref={ref} id="submit-form-blues" onSubmit={handleNumeralSubmit}>
         <Stack direction="column" spacing={2}>
           <Staff numBars={4} width={width} />
-          {/* this grid-cols-4 is a hacky way to make the form inputs line up with the staff */}
-          <div className="grid grid-cols-4 pl-10">
-            {renderNumeralInputs(0, 4)}
-          </div>
+          <div style={gridInputInline}>{renderNumeralInputs(0, 4)}</div>
           <Staff numBars={4} noTimeSignature={true} width={width} />
-          <div className="grid grid-cols-4 pl-10">
-            {renderNumeralInputs(4, 8)}
-          </div>
+          <div style={gridInputInline}>{renderNumeralInputs(4, 8)}</div>
           <Staff
             numBars={4}
             noTimeSignature={true}
             addDoubleBarLine={true}
             width={width}
           />
-          <div className="grid grid-cols-4 pl-10">
-            {renderNumeralInputs(8, 12)}
-          </div>
+          <div style={gridInputInline}>{renderNumeralInputs(8, 12)}</div>
         </Stack>
       </form>
     </div>

@@ -14,6 +14,20 @@ export default forwardRef(function IdentifyChords(
     initialChordsInputState
   );
 
+  // Gather needed width info.
+  const fullWidth = width * 0.97;
+  const widthOfFirstBar = width / numBars;
+  const widthOfRemainingBars =
+    (fullWidth - widthOfFirstBar - 90) / (numBars - 1);
+
+  const remainingBarsString = (numBars - 1).toString();
+
+  const gridInputInline = {
+    display: "grid",
+    gridTemplateColumns: `${widthOfFirstBar}px repeat(${remainingBarsString}, ${widthOfRemainingBars}px)`,
+    paddingLeft: "5rem",
+  };
+
   function handleChordsSubmit(e: FormEvent) {
     // prevents browser from refreshing on submit
     e.preventDefault();
@@ -46,8 +60,7 @@ export default forwardRef(function IdentifyChords(
           chords={chords}
           width={width}
         />
-        {/* this grid-cols-4 is a hacky way to make the form inputs line up with the staff */}
-        <div className="grid grid-cols-7 pl-10">{renderChordsInputs()}</div>
+        <div style={gridInputInline}>{renderChordsInputs()}</div>
       </form>
     </div>
   );
