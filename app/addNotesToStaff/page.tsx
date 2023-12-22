@@ -1,12 +1,15 @@
 "use client";
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import VexFlow from "vexflow";
 import KaseyBlankStaves from "../components/KaseyBlankStaves";
+import { Snackbar, Alert } from "@mui/material/";
+
 import GenerateNoteArrayCoordinates from "../components/GenerateNoteArrayCoordinates";
 const VF = VexFlow.Flow;
 const { Formatter, Renderer, StaveNote } = VF;
 
 const AddNotesToAStaff = () => {
+  const [noteNotFound, setNoteNotFound] = useState(false);
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
 
@@ -77,7 +80,7 @@ const AddNotesToAStaff = () => {
       context?.clear();
 
       if (!note) {
-        throw new Error("Note not found");
+        setNoteNotFound(true);
       }
       const newNote = new StaveNote({
         keys: [note.note],
@@ -96,7 +99,24 @@ const AddNotesToAStaff = () => {
       });
     });
   }, []);
-  return <div ref={container} className="text-center mt-[10em]"></div>;
+  return (
+    <div ref={container} className="text-center mt-[10em]">
+      <Snackbar
+        open={noteNotFound}
+        autoHideDuration={6000}
+        onClose={() => setNoteNotFound(false)}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          variant="filled"
+          onClose={() => setNoteNotFound(false)}
+          severity="error"
+        >
+          {"The place you clicked doesn't correspond to a note"}
+        </Alert>
+      </Snackbar>
+    </div>
+  );
 };
 
 export default AddNotesToAStaff;
