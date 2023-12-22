@@ -1,11 +1,18 @@
 import { ForwardedRef, forwardRef, useState } from "react";
-import { ChangeEvent, FormEvent, KeySignatureProps } from "../types";
+import { ChangeEvent, FormEvent, Chord, InputData } from "../types";
 import Staff from "./Staff";
 import FormInput from "./FormInput";
 import createInitialState from "../lib/createInitialState";
 
+type IdentifyKeySignatureProps = {
+  numBars: number;
+  chords?: Chord[];
+  width: number;
+  handleKeySignatures: (keySignatures: InputData) => void;
+};
+
 export default forwardRef(function IdentifyKeySignatures(
-  { numBars = 4, width = 1650, handleKeySignatures }: KeySignatureProps,
+  { numBars = 4, width = 1650, handleKeySignatures }: IdentifyKeySignatureProps,
   ref: ForwardedRef<HTMLFormElement>
 ) {
   const initialKeysInputState = createInitialState(numBars);
@@ -29,9 +36,7 @@ export default forwardRef(function IdentifyKeySignatures(
   };
 
   function handleKeysSubmit(e: FormEvent) {
-    // prevents browser from refreshing on submit
     e.preventDefault();
-    console.log("keysInput:", keysInput);
     handleKeySignatures(keysInput);
   }
 

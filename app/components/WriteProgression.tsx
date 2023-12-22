@@ -1,12 +1,19 @@
 import Stack from "@mui/material/Stack";
 import { ForwardedRef, forwardRef, useState } from "react";
-import { ChangeEvent, FormEvent, WriteProg } from "../types";
+import { ChangeEvent, FormEvent, Chord, InputData } from "../types";
 import Staff from "./Staff";
 import FormInput from "./FormInput";
 import createInitialState from "../lib/createInitialState";
 
+type WriteProgProps = {
+  numBars: number;
+  chords?: Chord[];
+  width: number;
+  handleProg: (progressions: InputData) => void;
+};
+
 export default forwardRef(function WriteProgression(
-  { numBars = 4, width, handleProg }: WriteProg,
+  { numBars = 4, width, handleProg }: WriteProgProps,
   ref: ForwardedRef<HTMLFormElement>
 ) {
   const initialNumeralInputState = createInitialState(numBars);
@@ -33,7 +40,6 @@ export default forwardRef(function WriteProgression(
 
   function handleNumeralSubmit(e: FormEvent) {
     e.preventDefault();
-    console.log("numeralInput", numeralInput);
     handleProg(numeralInput);
   }
 
@@ -61,7 +67,7 @@ export default forwardRef(function WriteProgression(
   return (
     <div>
       <form ref={ref} id="submit-form-blues" onSubmit={handleNumeralSubmit}>
-        <Stack direction="column" spacing={2}>
+        <Stack direction="column">
           <Staff numBars={4} width={width} />
           {/* this grid-cols-4 is a hacky way to make the form inputs line up with the staff */}
           <div style={gridInputInline}>{renderNumeralInputs(0, 4)}</div>

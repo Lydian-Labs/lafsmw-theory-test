@@ -1,12 +1,19 @@
 import Stack from "@mui/material/Stack";
 import { ForwardedRef, forwardRef, useState } from "react";
-import { ChangeEvent, FormEvent, WriteBlues } from "../types";
+import { ChangeEvent, FormEvent, Chord, InputData } from "../types";
 import Staff from "./Staff";
 import FormInput from "./FormInput";
 import createInitialState from "../lib/createInitialState";
 
+type WriteBluesProps = {
+  numBars: number;
+  chords?: Chord[];
+  width: number;
+  handleBlues: (blues: InputData) => void;
+};
+
 export default forwardRef(function WriteBlues(
-  { numBars = 4, width, handleBlues }: WriteBlues,
+  { numBars = 4, width, handleBlues }: WriteBluesProps,
   ref: ForwardedRef<HTMLFormElement>
 ) {
   const initialNumeralInputState = createInitialState(numBars);
@@ -33,7 +40,6 @@ export default forwardRef(function WriteBlues(
 
   function handleNumeralSubmit(e: FormEvent) {
     e.preventDefault();
-    console.log("numeralInput:", numeralInput);
     handleBlues(numeralInput);
   }
 
@@ -61,7 +67,7 @@ export default forwardRef(function WriteBlues(
   return (
     <div>
       <form ref={ref} id="submit-form-blues" onSubmit={handleNumeralSubmit}>
-        <Stack direction="column" spacing={2}>
+        <Stack direction="column">
           <Staff numBars={4} width={width} />
           <div style={gridInputInline}>{renderNumeralInputs(0, 4)}</div>
           <Staff numBars={4} noTimeSignature={true} width={width} />

@@ -1,7 +1,18 @@
 "use client";
 import { useEffect, useRef } from "react";
 import { Flow } from "vexflow";
-import { StaffProps } from "../types";
+import { Chord } from "../types";
+
+type StaffProps = {
+  clef?: string;
+  timeSignature?: string;
+  noTimeSignature?: boolean;
+  width?: number;
+  height?: number;
+  addDoubleBarLine?: boolean;
+  numBars?: number;
+  chords?: Chord[];
+};
 
 export default function Staff({
   clef = "treble",

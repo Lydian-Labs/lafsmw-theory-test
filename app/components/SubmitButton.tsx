@@ -1,5 +1,11 @@
-import { Button, Grid } from "@mui/material";
-import { ButtonProps } from "../types";
+import { Button, Grid, SxProps, Theme } from "@mui/material";
+import { MouseEvent } from "../types";
+
+type ButtonProps = {
+  labelText: string;
+  onClick: (e: MouseEvent) => void;
+  sx?: SxProps<Theme>;
+};
 
 export default function SubmitButton({ onClick, sx, labelText }: ButtonProps) {
   return (

@@ -1,11 +1,18 @@
 import { ForwardedRef, forwardRef, useState } from "react";
-import { ChangeEvent, FormEvent, WriteProps } from "../types";
+import { ChangeEvent, FormEvent, Chord, InputData } from "../types";
 import FormInput from "./FormInput";
 import Staff from "./Staff";
 import createInitialState from "../lib/createInitialState";
 
+type IdentifyChordsProps = {
+  numBars: number;
+  chords?: Chord[];
+  width: number;
+  handleChords: (chords: InputData) => void;
+};
+
 export default forwardRef(function IdentifyChords(
-  { numBars = 4, chords = [], width = 1650, handleChords }: WriteProps,
+  { numBars = 4, chords = [], width = 1650, handleChords }: IdentifyChordsProps,
   ref: ForwardedRef<HTMLFormElement>
 ) {
   const initialChordsInputState = createInitialState(numBars);
@@ -29,9 +36,7 @@ export default forwardRef(function IdentifyChords(
   };
 
   function handleChordsSubmit(e: FormEvent) {
-    // prevents browser from refreshing on submit
     e.preventDefault();
-    console.log("chordsInput:", chordsInput);
     handleChords(chordsInput);
   }
 

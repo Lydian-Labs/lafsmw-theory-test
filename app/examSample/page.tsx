@@ -1,7 +1,7 @@
 "use client";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import Staff from "../components/Staff";
 import IdentifyChords from "../components/IdentifyChords";
 import IdentifyKeySignatures from "../components/IdentifyKeySignatures";
@@ -9,8 +9,17 @@ import SubmitButton from "../components/SubmitButton";
 import WriteBlues from "../components/WriteBlues";
 import WriteProgression from "../components/WriteProgression";
 import seventhChords from "../lib/seventhChords";
+import { InputData } from "../types";
 
-const initialFormInputState = {
+type InputState = {
+  level: string;
+  keySignatures: InputData;
+  chords: InputData;
+  progressions: InputData;
+  blues: InputData;
+};
+
+const initialFormInputState: InputState = {
   level: "",
   keySignatures: {},
   chords: {},
@@ -19,33 +28,31 @@ const initialFormInputState = {
 };
 
 export default function ExamSample() {
-  const [level, setLevel] = useState("");
   const [formInput, setFormInput] = useState(initialFormInputState);
+  const [width, setWidth] = useState(0);
 
-  const width = typeof window !== "undefined" ? window.innerWidth : width;
+  useEffect(() => {
+    setWidth(typeof window !== "undefined" ? window.innerWidth : 0);
+  }, []);
 
-  const bluesFormRef = useRef(null);
-  const progressionFormRef = useRef(null);
-  const chordsFormRef = useRef(null);
-  const keysFormRef = useRef(null);
+  const bluesFormRef = useRef<HTMLFormElement | null>(null);
+  const progressionFormRef = useRef<HTMLFormElement | null>(null);
+  const chordsFormRef = useRef<HTMLFormElement | null>(null);
+  const keysFormRef = useRef<HTMLFormElement | null>(null);
 
-  function handleLevel(input) {
-    setFormInput({ ...formInput, level: input });
-  }
-
-  function handleKeySignatures(input) {
+  function handleKeySignatures(input: InputData) {
     setFormInput({ ...formInput, keySignatures: input });
   }
 
-  function handleChords(input) {
+  function handleChords(input: InputData) {
     setFormInput({ ...formInput, chords: input });
   }
 
-  function handleProg(input) {
+  function handleProg(input: InputData) {
     setFormInput({ ...formInput, progressions: input });
   }
 
-  function handleBlues(input) {
+  function handleBlues(input: InputData) {
     setFormInput({ ...formInput, blues: input });
   }
 
@@ -109,7 +116,7 @@ export default function ExamSample() {
           labelText="Submit"
           sx={{ mt: 4 }}
           onClick={() => {
-            keysFormRef.current.requestSubmit();
+            keysFormRef.current?.requestSubmit();
           }}
         />
         <Grid item xs={12}>
@@ -180,7 +187,7 @@ export default function ExamSample() {
           labelText="Submit"
           sx={{ mt: 4 }}
           onClick={() => {
-            chordsFormRef.current.requestSubmit();
+            chordsFormRef.current?.requestSubmit();
           }}
         />
         <Grid item xs={12}>
@@ -200,7 +207,7 @@ export default function ExamSample() {
           labelText="Submit"
           sx={{ mt: 4 }}
           onClick={() => {
-            progressionFormRef.current.requestSubmit();
+            progressionFormRef.current?.requestSubmit();
           }}
         />
         <Grid item xs={12}>
@@ -221,7 +228,7 @@ export default function ExamSample() {
           labelText="Submit"
           sx={{ mb: 8, mt: 4 }}
           onClick={() => {
-            bluesFormRef.current.requestSubmit();
+            bluesFormRef.current?.requestSubmit();
           }}
         />
       </Grid>
