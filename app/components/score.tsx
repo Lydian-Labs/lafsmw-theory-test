@@ -52,66 +52,73 @@ const Score: React.FC<ScoreProps> = ({
 
     let currX = 20;
 
-    staves.forEach((notes, i) => {
-      if (i % maxStavesPerLine === 0 && i !== 0) {
-        currX = 20;
-        Yposition += lineSpacing;
-      }
+    staves.forEach(
+      (notes, i) => {
+        if (i % maxStavesPerLine === 0 && i !== 0) {
+          currX = 20;
+          Yposition += lineSpacing;
+        }
 
-      const stave = new Stave(currX, Yposition, staveWidth);
-      if (i === 0) {
-        stave.setWidth(staveWidth + clefAndTimeWidth);
-        clef && stave.addClef(clef);
-        timeSignature && stave.addTimeSignature(timeSignature);
-      }
-      if (staves && i === staves.length - 1) {
-        stave.setEndBarType(2);
-      }
-      currX += stave.getWidth();
-      context && stave.setContext(context).draw();
+        const stave = new Stave(currX, Yposition, staveWidth);
+        if (i === 0) {
+          stave.setWidth(staveWidth + clefAndTimeWidth);
+          clef && stave.addClef(clef);
+          timeSignature && stave.addTimeSignature(timeSignature);
+        }
+        if (staves && i === staves.length - 1) {
+          stave.setEndBarType(3);
+        }
+        currX += stave.getWidth();
+        context && stave.setContext(context).draw();
 
-      const processedNotes = notes
-        .map((note) => (typeof note === "string" ? { key: note } : note))
-        .map((note) =>
-          Array.isArray(note) ? { key: note[0], duration: note[1] } : note
-        )
-        .map(({ key, ...rest }) => {
-          if (typeof key === "string") {
-            const noteParts = key.match(/([a-gA-G])(#|b|##|bb)?(\d+)/);
-            if (noteParts) {
-              const [_, noteLetter, accidental, octave] = noteParts;
-              const formattedKey = `${noteLetter.toLowerCase()}${
-                accidental || ""
-              }/${octave}`;
-              //this gives us an array of objects...
-              return { key: formattedKey, accidental, ...rest };
+        const processedNotes = notes
+          .map((note) => (typeof note === "string" ? { key: note } : note))
+          .map((note) =>
+            Array.isArray(note) ? { key: note[0], duration: note[1] } : note
+          )
+          .map(({ key, ...rest }) => {
+            if (typeof key === "string") {
+              const noteParts = key.match(/([a-gA-G])(#|b|##|bb)?(\d+)/);
+              if (noteParts) {
+                const [_, noteLetter, accidental, octave] = noteParts;
+                const formattedKey = `${noteLetter.toLowerCase()}${
+                  accidental || ""
+                }/${octave}`;
+                //this gives us an array of objects...
+                return { key: formattedKey, accidental, ...rest };
+              }
             }
-          }
-          return { key: key };
-        })
-        .map((note: any) => {
-          if (typeof note.key === "string" && "accidental" in note) {
-            const { key, accidental, duration = "q" } = note;
-            const staveNote = new StaveNote({
-              keys: [key],
-              duration: String(duration),
-            });
+            return { key: key };
+          })
+          .map((note: any) => {
+            if (typeof note.key === "string" && "accidental" in note) {
+              const { key, accidental, duration = "q" } = note;
+              const staveNote = new StaveNote({
+                keys: [key],
+                duration: String(duration),
+              });
 
-            if (accidental) {
-              staveNote.addModifier(new Accidental(accidental));
+              if (accidental) {
+                staveNote.addModifier(new Accidental(accidental));
+              }
+
+              return staveNote;
             }
-
-            return staveNote;
-          }
-        });
-      processedNotes.filter((note) => note !== undefined);
-      context &&
-        Formatter.FormatAndDraw(context, stave, processedNotes, {
-          auto_beam: true,
-        });
-    });
-  }, [staves, width, height, timeSignature, clef]);
-
+          });
+        if (context) {
+          const validNotes = processedNotes.filter(
+            (note): note is InstanceType<typeof StaveNote> =>
+              note instanceof StaveNote
+          );
+          console.log(validNotes);
+          Formatter.FormatAndDraw(context, stave, validNotes, {
+            auto_beam: true,
+          });
+        }
+      },
+      [staves, width, height, timeSignature, clef]
+    );
+  });
   return <div ref={container} />;
 };
 
