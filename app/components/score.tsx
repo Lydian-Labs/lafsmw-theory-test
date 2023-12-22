@@ -78,15 +78,12 @@ const Score: React.FC<ScoreProps> = ({
         .map(({ key, ...rest }) => {
           if (typeof key === "string") {
             const noteParts = key.match(/([a-gA-G])(#|b|##|bb)?(\d+)/);
-            //console.log("noteparts", noteParts);
-            //returns an array with the 4 capture groups (index 0 is the whole notePart, so we don't need that)
             if (noteParts) {
               const [_, noteLetter, accidental, octave] = noteParts;
               const formattedKey = `${noteLetter.toLowerCase()}${
                 accidental || ""
               }/${octave}`;
               //this gives us an array of objects...
-              console.log({ key: formattedKey, accidental, ...rest });
               return { key: formattedKey, accidental, ...rest };
             }
           }
