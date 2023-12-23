@@ -1,21 +1,18 @@
-import Vex from "vexflow";
-import { useState } from "react";
-const { StaveNote } = Vex.Flow;
 import { Snackbar, Alert } from "@mui/material/";
 
-const CheckNumBeatsInMeasure = (
-  timeSig: string,
-  noteArray: InstanceType<typeof StaveNote>[]
-) => {
-  const [tooManyNotesInMeasure, setTooManyBeatsInMeasure] = useState(false);
-  const beatsInMeasure = timeSig ? parseInt(timeSig.split("/")[0]) : 0;
-  if (noteArray.length > beatsInMeasure) {
-    setTooManyBeatsInMeasure(true);
-  }
+interface CheckNumBeatsInMeasureProps {
+  tooManyBeatsInMeasure: boolean;
+  setTooManyBeatsInMeasure: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const CheckNumBeatsInMeasure: React.FC<CheckNumBeatsInMeasureProps> = ({
+  tooManyBeatsInMeasure,
+  setTooManyBeatsInMeasure,
+}) => {
   return (
     <div>
       <Snackbar
-        open={tooManyNotesInMeasure}
+        open={tooManyBeatsInMeasure}
         autoHideDuration={4000}
         onClose={() => setTooManyBeatsInMeasure(false)}
         anchorOrigin={{ vertical: "top", horizontal: "left" }}

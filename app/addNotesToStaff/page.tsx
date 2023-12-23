@@ -105,16 +105,10 @@ const AddNotesToAStaff = () => {
   }, []);
   return (
     <div ref={container} className="text-center mt-[10em]">
-      <Snackbar
-        open={tooManyBeatsInMeasure}
-        autoHideDuration={4000}
-        onClose={() => setTooManyBeatsInMeasure(false)}
-        anchorOrigin={{ vertical: "top", horizontal: "left" }}
-      >
-        <Alert variant="filled" severity="error">
-          {"You've entered too many notes in this measure"}
-        </Alert>
-      </Snackbar>
+      <CheckNumBeatsInMeasure
+        tooManyBeatsInMeasure={tooManyBeatsInMeasure}
+        setTooManyBeatsInMeasure={setTooManyBeatsInMeasure}
+      />
       <Snackbar
         open={noteNotFound}
         autoHideDuration={4000}
