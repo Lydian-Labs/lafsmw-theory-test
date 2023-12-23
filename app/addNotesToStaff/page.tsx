@@ -91,7 +91,7 @@ const AddNotesToAStaff = () => {
         staveData?.notes.push(newNote);
       }
 
-      const prevNotes = newStaves?.forEach(({ stave, notes }, i) => {
+      newStaves?.forEach(({ stave, notes }, i) => {
         if (context) {
           stave.setContext(context).draw();
           const validNotes = notes.filter((note) => note instanceof StaveNote);
