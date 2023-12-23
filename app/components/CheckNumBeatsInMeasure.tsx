@@ -12,7 +12,6 @@ const CheckNumBeatsInMeasure = (
   if (noteArray.length > beatsInMeasure) {
     setTooManyBeatsInMeasure(true);
   }
-
   return (
     <div>
       <Snackbar
