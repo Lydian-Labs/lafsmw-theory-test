@@ -54,7 +54,6 @@ const AddNotesToAStaff = () => {
       ? KaseyBlankStaves(4, context, 240, 180, 10, 40, "treble", "4/4")
       : null;
 
-    const notesToDraw: InstanceType<typeof StaveNote>[] = [];
 
     container.current?.addEventListener("click", (e) => {
       const rect = container.current?.getBoundingClientRect();
@@ -87,11 +86,12 @@ const AddNotesToAStaff = () => {
         duration: "q",
       });
       staveData?.notes.push(newNote);
-      notesToDraw?.push(newNote);
+      const prevNotes = 
       newStaves?.forEach(({ stave, notes }, i) => {
         if (context) {
           stave.setContext(context).draw();
           const validNotes = notes.filter((note) => note instanceof StaveNote);
+          
           if (validNotes.length > 0) {
             Formatter.FormatAndDraw(context, stave, validNotes);
           }
