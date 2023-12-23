@@ -54,13 +54,12 @@ const AddNotesToAStaff = () => {
       ? KaseyBlankStaves(4, context, 240, 180, 10, 40, "treble", "4/4")
       : null;
 
-
     container.current?.addEventListener("click", (e) => {
       const rect = container.current?.getBoundingClientRect();
       const x = rect ? e.clientX - rect.left : 0;
       const y = rect ? e.clientY - rect.top : 0;
 
-      let staveIndex: number = 0;
+      let staveIndex: number;
       if (x < 240) {
         staveIndex = 0;
       } else if (x < 420) {
@@ -80,18 +79,19 @@ const AddNotesToAStaff = () => {
 
       if (!note) {
         setNoteNotFound(true);
+      } else {
+        const newNote = new StaveNote({
+          keys: [note.note],
+          duration: "q",
+        });
+        staveData?.notes.push(newNote);
       }
-      const newNote = new StaveNote({
-        keys: [note.note],
-        duration: "q",
-      });
-      staveData?.notes.push(newNote);
-      const prevNotes = 
-      newStaves?.forEach(({ stave, notes }, i) => {
+
+      const prevNotes = newStaves?.forEach(({ stave, notes }, i) => {
         if (context) {
           stave.setContext(context).draw();
           const validNotes = notes.filter((note) => note instanceof StaveNote);
-          
+
           if (validNotes.length > 0) {
             Formatter.FormatAndDraw(context, stave, validNotes);
           }
@@ -103,15 +103,11 @@ const AddNotesToAStaff = () => {
     <div ref={container} className="text-center mt-[10em]">
       <Snackbar
         open={noteNotFound}
-        autoHideDuration={6000}
+        autoHideDuration={4000}
         onClose={() => setNoteNotFound(false)}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        anchorOrigin={{ vertical: "top", horizontal: "left" }}
       >
-        <Alert
-          variant="filled"
-          onClose={() => setNoteNotFound(false)}
-          severity="error"
-        >
+        <Alert variant="filled" severity="error" sx={{ width: "150%" }}>
           {"The place you clicked doesn't correspond to a note"}
         </Alert>
       </Snackbar>
