@@ -10,6 +10,11 @@ import WriteBlues from "../components/WriteBlues";
 import WriteProgression from "../components/WriteProgression";
 import seventhChords from "../lib/seventhChords";
 import { InputData } from "../types";
+import ChordNames from "../components/ChordNames";
+import keySignaturesExample from "../lib/keySignaturesExample";
+import scalesExamples from "../lib/scalesExamples";
+import triadsTextExample from "../lib/triadsTextExample";
+import seventhChordsTextExample from "../lib/seventhChordsTextExample";
 
 type InputState = {
   level: string;
@@ -56,6 +61,8 @@ export default function ExamSample() {
     setFormInput({ ...formInput, blues: input });
   }
 
+  const { scales1, scales2, scales3 } = scalesExamples;
+
   console.log("form input", formInput);
 
   return (
@@ -91,12 +98,7 @@ export default function ExamSample() {
           <div>
             <h2 className="ml-4 mt-4">Write the following key signatures:</h2>
             <Staff addDoubleBarLine={true} width={width} />
-            <div className="ml-24 grid grid-cols-4">
-              <p>Db Major</p>
-              <p>F# Major</p>
-              <p>G Minor</p>
-              <p>G# Minor</p>
-            </div>
+            <ChordNames width={width} chordNames={keySignaturesExample} />
           </div>
         </Grid>
         <Grid item xs={12}>
@@ -123,54 +125,30 @@ export default function ExamSample() {
           <div>
             <h2 className="ml-4 mt-4">Write the following scales:</h2>
             <Staff numBars={2} width={width} />
-            <div className="ml-24 grid grid-cols-2">
-              <p>Db Major</p>
-              <p>B Major</p>
-            </div>
+            <ChordNames width={width} chordNames={scales1} />
             <Staff numBars={2} noTimeSignature={false} width={width} />
-            <div className="ml-24 grid grid-cols-2">
-              <p>C Dorian</p>
-              <p>F# Dorian</p>
-            </div>
+            <ChordNames width={width} chordNames={scales2} />
             <Staff
               numBars={2}
               noTimeSignature={false}
               addDoubleBarLine={true}
               width={width}
             />
-            <div className="ml-24 grid grid-cols-2">
-              <p>Bb Mixolydian</p>
-              <p>C# Mixolydian</p>
-            </div>
+            <ChordNames width={width} chordNames={scales3} />
           </div>
         </Grid>
         <Grid item xs={12}>
           <div>
             <h2 className="ml-4 mt-4">Write the following triads:</h2>
             <Staff numBars={6} addDoubleBarLine={true} width={width} />
-            <div className="ml-24 grid grid-cols-6">
-              <p>D Major</p>
-              <p>F# Major</p>
-              <p>Db Minor</p>
-              <p>F# Minor</p>
-              <p>Eb Diminished</p>
-              <p>E Augmented</p>
-            </div>
+            <ChordNames width={width} chordNames={triadsTextExample} />
           </div>
         </Grid>
         <Grid item xs={12}>
           <div>
             <h2 className="ml-4 mt-4">Write the following 7th chords:</h2>
             <Staff numBars={7} addDoubleBarLine={true} width={width} />
-            <div className="ml-24 grid grid-cols-7">
-              <p>E-dim</p>
-              <p>G-7</p>
-              <p>Db-7</p>
-              <p>D#-7</p>
-              <p>D-dim-7</p>
-              <p>Gb-aug-7</p>
-              <p>Eb-dim</p>
-            </div>
+            <ChordNames width={width} chordNames={seventhChordsTextExample} />
           </div>
         </Grid>
         <Grid item xs={12}>
