@@ -7,6 +7,7 @@ const BlueButtonStyled = styled(Button)({
     textTransform: "none",
     fontSize: 16,
     padding: "6px 12px",
+    margin: "5px",
     border: "1px solid",
     lineHeight: 1.5,
     backgroundColor: "#0063cc",
