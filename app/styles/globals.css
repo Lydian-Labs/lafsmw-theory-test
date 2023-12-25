@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: lightgray;
+}
+
+.eraser-cursor {
+  cursor: url("/smaller-eraser-cursor.png"), auto;
+}
