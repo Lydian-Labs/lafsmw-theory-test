@@ -3,18 +3,34 @@ import React, { useRef, useEffect, useState } from "react";
 import VexFlow from "vexflow";
 import KaseyBlankStaves from "../components/KaseyBlankStaves";
 import { Snackbar, Alert } from "@mui/material/";
+import BlueButton from "../components/BlueButton";
+import FindXcoordinate from "../components/FindXcoordinate";
+import noteArray from "@/lib/noteArray";
 
 import GenerateNoteArrayCoordinates from "../components/GenerateNoteArrayCoordinates";
 import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
 const VF = VexFlow.Flow;
-const { Formatter, Renderer, StaveNote } = VF;
+const { Formatter, Renderer, StaveNote, Stave } = VF;
 
 const AddNotesToAStaff = () => {
   const [noteNotFound, setNoteNotFound] = useState(false);
   const [tooManyBeatsInMeasure, setTooManyBeatsInMeasure] = useState(false);
+
+  //refs
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
+  const notesRef = useRef<object[]>([]);
+
+  const clearMeasures = () => {
+    setNoteNotFound(false);
+    window.location.reload();
+  };
+
+  //variables that don't need to be inside useEffect
+  const eraser = () => {};
+  const notesArray = noteArray();
   const timeSig = "4/4";
+  const beatsInMeasure = parseInt(timeSig.split("/")[0]);
 
   useEffect(() => {
     if (!rendererRef.current && container.current) {
@@ -25,34 +41,11 @@ const AddNotesToAStaff = () => {
     }
 
     const renderer = rendererRef.current;
-    renderer?.resize(800, 800);
+    renderer?.resize(800, 300);
     const context = renderer ? renderer.getContext() : null;
     context?.setFont("Arial", 10);
-    const notes = [
-      "g/6",
-      "f/6",
-      "e/6",
-      "d/6",
-      "c/6",
-      "b/5",
-      "a/5",
-      "g/5",
-      "f/5",
-      "e/5",
-      "d/5",
-      "c/5",
-      "b/4",
-      "a/4",
-      "g/4",
-      "f/4",
-      "e/4",
-      "d/4",
-      "c/4",
-      "b/3",
-      "a/3",
-      "g/3",
-    ];
-    const beatsInMeasure = timeSig ? parseInt(timeSig.split("/")[0]) : 0;
+
+    //new staves creates an array of 4 stave objects each with a stave and notes property. The notes property consists of an array of StaveNotes
     const newStaves = context
       ? KaseyBlankStaves(4, context, 240, 180, 10, 40, "treble", timeSig)
       : null;
@@ -61,41 +54,41 @@ const AddNotesToAStaff = () => {
       const rect = container.current?.getBoundingClientRect();
       const x = rect ? e.clientX - rect.left : 0;
       const y = rect ? e.clientY - rect.top : 0;
+      //FindXcoordinate returns the measure the user clicked in
+      const staveIndex = FindXcoordinate(x, 240, 420, 600);
 
-      let staveIndex: number;
-      if (x < 240) {
-        staveIndex = 0;
-      } else if (x < 420) {
-        staveIndex = 1;
-      } else if (x < 600) {
-        staveIndex = 2;
-      } else {
-        staveIndex = 3;
-      }
-      const staveData = newStaves ? newStaves[staveIndex] : null;
-      let note = GenerateNoteArrayCoordinates(35, notes).find(
+      //staveDetailsObject returns the object with stave and noteArray info about the particular stave the user clicked in
+      const staveDetailsObject = newStaves && newStaves[staveIndex];
+
+      //GenerateNoteArrayCoordinate generates a new array of objects that contain 3 properties each: note (string), yMin and yMax
+      //noteDataObject returns the object that matches the y coordinate that was clicked on
+      let noteDataObject = GenerateNoteArrayCoordinates(35, notesArray).find(
         ({ yCoordinateMin, yCoordinateMax }) =>
           y >= yCoordinateMin && y <= yCoordinateMax
       );
-      context?.clear();
 
-      if (!note) {
+      context?.clear();
+      if (!noteDataObject) {
         setNoteNotFound(true);
-      } else if (staveData && staveData.notes.length >= beatsInMeasure) {
+      } else if (
+        staveDetailsObject &&
+        staveDetailsObject.notes.length >= beatsInMeasure
+      ) {
         setTooManyBeatsInMeasure(true);
       } else {
-        const newNote = new StaveNote({
-          keys: note && [note.note],
+        const staveNote = new StaveNote({
+          keys: noteDataObject && [noteDataObject.note],
           duration: "q",
         });
-        staveData?.notes.push(newNote);
+        //pushing staveNote to the notes array inside StaveDetailsObject
+        staveDetailsObject?.notes.push(staveNote);
+        staveDetailsObject && notesRef.current.push({ ...staveDetailsObject });
       }
 
-      newStaves?.forEach(({ stave, notes }, i) => {
+      newStaves?.forEach(({ stave, notes }) => {
         if (context) {
           stave.setContext(context).draw();
           const validNotes = notes.filter((note) => note instanceof StaveNote);
-
           if (validNotes.length > 0) {
             Formatter.FormatAndDraw(context, stave, validNotes);
           }
@@ -103,22 +96,29 @@ const AddNotesToAStaff = () => {
       });
     });
   }, []);
+
   return (
-    <div ref={container} className="text-center mt-[10em]">
-      <CheckNumBeatsInMeasure
-        tooManyBeatsInMeasure={tooManyBeatsInMeasure}
-        setTooManyBeatsInMeasure={setTooManyBeatsInMeasure}
-      />
-      <Snackbar
-        open={noteNotFound}
-        autoHideDuration={4000}
-        onClose={() => setNoteNotFound(false)}
-        anchorOrigin={{ vertical: "top", horizontal: "left" }}
-      >
-        <Alert variant="filled" severity="error">
-          {"The location you clicked doesn't correspond to a note"}
-        </Alert>
-      </Snackbar>
+    <div>
+      <div ref={container} className=" mt-[10em]">
+        <CheckNumBeatsInMeasure
+          tooManyBeatsInMeasure={tooManyBeatsInMeasure}
+          setTooManyBeatsInMeasure={setTooManyBeatsInMeasure}
+        />
+        <Snackbar
+          open={noteNotFound}
+          autoHideDuration={4000}
+          onClose={() => setNoteNotFound(false)}
+          anchorOrigin={{ vertical: "top", horizontal: "left" }}
+        >
+          <Alert variant="filled" severity="error">
+            {"The location you clicked doesn't correspond to a note"}
+          </Alert>
+        </Snackbar>
+      </div>
+      <div style={{ marginLeft: "5%" }}>
+        <BlueButton onClick={clearMeasures}>Clear Measures</BlueButton>
+        <BlueButton onClick={eraser}>{"Eraser"}</BlueButton>
+      </div>
     </div>
   );
 };

@@ -21,8 +21,9 @@ const BlueButtonStyled = styled(Button)({
 });
 
 interface BlueButtonProps {
-  onClick: MouseEventHandler<HTMLButtonElement>;
+  onClick,
   children: ReactNode;
+  value?: string
 }
 
 const BlueButton: React.FC<BlueButtonProps> = ({ onClick, children }) => {
