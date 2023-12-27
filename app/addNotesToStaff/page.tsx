@@ -45,8 +45,8 @@ const AddNotesToAStaff = () => {
     const context = renderer ? renderer.getContext() : null;
     context?.setFont("Arial", 10);
 
-    //new staves creates an array of 4 stave objects each with a stave and notes property. The notes property consists of an array of StaveNotes
-    const newStaves = context
+    //newStavesArray creates an array of 4 stave objects each with a stave and notes property. The notes property consists of an array of StaveNotes
+    const newStavesArray = context
       ? KaseyBlankStaves(4, context, 240, 180, 10, 40, "treble", timeSig)
       : null;
 
@@ -58,7 +58,7 @@ const AddNotesToAStaff = () => {
       const staveIndex = FindXcoordinate(x, 240, 420, 600);
 
       //staveDetailsObject returns the object with stave and noteArray info about the particular stave the user clicked in
-      const staveDetailsObject = newStaves && newStaves[staveIndex];
+      const staveDetailsObject = newStavesArray && newStavesArray[staveIndex];
 
       //GenerateNoteArrayCoordinate generates a new array of objects that contain 3 properties each: note (string), yMin and yMax
       //noteDataObject returns the object that matches the y coordinate that was clicked on
@@ -84,8 +84,8 @@ const AddNotesToAStaff = () => {
         staveDetailsObject?.notes.push(staveNote);
         staveDetailsObject && notesRef.current.push({ ...staveDetailsObject });
       }
-
-      newStaves?.forEach(({ stave, notes }) => {
+      console.log(staveDetailsObject?.notes.length);
+      newStavesArray?.forEach(({ stave, notes }) => {
         if (context) {
           stave.setContext(context).draw();
           const validNotes = notes.filter((note) => note instanceof StaveNote);
@@ -95,7 +95,7 @@ const AddNotesToAStaff = () => {
         }
       });
     });
-  }, []);
+  }, [beatsInMeasure, notesArray]);
 
   return (
     <div>
