@@ -15,7 +15,7 @@ const { Formatter, Renderer, StaveNote, Stave } = VF;
 const AddNotesToAStaff = () => {
   const [noteNotFound, setNoteNotFound] = useState(false);
   const [tooManyBeatsInMeasure, setTooManyBeatsInMeasure] = useState(false);
-
+  const [isEraserActive, setIsEraserActive] = useState(false);
   //refs
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
@@ -27,7 +27,9 @@ const AddNotesToAStaff = () => {
   };
 
   //variables that don't need to be inside useEffect
-  const eraser = () => {};
+  const eraser = () => {
+    setIsEraserActive(!isEraserActive);
+  };
   const notesArray = noteArray();
   const timeSig = "4/4";
   const beatsInMeasure = parseInt(timeSig.split("/")[0]);
@@ -66,7 +68,9 @@ const AddNotesToAStaff = () => {
         ({ yCoordinateMin, yCoordinateMax }) =>
           y >= yCoordinateMin && y <= yCoordinateMax
       );
-
+      // if (isEraserActive) {
+      //   noteDataObject && console.log(noteDataObject.note);
+      // }
       context?.clear();
       if (!noteDataObject) {
         setNoteNotFound(true);
@@ -84,7 +88,6 @@ const AddNotesToAStaff = () => {
         staveDetailsObject?.notes.push(staveNote);
         staveDetailsObject && notesRef.current.push({ ...staveDetailsObject });
       }
-      console.log(staveDetailsObject?.notes.length);
       newStavesArray?.forEach(({ stave, notes }) => {
         if (context) {
           stave.setContext(context).draw();
