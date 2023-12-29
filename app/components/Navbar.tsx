@@ -25,6 +25,9 @@ const Navbar: FC = () => {
         <li className="p-4">
           <Link href="/examSample">Exam Sample</Link>
         </li>
+        <li className="p-4">
+          <Link href="/toDoList">To Do List</Link>
+        </li>
       </ul>
     </div>
   );
