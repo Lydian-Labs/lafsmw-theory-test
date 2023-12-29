@@ -20,12 +20,12 @@ const ToDoList = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <Grid container spacing={2} minHeight={500}>
+      <Grid container  minHeight={500}>
         <Grid item xs={12}>
           <h1 className="text-3xl text-center mt-12">To Do List</h1>
         </Grid>
-        <Grid container justifyContent="center" spacing={4}>
-          <Grid item xs={12}>
+        <Grid container justifyContent="center" >
+          <Grid item>
             <TextField
               variant="outlined"
               id="outlined-basic"
@@ -37,16 +37,18 @@ const ToDoList = () => {
               <Button onClick={handleAddTask}>Add Task</Button>
             </Grid>
           </Grid>
-          <ul>
-            {tasks.map((task, index) => (
-              <li key={index}>
-                {task}{" "}
-                <Button onClick={() => handleDeleteTask(index)}>Delete</Button>
-              </li>
-            ))}
-          </ul>
-          G
         </Grid>
+      
+      <Grid container justifyContent="center" spacing={12}>
+        <Grid item>
+          {tasks.map((task, index) => (
+            <li key={index}>
+              {`#${index + 1}) `} {task}{" "}
+              <Button onClick={() => handleDeleteTask(index)}>Delete</Button>
+            </li>
+          ))}
+        </Grid>
+      </Grid>
       </Grid>
     </Box>
   );
