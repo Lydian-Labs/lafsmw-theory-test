@@ -63,8 +63,6 @@ export default function ExamSample() {
 
   const { scales1, scales2, scales3 } = scalesExamples;
 
-  console.log("form input", formInput);
-
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={4} minHeight={500}>
