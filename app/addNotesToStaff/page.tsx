@@ -1,14 +1,20 @@
 "use client";
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import VexFlow from "vexflow";
 import KaseyBlankStaves from "../components/KaseyBlankStaves";
+import { Snackbar, Alert } from "@mui/material/";
+
 import GenerateNoteArrayCoordinates from "../components/GenerateNoteArrayCoordinates";
+import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
 const VF = VexFlow.Flow;
 const { Formatter, Renderer, StaveNote } = VF;
 
 const AddNotesToAStaff = () => {
+  const [noteNotFound, setNoteNotFound] = useState(false);
+  const [tooManyBeatsInMeasure, setTooManyBeatsInMeasure] = useState(false);
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
+  const timeSig = "4/4";
 
   useEffect(() => {
     if (!rendererRef.current && container.current) {
@@ -46,19 +52,17 @@ const AddNotesToAStaff = () => {
       "a/3",
       "g/3",
     ];
-
+    const beatsInMeasure = timeSig ? parseInt(timeSig.split("/")[0]) : 0;
     const newStaves = context
-      ? KaseyBlankStaves(4, context, 240, 180, 10, 40, "treble", "4/4")
+      ? KaseyBlankStaves(4, context, 240, 180, 10, 40, "treble", timeSig)
       : null;
-
-    const notesToDraw: InstanceType<typeof StaveNote>[] = [];
 
     container.current?.addEventListener("click", (e) => {
       const rect = container.current?.getBoundingClientRect();
       const x = rect ? e.clientX - rect.left : 0;
       const y = rect ? e.clientY - rect.top : 0;
 
-      let staveIndex: number = 0;
+      let staveIndex: number;
       if (x < 240) {
         staveIndex = 0;
       } else if (x < 420) {
@@ -69,7 +73,6 @@ const AddNotesToAStaff = () => {
         staveIndex = 3;
       }
       const staveData = newStaves ? newStaves[staveIndex] : null;
-
       let note = GenerateNoteArrayCoordinates(35, notes).find(
         ({ yCoordinateMin, yCoordinateMax }) =>
           y >= yCoordinateMin && y <= yCoordinateMax
@@ -77,18 +80,22 @@ const AddNotesToAStaff = () => {
       context?.clear();
 
       if (!note) {
-        throw new Error("Note not found");
+        setNoteNotFound(true);
+      } else if (staveData && staveData.notes.length >= beatsInMeasure) {
+        setTooManyBeatsInMeasure(true);
+      } else {
+        const newNote = new StaveNote({
+          keys: note && [note.note],
+          duration: "q",
+        });
+        staveData?.notes.push(newNote);
       }
-      const newNote = new StaveNote({
-        keys: [note.note],
-        duration: "q",
-      });
-      staveData?.notes.push(newNote);
-      notesToDraw?.push(newNote);
+
       newStaves?.forEach(({ stave, notes }, i) => {
         if (context) {
           stave.setContext(context).draw();
           const validNotes = notes.filter((note) => note instanceof StaveNote);
+
           if (validNotes.length > 0) {
             Formatter.FormatAndDraw(context, stave, validNotes);
           }
@@ -96,7 +103,24 @@ const AddNotesToAStaff = () => {
       });
     });
   }, []);
-  return <div ref={container} className="text-center mt-[10em]"></div>;
+  return (
+    <div ref={container} className="text-center mt-[10em]">
+      <CheckNumBeatsInMeasure
+        tooManyBeatsInMeasure={tooManyBeatsInMeasure}
+        setTooManyBeatsInMeasure={setTooManyBeatsInMeasure}
+      />
+      <Snackbar
+        open={noteNotFound}
+        autoHideDuration={4000}
+        onClose={() => setNoteNotFound(false)}
+        anchorOrigin={{ vertical: "top", horizontal: "left" }}
+      >
+        <Alert variant="filled" severity="error">
+          {"The location you clicked doesn't correspond to a note"}
+        </Alert>
+      </Snackbar>
+    </div>
+  );
 };
 
 export default AddNotesToAStaff;
