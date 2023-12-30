@@ -16,6 +16,7 @@ const AddNotesToAStaff = () => {
   const [noteNotFound, setNoteNotFound] = useState(false);
   const [tooManyBeatsInMeasure, setTooManyBeatsInMeasure] = useState(false);
   const [isEraserActive, setIsEraserActive] = useState(false);
+
   //refs
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
@@ -68,9 +69,7 @@ const AddNotesToAStaff = () => {
         ({ yCoordinateMin, yCoordinateMax }) =>
           y >= yCoordinateMin && y <= yCoordinateMax
       );
-      // if (isEraserActive) {
-      //   noteDataObject && console.log(noteDataObject.note);
-      // }
+
       context?.clear();
       if (!noteDataObject) {
         setNoteNotFound(true);
@@ -86,7 +85,8 @@ const AddNotesToAStaff = () => {
         });
         //pushing staveNote to the notes array inside StaveDetailsObject
         staveDetailsObject?.notes.push(staveNote);
-        staveDetailsObject && notesRef.current.push({ ...staveDetailsObject });
+        staveDetailsObject &&
+          notesRef.current.push({ ...staveDetailsObject.notes, staveNote });
       }
       newStavesArray?.forEach(({ stave, notes }) => {
         if (context) {
@@ -94,6 +94,7 @@ const AddNotesToAStaff = () => {
           const validNotes = notes.filter((note) => note instanceof StaveNote);
           if (validNotes.length > 0) {
             Formatter.FormatAndDraw(context, stave, validNotes);
+            // console.log("stave: ", stave, " validNotes: ", validNotes);
           }
         }
       });
