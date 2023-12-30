@@ -13,17 +13,19 @@ type WriteBluesProps = {
   handleBlues: (blues: InputData) => void;
 };
 
+const initialBluesInputState = createInitialState(48);
+
 export default forwardRef(function WriteBlues(
   { numBars = 4, width, handleBlues }: WriteBluesProps,
   ref: ForwardedRef<HTMLFormElement>
 ) {
-  const initialNumeralInputState = createInitialState(numBars);
-
   const [numeralInput, setNumeralInput] = useState<Record<string, string>>(
-    initialNumeralInputState
+    initialBluesInputState
   );
 
-  numBars = numBars / 3;
+  //numBars = numBars / 3;
+
+  numBars = 48 / 3;
 
   // Gather needed width info.
   const { widthOfFirstBar, widthOfRemainingBars } = gatherWidthInfo(
@@ -70,16 +72,16 @@ export default forwardRef(function WriteBlues(
       <form ref={ref} id="submit-form-blues" onSubmit={handleNumeralSubmit}>
         <Stack direction="column">
           <Staff numBars={4} width={width} />
-          <div style={gridInputInline}>{renderNumeralInputs(0, 4)}</div>
+          <div style={gridInputInline}>{renderNumeralInputs(0, 16)}</div>
           <Staff numBars={4} noTimeSignature={true} width={width} />
-          <div style={gridInputInline}>{renderNumeralInputs(4, 8)}</div>
+          <div style={gridInputInline}>{renderNumeralInputs(16, 32)}</div>
           <Staff
             numBars={4}
             noTimeSignature={true}
             addDoubleBarLine={true}
             width={width}
           />
-          <div style={gridInputInline}>{renderNumeralInputs(8, 12)}</div>
+          <div style={gridInputInline}>{renderNumeralInputs(32, 48)}</div>
         </Stack>
       </form>
     </div>

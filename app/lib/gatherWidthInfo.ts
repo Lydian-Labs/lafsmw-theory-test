@@ -6,6 +6,6 @@ export default function gatherWidthInfo(
   const widthOfFirstBar = currentInnerWidth / currentNumBars;
   const widthOfRemainingBars =
     (fullWidth - widthOfFirstBar - 90) / (currentNumBars - 1);
-  //return [widthOfFirstBar, widthOfRemainingBars];
+
   return { widthOfFirstBar, widthOfRemainingBars };
 }
