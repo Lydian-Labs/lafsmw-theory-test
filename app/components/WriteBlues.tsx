@@ -4,6 +4,7 @@ import { ChangeEvent, FormEvent, Chord, InputData } from "../types";
 import Staff from "./Staff";
 import FormInput from "./FormInput";
 import createInitialState from "../lib/createInitialState";
+import gatherWidthInfo from "../lib/gatherWidthInfo";
 
 type WriteBluesProps = {
   numBars: number;
@@ -25,10 +26,10 @@ export default forwardRef(function WriteBlues(
   numBars = numBars / 3;
 
   // Gather needed width info.
-  const fullWidth = width * 0.97;
-  const widthOfFirstBar = width / numBars;
-  const widthOfRemainingBars =
-    (fullWidth - widthOfFirstBar - 90) / (numBars - 1);
+  const { widthOfFirstBar, widthOfRemainingBars } = gatherWidthInfo(
+    numBars,
+    width
+  );
 
   const remainingBarsString = (numBars - 1).toString();
 

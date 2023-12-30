@@ -1,3 +1,5 @@
+import gatherWidthInfo from "../lib/gatherWidthInfo";
+
 type ChordNamesProps = {
   width: number;
   chordNames: string[];
@@ -8,11 +10,12 @@ export default function ChordNames({
   chordNames = ["C", "C", "C", "C"],
 }: ChordNamesProps) {
   const numBars = chordNames.length;
+
   // Gather needed width info.
-  const fullWidth = width * 0.97;
-  const widthOfFirstBar = width / numBars;
-  const widthOfRemainingBars =
-    (fullWidth - widthOfFirstBar - 90) / (numBars - 1);
+  const { widthOfFirstBar, widthOfRemainingBars } = gatherWidthInfo(
+    numBars,
+    width
+  );
 
   const remainingBarsString = (numBars - 1).toString();
 
