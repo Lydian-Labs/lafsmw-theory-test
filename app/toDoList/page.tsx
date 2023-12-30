@@ -3,8 +3,8 @@ import { Box, Grid, Button, Input, TextField } from "@mui/material/";
 import { useRef, useState, useEffect } from "react";
 
 const ToDoList = () => {
-  const [tasks, setTasks] = useState([]);
-  const [newTask, setNewTask] = useState("");
+  const [tasks, setTasks] = useState<string[]>([]);
+  const [newTask, setNewTask] = useState<string>("");
 
   const handleAddTask = () => {
     if (newTask) {
@@ -13,7 +13,7 @@ const ToDoList = () => {
     }
   };
 
-  const handleDeleteTask = (index) => {
+  const handleDeleteTask = (index: number) => {
     const updatedTasks = tasks.filter((_, i) => i !== index);
     setTasks(updatedTasks);
   };
