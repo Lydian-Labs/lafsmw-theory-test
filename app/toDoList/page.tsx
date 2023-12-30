@@ -42,10 +42,10 @@ const ToDoList = () => {
       <Grid container justifyContent="center" spacing={12}>
         <Grid item>
           {tasks.map((task, index) => (
-            <li key={index}>
+            <div key={index}>
               {`#${index + 1}) `} {task}{" "}
               <Button onClick={() => handleDeleteTask(index)}>Delete</Button>
-            </li>
+            </div>
           ))}
         </Grid>
       </Grid>
