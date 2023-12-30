@@ -9,15 +9,25 @@ import SubmitButton from "../components/SubmitButton";
 import WriteBlues from "../components/WriteBlues";
 import WriteProgression from "../components/WriteProgression";
 import seventhChords from "../lib/seventhChords";
-import { InputData } from "../types";
+import { InputData, SelectEvent } from "../types";
 import ChordNames from "../components/ChordNames";
 import keySignaturesExample from "../lib/keySignaturesExample";
 import scalesExamples from "../lib/scalesExamples";
 import triadsTextExample from "../lib/triadsTextExample";
 import seventhChordsTextExample from "../lib/seventhChordsTextExample";
 
+type Level =
+  | "advanced-theory"
+  | "advanced-improvisation"
+  | "intro-to-arranging"
+  | "intermediate-arranging"
+  | "advanced-arranging"
+  | "rhythm-class"
+  | "sibelius-class"
+  | "";
+
 type InputState = {
-  level: string;
+  level: Level;
   keySignatures: InputData;
   chords: InputData;
   progressions: InputData;
@@ -45,6 +55,11 @@ export default function ExamSample() {
   const chordsFormRef = useRef<HTMLFormElement | null>(null);
   const keysFormRef = useRef<HTMLFormElement | null>(null);
 
+  function handleLevel(event: SelectEvent) {
+    const selectedLevel = event.target.value as Level;
+    setFormInput((prevInput) => ({ ...prevInput, level: selectedLevel }));
+  }
+
   function handleKeySignatures(input: InputData) {
     setFormInput({ ...formInput, keySignatures: input });
   }
@@ -63,6 +78,8 @@ export default function ExamSample() {
 
   const { scales1, scales2, scales3 } = scalesExamples;
 
+  console.log("formInput", formInput);
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={4} minHeight={500}>
@@ -77,7 +94,7 @@ export default function ExamSample() {
             Choose your Level IV class preference:
           </label>
 
-          <select name="levels" id="level-select">
+          <select name="levels" id="level-select" onChange={handleLevel}>
             <option value="">Please choose an option</option>
             <option value="advanced-theory">Advanced theory</option>
             <option value="advanced-improvisation">
