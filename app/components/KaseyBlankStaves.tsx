@@ -1,10 +1,13 @@
+import { Interface } from "readline";
 import VexFlow, { IRenderContext } from "vexflow";
+import { isRenderContext } from "vexflow";
+
 const VF = VexFlow.Flow;
 const { Stave, StaveNote, Renderer } = VF;
 
 const KaseyBlankStaves = (
   numStaves: number,
-  context: InstanceType<typeof Renderer>,
+  context: IRenderContext, // Change the type of 'context' parameter
   firstStaveWidth: number,
   regularStaveWidth: number,
   x: number,
@@ -26,6 +29,7 @@ const KaseyBlankStaves = (
     x += staveWidth;
     stavesArray.push({ stave, notes: [] });
   }
+  console.log(context);
   return stavesArray;
 };
 
