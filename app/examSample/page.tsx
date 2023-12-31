@@ -1,20 +1,20 @@
 "use client";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import { useRef, useState, useEffect } from "react";
-import Staff from "../components/Staff";
+import { useEffect, useRef, useState } from "react";
+import ChordNames from "../components/ChordNames";
 import IdentifyChords from "../components/IdentifyChords";
 import IdentifyKeySignatures from "../components/IdentifyKeySignatures";
+import Staff from "../components/Staff";
 import SubmitButton from "../components/SubmitButton";
 import WriteBlues from "../components/WriteBlues";
 import WriteProgression from "../components/WriteProgression";
-import seventhChords from "../lib/seventhChords";
+import keySignaturesText from "../lib/data/keySignaturesText";
+import scalesText from "../lib/data/scalesText";
+import seventhChords from "../lib/data/seventhChords";
+import seventhChordsText from "../lib/data/seventhChordsText";
+import triadsText from "../lib/data/triadsText";
 import { InputData, SelectEvent } from "../types";
-import ChordNames from "../components/ChordNames";
-import keySignaturesExample from "../lib/keySignaturesExample";
-import scalesExamples from "../lib/scalesExamples";
-import triadsTextExample from "../lib/triadsTextExample";
-import seventhChordsTextExample from "../lib/seventhChordsTextExample";
 
 type Level =
   | "advanced-theory"
@@ -76,7 +76,7 @@ export default function ExamSample() {
     setFormInput({ ...formInput, blues: input });
   }
 
-  const { scales1, scales2, scales3 } = scalesExamples;
+  const { scales1, scales2, scales3 } = scalesText;
 
   console.log("formInput", formInput);
 
@@ -113,7 +113,7 @@ export default function ExamSample() {
           <div>
             <h2 className="ml-4 mt-4">Write the following key signatures:</h2>
             <Staff addDoubleBarLine={true} width={width} />
-            <ChordNames width={width} chordNames={keySignaturesExample} />
+            <ChordNames width={width} chordNames={keySignaturesText} />
           </div>
         </Grid>
         <Grid item xs={12}>
@@ -156,14 +156,14 @@ export default function ExamSample() {
           <div>
             <h2 className="ml-4 mt-4">Write the following triads:</h2>
             <Staff numBars={6} addDoubleBarLine={true} width={width} />
-            <ChordNames width={width} chordNames={triadsTextExample} />
+            <ChordNames width={width} chordNames={triadsText} />
           </div>
         </Grid>
         <Grid item xs={12}>
           <div>
             <h2 className="ml-4 mt-4">Write the following 7th chords:</h2>
             <Staff numBars={7} addDoubleBarLine={true} width={width} />
-            <ChordNames width={width} chordNames={seventhChordsTextExample} />
+            <ChordNames width={width} chordNames={seventhChordsText} />
           </div>
         </Grid>
         <Grid item xs={12}>

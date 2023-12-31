@@ -1,9 +1,9 @@
 import { ForwardedRef, forwardRef, useState } from "react";
-import { ChangeEvent, FormEvent, Chord, InputData } from "../types";
-import FormInput from "./FormInput";
-import Staff from "./Staff";
 import createInitialState from "../lib/createInitialState";
 import gatherWidthInfo from "../lib/gatherWidthInfo";
+import { ChangeEvent, Chord, FormEvent, InputData } from "../types";
+import FormInput from "./FormInput";
+import Staff from "./Staff";
 
 type IdentifyChordsProps = {
   numBars: number;

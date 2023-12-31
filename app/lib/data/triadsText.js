@@ -1,4 +1,4 @@
-export const triadsTextExample = [
+const triadsText = [
   "D Major",
   "F# Major",
   "Db Minor",
@@ -7,4 +7,4 @@ export const triadsTextExample = [
   "E Augmented",
 ];
 
-export default triadsTextExample;
+export default triadsText;
