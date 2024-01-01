@@ -16,7 +16,7 @@ const AddNotesToAStaff = () => {
   const [noteNotFound, setNoteNotFound] = useState(false);
   const [tooManyBeatsInMeasure, setTooManyBeatsInMeasure] = useState(false);
   const [isEraserActive, setIsEraserActive] = useState(false);
-
+  const [eraserText, setEraserText] = useState("Erase Notes");
   //refs
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
@@ -30,6 +30,11 @@ const AddNotesToAStaff = () => {
   //variables that don't need to be inside useEffect
   const eraser = () => {
     setIsEraserActive(!isEraserActive);
+    if (isEraserActive) {
+      setEraserText("Enter Notes");
+    } else {
+      setEraserText("Erase Notes");
+    }
   };
   const notesArray = noteArray();
   const timeSig = "4/4";
@@ -71,6 +76,17 @@ const AddNotesToAStaff = () => {
       );
 
       context?.clear();
+
+      if (isEraserActive && noteDataObject && staveDetailsObject) {
+        const noteIndex: number = staveDetailsObject.notes.findIndex(
+          (note) => note.getKeys()[0] === noteDataObject?.note
+        );
+        console.log(noteIndex);
+        if (noteIndex !== -1) {
+          staveDetailsObject.notes.splice(noteIndex, 1);
+        }
+      }
+
       if (!noteDataObject) {
         setNoteNotFound(true);
       } else if (
@@ -94,12 +110,11 @@ const AddNotesToAStaff = () => {
           const validNotes = notes.filter((note) => note instanceof StaveNote);
           if (validNotes.length > 0) {
             Formatter.FormatAndDraw(context, stave, validNotes);
-            // console.log("stave: ", stave, " validNotes: ", validNotes);
           }
         }
       });
     });
-  }, [beatsInMeasure, notesArray]);
+  }, [beatsInMeasure, notesArray, isEraserActive]);
 
   return (
     <div>
@@ -121,7 +136,7 @@ const AddNotesToAStaff = () => {
       </div>
       <div style={{ marginLeft: "5%" }}>
         <BlueButton onClick={clearMeasures}>Clear Measures</BlueButton>
-        <BlueButton onClick={eraser}>{"Eraser"}</BlueButton>
+        <BlueButton onClick={eraser}>{eraserText}</BlueButton>
       </div>
     </div>
   );
