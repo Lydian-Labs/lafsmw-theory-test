@@ -1,14 +1,21 @@
 import { Button, styled } from "@mui/material/";
 import React, { ReactNode, MouseEventHandler } from "react";
 
-const BlueButtonStyled = styled(Button)({
+interface BlueButtonProps {
+  onClick: MouseEventHandler;
+  children: ReactNode;
+  value?: string;
+  isEnabled?: boolean;
+}
+
+const BlueButtonStyled = styled(Button)(({ isEnabled }: BlueButtonProps) => ({
   "&&": {
     boxShadow: "none",
     textTransform: "none",
-    fontSize: 16,
-    padding: "6px 12px",
+    fontSize: isEnabled ? 18 : 16,
+    padding: isEnabled ? "10px 16px" : "8px 14px",
     margin: "5px",
-    border: "1px solid",
+    border: "2px solid",
     lineHeight: 1.5,
     backgroundColor: "#0063cc",
     borderColor: "#0063cc",
@@ -18,17 +25,11 @@ const BlueButtonStyled = styled(Button)({
     borderColor: "#0062cc",
     boxShadow: "0 0 0 0.2rem rgba(0,123,255,.5)",
   },
-});
+}));
 
-interface BlueButtonProps {
-  onClick,
-  children: ReactNode;
-  value?: string
-}
-
-const BlueButton: React.FC<BlueButtonProps> = ({ onClick, children }) => {
+const BlueButton: React.FC<BlueButtonProps> = ({ onClick, children, isEnabled }) => {
   return (
-    <BlueButtonStyled variant="contained" onClick={onClick}>
+    <BlueButtonStyled variant="contained" onClick={onClick} isEnabled={isEnabled}>
       {children}
     </BlueButtonStyled>
   );

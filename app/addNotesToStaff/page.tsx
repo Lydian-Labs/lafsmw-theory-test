@@ -16,7 +16,7 @@ const AddNotesToAStaff = () => {
   const [noteNotFound, setNoteNotFound] = useState(false);
   const [tooManyBeatsInMeasure, setTooManyBeatsInMeasure] = useState(false);
   const [isEraserActive, setIsEraserActive] = useState(false);
-  const [eraserText, setEraserText] = useState("Erase Notes");
+  const [isEnterNotesActive, setIsEnterNotesActive] = useState(false);
   //refs
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
@@ -30,11 +30,11 @@ const AddNotesToAStaff = () => {
   //variables that don't need to be inside useEffect
   const eraser = () => {
     setIsEraserActive(!isEraserActive);
-    if (isEraserActive) {
-      setEraserText("Enter Notes");
-    } else {
-      setEraserText("Erase Notes");
-    }
+    setIsEnterNotesActive(false);
+  };
+  const enterNotes = () => {
+    setIsEnterNotesActive(!isEnterNotesActive);
+    setIsEraserActive(false);
   };
   const notesArray = noteArray();
   const timeSig = "4/4";
@@ -69,7 +69,7 @@ const AddNotesToAStaff = () => {
       const staveDetailsObject = newStavesArray && newStavesArray[staveIndex];
 
       //GenerateNoteArrayCoordinate generates a new array of objects that contain 3 properties each: note (string), yMin and yMax
-      //noteDataObject returns the object that matches the y coordinate that was clicked on
+      //noteDataObject returns the object/note that matches the y coordinate that was clicked on
       let noteDataObject = GenerateNoteArrayCoordinates(35, notesArray).find(
         ({ yCoordinateMin, yCoordinateMax }) =>
           y >= yCoordinateMin && y <= yCoordinateMax
@@ -136,7 +136,56 @@ const AddNotesToAStaff = () => {
       </div>
       <div style={{ marginLeft: "5%" }}>
         <BlueButton onClick={clearMeasures}>Clear Measures</BlueButton>
-        <BlueButton onClick={eraser}>{eraserText}</BlueButton>
+
+        {isEnterNotesActive && !isEraserActive ? (
+          <>
+            <BlueButton onClick={eraser}>{"Erase Notes"}</BlueButton>
+            <BlueButton onClick={enterNotes} isEnabled>
+              {"Enter Notes"}
+            </BlueButton>
+          </>
+        ) : !isEnterNotesActive && isEraserActive ? (
+          <>
+            <BlueButton onClick={eraser} isEnabled>
+              {"Erase Notes"}
+            </BlueButton>
+            <BlueButton onClick={enterNotes}>{"Enter Notes"}</BlueButton>
+          </>
+        ) : (
+          <>
+            <BlueButton onClick={eraser}>{"Erase Notes"}</BlueButton>
+            <BlueButton onClick={enterNotes}>{"Enter Notes"}</BlueButton>
+          </>
+        )}
+
+        {/* <BlueButton onClick={clearMeasures}>Clear Measures</BlueButton>
+        {isEraserActive ? (
+          <>
+            <BlueButton onClick={eraser} isEnabled>
+              {"Erase Notes"}
+            </BlueButton>
+            <BlueButton onClick={enterNotes}>{"Enter Notes"}</BlueButton>
+          </>
+        ) : (
+          <>
+            <BlueButton onClick={eraser}>{"Erase Notes"}</BlueButton>
+            <BlueButton onClick={enterNotes} isEnabled>
+              {"Enter Notes"}
+            </BlueButton>
+          </>
+        )}
+        {isEnterNotesActive ? ( <>
+            <BlueButton onClick={eraser}>
+              {"Erase Notes"}
+            </BlueButton>
+            <BlueButton onClick={enterNotes}>{"Enter Notes"}</BlueButton>
+          </>
+        ) : !isEnterNotesActive ? (<>
+         <BlueButton onClick={eraser}>
+              {"Erase Notes"}
+            </BlueButton>
+            <BlueButton onClick={enterNotes}>{"Enter Notes"}</BlueButton>
+        </>) : null} */}
       </div>
     </div>
   );
