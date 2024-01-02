@@ -35,7 +35,8 @@ export default forwardRef(function WriteBlues(
 
   numBars = numBars * 4;
 
-  let chordWidth = (width * 0.97) / numBars;
+  let chordWidth = width / numBars;
+  let chordGap = chordWidth / 2;
 
   // Gather needed width info.
   // const { widthOfFirstBar, widthOfRemainingBars } = gatherWidthInfoBlues(
@@ -48,9 +49,9 @@ export default forwardRef(function WriteBlues(
 
   const gridInputInline = {
     display: "grid",
-    gridTemplateColumns: `repeat(${numBarsString}, ${numBarsString}px)`,
+    gridTemplateColumns: `repeat(${numBarsString}, ${chordWidth.toString()}px)`,
     paddingLeft: "6rem",
-    gap: "23px",
+    gap: `${chordGap.toString()}px`,
   };
   // const gridInputInline = {
   //   display: "grid",
@@ -63,10 +64,10 @@ export default forwardRef(function WriteBlues(
     handleBlues(numeralInput);
   }
 
-  const renderNumeralInputs = (
+  function renderNumeralInputs(
     start: number | undefined,
     end: number | undefined
-  ) => {
+  ) {
     return Object.keys(numeralInput)
       .slice(start, end)
       .map((key) => (
@@ -75,14 +76,14 @@ export default forwardRef(function WriteBlues(
           name={key}
           type="text"
           value={numeralInput[key]}
-          width="40px"
+          width={chordWidth.toString() + "px"}
           onChange={(e: ChangeEvent) =>
             setNumeralInput({ ...numeralInput, [key]: e.target.value })
           }
           required={false}
         />
       ));
-  };
+  }
 
   return (
     <div>

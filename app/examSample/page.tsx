@@ -15,6 +15,8 @@ import seventhChords from "../lib/data/seventhChords";
 import seventhChordsText from "../lib/data/seventhChordsText";
 import triadsText from "../lib/data/triadsText";
 import { InputData, SelectEvent } from "../types";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 type Level =
   | "advanced-theory"
@@ -45,15 +47,34 @@ const initialFormInputState: InputState = {
 export default function ExamSample() {
   const [formInput, setFormInput] = useState(initialFormInputState);
   const [width, setWidth] = useState(0);
+  const [height, setHeight] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setWidth(typeof window !== "undefined" ? window.innerWidth : 0);
+    setHeight(typeof window !== "undefined" ? window.innerHeight : 0);
   }, []);
 
   const bluesFormRef = useRef<HTMLFormElement | null>(null);
   const progressionFormRef = useRef<HTMLFormElement | null>(null);
   const chordsFormRef = useRef<HTMLFormElement | null>(null);
   const keysFormRef = useRef<HTMLFormElement | null>(null);
+
+  const downloadPDF = () => {
+    const capture = document.querySelector(".actual-exam");
+    setLoading(true);
+    html2canvas(capture as HTMLElement).then((canvas) => {
+      const imgData = canvas.toDataURL("img/png");
+      // p is portrait, mm is millimeters, 3rd argument is paper size, could also be "a4" or "letter", but using an array for custom size
+      const doc = new jsPDF("p", "px", [width, height]);
+      const componentWidth = doc.internal.pageSize.getWidth();
+      const componentHeight = doc.internal.pageSize.getHeight();
+      // 0 and 0 are x and y coordinates
+      doc.addImage(imgData, "PNG", 0, 0, componentWidth, componentHeight);
+      setLoading(false);
+      doc.save("exam.pdf");
+    });
+  };
 
   function handleLevel(event: SelectEvent) {
     const selectedLevel = event.target.value as Level;
@@ -81,7 +102,7 @@ export default function ExamSample() {
   console.log("formInput", formInput);
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box className="actual-exam" sx={{ flexGrow: 1 }}>
       <Grid container spacing={4} minHeight={500}>
         <Grid item xs={12}>
           <h1 className="text-3xl text-center mt-12">LAFSMW Theory Test</h1>
@@ -224,6 +245,15 @@ export default function ExamSample() {
             bluesFormRef.current?.requestSubmit();
           }}
         />
+        {loading ? (
+          <p className="text-center">Loading...</p>
+        ) : (
+          <SubmitButton
+            labelText="End Exam"
+            sx={{ mb: 8, mt: 4 }}
+            onClick={downloadPDF}
+          />
+        )}
       </Grid>
     </Box>
   );
