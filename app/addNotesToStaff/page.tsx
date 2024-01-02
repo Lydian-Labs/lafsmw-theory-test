@@ -36,6 +36,17 @@ const AddNotesToAStaff = () => {
     setIsEnterNotesActive(!isEnterNotesActive);
     setIsEraserActive(false);
   };
+  const renderEraseNotesButton = () => (
+    <BlueButton onClick={eraser} isEnabled={isEraserActive}>
+      {"Erase Notes"}
+    </BlueButton>
+  );
+
+  const renderEnterNotesButton = () => (
+    <BlueButton onClick={enterNotes} isEnabled={isEnterNotesActive}>
+      {"Enter Notes"}
+    </BlueButton>
+  );
   const notesArray = noteArray();
   const timeSig = "4/4";
   const beatsInMeasure = parseInt(timeSig.split("/")[0]);
@@ -136,56 +147,8 @@ const AddNotesToAStaff = () => {
       </div>
       <div style={{ marginLeft: "5%" }}>
         <BlueButton onClick={clearMeasures}>Clear Measures</BlueButton>
-
-        {isEnterNotesActive && !isEraserActive ? (
-          <>
-            <BlueButton onClick={eraser}>{"Erase Notes"}</BlueButton>
-            <BlueButton onClick={enterNotes} isEnabled>
-              {"Enter Notes"}
-            </BlueButton>
-          </>
-        ) : !isEnterNotesActive && isEraserActive ? (
-          <>
-            <BlueButton onClick={eraser} isEnabled>
-              {"Erase Notes"}
-            </BlueButton>
-            <BlueButton onClick={enterNotes}>{"Enter Notes"}</BlueButton>
-          </>
-        ) : (
-          <>
-            <BlueButton onClick={eraser}>{"Erase Notes"}</BlueButton>
-            <BlueButton onClick={enterNotes}>{"Enter Notes"}</BlueButton>
-          </>
-        )}
-
-        {/* <BlueButton onClick={clearMeasures}>Clear Measures</BlueButton>
-        {isEraserActive ? (
-          <>
-            <BlueButton onClick={eraser} isEnabled>
-              {"Erase Notes"}
-            </BlueButton>
-            <BlueButton onClick={enterNotes}>{"Enter Notes"}</BlueButton>
-          </>
-        ) : (
-          <>
-            <BlueButton onClick={eraser}>{"Erase Notes"}</BlueButton>
-            <BlueButton onClick={enterNotes} isEnabled>
-              {"Enter Notes"}
-            </BlueButton>
-          </>
-        )}
-        {isEnterNotesActive ? ( <>
-            <BlueButton onClick={eraser}>
-              {"Erase Notes"}
-            </BlueButton>
-            <BlueButton onClick={enterNotes}>{"Enter Notes"}</BlueButton>
-          </>
-        ) : !isEnterNotesActive ? (<>
-         <BlueButton onClick={eraser}>
-              {"Erase Notes"}
-            </BlueButton>
-            <BlueButton onClick={enterNotes}>{"Enter Notes"}</BlueButton>
-        </>) : null} */}
+        {renderEnterNotesButton()}
+        {renderEraseNotesButton()}
       </div>
     </div>
   );
