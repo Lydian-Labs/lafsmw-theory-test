@@ -102,7 +102,7 @@ export default function ExamSample() {
   console.log("formInput", formInput);
 
   return (
-    <Box className="actual-exam" sx={{ flexGrow: 1 }}>
+    <Box className="actual-exam">
       <Grid container spacing={4} minHeight={500}>
         <Grid item xs={12}>
           <h1 className="text-3xl text-center mt-12">LAFSMW Theory Test</h1>
@@ -231,7 +231,6 @@ export default function ExamSample() {
               measures (extra credit for hip reharms in the first 8 measures):
             </h2>
             <WriteBlues
-              numBars={12}
               handleBlues={handleBlues}
               ref={bluesFormRef}
               width={width}
@@ -240,7 +239,7 @@ export default function ExamSample() {
         </Grid>
         <SubmitButton
           labelText="Submit"
-          sx={{ mb: 8, mt: 4 }}
+          sx={{ mb: 4, mt: 4 }}
           onClick={() => {
             bluesFormRef.current?.requestSubmit();
           }}
@@ -250,7 +249,7 @@ export default function ExamSample() {
         ) : (
           <SubmitButton
             labelText="End Exam"
-            sx={{ mb: 8, mt: 4 }}
+            sx={{ mb: 8, mt: 1 }}
             onClick={downloadPDF}
           />
         )}

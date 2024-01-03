@@ -6,7 +6,7 @@ import FormInput from "./FormInput";
 import Staff from "./Staff";
 
 type WriteBluesProps = {
-  numBars: number;
+  numBars?: number;
   chords?: Chord[];
   width: number;
   handleBlues: (blues: InputData) => void;
@@ -22,42 +22,18 @@ export default forwardRef(function WriteBlues(
     initialBluesInputState
   );
 
-  // function gatherWidthInfoBlues(
-  //   currentNumBars: number,
-  //   currentInnerWidth: number
-  // ) {
-  //   const widthOfFirstBar = currentInnerWidth / currentNumBars;
-  //   const widthOfRemainingBars =
-  //     (currentInnerWidth - widthOfFirstBar - 90) / (currentNumBars - 1);
-
-  //   return { widthOfFirstBar, widthOfRemainingBars };
-  // }
-
-  numBars = numBars * 4;
-
-  let chordWidth = width / numBars;
-  let chordGap = chordWidth / 2;
-
-  // Gather needed width info.
-  // const { widthOfFirstBar, widthOfRemainingBars } = gatherWidthInfoBlues(
-  //   numBars,
-  //   width
-  // );
-
-  const numBarsString = numBars.toString();
-  // const remainingBarsString = (numBars - 1).toString();
+  const chordWidth = width * 0.0415;
+  const chordWidthReduced = chordWidth * 0.95;
+  const gapWidth = chordWidth * 0.22;
+  const chordGroupSpacing = chordWidth * 0.1;
 
   const gridInputInline = {
     display: "grid",
-    gridTemplateColumns: `repeat(${numBarsString}, ${chordWidth.toString()}px)`,
-    paddingLeft: "6rem",
-    gap: `${chordGap.toString()}px`,
+    gridTemplateColumns: `repeat(4, ${chordWidth.toString()}px)`,
+    // gridTemplateColumns: `repeat(4, minmax(${chordWidthReduced.toString()}px, ${chordWidth.toString()}px))`,
+    // gridTemplateColumns: `repeat(4, minmax(0, 1fr))`,
+    gap: gapWidth.toString() + "px",
   };
-  // const gridInputInline = {
-  //   display: "grid",
-  //   gridTemplateColumns: `${widthOfFirstBar}px repeat(${remainingBarsString}, ${widthOfRemainingBars}px)`,
-  //   paddingLeft: "5rem",
-  // };
 
   function handleNumeralSubmit(e: FormEvent) {
     e.preventDefault();
@@ -90,16 +66,43 @@ export default forwardRef(function WriteBlues(
       <form ref={ref} id="submit-form-blues" onSubmit={handleNumeralSubmit}>
         <Stack direction="column">
           <Staff numBars={4} width={width} />
-          <div style={gridInputInline}>{renderNumeralInputs(0, 16)}</div>
+          <Stack
+            direction="row"
+            spacing={chordGroupSpacing}
+            sx={{ paddingLeft: 13, paddingRight: 6 }}
+          >
+            <div style={gridInputInline}>{renderNumeralInputs(0, 4)}</div>
+            <div style={gridInputInline}>{renderNumeralInputs(4, 8)}</div>
+            <div style={gridInputInline}>{renderNumeralInputs(8, 12)}</div>
+            <div style={gridInputInline}>{renderNumeralInputs(12, 16)}</div>
+          </Stack>
           <Staff numBars={4} noTimeSignature={true} width={width} />
-          <div style={gridInputInline}>{renderNumeralInputs(16, 32)}</div>
+          <Stack
+            direction="row"
+            spacing={chordGroupSpacing}
+            sx={{ paddingLeft: 13 }}
+          >
+            <div style={gridInputInline}>{renderNumeralInputs(16, 20)}</div>
+            <div style={gridInputInline}>{renderNumeralInputs(20, 24)}</div>
+            <div style={gridInputInline}>{renderNumeralInputs(24, 28)}</div>
+            <div style={gridInputInline}>{renderNumeralInputs(28, 32)}</div>
+          </Stack>
           <Staff
             numBars={4}
             noTimeSignature={true}
             addDoubleBarLine={true}
             width={width}
           />
-          <div style={gridInputInline}>{renderNumeralInputs(32, 48)}</div>
+          <Stack
+            direction="row"
+            spacing={chordGroupSpacing}
+            sx={{ paddingLeft: 13 }}
+          >
+            <div style={gridInputInline}>{renderNumeralInputs(32, 36)}</div>
+            <div style={gridInputInline}>{renderNumeralInputs(36, 40)}</div>
+            <div style={gridInputInline}>{renderNumeralInputs(40, 44)}</div>
+            <div style={gridInputInline}>{renderNumeralInputs(44, 48)}</div>
+          </Stack>
         </Stack>
       </form>
     </div>
