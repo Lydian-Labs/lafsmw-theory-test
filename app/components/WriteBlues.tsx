@@ -15,7 +15,7 @@ type WriteBluesProps = {
 const initialBluesInputState = createInitialState(48);
 
 export default forwardRef(function WriteBlues(
-  { numBars = 4, width, handleBlues }: WriteBluesProps,
+  { width, handleBlues }: WriteBluesProps,
   ref: ForwardedRef<HTMLFormElement>
 ) {
   const [numeralInput, setNumeralInput] = useState<Record<string, string>>(
@@ -23,15 +23,12 @@ export default forwardRef(function WriteBlues(
   );
 
   const chordWidth = width * 0.0415;
-  const chordWidthReduced = chordWidth * 0.95;
   const gapWidth = chordWidth * 0.22;
   const chordGroupSpacing = chordWidth * 0.1;
 
   const gridInputInline = {
     display: "grid",
     gridTemplateColumns: `repeat(4, ${chordWidth.toString()}px)`,
-    // gridTemplateColumns: `repeat(4, minmax(${chordWidthReduced.toString()}px, ${chordWidth.toString()}px))`,
-    // gridTemplateColumns: `repeat(4, minmax(0, 1fr))`,
     gap: gapWidth.toString() + "px",
   };
 

@@ -99,8 +99,6 @@ export default function ExamSample() {
 
   const { scales1, scales2, scales3 } = scalesText;
 
-  console.log("formInput", formInput);
-
   return (
     <Box className="actual-exam">
       <Grid container spacing={4} minHeight={500}>
