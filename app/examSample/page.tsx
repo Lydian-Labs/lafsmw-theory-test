@@ -1,6 +1,8 @@
 "use client";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 import { useEffect, useRef, useState } from "react";
 import ChordNames from "../components/ChordNames";
 import IdentifyChords from "../components/IdentifyChords";
@@ -15,8 +17,6 @@ import seventhChords from "../lib/data/seventhChords";
 import seventhChordsText from "../lib/data/seventhChordsText";
 import triadsText from "../lib/data/triadsText";
 import { InputData, SelectEvent } from "../types";
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
 
 type Level =
   | "advanced-theory"
@@ -60,12 +60,12 @@ export default function ExamSample() {
   const chordsFormRef = useRef<HTMLFormElement | null>(null);
   const keysFormRef = useRef<HTMLFormElement | null>(null);
 
-  const downloadPDF = () => {
+  function savePDF() {
     const capture = document.querySelector(".actual-exam");
     setLoading(true);
     html2canvas(capture as HTMLElement).then((canvas) => {
       const imgData = canvas.toDataURL("img/png");
-      // p is portrait, mm is millimeters, 3rd argument is paper size, could also be "a4" or "letter", but using an array for custom size
+      // p is portrait, px is pixels (could be mm as millimeters also), 3rd argument is paper size, could also be "a4" or "letter", but using an array for custom size
       const doc = new jsPDF("p", "px", [width, height]);
       const componentWidth = doc.internal.pageSize.getWidth();
       const componentHeight = doc.internal.pageSize.getHeight();
@@ -74,7 +74,7 @@ export default function ExamSample() {
       setLoading(false);
       doc.save("exam.pdf");
     });
-  };
+  }
 
   function handleLevel(event: SelectEvent) {
     const selectedLevel = event.target.value as Level;
@@ -248,7 +248,7 @@ export default function ExamSample() {
           <SubmitButton
             labelText="End Exam"
             sx={{ mb: 8, mt: 1 }}
-            onClick={downloadPDF}
+            onClick={savePDF}
           />
         )}
       </Grid>
