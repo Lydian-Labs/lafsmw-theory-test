@@ -14,6 +14,7 @@ const BlueButtonStyled = styled(Button)(({ isEnabled }: BlueButtonProps) => ({
     textTransform: "none",
     fontSize: isEnabled ? 18 : 16,
     padding: isEnabled ? "10px 16px" : "8px 14px",
+    //change color when selected
     margin: "5px",
     border: "2px solid",
     lineHeight: 1.5,

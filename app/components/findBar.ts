@@ -1,10 +1,8 @@
-const FindXcoordinate = (
-  x: number,
-  num1: number,
-  num2: number,
-  num3: number
-) => {
+//move to lib folder
+
+const findBar = (x: number, num1: number, num2: number, num3: number) => {
   let staveIndex: number;
+  //rename nums
   if (x < num1) {
     staveIndex = 0;
   } else if (x < num2) {
@@ -17,4 +15,4 @@ const FindXcoordinate = (
   return staveIndex;
 };
 
-export default FindXcoordinate;
+export default findBar;
