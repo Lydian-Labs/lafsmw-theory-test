@@ -15,11 +15,20 @@ const EraseNotesFromOneStave = () => {
   const [staves, setStaves] = useState<StaveType[]>([]);
   const [notes, setNotes] = useState<StaveNoteType[]>([]);
   const [isEraserActive, setIsEraserActive] = useState(false);
-  const contextRef = useRef(null);
+
+  const drawStave = (context, x: number, y: number, width: number) => {
+    const newStave = new Stave(x, y, width);
+    newStave.addClef("treble");
+    newStave.addTimeSignature("4/4");
+    context && newStave.setContext(context).draw();
+    setStaves([newStave]);
+  };
 
   const eraser = () => {
     setIsEraserActive(!isEraserActive);
   };
+
+  const notesArray = noteArray();
 
   const renderEraseNotesButton = () => (
     <BlueButton onClick={eraser} isEnabled={isEraserActive}>
@@ -35,51 +44,60 @@ const EraseNotesFromOneStave = () => {
       );
     }
     const renderer = rendererRef.current;
-
     renderer?.resize(800, 300);
-    const containerRef = container.current;
-    const context = renderer ? renderer.getContext() : null;
+    const context = renderer && renderer.getContext();
     context?.setFont("Arial", 10);
-    const newStave = new Stave(10, 200, 400);
-    newStave.addClef("treble");
-    newStave.addTimeSignature("4/4");
-    context && newStave.setContext(context).draw();
+    drawStave(context, 10, 200, 400);
+  }, []);
 
-    const handleClick = (e: MouseEvent) => {
-      const rect = container.current?.getBoundingClientRect();
-      const x = rect ? e.clientX - rect.left : 0;
-      const y = rect ? e.clientY - rect.top : 0;
+  useEffect(() => {
+    if (staves && notes.length > 0) {
+      RenderNotes();
+    }
+  }, [notes]);
 
-      let findNoteObject = generateNoteCoordinates(35, noteArray()).find(
-        ({ yCoordinateMin, yCoordinateMax }) =>
-          y >= yCoordinateMin && y <= yCoordinateMax
+  const RenderNotes = () => {
+    if (!rendererRef.current && container.current) {
+      rendererRef.current = new Renderer(
+        container.current,
+        Renderer.Backends.SVG
       );
+    }
 
-      setStaves((prevState: StaveType[]) => {
-        return [...prevState, newStave];
+    const renderer = rendererRef.current;
+    const context = renderer && renderer.getContext();
+    context?.setFont("Arial", 10);
+    context?.clear();
+    drawStave(context, 10, 200, 400);
+    context && Formatter.FormatAndDraw(context, staves[0], notes);
+  };
+
+  const handleClick = (e: React.MouseEvent) => {
+    const rect = container.current?.getBoundingClientRect();
+    const x = rect ? e.clientX - rect.left : 0;
+    const y = rect ? e.clientY - rect.top : 0;
+
+    let findNoteObject = generateNoteCoordinates(180, notesArray).find(
+      ({ yCoordinateMin, yCoordinateMax }) =>
+        y >= yCoordinateMin && y <= yCoordinateMax
+    );
+
+    if (findNoteObject) {
+      const newStaveNote: StaveNoteType = new StaveNote({
+        keys: findNoteObject && [findNoteObject.note],
+        duration: "q",
       });
-      setNotes((prevState: StaveNoteType[]) => {
-        return [...prevState, ...notes];
-      });
-      if (staves.length > 0 && contextRef.current) {
-        setNotes((prevState) => {
-          const newStavesNotes = [...prevState];
-          newStavesNotes.pop();
-          return newStavesNotes;
-        });
-      }
-    };
 
-    container.current?.addEventListener("click", handleClick);
-
-    //FormatAndDraw expects a singe stave object
-  }, [staves, isEraserActive, notes]);
+      setNotes((prevState) => [...prevState, newStaveNote]);
+    }
+  };
 
   return (
     <>
-      <div ref={container} />
+      <div ref={container} onClick={handleClick} />
       <div className="mt-5">{renderEraseNotesButton()}</div>
     </>
   );
 };
+
 export default EraseNotesFromOneStave;
