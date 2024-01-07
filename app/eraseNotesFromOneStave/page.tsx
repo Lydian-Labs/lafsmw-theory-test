@@ -3,9 +3,11 @@ import React, { useRef, useEffect, useState } from "react";
 import VexFlow from "vexflow";
 const VF = VexFlow.Flow;
 const { Formatter, Renderer, StaveNote, Stave } = VF;
+import { Snackbar, Alert } from "@mui/material/";
 import BlueButton from "../components/BlueButton";
 import generateNoteCoordinates from "../components/generateNoteCoordinates";
 import noteArray from "@/lib/noteArray";
+import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
 type StaveType = InstanceType<typeof Stave>;
 type StaveNoteType = InstanceType<typeof StaveNote>;
 
@@ -15,11 +17,16 @@ const EraseNotesFromOneStave = () => {
   const [staves, setStaves] = useState<StaveType[]>([]);
   const [notes, setNotes] = useState<StaveNoteType[]>([]);
   const [isEraserActive, setIsEraserActive] = useState(false);
+  const [noteNotFound, setNoteNotFound] = useState(false);
+  const [tooManyBeatsInMeasure, setTooManyBeatsInMeasure] = useState(false);
+
+  const timeSig = "4/4";
+  const beatsInMeasure = parseInt(timeSig.split("/")[0]);
 
   const drawStave = (context, x: number, y: number, width: number) => {
     const newStave = new Stave(x, y, width);
     newStave.addClef("treble");
-    newStave.addTimeSignature("4/4");
+    newStave.addTimeSignature(timeSig);
     context && newStave.setContext(context).draw();
     setStaves([newStave]);
   };
@@ -77,17 +84,20 @@ const EraseNotesFromOneStave = () => {
     const x = rect ? e.clientX - rect.left : 0;
     const y = rect ? e.clientY - rect.top : 0;
 
-    let findNoteObject = generateNoteCoordinates(180, notesArray).find(
+    let findNoteObject = generateNoteCoordinates(200, notesArray).find(
       ({ yCoordinateMin, yCoordinateMax }) =>
         y >= yCoordinateMin && y <= yCoordinateMax
     );
 
-    if (findNoteObject) {
+    if (!findNoteObject) {
+      setNoteNotFound(true);
+    } else if (notes.length >= beatsInMeasure) {
+      setTooManyBeatsInMeasure(true);
+    } else {
       const newStaveNote: StaveNoteType = new StaveNote({
         keys: findNoteObject && [findNoteObject.note],
         duration: "q",
       });
-
       setNotes((prevState) => [...prevState, newStaveNote]);
     }
   };
@@ -95,6 +105,20 @@ const EraseNotesFromOneStave = () => {
   return (
     <>
       <div ref={container} onClick={handleClick} />
+      <CheckNumBeatsInMeasure
+        tooManyBeatsInMeasure={tooManyBeatsInMeasure}
+        setTooManyBeatsInMeasure={setTooManyBeatsInMeasure}
+      />
+      <Snackbar
+        open={noteNotFound}
+        autoHideDuration={4000}
+        onClose={() => setNoteNotFound(false)}
+        anchorOrigin={{ vertical: "top", horizontal: "left" }}
+      >
+        <Alert variant="filled" severity="error">
+          {"The location you clicked doesn't correspond to a note"}
+        </Alert>
+      </Snackbar>
       <div className="mt-5">{renderEraseNotesButton()}</div>
     </>
   );
