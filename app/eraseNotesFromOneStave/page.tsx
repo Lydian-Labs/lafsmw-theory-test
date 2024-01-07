@@ -1,6 +1,6 @@
 "use client";
 import React, { useRef, useEffect, useState } from "react";
-import VexFlow from "vexflow";
+import VexFlow, { IRenderContext } from "vexflow";
 const VF = VexFlow.Flow;
 const { Formatter, Renderer, StaveNote, Stave } = VF;
 import { Snackbar, Alert } from "@mui/material/";
@@ -17,13 +17,19 @@ const EraseNotesFromOneStave = () => {
   const [staves, setStaves] = useState<StaveType[]>([]);
   const [notes, setNotes] = useState<StaveNoteType[]>([]);
   const [isEraserActive, setIsEraserActive] = useState(false);
+  const [isEnterNotesActive, setIsEnterNotesActive] = useState(true);
   const [noteNotFound, setNoteNotFound] = useState(false);
   const [tooManyBeatsInMeasure, setTooManyBeatsInMeasure] = useState(false);
 
   const timeSig = "4/4";
   const beatsInMeasure = parseInt(timeSig.split("/")[0]);
 
-  const drawStave = (context, x: number, y: number, width: number) => {
+  const drawStave = (
+    context: IRenderContext,
+    x: number,
+    y: number,
+    width: number
+  ) => {
     const newStave = new Stave(x, y, width);
     newStave.addClef("treble");
     newStave.addTimeSignature(timeSig);
@@ -33,6 +39,41 @@ const EraseNotesFromOneStave = () => {
 
   const eraser = () => {
     setIsEraserActive(!isEraserActive);
+    setIsEnterNotesActive(false);
+  };
+
+  const enterNotes = () => {
+    setIsEnterNotesActive(isEnterNotesActive);
+    setIsEraserActive(false);
+  };
+
+  const createRenderer = () => {
+    if (!rendererRef.current && container.current) {
+      rendererRef.current = new Renderer(
+        container.current,
+        Renderer.Backends.SVG
+      );
+    }
+  };
+
+  const RenderNotes = () => {
+    const renderer = rendererRef.current;
+    const context = renderer && renderer.getContext();
+    context?.setFont("Arial", 10);
+    context?.clear();
+    context && drawStave(context, 10, 200, 400);
+    if (notes.length > 0) {
+      context && Formatter.FormatAndDraw(context, staves[0], notes);
+    }
+  };
+
+  const clearMeasure = () => {
+    setNotes(() => {
+      const newArray: [] = [];
+      return newArray;
+    });
+    createRenderer();
+    RenderNotes();
   };
 
   const notesArray = noteArray();
@@ -42,42 +83,27 @@ const EraseNotesFromOneStave = () => {
       {"Eraser"}
     </BlueButton>
   );
+  const renderEnterNotesButton = () => (
+    <BlueButton onClick={enterNotes} isEnabled={isEnterNotesActive}>
+      {"EnterNotes"}
+    </BlueButton>
+  );
+  const renderClearMeasureButton = () => (
+    <BlueButton onClick={clearMeasure}>{"Clear Measure"}</BlueButton>
+  );
 
   useEffect(() => {
-    if (!rendererRef.current && container.current) {
-      rendererRef.current = new Renderer(
-        container.current,
-        Renderer.Backends.SVG
-      );
-    }
+    createRenderer();
     const renderer = rendererRef.current;
     renderer?.resize(800, 300);
     const context = renderer && renderer.getContext();
     context?.setFont("Arial", 10);
-    drawStave(context, 10, 200, 400);
+    context && drawStave(context, 10, 200, 400);
   }, []);
 
   useEffect(() => {
-    if (staves && notes.length > 0) {
-      RenderNotes();
-    }
+    RenderNotes();
   }, [notes]);
-
-  const RenderNotes = () => {
-    if (!rendererRef.current && container.current) {
-      rendererRef.current = new Renderer(
-        container.current,
-        Renderer.Backends.SVG
-      );
-    }
-
-    const renderer = rendererRef.current;
-    const context = renderer && renderer.getContext();
-    context?.setFont("Arial", 10);
-    context?.clear();
-    drawStave(context, 10, 200, 400);
-    context && Formatter.FormatAndDraw(context, staves[0], notes);
-  };
 
   const handleClick = (e: React.MouseEvent) => {
     const rect = container.current?.getBoundingClientRect();
@@ -93,9 +119,13 @@ const EraseNotesFromOneStave = () => {
       setNoteNotFound(true);
     } else if (isEraserActive) {
       setNotes((prevState) => {
-        const newArray = [...prevState];
-        newArray.pop();
-        return newArray;
+        if (prevState.length > 0) {
+          const newArray = [...prevState];
+          newArray.pop();
+          console.log(newArray);
+          return newArray;
+        }
+        return prevState;
       });
     } else if (notes.length >= beatsInMeasure) {
       setTooManyBeatsInMeasure(true);
@@ -125,7 +155,11 @@ const EraseNotesFromOneStave = () => {
           {"The location you clicked doesn't correspond to a note"}
         </Alert>
       </Snackbar>
-      <div className="mt-5">{renderEraseNotesButton()}</div>
+      <div className="mt-5">
+        {renderEraseNotesButton()}
+        {renderEnterNotesButton()}
+        {renderClearMeasureButton()}
+      </div>
     </>
   );
 };

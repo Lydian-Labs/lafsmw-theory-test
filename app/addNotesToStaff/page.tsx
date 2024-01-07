@@ -116,7 +116,7 @@ const AddNotesToAStaff = () => {
           duration: "q",
         });
         setStaveNotes((currentStaveNotes) => [...currentStaveNotes, staveNote]);
-        return
+        return;
       }
     };
 
