@@ -91,6 +91,12 @@ const EraseNotesFromOneStave = () => {
 
     if (!findNoteObject) {
       setNoteNotFound(true);
+    } else if (isEraserActive) {
+      setNotes((prevState) => {
+        const newArray = [...prevState];
+        newArray.pop();
+        return newArray;
+      });
     } else if (notes.length >= beatsInMeasure) {
       setTooManyBeatsInMeasure(true);
     } else {
