@@ -1,15 +1,17 @@
 "use client";
 import React, { useRef, useEffect, useState } from "react";
-import VexFlow, { IRenderContext } from "vexflow";
+import VexFlow from "vexflow";
 const VF = VexFlow.Flow;
 const { Formatter, Renderer, StaveNote, Stave } = VF;
-import { Snackbar, Alert } from "@mui/material/";
-import BlueButton from "../components/BlueButton";
 import generateNoteCoordinates from "../components/generateNoteCoordinates";
 import noteArray from "@/lib/noteArray";
 import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
 type StaveType = InstanceType<typeof Stave>;
 type StaveNoteType = InstanceType<typeof StaveNote>;
+import { Snackbar, Alert } from "@mui/material/";
+import { renderBlueButton } from "../components/RenderButtons";
+import { DrawStave } from "../components/DrawSingleStave";
+import renderNotes from "../renderNotes/page";
 
 const EraseNotesFromOneStave = () => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
@@ -17,25 +19,13 @@ const EraseNotesFromOneStave = () => {
   const [staves, setStaves] = useState<StaveType[]>([]);
   const [notes, setNotes] = useState<StaveNoteType[]>([]);
   const [isEraserActive, setIsEraserActive] = useState(false);
-  const [isEnterNotesActive, setIsEnterNotesActive] = useState(true);
+  const [isEnterNotesActive, setIsEnterNotesActive] = useState(false);
   const [noteNotFound, setNoteNotFound] = useState(false);
   const [tooManyBeatsInMeasure, setTooManyBeatsInMeasure] = useState(false);
 
+  const clef = "treble";
   const timeSig = "4/4";
   const beatsInMeasure = parseInt(timeSig.split("/")[0]);
-
-  const drawStave = (
-    context: IRenderContext,
-    x: number,
-    y: number,
-    width: number
-  ) => {
-    const newStave = new Stave(x, y, width);
-    newStave.addClef("treble");
-    newStave.addTimeSignature(timeSig);
-    context && newStave.setContext(context).draw();
-    setStaves([newStave]);
-  };
 
   const eraser = () => {
     setIsEraserActive(!isEraserActive);
@@ -43,7 +33,7 @@ const EraseNotesFromOneStave = () => {
   };
 
   const enterNotes = () => {
-    setIsEnterNotesActive(isEnterNotesActive);
+    setIsEnterNotesActive(!isEnterNotesActive);
     setIsEraserActive(false);
   };
 
@@ -61,7 +51,8 @@ const EraseNotesFromOneStave = () => {
     const context = renderer && renderer.getContext();
     context?.setFont("Arial", 10);
     context?.clear();
-    context && drawStave(context, 10, 200, 400);
+    context && setStaves([DrawStave(context, 10, 200, 400, clef, timeSig)]);
+
     if (notes.length > 0) {
       context && Formatter.FormatAndDraw(context, staves[0], notes);
     }
@@ -78,27 +69,13 @@ const EraseNotesFromOneStave = () => {
 
   const notesArray = noteArray();
 
-  const renderEraseNotesButton = () => (
-    <BlueButton onClick={eraser} isEnabled={isEraserActive}>
-      {"Eraser"}
-    </BlueButton>
-  );
-  const renderEnterNotesButton = () => (
-    <BlueButton onClick={enterNotes} isEnabled={isEnterNotesActive}>
-      {"EnterNotes"}
-    </BlueButton>
-  );
-  const renderClearMeasureButton = () => (
-    <BlueButton onClick={clearMeasure}>{"Clear Measure"}</BlueButton>
-  );
-
   useEffect(() => {
     createRenderer();
     const renderer = rendererRef.current;
     renderer?.resize(800, 300);
     const context = renderer && renderer.getContext();
     context?.setFont("Arial", 10);
-    context && drawStave(context, 10, 200, 400);
+    context && setStaves([DrawStave(context, 10, 200, 400, clef, timeSig)]);
   }, []);
 
   useEffect(() => {
@@ -156,9 +133,9 @@ const EraseNotesFromOneStave = () => {
         </Alert>
       </Snackbar>
       <div className="mt-5">
-        {renderEraseNotesButton()}
-        {renderEnterNotesButton()}
-        {renderClearMeasureButton()}
+        {renderBlueButton(eraser, "Eraser", isEraserActive)}
+        {renderBlueButton(enterNotes, "Enter Notes", isEnterNotesActive)}
+        {renderBlueButton(clearMeasure, "Clear Measure")}
       </div>
     </>
   );
