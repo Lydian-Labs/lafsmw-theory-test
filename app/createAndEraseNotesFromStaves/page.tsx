@@ -19,7 +19,7 @@ const beatsInMeasure = parseInt(timeSig.split("/")[0]);
 let numStaves = 4;
 const notesArray = noteArray();
 
-const EraseNotesFromOneStave = () => {
+const CreateAndEraseNotesFromStave = () => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
   const [staves, setStaves] = useState<StaveType[]>([]);
@@ -115,7 +115,7 @@ const EraseNotesFromOneStave = () => {
       setTooManyBeatsInMeasure(true);
     } else {
       const newStaveNote: StaveNoteType = new StaveNote({
-        keys: findNoteObject && [findNoteObject.note],
+        keys: [findNoteObject.note],
         duration: "q",
       });
       newNotes[newBarIndex] = [...newNotes[newBarIndex], newStaveNote];
@@ -149,4 +149,4 @@ const EraseNotesFromOneStave = () => {
   );
 };
 
-export default EraseNotesFromOneStave;
+export default CreateAndEraseNotesFromStave;
