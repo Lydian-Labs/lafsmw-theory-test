@@ -92,8 +92,6 @@ const EraseNotesFromOneStave = () => {
   }, [notes]);
 
   const handleClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
     const rect = container.current?.getBoundingClientRect();
     let x = rect ? e.clientX - rect.left : 0;
     const y = rect ? e.clientY - rect.top : 0;
