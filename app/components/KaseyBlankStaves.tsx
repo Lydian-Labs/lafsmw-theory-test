@@ -5,7 +5,7 @@ const { Stave } = VF;
 
 const KaseyBlankStaves = (
   numStaves: number,
-  context: IRenderContext, // Change the type of 'context' parameter
+  context: IRenderContext, 
   firstStaveWidth: number,
   regularStaveWidth: number,
   x: number,

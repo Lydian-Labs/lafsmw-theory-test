@@ -71,7 +71,6 @@ const AddNotesToAStaff = () => {
       const arrayOfBlankStaves =
         context &&
         KaseyBlankStaves(4, context, 240, 180, 10, 40, "treble", timeSig);
-
       // If arrayOfBlankStaves is not null, spread it into the new state
       // Otherwise, return the previous state
       return arrayOfBlankStaves
@@ -85,8 +84,6 @@ const AddNotesToAStaff = () => {
       const rect = container.current?.getBoundingClientRect();
       const x = rect ? e.clientX - rect.left : 0;
       const y = rect ? e.clientY - rect.top : 0;
-
-      const barIndex = findBar(x, 240, 420, 600);
 
       // const singleBarBlankStave =
       //   arrayOfBlankStaves && arrayOfBlankStaves[barIndex];
