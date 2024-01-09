@@ -1,8 +1,11 @@
-//move to lib folder
-
-const findBar = (userClickXCoordinate: number, lengthOfBar1: number, lengthOfBar2: number, lengthOfBar3: number) => {
+const findBar = (
+  userClickXCoordinate: number,
+  lengthOfBar1: number,
+  lengthOfBar2: number,
+  lengthOfBar3: number
+) => {
   let staveIndex: number;
-  //rename nums
+
   if (userClickXCoordinate < lengthOfBar1) {
     staveIndex = 0;
   } else if (userClickXCoordinate < lengthOfBar2) {

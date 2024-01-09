@@ -7,7 +7,7 @@ import generateNoteCoordinates from "../components/generateNoteCoordinates";
 import noteArray from "@/lib/noteArray";
 import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
 import KaseyBlankStaves from "../components/KaseyBlankStaves";
-import findBar from "../components/findBar";
+import findBar from "../lib/findBar";
 type StaveType = InstanceType<typeof Stave>;
 type StaveNoteType = InstanceType<typeof StaveNote>;
 import { Snackbar, Alert } from "@mui/material/";
