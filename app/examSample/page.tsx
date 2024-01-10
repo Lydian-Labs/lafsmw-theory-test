@@ -82,7 +82,7 @@ export default function ExamSample() {
 
   function handleLevel(event: SelectEvent) {
     const selectedLevel = event.target.value as Level;
-    setFormInput((prevInput) => ({ ...prevInput, level: selectedLevel }));
+    setFormInput({ ...formInput, level: selectedLevel });
   }
 
   function handleKeySignatures(input: InputData) {
