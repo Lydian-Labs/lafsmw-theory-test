@@ -18,7 +18,7 @@ const BlueButtonStyled = styled(Button)(
       margin: "5px",
       border: "2px solid",
       lineHeight: 1.5,
-      backgroundColor: isEnabled ? "#0063cc" : "#cad1d9",
+      backgroundColor: isEnabled ? "#0063cc" : "#81b1e3",
       borderColor: isEnabled ? "#0063cc" : "#a4b1bf",
     },
     "&:hover": {
