@@ -112,6 +112,20 @@ const CreateAndEraseNotesFromStave = () => {
     RenderStavesAndNotes();
   }, [notes]);
 
+  const newFindBar = () => {
+    const staveWidthArrayOfObjects = staves.map((stave, index) => {
+      const staveWidth = stave.getWidth();
+      const xParameterForStave1 = staves[0].getWidth();
+      let xParameter = xParameterForStave1 + staves[1].getWidth() * index;
+      return {
+        staveWidth: staveWidth,
+        xParameter: xParameter,
+      };
+    });
+    return staveWidthArrayOfObjects;
+  };
+
+  console.log(newFindBar());
   const handleClick = (e: React.MouseEvent) => {
     const rect = container.current?.getBoundingClientRect();
     let x = rect ? e.clientX - rect.left : 0;
@@ -119,8 +133,6 @@ const CreateAndEraseNotesFromStave = () => {
     const topStaveYPosition = staves[0].getYForTopText();
     const highG = topStaveYPosition - 33;
 
-    console.log(topStaveYPosition);
-    console.log(y);
     let findNoteObject =
       rect?.top &&
       generateNoteCoordinates(highG, notesArray).find(
