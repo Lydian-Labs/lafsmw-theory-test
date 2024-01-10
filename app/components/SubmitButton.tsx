@@ -5,9 +5,15 @@ type ButtonProps = {
   labelText: string;
   onClick: (e: MouseEvent) => void;
   sx?: SxProps<Theme>;
+  disabled?: boolean;
 };
 
-export default function SubmitButton({ onClick, sx, labelText }: ButtonProps) {
+export default function SubmitButton({
+  onClick,
+  sx,
+  labelText,
+  disabled,
+}: ButtonProps) {
   return (
     <Grid
       container
@@ -24,6 +30,7 @@ export default function SubmitButton({ onClick, sx, labelText }: ButtonProps) {
           fontSize: "1em",
         }}
         type="button"
+        disabled={disabled}
         onClick={onClick}
         variant="outlined"
       >

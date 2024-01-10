@@ -49,6 +49,10 @@ export default function ExamSample() {
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [disableKeySignatures, setDisableKeySignatures] = useState(false);
+  const [disableChords, setDisableChords] = useState(false);
+  const [disableProgressions, setDisableProgressions] = useState(false);
+  const [disableBlues, setDisableBlues] = useState(false);
 
   useEffect(() => {
     setWidth(typeof window !== "undefined" ? window.innerWidth : 0);
@@ -83,18 +87,22 @@ export default function ExamSample() {
 
   function handleKeySignatures(input: InputData) {
     setFormInput({ ...formInput, keySignatures: input });
+    setDisableKeySignatures(true);
   }
 
   function handleChords(input: InputData) {
     setFormInput({ ...formInput, chords: input });
+    setDisableChords(true);
   }
 
   function handleProg(input: InputData) {
     setFormInput({ ...formInput, progressions: input });
+    setDisableProgressions(true);
   }
 
   function handleBlues(input: InputData) {
     setFormInput({ ...formInput, blues: input });
+    setDisableBlues(true);
   }
 
   const { scales1, scales2, scales3 } = scalesText;
@@ -154,6 +162,7 @@ export default function ExamSample() {
           onClick={() => {
             keysFormRef.current?.requestSubmit();
           }}
+          disabled={disableKeySignatures}
         />
         <Grid item xs={12}>
           <div>
@@ -201,6 +210,7 @@ export default function ExamSample() {
           onClick={() => {
             chordsFormRef.current?.requestSubmit();
           }}
+          disabled={disableChords}
         />
         <Grid item xs={12}>
           <div>
@@ -221,6 +231,7 @@ export default function ExamSample() {
           onClick={() => {
             progressionFormRef.current?.requestSubmit();
           }}
+          disabled={disableProgressions}
         />
         <Grid item xs={12}>
           <div>
@@ -241,6 +252,7 @@ export default function ExamSample() {
           onClick={() => {
             bluesFormRef.current?.requestSubmit();
           }}
+          disabled={disableBlues}
         />
         {loading ? (
           <p className="text-center">Loading...</p>
