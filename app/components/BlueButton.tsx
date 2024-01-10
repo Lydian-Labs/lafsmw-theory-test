@@ -15,12 +15,11 @@ const BlueButtonStyled = styled(Button)(
       textTransform: "none",
       fontSize: isEnabled ? 18 : 16,
       padding: isEnabled ? "10px 16px" : "8px 14px",
-      //change color when selected
       margin: "5px",
       border: "2px solid",
       lineHeight: 1.5,
-      backgroundColor: "#0063cc",
-      borderColor: "#0063cc",
+      backgroundColor: isEnabled ? "#0063cc" : "#cad1d9",
+      borderColor: isEnabled ? "#0063cc" : "#a4b1bf",
     },
     "&:hover": {
       backgroundColor: "#0069d9",
