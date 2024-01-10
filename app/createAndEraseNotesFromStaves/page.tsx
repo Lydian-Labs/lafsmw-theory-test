@@ -17,6 +17,7 @@ const clef = "treble";
 const timeSig = "4/4";
 const beatsInMeasure = parseInt(timeSig.split("/")[0]);
 let numStaves = 4;
+let yPositionOfStaves = 150;
 const notesArray = noteArray();
 
 const CreateAndEraseNotesFromStave = () => {
@@ -58,7 +59,16 @@ const CreateAndEraseNotesFromStave = () => {
     if (context) {
       context &&
         setStaves(() =>
-          KaseyBlankStaves(numStaves, context, 240, 180, 10, 40, clef, timeSig)
+          KaseyBlankStaves(
+            numStaves,
+            context,
+            240,
+            180,
+            10,
+            yPositionOfStaves,
+            clef,
+            timeSig
+          )
         );
     }
     notes.forEach((staveNotes, index) => {
@@ -84,7 +94,18 @@ const CreateAndEraseNotesFromStave = () => {
     const context = renderer && renderer.getContext();
     context?.setFont("Arial", 10);
     context &&
-      setStaves(KaseyBlankStaves(4, context, 240, 180, 10, 40, clef, timeSig));
+      setStaves(
+        KaseyBlankStaves(
+          4,
+          context,
+          240,
+          180,
+          10,
+          yPositionOfStaves,
+          clef,
+          timeSig
+        )
+      );
   }, []);
 
   useEffect(() => {
@@ -95,11 +116,17 @@ const CreateAndEraseNotesFromStave = () => {
     const rect = container.current?.getBoundingClientRect();
     let x = rect ? e.clientX - rect.left : 0;
     const y = rect ? e.clientY - rect.top : 0;
+    const topStaveYPosition = staves[0].getYForTopText();
+    const highG = topStaveYPosition - 33;
 
-    let findNoteObject = generateNoteCoordinates(35, notesArray).find(
-      ({ yCoordinateMin, yCoordinateMax }) =>
-        y >= yCoordinateMin && y <= yCoordinateMax
-    );
+    console.log(topStaveYPosition);
+    console.log(y);
+    let findNoteObject =
+      rect?.top &&
+      generateNoteCoordinates(highG, notesArray).find(
+        ({ yCoordinateMin, yCoordinateMax }) =>
+          y >= yCoordinateMin && y <= yCoordinateMax
+      );
     const newBarIndex = findBar(x, 240, 420, 600);
     let newNotes = [...notes];
     if (!findNoteObject) {
@@ -140,7 +167,7 @@ const CreateAndEraseNotesFromStave = () => {
           {"The location you clicked doesn't correspond to a note"}
         </Alert>
       </Snackbar>
-      <div className="mt-5">
+      <div className="mt-2 ml-3">
         {renderBlueButton(eraser, "Eraser", isEraserActive)}
         {renderBlueButton(enterNotes, "Enter Notes", isEnterNotesActive)}
         {renderBlueButton(clearMeasures, "Clear Measures")}
