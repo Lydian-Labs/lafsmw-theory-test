@@ -1,23 +1,35 @@
 "use client";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import { useRef, useState, useEffect } from "react";
-import Staff from "../components/Staff";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
+import { useEffect, useRef, useState } from "react";
+import ChordNames from "../components/ChordNames";
 import IdentifyChords from "../components/IdentifyChords";
 import IdentifyKeySignatures from "../components/IdentifyKeySignatures";
+import Staff from "../components/Staff";
 import SubmitButton from "../components/SubmitButton";
 import WriteBlues from "../components/WriteBlues";
 import WriteProgression from "../components/WriteProgression";
-import seventhChords from "../lib/seventhChords";
-import { InputData } from "../types";
-import ChordNames from "../components/ChordNames";
-import keySignaturesExample from "../lib/keySignaturesExample";
-import scalesExamples from "../lib/scalesExamples";
-import triadsTextExample from "../lib/triadsTextExample";
-import seventhChordsTextExample from "../lib/seventhChordsTextExample";
+import keySignaturesText from "../lib/data/keySignaturesText";
+import scalesText from "../lib/data/scalesText";
+import seventhChords from "../lib/data/seventhChords";
+import seventhChordsText from "../lib/data/seventhChordsText";
+import triadsText from "../lib/data/triadsText";
+import { InputData, SelectEvent } from "../types";
+
+type Level =
+  | "advanced-theory"
+  | "advanced-improvisation"
+  | "intro-to-arranging"
+  | "intermediate-arranging"
+  | "advanced-arranging"
+  | "rhythm-class"
+  | "sibelius-class"
+  | "";
 
 type InputState = {
-  level: string;
+  level: Level;
   keySignatures: InputData;
   chords: InputData;
   progressions: InputData;
@@ -35,9 +47,16 @@ const initialFormInputState: InputState = {
 export default function ExamSample() {
   const [formInput, setFormInput] = useState(initialFormInputState);
   const [width, setWidth] = useState(0);
+  const [height, setHeight] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [disableKeySignatures, setDisableKeySignatures] = useState(false);
+  const [disableChords, setDisableChords] = useState(false);
+  const [disableProgressions, setDisableProgressions] = useState(false);
+  const [disableBlues, setDisableBlues] = useState(false);
 
   useEffect(() => {
     setWidth(typeof window !== "undefined" ? window.innerWidth : 0);
+    setHeight(typeof window !== "undefined" ? window.innerHeight : 0);
   }, []);
 
   const bluesFormRef = useRef<HTMLFormElement | null>(null);
@@ -45,26 +64,51 @@ export default function ExamSample() {
   const chordsFormRef = useRef<HTMLFormElement | null>(null);
   const keysFormRef = useRef<HTMLFormElement | null>(null);
 
+  function savePDF() {
+    const capture = document.querySelector(".actual-exam");
+    setLoading(true);
+    html2canvas(capture as HTMLElement).then((canvas) => {
+      const imgData = canvas.toDataURL("img/png");
+      // p is portrait, px is pixels (could be mm as millimeters also), 3rd argument is paper size, could also be "a4" or "letter", but using an array for custom size
+      const doc = new jsPDF("p", "px", [width, height]);
+      const componentWidth = doc.internal.pageSize.getWidth();
+      const componentHeight = doc.internal.pageSize.getHeight();
+      // 0 and 0 are x and y coordinates
+      doc.addImage(imgData, "PNG", 0, 0, componentWidth, componentHeight);
+      setLoading(false);
+      doc.save("exam.pdf");
+    });
+  }
+
+  function handleLevel(event: SelectEvent) {
+    const selectedLevel = event.target.value as Level;
+    setFormInput({ ...formInput, level: selectedLevel });
+  }
+
   function handleKeySignatures(input: InputData) {
     setFormInput({ ...formInput, keySignatures: input });
+    setDisableKeySignatures(true);
   }
 
   function handleChords(input: InputData) {
     setFormInput({ ...formInput, chords: input });
+    setDisableChords(true);
   }
 
   function handleProg(input: InputData) {
     setFormInput({ ...formInput, progressions: input });
+    setDisableProgressions(true);
   }
 
   function handleBlues(input: InputData) {
     setFormInput({ ...formInput, blues: input });
+    setDisableBlues(true);
   }
 
-  const { scales1, scales2, scales3 } = scalesExamples;
+  const { scales1, scales2, scales3 } = scalesText;
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box className="actual-exam">
       <Grid container spacing={4} minHeight={500}>
         <Grid item xs={12}>
           <h1 className="text-3xl text-center mt-12">LAFSMW Theory Test</h1>
@@ -77,7 +121,7 @@ export default function ExamSample() {
             Choose your Level IV class preference:
           </label>
 
-          <select name="levels" id="level-select">
+          <select name="levels" id="level-select" onChange={handleLevel}>
             <option value="">Please choose an option</option>
             <option value="advanced-theory">Advanced theory</option>
             <option value="advanced-improvisation">
@@ -96,7 +140,7 @@ export default function ExamSample() {
           <div>
             <h2 className="ml-4 mt-4">Write the following key signatures:</h2>
             <Staff addDoubleBarLine={true} width={width} />
-            <ChordNames width={width} chordNames={keySignaturesExample} />
+            <ChordNames width={width} chordNames={keySignaturesText} />
           </div>
         </Grid>
         <Grid item xs={12}>
@@ -118,6 +162,7 @@ export default function ExamSample() {
           onClick={() => {
             keysFormRef.current?.requestSubmit();
           }}
+          disabled={disableKeySignatures}
         />
         <Grid item xs={12}>
           <div>
@@ -139,14 +184,14 @@ export default function ExamSample() {
           <div>
             <h2 className="ml-4 mt-4">Write the following triads:</h2>
             <Staff numBars={6} addDoubleBarLine={true} width={width} />
-            <ChordNames width={width} chordNames={triadsTextExample} />
+            <ChordNames width={width} chordNames={triadsText} />
           </div>
         </Grid>
         <Grid item xs={12}>
           <div>
             <h2 className="ml-4 mt-4">Write the following 7th chords:</h2>
             <Staff numBars={7} addDoubleBarLine={true} width={width} />
-            <ChordNames width={width} chordNames={seventhChordsTextExample} />
+            <ChordNames width={width} chordNames={seventhChordsText} />
           </div>
         </Grid>
         <Grid item xs={12}>
@@ -165,6 +210,7 @@ export default function ExamSample() {
           onClick={() => {
             chordsFormRef.current?.requestSubmit();
           }}
+          disabled={disableChords}
         />
         <Grid item xs={12}>
           <div>
@@ -185,6 +231,7 @@ export default function ExamSample() {
           onClick={() => {
             progressionFormRef.current?.requestSubmit();
           }}
+          disabled={disableProgressions}
         />
         <Grid item xs={12}>
           <div>
@@ -193,7 +240,6 @@ export default function ExamSample() {
               measures (extra credit for hip reharms in the first 8 measures):
             </h2>
             <WriteBlues
-              numBars={12}
               handleBlues={handleBlues}
               ref={bluesFormRef}
               width={width}
@@ -202,11 +248,21 @@ export default function ExamSample() {
         </Grid>
         <SubmitButton
           labelText="Submit"
-          sx={{ mb: 8, mt: 4 }}
+          sx={{ mb: 4, mt: 4 }}
           onClick={() => {
             bluesFormRef.current?.requestSubmit();
           }}
+          disabled={disableBlues}
         />
+        {loading ? (
+          <p className="text-center">Loading...</p>
+        ) : (
+          <SubmitButton
+            labelText="End Exam"
+            sx={{ mb: 8, mt: 1 }}
+            onClick={savePDF}
+          />
+        )}
       </Grid>
     </Box>
   );

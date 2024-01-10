@@ -27,7 +27,7 @@ export default function Staff({
   const containerRef = useRef<HTMLDivElement>(null);
   const rendererRef = useRef<Flow.Renderer | null>(null);
 
-  // Gather needed width info.
+  // Gather needed width info - slightly different calculations than other components.
   const fullWidth = width * 0.97;
   const widthOfFirstBar = width / numBars + 50;
   const widthOfRemainingBars =

@@ -1,4 +1,4 @@
-export const seventhChordsTextExample = [
+const seventhChordsText = [
   "E-dim",
   "G-7",
   "Db-7",
@@ -8,4 +8,4 @@ export const seventhChordsTextExample = [
   "Eb-dim",
 ];
 
-export default seventhChordsTextExample;
+export default seventhChordsText;

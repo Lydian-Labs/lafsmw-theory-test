@@ -1,8 +1,9 @@
 import { ForwardedRef, forwardRef, useState } from "react";
-import { ChangeEvent, FormEvent, Chord, InputData } from "../types";
+import createInitialState from "../lib/createInitialState";
+import gatherWidthInfo from "../lib/gatherWidthInfo";
+import { ChangeEvent, Chord, FormEvent, InputData } from "../types";
 import FormInput from "./FormInput";
 import Staff from "./Staff";
-import createInitialState from "../lib/createInitialState";
 
 type IdentifyChordsProps = {
   numBars: number;
@@ -22,10 +23,10 @@ export default forwardRef(function IdentifyChords(
   );
 
   // Gather needed width info.
-  const fullWidth = width * 0.97;
-  const widthOfFirstBar = width / numBars;
-  const widthOfRemainingBars =
-    (fullWidth - widthOfFirstBar - 90) / (numBars - 1);
+  const { widthOfFirstBar, widthOfRemainingBars } = gatherWidthInfo(
+    numBars,
+    width
+  );
 
   const remainingBarsString = (numBars - 1).toString();
 
