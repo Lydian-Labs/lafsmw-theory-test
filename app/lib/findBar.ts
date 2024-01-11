@@ -1,21 +1,35 @@
-const findBar = (
-  userClickXCoordinate: number,
-  lengthOfBar1: number,
-  lengthOfBar2: number,
-  lengthOfBar3: number
-) => {
-  let staveIndex: number;
+import VexFlow from "vexflow";
+const VF = VexFlow.Flow;
+const { Stave } = VF;
 
-  if (userClickXCoordinate < lengthOfBar1) {
-    staveIndex = 0;
-  } else if (userClickXCoordinate < lengthOfBar2) {
-    staveIndex = 1;
-  } else if (userClickXCoordinate < lengthOfBar3) {
-    staveIndex = 2;
-  } else {
-    staveIndex = 3;
+type BarCoordinatesData = {
+  barWidth: number;
+  xMaxCoordinate: number;
+};
+
+export const findBarIndex = (
+  bars: InstanceType<typeof Stave>[],
+  userClickXCoordinate: number
+): number => {
+  let staveIndex: number = 0;
+
+  const barWidthAndXMaxCoordinate: BarCoordinatesData[] = bars.map(
+    (bar, index) => {
+      const barWidth = bar.getWidth();
+      const xMaxCoordinateForBar1 = bars[0].getWidth();
+      let xMaxCoordinate = xMaxCoordinateForBar1 + bars[1].getWidth() * index;
+      return {
+        barWidth,
+        xMaxCoordinate,
+      };
+    }
+  );
+
+  for (let i = 0; i < barWidthAndXMaxCoordinate.length; i++) {
+    if (userClickXCoordinate < barWidthAndXMaxCoordinate[i].xMaxCoordinate) {
+      staveIndex = i;
+      break;
+    }
   }
   return staveIndex;
 };
-
-export default findBar;

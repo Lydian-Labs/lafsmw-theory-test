@@ -5,9 +5,9 @@ const VF = VexFlow.Flow;
 const { Formatter, Renderer, StaveNote, Stave } = VF;
 import generateNoteCoordinates from "../components/generateNoteCoordinates";
 import noteArray from "@/lib/noteArray";
+import { findBarIndex } from "../lib/findBar";
 import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
 import KaseyBlankStaves from "../components/KaseyBlankStaves";
-import findBar from "../lib/findBar";
 type StaveType = InstanceType<typeof Stave>;
 type StaveNoteType = InstanceType<typeof StaveNote>;
 import { Snackbar, Alert } from "@mui/material/";
@@ -112,21 +112,6 @@ const CreateAndEraseNotesFromStave = () => {
     renderStavesAndNotes();
   }, [notes]);
 
-  //rename variables
-  const newFindBar = () => {
-    const barWidthArrayOfObjects = bars.map((bar, index) => {
-      const barWidth = bar.getWidth();
-      const barWidthForBar1 = bars[0].getWidth();
-      let xMaxCoordinate = barWidthForBar1 + bars[1].getWidth() * index;
-      return {
-        barWidth,
-        xMaxCoordinate,
-      };
-    });
-    return barWidthArrayOfObjects;
-  };
-
-  console.log(newFindBar());
   const handleClick = (e: React.MouseEvent) => {
     const rect = container.current?.getBoundingClientRect();
     let x = rect ? e.clientX - rect.left : 0;
@@ -140,19 +125,18 @@ const CreateAndEraseNotesFromStave = () => {
         ({ yCoordinateMin, yCoordinateMax }) =>
           y >= yCoordinateMin && y <= yCoordinateMax
       );
-    const newBarIndex = findBar(x, 240, 420, 600);
-
+    const barIndex = findBarIndex(bars, x);
     let newNotes = [...notes];
 
     if (!findNoteObject) {
       setNoteNotFound(true);
     } else if (isEraserActive) {
-      if (newNotes[newBarIndex]) {
-        newNotes[newBarIndex].pop();
+      if (newNotes[barIndex]) {
+        newNotes[barIndex].pop();
       }
     } else if (
-      newNotes[newBarIndex] &&
-      newNotes[newBarIndex].length >= beatsInMeasure
+      newNotes[barIndex] &&
+      newNotes[barIndex].length >= beatsInMeasure
     ) {
       setTooManyBeatsInMeasure(true);
     } else {
@@ -160,7 +144,7 @@ const CreateAndEraseNotesFromStave = () => {
         keys: [findNoteObject.note],
         duration: "q",
       });
-      newNotes[newBarIndex] = [...newNotes[newBarIndex], newStaveNote];
+      newNotes[barIndex] = [...newNotes[barIndex], newStaveNote];
     }
     setNotes(() => newNotes);
   };
