@@ -23,7 +23,7 @@ const notesArray = noteArray();
 const CreateAndEraseNotesFromStave = () => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
-  const [staves, setStaves] = useState<StaveType[]>([]);
+  const [bars, setBars] = useState<StaveType[]>([]);
   const [notes, setNotes] = useState<StaveNoteType[][]>(
     new Array(numStaves).fill([])
   );
@@ -42,7 +42,7 @@ const CreateAndEraseNotesFromStave = () => {
     setIsEraserActive(false);
   };
 
-  const CreateRenderer = () => {
+  const createRenderer = () => {
     if (!rendererRef.current && container.current) {
       rendererRef.current = new Renderer(
         container.current,
@@ -51,14 +51,14 @@ const CreateAndEraseNotesFromStave = () => {
     }
   };
 
-  const RenderStavesAndNotes = () => {
+  const renderStavesAndNotes = () => {
     const renderer = rendererRef.current;
     const context = renderer && renderer.getContext();
     context?.setFont("Arial", 10);
     context?.clear();
     if (context) {
       context &&
-        setStaves(() =>
+        setBars(() =>
           KaseyBlankStaves(
             numStaves,
             context,
@@ -73,7 +73,7 @@ const CreateAndEraseNotesFromStave = () => {
     }
     notes.forEach((staveNotes, index) => {
       if (staveNotes.length > 0) {
-        context && Formatter.FormatAndDraw(context, staves[index], staveNotes);
+        context && Formatter.FormatAndDraw(context, bars[index], staveNotes);
       }
     });
   };
@@ -83,18 +83,18 @@ const CreateAndEraseNotesFromStave = () => {
       const newArrays = new Array(numStaves).fill([]);
       return newArrays;
     });
-    CreateRenderer();
-    RenderStavesAndNotes();
+    createRenderer();
+    renderStavesAndNotes();
   };
 
   useEffect(() => {
-    CreateRenderer();
+    createRenderer();
     const renderer = rendererRef.current;
     renderer?.resize(800, 300);
     const context = renderer && renderer.getContext();
     context?.setFont("Arial", 10);
     context &&
-      setStaves(
+      setBars(
         KaseyBlankStaves(
           4,
           context,
@@ -109,20 +109,21 @@ const CreateAndEraseNotesFromStave = () => {
   }, []);
 
   useEffect(() => {
-    RenderStavesAndNotes();
+    renderStavesAndNotes();
   }, [notes]);
 
+  //rename variables
   const newFindBar = () => {
-    const staveWidthArrayOfObjects = staves.map((stave, index) => {
-      const staveWidth = stave.getWidth();
-      const xParameterForStave1 = staves[0].getWidth();
-      let xParameter = xParameterForStave1 + staves[1].getWidth() * index;
+    const barWidthArrayOfObjects = bars.map((bar, index) => {
+      const barWidth = bar.getWidth();
+      const barWidthForBar1 = bars[0].getWidth();
+      let xMaxCoordinate = barWidthForBar1 + bars[1].getWidth() * index;
       return {
-        staveWidth: staveWidth,
-        xParameter: xParameter,
+        barWidth,
+        xMaxCoordinate,
       };
     });
-    return staveWidthArrayOfObjects;
+    return barWidthArrayOfObjects;
   };
 
   console.log(newFindBar());
@@ -130,7 +131,7 @@ const CreateAndEraseNotesFromStave = () => {
     const rect = container.current?.getBoundingClientRect();
     let x = rect ? e.clientX - rect.left : 0;
     const y = rect ? e.clientY - rect.top : 0;
-    const topStaveYPosition = staves[0].getYForTopText();
+    const topStaveYPosition = bars[0].getYForTopText();
     const highG = topStaveYPosition - 33;
 
     let findNoteObject =
@@ -140,7 +141,9 @@ const CreateAndEraseNotesFromStave = () => {
           y >= yCoordinateMin && y <= yCoordinateMax
       );
     const newBarIndex = findBar(x, 240, 420, 600);
+
     let newNotes = [...notes];
+
     if (!findNoteObject) {
       setNoteNotFound(true);
     } else if (isEraserActive) {
