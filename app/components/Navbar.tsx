@@ -17,13 +17,15 @@ const Navbar: FC = () => {
           <Link href="/renderNotes">Render Notes</Link>
         </li>
         <li className="p-4">
-          <Link href="/addNotesToStaff">Add Notes to a Staff</Link>
-        </li>
-        <li className="p-4">
           <Link href="/addAccidentalsToNotes">Add Accidentals</Link>
         </li>
         <li className="p-4">
           <Link href="/examSample">Exam Sample</Link>
+        </li>
+        <li className="p-4">
+          <Link href="/createAndEraseNotesFromStaves">
+            Add and Erase Notes From Staves
+          </Link>
         </li>
       </ul>
     </div>

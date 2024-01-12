@@ -1,13 +1,13 @@
-interface NoteCoordinate {
+interface NoteStringAndNoteCoordinate {
   note: string;
   yCoordinateMin: number;
   yCoordinateMax: number;
 }
 
-const GenerateNoteArrayCoordinates = (
+const generateNoteCoordinates = (
   yMin: number,
   notes: string[]
-): NoteCoordinate[] => {
+): NoteStringAndNoteCoordinate[] => {
   return notes.map((note, index) => {
     const yCoordinateMin = yMin + index * 5;
     const yCoordinateMax = yCoordinateMin + 5;
@@ -15,4 +15,4 @@ const GenerateNoteArrayCoordinates = (
   });
 };
 
-export default GenerateNoteArrayCoordinates;
+export default generateNoteCoordinates;
