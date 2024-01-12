@@ -18,7 +18,3 @@
 body {
   background-color: var(--primary80);
 }
-
-.eraser-cursor {
-  cursor: url("/smaller-eraser-cursor.png"), auto;
-}

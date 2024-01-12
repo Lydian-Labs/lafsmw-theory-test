@@ -1,5 +1,3 @@
-//move to lib folder
-
 interface NoteStringAndNoteCoordinate {
   note: string;
   yCoordinateMin: number;

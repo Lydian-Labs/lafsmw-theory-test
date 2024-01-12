@@ -1,17 +1,17 @@
 "use client";
-import React, { useRef, useEffect, useState } from "react";
-import VexFlow from "vexflow";
-const VF = VexFlow.Flow;
-const { Formatter, Renderer, StaveNote, Stave } = VF;
-import generateNoteCoordinates from "../components/generateNoteCoordinates";
 import noteArray from "@/lib/noteArray";
-import { findBarIndex } from "../lib/findBar";
+import { Alert, Snackbar } from "@mui/material/";
+import React, { useEffect, useRef, useState } from "react";
+import VexFlow from "vexflow";
 import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
 import KaseyBlankStaves from "../components/KaseyBlankStaves";
+import { renderBlueButton } from "../components/RenderButtons";
+import { findBarIndex } from "../lib/findBar";
+import generateNoteCoordinates from "../lib/generateNoteCoordinates";
+const VF = VexFlow.Flow;
+const { Formatter, Renderer, StaveNote, Stave } = VF;
 type StaveType = InstanceType<typeof Stave>;
 type StaveNoteType = InstanceType<typeof StaveNote>;
-import { Snackbar, Alert } from "@mui/material/";
-import { renderBlueButton } from "../components/RenderButtons";
 
 const clef = "treble";
 const timeSig = "4/4";
