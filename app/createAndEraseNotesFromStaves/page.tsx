@@ -119,34 +119,36 @@ const CreateAndEraseNotesFromStave = () => {
     const topStaveYPosition = bars[0].getYForTopText();
     const highG = topStaveYPosition - 33;
 
-    let findNoteObject =
-      rect?.top &&
-      generateNoteCoordinates(highG, notesArray).find(
-        ({ yCoordinateMin, yCoordinateMax }) =>
-          y >= yCoordinateMin && y <= yCoordinateMax
-      );
+    let noteObject = generateNoteCoordinates(highG, notesArray).find(
+      ({ yCoordinateMin, yCoordinateMax }) =>
+        y >= yCoordinateMin && y <= yCoordinateMax
+    );
     const barIndex = findBarIndex(bars, x);
-    let newNotes = [...notes];
+    let notesCopy = [...notes];
+    const barOfStaveNotes = notesCopy[barIndex];
 
-    if (!findNoteObject) {
+    if (!noteObject) {
       setNoteNotFound(true);
     } else if (isEraserActive) {
-      if (newNotes[barIndex]) {
-        newNotes[barIndex].pop();
+      if (barOfStaveNotes) {
+        const noteKeys: string[] = barOfStaveNotes.map((noteKey) => {
+          return noteKey.getKeys().toString();
+        });
+        const noteToErase = noteKeys.findIndex(
+          (note) => note === noteObject?.note
+        );
+        barOfStaveNotes.splice(noteToErase, 1);
       }
-    } else if (
-      newNotes[barIndex] &&
-      newNotes[barIndex].length >= beatsInMeasure
-    ) {
+    } else if (barOfStaveNotes && barOfStaveNotes.length >= beatsInMeasure) {
       setTooManyBeatsInMeasure(true);
     } else {
       const newStaveNote: StaveNoteType = new StaveNote({
-        keys: [findNoteObject.note],
+        keys: [noteObject.note],
         duration: "q",
       });
-      newNotes[barIndex] = [...newNotes[barIndex], newStaveNote];
+      notesCopy[barIndex] = [...barOfStaveNotes, newStaveNote];
     }
-    setNotes(() => newNotes);
+    setNotes(() => notesCopy);
   };
 
   return (
