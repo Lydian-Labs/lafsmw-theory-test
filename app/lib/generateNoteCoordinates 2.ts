@@ -2,8 +2,6 @@ interface NoteStringAndNoteCoordinate {
   note: string;
   yCoordinateMin: number;
   yCoordinateMax: number;
-  userClickXCoordinate?: number
-  userClickYCoordinate?: number
 }
 
 const generateNoteCoordinates = (
