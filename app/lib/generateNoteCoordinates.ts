@@ -13,6 +13,7 @@ const generateNoteCoordinates = (
   return notes.map((note, index) => {
     const yCoordinateMin = yMin + index * 5;
     const yCoordinateMax = yCoordinateMin + 5;
+   
     return { note, yCoordinateMin, yCoordinateMax };
   });
 };

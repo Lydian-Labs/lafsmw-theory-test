@@ -166,7 +166,9 @@ const CreateAndEraseNotesFromStave = () => {
           note.y >= noteObject.yCoordinateMin &&
           note.y <= noteObject.yCoordinateMax
       );
-      barOfStaveNotes.splice(indexOfNoteToErase, 1);
+      if (indexOfNoteToErase !== -1) {
+        barOfStaveNotes.splice(indexOfNoteToErase, 1);
+      }
     } else if (isSharpActive) {
       if (noteObject) {
         const indexOfNoteToSharp: number = barOfStaveNotes?.findIndex(
@@ -174,9 +176,11 @@ const CreateAndEraseNotesFromStave = () => {
             note.y >= noteObject.yCoordinateMin &&
             note.y <= noteObject.yCoordinateMax
         );
-        barOfStaveNotes[indexOfNoteToSharp].newStaveNote.addModifier(
-          new Accidental("#")
-        );
+        if (indexOfNoteToSharp !== -1) {
+          barOfStaveNotes[indexOfNoteToSharp].newStaveNote.addModifier(
+            new Accidental("#")
+          );
+        }
       }
     } else if (isFlatActive) {
       const indexOfNoteToFlat = barOfStaveNotes.findIndex(
@@ -184,9 +188,11 @@ const CreateAndEraseNotesFromStave = () => {
           note.y >= noteObject.yCoordinateMin &&
           note.y <= noteObject.yCoordinateMax
       );
-      barOfStaveNotes[indexOfNoteToFlat].newStaveNote?.addModifier(
-        new Accidental("b")
-      );
+      if (indexOfNoteToFlat !== -1) {
+        barOfStaveNotes[indexOfNoteToFlat].newStaveNote?.addModifier(
+          new Accidental("b")
+        );
+      }
     } else if (barOfStaveNotes && barOfStaveNotes.length >= beatsInMeasure) {
       setTooManyBeatsInMeasure(true);
     } else {
