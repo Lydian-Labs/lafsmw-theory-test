@@ -2,7 +2,12 @@ import Stack from "@mui/material/Stack";
 import { ForwardedRef, forwardRef, useState } from "react";
 import createInitialState from "../lib/createInitialState";
 import gatherWidthInfo from "../lib/gatherWidthInfo";
-import { ChangeEvent, Chord, FormEvent, InputData } from "../types";
+import {
+  ChangeEvent,
+  Chord,
+  FormEvent,
+  InputData,
+} from "../lib/typesAndInterfaces";
 import FormInput from "./FormInput";
 import Staff from "./Staff";
 

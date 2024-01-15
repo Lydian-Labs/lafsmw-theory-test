@@ -16,7 +16,7 @@ import scalesText from "../lib/data/scalesText";
 import seventhChords from "../lib/data/seventhChords";
 import seventhChordsText from "../lib/data/seventhChordsText";
 import triadsText from "../lib/data/triadsText";
-import { InputData, SelectEvent } from "../types";
+import { InputData, SelectEvent } from "../lib/typesAndInterfaces";
 
 type Level =
   | "advanced-theory"
