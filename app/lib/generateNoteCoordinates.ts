@@ -1,4 +1,4 @@
-import { NoteStringAndNoteCoordinate } from "../typesAndInterfaces";
+import { NoteStringAndNoteCoordinate } from "./typesAndInterfaces";
 
 const generateNoteCoordinates = (
   yMin: number,

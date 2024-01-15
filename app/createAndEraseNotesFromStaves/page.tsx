@@ -12,28 +12,28 @@ import {
   StaveType,
   StaveNoteType,
   StaveNoteAndXAndYCoordinates,
-} from "../typesAndInterfaces";
+} from "../lib/typesAndInterfaces";
 
 import VexFlow from "vexflow";
 
 const VF = VexFlow.Flow;
 const { Formatter, Renderer, StaveNote, Stave, Accidental } = VF;
 
-const clef = "treble";
-const timeSig = "4/4";
-const beatsInMeasure = parseInt(timeSig.split("/")[0]);
-let numStaves = 4;
-let yPositionOfStaves = 150;
+const CLEF = "treble";
+const TIME_SIG = "4/4";
+const BEATS_IN_MEASURE = parseInt(TIME_SIG.split("/")[0]);
+let NUM_STAVES = 4;
+let Y_POSITION_OF_STAVES = 150;
 
-const initialNotes: StaveNoteAndXAndYCoordinates[][] = new Array(
-  numStaves
+const INITIAL_NOTES: StaveNoteAndXAndYCoordinates[][] = new Array(
+  NUM_STAVES
 ).fill([]);
 
 const CreateAndEraseNotesFromStave = () => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
   const [bars, setBars] = useState<StaveType[]>([]);
-  const [notes, setNotes] = useState(initialNotes);
+  const [notes, setNotes] = useState(INITIAL_NOTES);
   const [isEraserActive, setIsEraserActive] = useState(false);
   const [isEnterNotesActive, setIsEnterNotesActive] = useState(true);
   const [noteNotFound, setNoteNotFound] = useState(false);
@@ -51,7 +51,7 @@ const CreateAndEraseNotesFromStave = () => {
     setIsEraserActive(false);
   };
 
-  const createRenderer = () => {
+  const initializeRenderer = () => {
     if (!rendererRef.current && container.current) {
       rendererRef.current = new Renderer(
         container.current,
@@ -69,14 +69,14 @@ const CreateAndEraseNotesFromStave = () => {
       context &&
         setBars(() =>
           KaseyBlankStaves(
-            numStaves,
+            NUM_STAVES,
             context,
             240,
             180,
             10,
-            yPositionOfStaves,
-            clef,
-            timeSig
+            Y_POSITION_OF_STAVES,
+            CLEF,
+            TIME_SIG
           )
         );
     }
@@ -93,8 +93,8 @@ const CreateAndEraseNotesFromStave = () => {
   };
 
   const clearMeasures = () => {
-    setNotes(() => initialNotes);
-    createRenderer();
+    setNotes(() => INITIAL_NOTES);
+    initializeRenderer();
     renderStavesAndNotes();
     setIsEraserActive(false);
   };
@@ -111,7 +111,7 @@ const CreateAndEraseNotesFromStave = () => {
   };
 
   useEffect(() => {
-    createRenderer();
+    initializeRenderer();
     const renderer = rendererRef.current;
     renderer?.resize(800, 300);
     const context = renderer && renderer.getContext();
@@ -124,9 +124,9 @@ const CreateAndEraseNotesFromStave = () => {
           240,
           180,
           10,
-          yPositionOfStaves,
-          clef,
-          timeSig
+          Y_POSITION_OF_STAVES,
+          CLEF,
+          TIME_SIG
         )
       );
   }, []);
@@ -191,7 +191,7 @@ const CreateAndEraseNotesFromStave = () => {
           new Accidental("b")
         );
       }
-    } else if (barOfStaveNotes && barOfStaveNotes.length >= beatsInMeasure) {
+    } else if (barOfStaveNotes && barOfStaveNotes.length >= BEATS_IN_MEASURE) {
       setTooManyBeatsInMeasure(true);
     } else {
       const newStaveNote: StaveNoteType = new StaveNote({

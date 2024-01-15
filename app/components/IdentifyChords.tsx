@@ -6,7 +6,7 @@ import {
   Chord,
   FormEvent,
   InputData,
-} from "../typesAndInterfaces";
+} from "../lib/typesAndInterfaces";
 import FormInput from "./FormInput";
 import Staff from "./Staff";
 

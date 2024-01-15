@@ -1,7 +1,7 @@
 import {
   NoteStringAndYMinAndYMax,
   StaveNoteAndXAndYCoordinates,
-} from "../typesAndInterfaces";
+} from "./typesAndInterfaces";
 
 export const indexOfNoteToModify = (
   staveData: StaveNoteAndXAndYCoordinates[],
