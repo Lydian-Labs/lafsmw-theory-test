@@ -1,6 +1,6 @@
 //move to lib folder
 
-interface NoteStringAndNoteCoordinate {
+interface NoteStringAndYMinAndYMax {
   note: string;
   yCoordinateMin: number;
   yCoordinateMax: number;
@@ -9,7 +9,7 @@ interface NoteStringAndNoteCoordinate {
 const generateNoteCoordinates = (
   yMin: number,
   notes: string[]
-): NoteStringAndNoteCoordinate[] => {
+): NoteStringAndYMinAndYMax[] => {
   return notes.map((note, index) => {
     const yCoordinateMin = yMin + index * 5;
     const yCoordinateMax = yCoordinateMin + 5;
