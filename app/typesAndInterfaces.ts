@@ -30,3 +30,11 @@ export interface NoteStringAndYMinAndYMax {
   yCoordinateMin: number;
   yCoordinateMax: number;
 }
+
+export interface NoteStringAndNoteCoordinate {
+  note: string;
+  yCoordinateMin: number;
+  yCoordinateMax: number;
+  userClickXCoordinate?: number;
+  userClickYCoordinate?: number;
+}

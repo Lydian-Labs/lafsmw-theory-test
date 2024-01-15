@@ -7,10 +7,10 @@ import KaseyBlankStaves from "../components/KaseyBlankStaves";
 import BlueButton from "../components/BlueButton";
 import { findBarIndex } from "../lib/findBar";
 import generateNoteCoordinates from "../lib/generateNoteCoordinates";
+import { indexOfNoteToModify } from "../lib/indexOfNoteToModify";
 import {
   StaveType,
   StaveNoteType,
-  NoteStringAndYMinAndYMax,
   StaveNoteAndXAndYCoordinates,
 } from "../typesAndInterfaces";
 
@@ -92,16 +92,6 @@ const CreateAndEraseNotesFromStave = () => {
     });
   };
 
-  const indexOfNoteToModify = (
-    staveData: StaveNoteAndXAndYCoordinates[],
-    noteObj: NoteStringAndYMinAndYMax
-  ): number => {
-    const index: number = staveData?.findIndex(
-      (note) =>
-        note.y >= noteObj.yCoordinateMin && note.y <= noteObj.yCoordinateMax
-    );
-    return index;
-  };
   const clearMeasures = () => {
     setNotes(() => initialNotes);
     createRenderer();
@@ -151,9 +141,9 @@ const CreateAndEraseNotesFromStave = () => {
     const y = rect ? e.clientY - rect.top : 0;
     const topStaveYPosition = bars[0].getYForTopText();
 
-    const highG = topStaveYPosition - 33;
+    const highGYPosition: number = topStaveYPosition - 33;
 
-    let noteObject = generateNoteCoordinates(highG, notesArray).find(
+    let noteObject = generateNoteCoordinates(highGYPosition, notesArray).find(
       ({ yCoordinateMin, yCoordinateMax }) =>
         y >= yCoordinateMin && y <= yCoordinateMax
     );
