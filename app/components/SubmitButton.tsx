@@ -1,5 +1,5 @@
 import { Button, Grid, SxProps, Theme } from "@mui/material";
-import { MouseEvent } from "../types";
+import { MouseEvent } from "../typesAndInterfaces";
 
 type ButtonProps = {
   labelText: string;

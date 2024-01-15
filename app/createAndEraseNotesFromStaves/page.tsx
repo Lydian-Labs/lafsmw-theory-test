@@ -2,29 +2,22 @@
 import { notesArray } from "../lib/noteArray";
 import { Alert, Snackbar } from "@mui/material/";
 import React, { useEffect, useRef, useState } from "react";
-import VexFlow from "vexflow";
 import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
 import KaseyBlankStaves from "../components/KaseyBlankStaves";
 import BlueButton from "../components/BlueButton";
 import { findBarIndex } from "../lib/findBar";
 import generateNoteCoordinates from "../lib/generateNoteCoordinates";
+import {
+  StaveType,
+  StaveNoteType,
+  NoteStringAndYMinAndYMax,
+  StaveNoteAndXAndYCoordinates,
+} from "../typesAndInterfaces";
+
+import VexFlow from "vexflow";
+
 const VF = VexFlow.Flow;
 const { Formatter, Renderer, StaveNote, Stave, Accidental } = VF;
-
-type StaveType = InstanceType<typeof Stave>;
-type StaveNoteType = InstanceType<typeof StaveNote>;
-
-interface StaveNoteAndXAndYCoordinates {
-  newStaveNote: StaveNoteType;
-  x: number;
-  y: number;
-}
-
-interface NoteStringAndYMinAndYMax {
-  note: string;
-  yCoordinateMin: number;
-  yCoordinateMax: number;
-}
 
 const clef = "treble";
 const timeSig = "4/4";
