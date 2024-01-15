@@ -1,15 +1,16 @@
 import {
   NoteStringAndYMinAndYMax,
-  StaveNoteAndXAndYCoordinates,
+  StaveNoteAndUserClickXAndYCoords,
 } from "./typesAndInterfaces";
 
 export const indexOfNoteToModify = (
-  staveData: StaveNoteAndXAndYCoordinates[],
+  staveData: StaveNoteAndUserClickXAndYCoords[],
   noteObj: NoteStringAndYMinAndYMax
 ): number => {
   const index: number = staveData?.findIndex(
     (note) =>
-      note.y >= noteObj.yCoordinateMin && note.y <= noteObj.yCoordinateMax
+      note.userClickY >= noteObj.yCoordinateMin &&
+      note.userClickY <= noteObj.yCoordinateMax
   );
   return index;
 };

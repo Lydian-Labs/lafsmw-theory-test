@@ -19,10 +19,10 @@ export type Chord = {
 export type StaveType = InstanceType<typeof Stave>;
 export type StaveNoteType = InstanceType<typeof StaveNote>;
 
-export interface StaveNoteAndXAndYCoordinates {
+export interface StaveNoteAndUserClickXAndYCoords {
   newStaveNote: StaveNoteType;
-  x: number;
-  y: number;
+  userClickX: number;
+  userClickY: number;
 }
 
 export interface NoteStringAndYMinAndYMax {
@@ -35,6 +35,6 @@ export interface NoteStringYMinAndYMaxAndUserClickCoords {
   note: string;
   yCoordinateMin: number;
   yCoordinateMax: number;
-  userClickXCoordinate?: number;
-  userClickYCoordinate?: number;
+  userClickX: number;
+  userClickY: number;
 }

@@ -11,7 +11,7 @@ import { indexOfNoteToModify } from "../lib/indexOfNoteToModify";
 import {
   StaveType,
   StaveNoteType,
-  StaveNoteAndXAndYCoordinates,
+  StaveNoteAndUserClickXAndYCoords,
   NoteStringYMinAndYMaxAndUserClickCoords,
 } from "../lib/typesAndInterfaces";
 
@@ -26,7 +26,7 @@ const BEATS_IN_MEASURE = parseInt(TIME_SIG.split("/")[0]);
 let NUM_STAVES = 4;
 let Y_POSITION_OF_STAVES = 150;
 
-const INITIAL_NOTES: StaveNoteAndXAndYCoordinates[][] = new Array(
+const INITIAL_NOTES: StaveNoteAndUserClickXAndYCoords[][] = new Array(
   NUM_STAVES
 ).fill([]);
 
@@ -41,6 +41,7 @@ const CreateAndEraseNotesFromStave = () => {
   const [tooManyBeatsInMeasure, setTooManyBeatsInMeasure] = useState(false);
   const [isSharpActive, setIsSharpActive] = useState(false);
   const [isFlatActive, setIsFlatActive] = useState(false);
+  const [absoluteXCoord, setAbsoluteXCoord] = useState<number[]>();
 
   const eraser = () => {
     setIsEraserActive(!isEraserActive);
@@ -71,7 +72,6 @@ const CreateAndEraseNotesFromStave = () => {
   };
 
   let foundNoteDataAndUserClickData: NoteStringYMinAndYMaxAndUserClickCoords;
-
   const initializeRenderer = () => {
     if (!rendererRef.current && container.current) {
       rendererRef.current = new Renderer(
@@ -107,6 +107,8 @@ const CreateAndEraseNotesFromStave = () => {
         if (staveNotes.length > 0) {
           context &&
             Formatter.FormatAndDraw(context, blankStaves[index], staveNotes);
+          const xCoords = staveNotes.map((note, index) => note.getAbsoluteX());
+          setAbsoluteXCoord(xCoords);
         }
       }
     });
@@ -139,8 +141,8 @@ const CreateAndEraseNotesFromStave = () => {
 
   const handleClick = (e: React.MouseEvent) => {
     const rect = container.current?.getBoundingClientRect();
-    const x = rect ? e.clientX - rect.left : 0;
-    const y = rect ? e.clientY - rect.top : 0;
+    const userClickX = rect ? e.clientX - rect.left : 0;
+    const userClickY = rect ? e.clientY - rect.top : 0;
     const topStaveYPosition = blankStaves[0].getYForTopText();
 
     const highGYPosition: number = topStaveYPosition - 33;
@@ -150,20 +152,19 @@ const CreateAndEraseNotesFromStave = () => {
       notesArray
     ).find(
       ({ yCoordinateMin, yCoordinateMax }) =>
-        y >= yCoordinateMin && y <= yCoordinateMax
+        userClickY >= yCoordinateMin && userClickY <= yCoordinateMax
     );
 
     if (foundNoteData)
       foundNoteDataAndUserClickData = {
         ...foundNoteData,
-        userClickXCoordinate: x,
-        userClickYCoordinate: y,
+        userClickX: userClickX,
+        userClickY: userClickY,
       };
 
-    const barIndex = findBarIndex(blankStaves, x);
-    let notesCopy = [...notesData];
-    const barOfStaveNotes = notesCopy[barIndex];
-    console.log(barOfStaveNotes);
+    const barIndex = findBarIndex(blankStaves, userClickX);
+    let notesDataCopy = [...notesData];
+    const barOfStaveNotes = notesDataCopy[barIndex];
     if (!foundNoteDataAndUserClickData) {
       setNoteNotFound(true);
     } else if (isEraserActive) {
@@ -171,31 +172,25 @@ const CreateAndEraseNotesFromStave = () => {
         barOfStaveNotes,
         foundNoteDataAndUserClickData
       );
-      if (indexOfNoteToErase !== -1) {
-        barOfStaveNotes.splice(indexOfNoteToErase, 1);
-      }
+      barOfStaveNotes.splice(indexOfNoteToErase, 1);
     } else if (isSharpActive) {
       if (foundNoteDataAndUserClickData) {
         const indexOfNoteToSharp = indexOfNoteToModify(
           barOfStaveNotes,
           foundNoteDataAndUserClickData
         );
-        if (indexOfNoteToSharp !== -1) {
-          barOfStaveNotes[indexOfNoteToSharp].newStaveNote.addModifier(
-            new Accidental("#")
-          );
-        }
+        barOfStaveNotes[indexOfNoteToSharp].newStaveNote.addModifier(
+          new Accidental("#")
+        );
       }
     } else if (isFlatActive) {
       const indexOfNoteToFlat = indexOfNoteToModify(
         barOfStaveNotes,
         foundNoteDataAndUserClickData
       );
-      if (indexOfNoteToFlat !== -1) {
-        barOfStaveNotes[indexOfNoteToFlat].newStaveNote?.addModifier(
-          new Accidental("b")
-        );
-      }
+      barOfStaveNotes[indexOfNoteToFlat].newStaveNote?.addModifier(
+        new Accidental("b")
+      );
     } else if (barOfStaveNotes && barOfStaveNotes.length >= BEATS_IN_MEASURE) {
       setTooManyBeatsInMeasure(true);
     } else {
@@ -204,14 +199,15 @@ const CreateAndEraseNotesFromStave = () => {
         duration: "q",
       });
 
-      if (notesData[0])
-        notesCopy[barIndex] = [...barOfStaveNotes, { newStaveNote, x, y }];
+      if (notesData)
+        notesDataCopy[barIndex] = [
+          ...barOfStaveNotes,
+          { newStaveNote, userClickX, userClickY },
+        ];
     }
-    setNotesData(() => notesCopy);
-    setIsEraserActive(false);
+    setNotesData(() => notesDataCopy);
     setIsSharpActive(false);
     setIsFlatActive(false);
-    setIsEnterNotesActive(true);
   };
 
   return (
