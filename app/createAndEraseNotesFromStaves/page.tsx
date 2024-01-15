@@ -18,7 +18,7 @@ import {
 import VexFlow from "vexflow";
 
 const VF = VexFlow.Flow;
-const { Formatter, Renderer, StaveNote, Stave, Accidental } = VF;
+const { Formatter, Renderer, StaveNote, Accidental } = VF;
 
 const CLEF = "treble";
 const TIME_SIG = "4/4";
@@ -94,8 +94,8 @@ const CreateAndEraseNotesFromStave = () => {
           KaseyBlankStaves(
             NUM_STAVES,
             context,
-            240,
-            180,
+            220,
+            160,
             10,
             Y_POSITION_OF_STAVES,
             CLEF,
@@ -111,8 +111,10 @@ const CreateAndEraseNotesFromStave = () => {
             Formatter.FormatAndDraw(context, blankStaves[index], staveNotes);
           const staveNotesWithCoords = staveNotes.map((note, index) => {
             const absoluteXCoord = note.getAbsoluteX();
-            console.log(absoluteXCoord);
+            return absoluteXCoord;
           });
+
+          console.log(staveNotesWithCoords);
         }
       }
     });
@@ -166,10 +168,9 @@ const CreateAndEraseNotesFromStave = () => {
         userClickY: userClickY,
       };
 
-    const barIndex = findBarIndex(blankStaves, userClickX);
+    const barIndex: number = findBarIndex(blankStaves, userClickX);
     let notesDataCopy = [...notesData];
     const barOfStaveNotes = notesDataCopy[barIndex];
-    console.log(barOfStaveNotes);
     if (!foundNoteDataAndUserClickData) {
       setNoteNotFound(true);
     } else if (isEraserActive) {
