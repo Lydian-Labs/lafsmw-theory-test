@@ -23,6 +23,7 @@ export interface StaveNoteAndUserClickXAndYCoords {
   newStaveNote: StaveNoteType;
   userClickX: number;
   userClickY: number;
+  absoluteXCoord?: number;
 }
 
 export interface NoteStringAndYMinAndYMax {
@@ -37,4 +38,5 @@ export interface NoteStringYMinAndYMaxAndUserClickCoords {
   yCoordinateMax: number;
   userClickX: number;
   userClickY: number;
+  absoluteXCoord?: number;
 }

@@ -64,11 +64,13 @@ const CreateAndEraseNotesFromStave = () => {
     setIsSharpActive(!isSharpActive);
     setIsEnterNotesActive(false);
     setIsFlatActive(false);
+    setIsEraserActive(false);
   };
   const addFlat = () => {
     setIsFlatActive(!isFlatActive);
     setIsEnterNotesActive(false);
     setIsSharpActive(false);
+    setIsEraserActive(false);
   };
 
   let foundNoteDataAndUserClickData: NoteStringYMinAndYMaxAndUserClickCoords;
@@ -107,8 +109,10 @@ const CreateAndEraseNotesFromStave = () => {
         if (staveNotes.length > 0) {
           context &&
             Formatter.FormatAndDraw(context, blankStaves[index], staveNotes);
-          const xCoords = staveNotes.map((note, index) => note.getAbsoluteX());
-          setAbsoluteXCoord(xCoords);
+          const staveNotesWithCoords = staveNotes.map((note, index) => {
+            const absoluteXCoord = note.getAbsoluteX();
+            console.log(absoluteXCoord);
+          });
         }
       }
     });
@@ -165,6 +169,7 @@ const CreateAndEraseNotesFromStave = () => {
     const barIndex = findBarIndex(blankStaves, userClickX);
     let notesDataCopy = [...notesData];
     const barOfStaveNotes = notesDataCopy[barIndex];
+    console.log(barOfStaveNotes);
     if (!foundNoteDataAndUserClickData) {
       setNoteNotFound(true);
     } else if (isEraserActive) {
@@ -198,7 +203,6 @@ const CreateAndEraseNotesFromStave = () => {
         keys: [foundNoteDataAndUserClickData.note],
         duration: "q",
       });
-
       if (notesData)
         notesDataCopy[barIndex] = [
           ...barOfStaveNotes,

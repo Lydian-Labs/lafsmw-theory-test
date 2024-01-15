@@ -14,3 +14,14 @@ export const indexOfNoteToModify = (
   );
   return index;
 };
+export const indexOfNoteToModify2 = (
+  staveData: StaveNoteAndUserClickXAndYCoords[],
+  noteObj: NoteStringAndYMinAndYMax
+): number => {
+  const index: number = staveData?.findIndex(
+    (note) =>
+      note.userClickY >= noteObj.yCoordinateMin &&
+      note.userClickY <= noteObj.yCoordinateMax
+  );
+  return index;
+};
