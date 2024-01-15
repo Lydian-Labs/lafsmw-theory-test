@@ -24,7 +24,12 @@ const Navbar: FC = () => {
         </li>
         <li className="p-4">
           <Link href="/createAndEraseNotesFromStaves">
-            Add and Erase Notes From Staves
+            Dynamic Input Demo Page
+          </Link>
+        </li>
+        <li className="p-4">
+          <Link href="/dynamicInputDemoRefactor">
+            Dynamic Input Demo Page Refactor
           </Link>
         </li>
       </ul>
