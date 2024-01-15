@@ -6,12 +6,13 @@ import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
 import KaseyBlankStaves from "../components/KaseyBlankStaves";
 import BlueButton from "../components/BlueButton";
 import { findBarIndex } from "../lib/findBar";
-import generateNoteCoordinates from "../lib/generateNoteCoordinates";
+import generateYMinAndYMaxForAllNotes from "../lib/generateYMinAndMaxForAllNotes";
 import { indexOfNoteToModify } from "../lib/indexOfNoteToModify";
 import {
   StaveType,
   StaveNoteType,
   StaveNoteAndXAndYCoordinates,
+  NoteStringYMinAndYMaxAndUserClickCoords,
 } from "../lib/typesAndInterfaces";
 
 import VexFlow from "vexflow";
@@ -32,8 +33,8 @@ const INITIAL_NOTES: StaveNoteAndXAndYCoordinates[][] = new Array(
 const CreateAndEraseNotesFromStave = () => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
-  const [bars, setBars] = useState<StaveType[]>([]);
-  const [notes, setNotes] = useState(INITIAL_NOTES);
+  const [blankStaves, setBlankStaves] = useState<StaveType[]>([]);
+  const [notesData, setNotesData] = useState(INITIAL_NOTES);
   const [isEraserActive, setIsEraserActive] = useState(false);
   const [isEnterNotesActive, setIsEnterNotesActive] = useState(true);
   const [noteNotFound, setNoteNotFound] = useState(false);
@@ -51,49 +52,8 @@ const CreateAndEraseNotesFromStave = () => {
     setIsEraserActive(false);
   };
 
-  const initializeRenderer = () => {
-    if (!rendererRef.current && container.current) {
-      rendererRef.current = new Renderer(
-        container.current,
-        Renderer.Backends.SVG
-      );
-    }
-  };
-
-  const renderStavesAndNotes = () => {
-    const renderer = rendererRef.current;
-    const context = renderer && renderer.getContext();
-    context?.setFont("Arial", 10);
-    context?.clear();
-    if (context) {
-      context &&
-        setBars(() =>
-          KaseyBlankStaves(
-            NUM_STAVES,
-            context,
-            240,
-            180,
-            10,
-            Y_POSITION_OF_STAVES,
-            CLEF,
-            TIME_SIG
-          )
-        );
-    }
-    notes.forEach((noteArray, index) => {
-      if (noteArray) {
-        const staveNotes = noteArray
-          .map(({ newStaveNote }) => newStaveNote)
-          .filter((note): note is StaveNoteType => note !== undefined);
-        if (staveNotes.length > 0) {
-          context && Formatter.FormatAndDraw(context, bars[index], staveNotes);
-        }
-      }
-    });
-  };
-
   const clearMeasures = () => {
-    setNotes(() => INITIAL_NOTES);
+    setNotesData(() => INITIAL_NOTES);
     initializeRenderer();
     renderStavesAndNotes();
     setIsEraserActive(false);
@@ -110,6 +70,48 @@ const CreateAndEraseNotesFromStave = () => {
     setIsSharpActive(false);
   };
 
+  let foundNoteDataAndUserClickData: NoteStringYMinAndYMaxAndUserClickCoords;
+
+  const initializeRenderer = () => {
+    if (!rendererRef.current && container.current) {
+      rendererRef.current = new Renderer(
+        container.current,
+        Renderer.Backends.SVG
+      );
+    }
+  };
+
+  const renderStavesAndNotes = () => {
+    const renderer = rendererRef.current;
+    const context = renderer && renderer.getContext();
+    context?.setFont("Arial", 10);
+    context?.clear();
+    if (context) {
+      context &&
+        setBlankStaves(() =>
+          KaseyBlankStaves(
+            NUM_STAVES,
+            context,
+            240,
+            180,
+            10,
+            Y_POSITION_OF_STAVES,
+            CLEF,
+            TIME_SIG
+          )
+        );
+    }
+    notesData.forEach((barData, index) => {
+      if (barData) {
+        const staveNotes = barData.map(({ newStaveNote }) => newStaveNote);
+        if (staveNotes.length > 0) {
+          context &&
+            Formatter.FormatAndDraw(context, blankStaves[index], staveNotes);
+        }
+      }
+    });
+  };
+
   useEffect(() => {
     initializeRenderer();
     const renderer = rendererRef.current;
@@ -117,7 +119,7 @@ const CreateAndEraseNotesFromStave = () => {
     const context = renderer && renderer.getContext();
     context?.setFont("Arial", 10);
     context &&
-      setBars(
+      setBlankStaves(
         KaseyBlankStaves(
           4,
           context,
@@ -133,47 +135,50 @@ const CreateAndEraseNotesFromStave = () => {
 
   useEffect(() => {
     renderStavesAndNotes();
-  }, [notes]);
+  }, [notesData]);
 
   const handleClick = (e: React.MouseEvent) => {
     const rect = container.current?.getBoundingClientRect();
     const x = rect ? e.clientX - rect.left : 0;
     const y = rect ? e.clientY - rect.top : 0;
-    const topStaveYPosition = bars[0].getYForTopText();
+    const topStaveYPosition = blankStaves[0].getYForTopText();
 
     const highGYPosition: number = topStaveYPosition - 33;
 
-    let noteObject = generateNoteCoordinates(highGYPosition, notesArray).find(
+    let foundNoteData = generateYMinAndYMaxForAllNotes(
+      highGYPosition,
+      notesArray
+    ).find(
       ({ yCoordinateMin, yCoordinateMax }) =>
         y >= yCoordinateMin && y <= yCoordinateMax
     );
 
-    if (noteObject)
-      noteObject = {
-        ...noteObject,
+    if (foundNoteData)
+      foundNoteDataAndUserClickData = {
+        ...foundNoteData,
         userClickXCoordinate: x,
         userClickYCoordinate: y,
       };
 
-    const barIndex = findBarIndex(bars, x);
-    let notesCopy = [...notes];
+    const barIndex = findBarIndex(blankStaves, x);
+    let notesCopy = [...notesData];
     const barOfStaveNotes = notesCopy[barIndex];
     console.log(barOfStaveNotes);
-    if (!noteObject) {
+    if (!foundNoteDataAndUserClickData) {
       setNoteNotFound(true);
     } else if (isEraserActive) {
       const indexOfNoteToErase = indexOfNoteToModify(
         barOfStaveNotes,
-        noteObject
+        foundNoteDataAndUserClickData
       );
       if (indexOfNoteToErase !== -1) {
         barOfStaveNotes.splice(indexOfNoteToErase, 1);
       }
     } else if (isSharpActive) {
-      if (noteObject) {
+      if (foundNoteDataAndUserClickData) {
         const indexOfNoteToSharp = indexOfNoteToModify(
           barOfStaveNotes,
-          noteObject
+          foundNoteDataAndUserClickData
         );
         if (indexOfNoteToSharp !== -1) {
           barOfStaveNotes[indexOfNoteToSharp].newStaveNote.addModifier(
@@ -184,7 +189,7 @@ const CreateAndEraseNotesFromStave = () => {
     } else if (isFlatActive) {
       const indexOfNoteToFlat = indexOfNoteToModify(
         barOfStaveNotes,
-        noteObject
+        foundNoteDataAndUserClickData
       );
       if (indexOfNoteToFlat !== -1) {
         barOfStaveNotes[indexOfNoteToFlat].newStaveNote?.addModifier(
@@ -195,14 +200,14 @@ const CreateAndEraseNotesFromStave = () => {
       setTooManyBeatsInMeasure(true);
     } else {
       const newStaveNote: StaveNoteType = new StaveNote({
-        keys: [noteObject.note],
+        keys: [foundNoteDataAndUserClickData.note],
         duration: "q",
       });
 
-      if (notes[0])
+      if (notesData[0])
         notesCopy[barIndex] = [...barOfStaveNotes, { newStaveNote, x, y }];
     }
-    setNotes(() => notesCopy);
+    setNotesData(() => notesCopy);
     setIsEraserActive(false);
     setIsSharpActive(false);
     setIsFlatActive(false);

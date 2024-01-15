@@ -31,7 +31,7 @@ export interface NoteStringAndYMinAndYMax {
   yCoordinateMax: number;
 }
 
-export interface NoteStringAndNoteCoordinate {
+export interface NoteStringYMinAndYMaxAndUserClickCoords {
   note: string;
   yCoordinateMin: number;
   yCoordinateMax: number;
