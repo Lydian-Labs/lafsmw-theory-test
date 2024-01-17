@@ -215,7 +215,7 @@ const CreateAndEraseNotesFromStave = () => {
       <div ref={container} onClick={handleClick} />
       <CheckNumBeatsInMeasure
         tooManyBeatsInMeasure={tooManyBeatsInMeasure}
-        setTooManyBeatsInMeasure={setTooManyBeatsInMeasure}
+        openEnterNotes={setTooManyBeatsInMeasure}
       />
       <Snackbar
         open={noteNotFound}

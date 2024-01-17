@@ -107,7 +107,7 @@ const AddNotesToAStaff = () => {
     <div ref={container} className="text-center mt-[10em]">
       <CheckNumBeatsInMeasure
         tooManyBeatsInMeasure={tooManyBeatsInMeasure}
-        setTooManyBeatsInMeasure={setTooManyBeatsInMeasure}
+        openEnterNotes={setTooManyBeatsInMeasure}
       />
       <Snackbar
         open={noteNotFound}

@@ -3,6 +3,7 @@ import { notesArray } from "../lib/noteArray";
 import { Alert, Snackbar } from "@mui/material/";
 import React, { useEffect, useRef, useState } from "react";
 import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
+import CheckIfNoteFound from "../components/CheckIfNoteFound";
 import KaseyBlankStaves from "../components/KaseyBlankStaves";
 import BlueButton from "../components/BlueButton";
 import { findBarIndex } from "../lib/findBar";
@@ -212,19 +213,13 @@ const CreateAndEraseNotesFromStave = () => {
 
       <CheckNumBeatsInMeasure
         tooManyBeatsInMeasure={state.tooManyBeatsInMeasure}
-        setTooManyBeatsInMeasure={enterNotes}
+        openEnterNotes={enterNotes}
       />
 
-      <Snackbar
-        open={state.noNoteFound}
-        autoHideDuration={3000}
-        onClose={() => enterNotes()}
-        anchorOrigin={{ vertical: "top", horizontal: "left" }}
-      >
-        <Alert variant="filled" severity="error">
-          {"The location you clicked doesn't correspond to a note"}
-        </Alert>
-      </Snackbar>
+      <CheckIfNoteFound
+        noNoteFound={state.noNoteFound}
+        openEnterNotes={enterNotes}
+      />
       <div className="mt-2 ml-3">
         <BlueButton onClick={eraser} isEnabled={state.isEraserActive}>
           Eraser
