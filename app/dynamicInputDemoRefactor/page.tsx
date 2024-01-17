@@ -61,6 +61,17 @@ const CreateAndEraseNotesFromStave = () => {
   const addSharp = () => toggleState("isSharpActive");
   const addFlat = () => toggleState("isFlatActive");
 
+  const buttons = [
+    { button: eraser, text: "Eraser", stateFunction: state.isEraserActive },
+    {
+      button: enterNotes,
+      text: "Enter Notes",
+      stateFunction: state.isEnterNotesActive,
+    },
+    { button: addSharp, text: "Add Sharp", stateFunction: state.isSharpActive },
+    { button: addFlat, text: "Add Flat", stateFunction: state.isFlatActive },
+  ];
+
   const clearMeasures = () => {
     setNotesData(() => INITIAL_NOTES);
     initializeRenderer();
@@ -210,30 +221,27 @@ const CreateAndEraseNotesFromStave = () => {
   return (
     <>
       <div ref={container} onClick={handleClick} />
-
       <CheckNumBeatsInMeasure
         tooManyBeatsInMeasure={state.tooManyBeatsInMeasure}
         openEnterNotes={enterNotes}
       />
-
       <CheckIfNoteFound
         noNoteFound={state.noNoteFound}
         openEnterNotes={enterNotes}
       />
       <div className="mt-2 ml-3">
-        <BlueButton onClick={eraser} isEnabled={state.isEraserActive}>
-          Eraser
-        </BlueButton>
-        <BlueButton onClick={enterNotes} isEnabled={state.isEnterNotesActive}>
-          Enter Notes
-        </BlueButton>
+        {buttons.map((button, index) => {
+          return (
+            <BlueButton
+              key={button.text}
+              onClick={button.button}
+              isEnabled={button.stateFunction}
+            >
+              {button.text}
+            </BlueButton>
+          );
+        })}
         <BlueButton onClick={clearMeasures}>Clear Measures</BlueButton>
-        <BlueButton onClick={addSharp} isEnabled={state.isSharpActive}>
-          Add Sharp
-        </BlueButton>
-        <BlueButton onClick={addFlat} isEnabled={state.isFlatActive}>
-          Add Flat
-        </BlueButton>
       </div>
     </>
   );
