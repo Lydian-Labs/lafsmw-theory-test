@@ -13,7 +13,7 @@ const CheckNumBeatsInMeasure: React.FC<CheckNumBeatsInMeasureProps> = ({
     <div>
       <Snackbar
         open={tooManyBeatsInMeasure}
-        autoHideDuration={4000}
+        autoHideDuration={3000}
         onClose={() => setTooManyBeatsInMeasure(false)}
         anchorOrigin={{ vertical: "top", horizontal: "left" }}
       >

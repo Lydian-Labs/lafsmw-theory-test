@@ -35,42 +35,36 @@ const CreateAndEraseNotesFromStave = () => {
   const container = useRef<HTMLDivElement | null>(null);
   const [blankStaves, setBlankStaves] = useState<StaveType[]>([]);
   const [notesData, setNotesData] = useState(INITIAL_NOTES);
-  const [isEraserActive, setIsEraserActive] = useState(false);
-  const [isEnterNotesActive, setIsEnterNotesActive] = useState(true);
-  const [noteNotFound, setNoteNotFound] = useState(false);
-  const [tooManyBeatsInMeasure, setTooManyBeatsInMeasure] = useState(false);
-  const [isSharpActive, setIsSharpActive] = useState(false);
-  const [isFlatActive, setIsFlatActive] = useState(false);
-  const [absoluteXCoord, setAbsoluteXCoord] = useState<number[]>();
-
-  const eraser = () => {
-    setIsEraserActive(!isEraserActive);
-    setIsEnterNotesActive(false);
+  const [state, setState] = useState({
+    isEraserActive: false,
+    isEnterNotesActive: true,
+    isSharpActive: false,
+    noNoteFound: false,
+    tooManyBeats: false,
+    isFlatActive: false,
+  });
+  const toggleState = (key: string) => {
+    setState((prevState) => ({
+      ...prevState,
+      isEraserActive: false,
+      isEnterNotesActive: false,
+      isSharpActive: false,
+      isFlatActive: false,
+      noNoteFound: false,
+      tooManyBeats: false,
+      [key]: true,
+    }));
   };
 
-  const enterNotes = () => {
-    setIsEnterNotesActive(true);
-    setIsEraserActive(false);
-  };
+  const eraser = () => toggleState("isEraserActive");
+  const enterNotes = () => toggleState("isEnterNotesActive");
+  const addSharp = () => toggleState("isSharpActive");
+  const addFlat = () => toggleState("isFlatActive");
 
   const clearMeasures = () => {
     setNotesData(() => INITIAL_NOTES);
     initializeRenderer();
     renderStavesAndNotes();
-    setIsEraserActive(false);
-  };
-
-  const addSharp = () => {
-    setIsSharpActive(!isSharpActive);
-    setIsEnterNotesActive(false);
-    setIsFlatActive(false);
-    setIsEraserActive(false);
-  };
-  const addFlat = () => {
-    setIsFlatActive(!isFlatActive);
-    setIsEnterNotesActive(false);
-    setIsSharpActive(false);
-    setIsEraserActive(false);
   };
 
   let foundNoteDataAndUserClickData: NoteStringYMinAndYMaxAndUserClickCoords;
@@ -172,14 +166,14 @@ const CreateAndEraseNotesFromStave = () => {
     let notesDataCopy = [...notesData];
     const barOfStaveNotes = notesDataCopy[barIndex];
     if (!foundNoteDataAndUserClickData) {
-      setNoteNotFound(true);
-    } else if (isEraserActive) {
+      toggleState("noNoteFound");
+    } else if (state.isEraserActive) {
       const indexOfNoteToErase = indexOfNoteToModify(
         barOfStaveNotes,
         foundNoteDataAndUserClickData
       );
       barOfStaveNotes.splice(indexOfNoteToErase, 1);
-    } else if (isSharpActive) {
+    } else if (state.isSharpActive) {
       if (foundNoteDataAndUserClickData) {
         const indexOfNoteToSharp = indexOfNoteToModify(
           barOfStaveNotes,
@@ -189,7 +183,7 @@ const CreateAndEraseNotesFromStave = () => {
           new Accidental("#")
         );
       }
-    } else if (isFlatActive) {
+    } else if (state.isFlatActive) {
       const indexOfNoteToFlat = indexOfNoteToModify(
         barOfStaveNotes,
         foundNoteDataAndUserClickData
@@ -198,7 +192,7 @@ const CreateAndEraseNotesFromStave = () => {
         new Accidental("b")
       );
     } else if (barOfStaveNotes && barOfStaveNotes.length >= BEATS_IN_MEASURE) {
-      setTooManyBeatsInMeasure(true);
+      toggleState("tooManyBeats");
     } else {
       const newStaveNote: StaveNoteType = new StaveNote({
         keys: [foundNoteDataAndUserClickData.note],
@@ -211,21 +205,21 @@ const CreateAndEraseNotesFromStave = () => {
         ];
     }
     setNotesData(() => notesDataCopy);
-    setIsSharpActive(false);
-    setIsFlatActive(false);
   };
 
   return (
     <>
       <div ref={container} onClick={handleClick} />
+
       <CheckNumBeatsInMeasure
-        tooManyBeatsInMeasure={tooManyBeatsInMeasure}
-        setTooManyBeatsInMeasure={setTooManyBeatsInMeasure}
+        tooManyBeatsInMeasure={state.tooManyBeats}
+        setTooManyBeatsInMeasure={enterNotes}
       />
+
       <Snackbar
-        open={noteNotFound}
-        autoHideDuration={4000}
-        onClose={() => setNoteNotFound(false)}
+        open={state.noNoteFound}
+        autoHideDuration={3000}
+        onClose={() => enterNotes()}
         anchorOrigin={{ vertical: "top", horizontal: "left" }}
       >
         <Alert variant="filled" severity="error">
@@ -233,17 +227,17 @@ const CreateAndEraseNotesFromStave = () => {
         </Alert>
       </Snackbar>
       <div className="mt-2 ml-3">
-        <BlueButton onClick={eraser} isEnabled={isEraserActive}>
+        <BlueButton onClick={eraser} isEnabled={state.isEraserActive}>
           Eraser
         </BlueButton>
-        <BlueButton onClick={enterNotes} isEnabled={isEnterNotesActive}>
+        <BlueButton onClick={enterNotes} isEnabled={state.isEnterNotesActive}>
           Enter Notes
         </BlueButton>
         <BlueButton onClick={clearMeasures}>Clear Measures</BlueButton>
-        <BlueButton onClick={addSharp} isEnabled={isSharpActive}>
+        <BlueButton onClick={addSharp} isEnabled={state.isSharpActive}>
           Add Sharp
         </BlueButton>
-        <BlueButton onClick={addFlat} isEnabled={isFlatActive}>
+        <BlueButton onClick={addFlat} isEnabled={state.isFlatActive}>
           Add Flat
         </BlueButton>
       </div>

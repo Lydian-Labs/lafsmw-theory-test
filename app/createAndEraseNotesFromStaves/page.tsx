@@ -18,7 +18,7 @@ import {
 import VexFlow from "vexflow";
 
 const VF = VexFlow.Flow;
-const { Formatter, Renderer, StaveNote, Accidental } = VF;
+const { Formatter, Renderer, StaveNote, Stave, Accidental } = VF;
 
 const CLEF = "treble";
 const TIME_SIG = "4/4";
@@ -64,13 +64,11 @@ const CreateAndEraseNotesFromStave = () => {
     setIsSharpActive(!isSharpActive);
     setIsEnterNotesActive(false);
     setIsFlatActive(false);
-    setIsEraserActive(false);
   };
   const addFlat = () => {
     setIsFlatActive(!isFlatActive);
     setIsEnterNotesActive(false);
     setIsSharpActive(false);
-    setIsEraserActive(false);
   };
 
   let foundNoteDataAndUserClickData: NoteStringYMinAndYMaxAndUserClickCoords;
@@ -94,8 +92,8 @@ const CreateAndEraseNotesFromStave = () => {
           KaseyBlankStaves(
             NUM_STAVES,
             context,
-            220,
-            160,
+            240,
+            180,
             10,
             Y_POSITION_OF_STAVES,
             CLEF,
@@ -109,12 +107,8 @@ const CreateAndEraseNotesFromStave = () => {
         if (staveNotes.length > 0) {
           context &&
             Formatter.FormatAndDraw(context, blankStaves[index], staveNotes);
-          const staveNotesWithCoords = staveNotes.map((note, index) => {
-            const absoluteXCoord = note.getAbsoluteX();
-            return absoluteXCoord;
-          });
-
-          console.log(staveNotesWithCoords);
+          const xCoords = staveNotes.map((note, index) => note.getAbsoluteX());
+          setAbsoluteXCoord(xCoords);
         }
       }
     });
@@ -168,7 +162,7 @@ const CreateAndEraseNotesFromStave = () => {
         userClickY: userClickY,
       };
 
-    const barIndex: number = findBarIndex(blankStaves, userClickX);
+    const barIndex = findBarIndex(blankStaves, userClickX);
     let notesDataCopy = [...notesData];
     const barOfStaveNotes = notesDataCopy[barIndex];
     if (!foundNoteDataAndUserClickData) {
@@ -204,6 +198,7 @@ const CreateAndEraseNotesFromStave = () => {
         keys: [foundNoteDataAndUserClickData.note],
         duration: "q",
       });
+
       if (notesData)
         notesDataCopy[barIndex] = [
           ...barOfStaveNotes,
