@@ -13,6 +13,7 @@ import {
   StaveNoteType,
   StaveNoteAndUserClickXAndYCoords,
   NoteStringYMinAndYMaxAndUserClickCoords,
+  StateType,
 } from "../lib/typesAndInterfaces";
 
 import VexFlow from "vexflow";
@@ -35,25 +36,23 @@ const CreateAndEraseNotesFromStave = () => {
   const container = useRef<HTMLDivElement | null>(null);
   const [blankStaves, setBlankStaves] = useState<StaveType[]>([]);
   const [notesData, setNotesData] = useState(INITIAL_NOTES);
-  const [state, setState] = useState({
+  const [state, setState] = useState<StateType>({
     isEraserActive: false,
     isEnterNotesActive: true,
     isSharpActive: false,
     noNoteFound: false,
-    tooManyBeats: false,
+    tooManyBeatsInMeasure: false,
     isFlatActive: false,
   });
-  const toggleState = (key: string) => {
-    setState((prevState) => ({
-      ...prevState,
-      isEraserActive: false,
-      isEnterNotesActive: false,
-      isSharpActive: false,
-      isFlatActive: false,
-      noNoteFound: false,
-      tooManyBeats: false,
-      [key]: true,
-    }));
+  const toggleState = (key: keyof StateType) => {
+    setState((prevState: StateType) => {
+      let newState: StateType = { ...prevState };
+      for (let stateKey in newState) {
+        newState[stateKey as keyof StateType] = false;
+      }
+      newState[key] = true;
+      return newState;
+    });
   };
 
   const eraser = () => toggleState("isEraserActive");
@@ -192,7 +191,7 @@ const CreateAndEraseNotesFromStave = () => {
         new Accidental("b")
       );
     } else if (barOfStaveNotes && barOfStaveNotes.length >= BEATS_IN_MEASURE) {
-      toggleState("tooManyBeats");
+      toggleState("tooManyBeatsInMeasure");
     } else {
       const newStaveNote: StaveNoteType = new StaveNote({
         keys: [foundNoteDataAndUserClickData.note],
@@ -212,7 +211,7 @@ const CreateAndEraseNotesFromStave = () => {
       <div ref={container} onClick={handleClick} />
 
       <CheckNumBeatsInMeasure
-        tooManyBeatsInMeasure={state.tooManyBeats}
+        tooManyBeatsInMeasure={state.tooManyBeatsInMeasure}
         setTooManyBeatsInMeasure={enterNotes}
       />
 

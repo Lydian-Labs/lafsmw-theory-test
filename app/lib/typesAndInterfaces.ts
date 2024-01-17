@@ -15,7 +15,14 @@ export type Chord = {
   keys: string[];
   duration: string;
 };
-
+export type StateType = {
+  isEraserActive: boolean;
+  isEnterNotesActive: boolean;
+  isSharpActive: boolean;
+  noNoteFound: boolean;
+  tooManyBeatsInMeasure: boolean;
+  isFlatActive: boolean;
+};
 export type StaveType = InstanceType<typeof Stave>;
 export type StaveNoteType = InstanceType<typeof StaveNote>;
 
