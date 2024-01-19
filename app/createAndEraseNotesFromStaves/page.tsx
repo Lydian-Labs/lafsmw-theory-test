@@ -11,7 +11,7 @@ import { indexOfNoteToModify } from "../lib/indexOfNoteToModify";
 import {
   StaveType,
   StaveNoteType,
-  StaveNoteAndUserClickXAndYCoords,
+  StaveNoteAbsoluteXCoordUserClickY,
   NoteStringYMinAndYMaxAndUserClickCoords,
 } from "../lib/typesAndInterfaces";
 
@@ -26,7 +26,7 @@ const BEATS_IN_MEASURE = parseInt(TIME_SIG.split("/")[0]);
 let NUM_STAVES = 4;
 let Y_POSITION_OF_STAVES = 150;
 
-const INITIAL_NOTES: StaveNoteAndUserClickXAndYCoords[][] = new Array(
+const INITIAL_NOTES: StaveNoteAbsoluteXCoordUserClickY[][] = new Array(
   NUM_STAVES
 ).fill([]);
 
@@ -202,7 +202,7 @@ const CreateAndEraseNotesFromStave = () => {
       if (notesData)
         notesDataCopy[barIndex] = [
           ...barOfStaveNotes,
-          { newStaveNote, userClickX, userClickY },
+          { newStaveNote, staveNoteAbsoluteX: userClickX, userClickY },
         ];
     }
     setNotesData(() => notesDataCopy);

@@ -26,13 +26,13 @@ export type StateType = {
 export type StaveType = InstanceType<typeof Stave>;
 export type StaveNoteType = InstanceType<typeof StaveNote>;
 
-export interface StaveNoteAndUserClickXAndYCoords {
+export interface StaveNoteAbsoluteXCoordUserClickY {
   newStaveNote: StaveNoteType;
-  userClickX: number;
+  staveNoteAbsoluteX: number;
   userClickY: number;
 }
 
-export interface NoteStringAndYMinAndYMax {
+export interface NoteStringYMinAndYMax {
   note: string;
   yCoordinateMin: number;
   yCoordinateMax: number;
@@ -42,6 +42,5 @@ export interface NoteStringYMinAndYMaxAndUserClickCoords {
   note: string;
   yCoordinateMin: number;
   yCoordinateMax: number;
-  userClickX: number;
   userClickY: number;
 }
