@@ -32,15 +32,9 @@ export interface StaveNoteAbsoluteXCoordUserClickY {
   userClickY: number;
 }
 
-export interface NoteStringYMinAndYMax {
+export interface NoteStringYMinAndYMaxUserClickY {
   note: string;
   yCoordinateMin: number;
   yCoordinateMax: number;
-}
-
-export interface NoteStringYMinAndYMaxAndUserClickCoords {
-  note: string;
-  yCoordinateMin: number;
-  yCoordinateMax: number;
-  userClickY: number;
+  userClickY?: number;
 }

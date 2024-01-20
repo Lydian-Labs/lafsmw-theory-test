@@ -12,7 +12,7 @@ import {
   StaveType,
   StaveNoteType,
   StaveNoteAbsoluteXCoordUserClickY,
-  NoteStringYMinAndYMaxAndUserClickCoords,
+  NoteStringYMinAndYMaxUserClickY,
   StateType,
 } from "../lib/typesAndInterfaces";
 
@@ -77,7 +77,6 @@ const CreateAndEraseNotesFromStave = () => {
     renderStavesAndNotes();
   };
 
-  let foundNoteDataAndUserClickY: NoteStringYMinAndYMaxAndUserClickCoords; //update
   const initializeRenderer = () => {
     if (!rendererRef.current && container.current) {
       rendererRef.current = new Renderer(
@@ -143,6 +142,8 @@ const CreateAndEraseNotesFromStave = () => {
     renderStavesAndNotes();
   }, [notesData]);
 
+  let foundNoteDataAndUserClickY: NoteStringYMinAndYMaxUserClickY;
+
   const handleClick = (e: React.MouseEvent) => {
     const rect = container.current?.getBoundingClientRect();
     const userClickY = rect ? e.clientY - rect.top : 0;
@@ -168,59 +169,52 @@ const CreateAndEraseNotesFromStave = () => {
     const barIndex: number = findBarIndex(blankStaves, userClickX);
     let notesDataCopy = [...notesData];
     const barOfStaveNotes = notesDataCopy[barIndex];
+    const updatedBarOfStaveNotes = barOfStaveNotes.map((noteData) => ({
+      ...noteData,
+      staveNoteAbsoluteX: noteData.newStaveNote.getAbsoluteX(),
+    }));
     if (!foundNoteDataAndUserClickY) {
       toggleState("noNoteFound");
     } else if (state.isEraserActive) {
       const indexOfNoteToErase = indexOfNoteToModify(
-        barOfStaveNotes,
+        updatedBarOfStaveNotes,
         userClickX
       );
-      barOfStaveNotes.splice(indexOfNoteToErase, 1);
+      updatedBarOfStaveNotes.splice(indexOfNoteToErase, 1);
     } else if (state.isSharpActive) {
-      if (foundNoteDataAndUserClickY) {
-        const indexOfNoteToSharp = indexOfNoteToModify(
-          barOfStaveNotes,
-          userClickX
+      const indexOfNoteToSharp = indexOfNoteToModify(
+        updatedBarOfStaveNotes,
+        userClickX
+      );
+      if (updatedBarOfStaveNotes[indexOfNoteToSharp]?.newStaveNote) {
+        updatedBarOfStaveNotes[indexOfNoteToSharp].newStaveNote.addModifier(
+          new Accidental("#")
         );
-        if (indexOfNoteToSharp < barOfStaveNotes.length) {
-          barOfStaveNotes[indexOfNoteToSharp].newStaveNote?.addModifier(
-            new Accidental("#")
-          );
-        }
       }
     } else if (state.isFlatActive) {
       const indexOfNoteToFlat = indexOfNoteToModify(
-        barOfStaveNotes,
+        updatedBarOfStaveNotes,
         userClickX
       );
-      barOfStaveNotes[indexOfNoteToFlat].newStaveNote?.addModifier(
-        new Accidental("b")
-      );
-    } else if (barOfStaveNotes && barOfStaveNotes.length >= BEATS_IN_MEASURE) {
+      if (updatedBarOfStaveNotes[indexOfNoteToFlat]?.newStaveNote) {
+        updatedBarOfStaveNotes[indexOfNoteToFlat].newStaveNote.addModifier(
+          new Accidental("b")
+        );
+      }
+    } else if (
+      updatedBarOfStaveNotes &&
+      updatedBarOfStaveNotes.length >= BEATS_IN_MEASURE
+    ) {
       toggleState("tooManyBeatsInMeasure");
     } else {
       const newStaveNote: StaveNoteType = new StaveNote({
         keys: [foundNoteDataAndUserClickY.note],
         duration: "q",
       });
-      if (notesData)
-        setNotesData((prevState) => {
-          const newState = [...prevState];
-          newState.map((bar) => {
-            bar.map((noteData) => ({
-              ...noteData,
-              newStaveNote,
-              staveNoteX: noteData.newStaveNote.getAbsoluteX(),
-              userClickY,
-            }));
-          });
-          return newState;
-        });
-      const lastNote = barOfStaveNotes[barOfStaveNotes.length - 1];
-      const staveNoteAbsoluteX = lastNote ? lastNote.staveNoteAbsoluteX : 0;
+
       notesDataCopy[barIndex] = [
-        ...barOfStaveNotes,
-        { newStaveNote, staveNoteAbsoluteX, userClickY },
+        ...updatedBarOfStaveNotes,
+        { newStaveNote, userClickY },
       ];
     }
     setNotesData(() => notesDataCopy);

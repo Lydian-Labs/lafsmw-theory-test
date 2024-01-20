@@ -12,7 +12,7 @@ import {
   StaveType,
   StaveNoteType,
   StaveNoteAbsoluteXCoordUserClickY,
-  NoteStringYMinAndYMaxAndUserClickCoords,
+  NoteStringYMinAndYMaxUserClickY,
 } from "../lib/typesAndInterfaces";
 
 import VexFlow from "vexflow";
@@ -71,7 +71,7 @@ const CreateAndEraseNotesFromStave = () => {
     setIsSharpActive(false);
   };
 
-  let foundNoteDataAndUserClickData: NoteStringYMinAndYMaxAndUserClickCoords;
+  let foundNoteDataAndUserClickData: NoteStringYMinAndYMaxUserClickY;
   const initializeRenderer = () => {
     if (!rendererRef.current && container.current) {
       rendererRef.current = new Renderer(

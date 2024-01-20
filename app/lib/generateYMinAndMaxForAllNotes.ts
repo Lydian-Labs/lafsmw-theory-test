@@ -1,9 +1,9 @@
-import { NoteStringYMinAndYMax } from "./typesAndInterfaces";
+import { NoteStringYMinAndYMaxUserClickY } from "./typesAndInterfaces";
 
 const generateYMinAndYMaxForAllNotes = (
   topNoteYCoordinate: number,
   notes: string[]
-): NoteStringYMinAndYMax[] => {
+): NoteStringYMinAndYMaxUserClickY[] => {
   return notes.map((note, index) => {
     const yCoordinateMin = topNoteYCoordinate + index * 5;
     const yCoordinateMax = yCoordinateMin + 5;
