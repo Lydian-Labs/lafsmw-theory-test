@@ -181,11 +181,13 @@ const CreateAndEraseNotesFromStave = () => {
         userClickX
       );
       updatedBarOfStaveNotes.splice(indexOfNoteToErase, 1);
+      notesDataCopy[barIndex] = updatedBarOfStaveNotes;
     } else if (state.isSharpActive) {
       const indexOfNoteToSharp = indexOfNoteToModify(
         updatedBarOfStaveNotes,
         userClickX
       );
+
       if (updatedBarOfStaveNotes[indexOfNoteToSharp]?.newStaveNote) {
         updatedBarOfStaveNotes[indexOfNoteToSharp].newStaveNote.addModifier(
           new Accidental("#")
@@ -214,7 +216,11 @@ const CreateAndEraseNotesFromStave = () => {
 
       notesDataCopy[barIndex] = [
         ...updatedBarOfStaveNotes,
-        { newStaveNote, userClickY },
+        {
+          newStaveNote,
+          staveNoteAbsoluteX: 0,
+          userClickY,
+        },
       ];
     }
     setNotesData(() => notesDataCopy);
