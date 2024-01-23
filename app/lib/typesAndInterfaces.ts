@@ -16,7 +16,6 @@ export type Chord = {
   duration: string;
 };
 
-
 export type StateType = {
   isEraserActive: boolean;
   isEnterNotesActive: boolean;
@@ -32,11 +31,6 @@ export interface StaveNoteAbsoluteXCoordUserClickY {
   newStaveNote: StaveNoteType;
   staveNoteAbsoluteX: number;
   userClickY: number;
-}
-
-export type FindIndexParams = {
-  barOfStaveNotes: StaveNoteAbsoluteXCoordUserClickY[],
-  userClickX: number
 }
 
 export interface NoteStringYMinAndYMaxUserClickY {
