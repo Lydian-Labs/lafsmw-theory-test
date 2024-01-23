@@ -1,19 +1,21 @@
 "use client";
-import { notesArray } from "../lib/noteArray";
 import React, { useEffect, useRef, useState } from "react";
-import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
-import CheckIfNoteFound from "../components/CheckIfNoteFound";
-import KaseyBlankStaves from "../components/KaseyBlankStaves";
 import BlueButton from "../components/BlueButton";
+import CheckIfNoteFound from "../components/CheckIfNoteFound";
+import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
+import KaseyBlankStaves from "../components/KaseyBlankStaves";
 import { findBarIndex } from "../lib/findBar";
+import { addAccidentalToNote } from "../lib/addAccidentalToNote";
 import generateYMinAndYMaxForAllNotes from "../lib/generateYMinAndMaxForAllNotes";
 import { indexOfNoteToModify } from "../lib/indexOfNoteToModify";
+import { notesArray } from "../lib/noteArray";
+
 import {
-  StaveType,
-  StaveNoteType,
-  StaveNoteAbsoluteXCoordUserClickY,
   NoteStringYMinAndYMaxUserClickY,
   StateType,
+  StaveNoteAbsoluteXCoordUserClickY,
+  StaveNoteType,
+  StaveType,
 } from "../lib/typesAndInterfaces";
 
 import VexFlow from "vexflow";
@@ -59,21 +61,9 @@ const CreateAndEraseNotesFromStave = () => {
   const enterNotes = () => toggleState("isEnterNotesActive");
   const addSharp = () => toggleState("isSharpActive");
   const addFlat = () => toggleState("isFlatActive");
-
-  const addAccidentalToNote = (
-    barOfStaveNotes: StaveNoteAbsoluteXCoordUserClickY[],
-    userClickX: number,
-    accidental: string
-  ) => {
-    const indexOfNote: number = indexOfNoteToModify(
-      barOfStaveNotes,
-      userClickX
-    );
-    if (barOfStaveNotes[indexOfNote]?.newStaveNote) {
-      barOfStaveNotes[indexOfNote].newStaveNote.addModifier(
-        new Accidental(accidental)
-      );
-    }
+  const accidentalMap = {
+    isSharpActive: "#",
+    isFlatActive: "b",
   };
 
   const buttons = [
@@ -189,6 +179,7 @@ const CreateAndEraseNotesFromStave = () => {
       ...noteData,
       staveNoteAbsoluteX: noteData.newStaveNote.getAbsoluteX(),
     }));
+
     if (!foundNoteDataAndUserClickY) {
       toggleState("noNoteFound");
     } else if (state.isEraserActive) {
@@ -199,9 +190,19 @@ const CreateAndEraseNotesFromStave = () => {
       barOfStaveNotes.splice(indexOfNoteToErase, 1);
       notesDataCopy[barIndex] = barOfStaveNotes;
     } else if (state.isSharpActive) {
-      addAccidentalToNote(barOfStaveNotes, userClickX, "#");
+      addAccidentalToNote(
+        barOfStaveNotes,
+        userClickX,
+        "#",
+        indexOfNoteToModify
+      );
     } else if (state.isFlatActive) {
-      addAccidentalToNote(barOfStaveNotes, userClickX, "b");
+      addAccidentalToNote(
+        barOfStaveNotes,
+        userClickX,
+        "b",
+        indexOfNoteToModify
+      );
     } else if (barOfStaveNotes && barOfStaveNotes.length >= BEATS_IN_MEASURE) {
       toggleState("tooManyBeatsInMeasure");
     } else {
