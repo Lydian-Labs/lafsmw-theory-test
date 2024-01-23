@@ -18,7 +18,7 @@ const Navbar: FC = () => {
         </li>
 
         <li className="p-4">
-          <Link href="/dynamicInputDemoRefactor">
+          <Link href="/NoteAndAccidentalInput">
             Note and Accidental Input Demo
           </Link>
         </li>
