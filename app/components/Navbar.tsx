@@ -14,22 +14,12 @@ const Navbar: FC = () => {
 
       <ul className="hidden sm:text-1xl py-20 sm:py-1 sm:flex">
         <li className="p-4">
-          <Link href="/renderNotes">Render Notes</Link>
-        </li>
-        <li className="p-4">
-          <Link href="/addAccidentalsToNotes">Add Accidentals</Link>
-        </li>
-        <li className="p-4">
           <Link href="/examSample">Exam Sample</Link>
         </li>
-        <li className="p-4">
-          <Link href="/createAndEraseNotesFromStaves">
-            Dynamic Input Demo Page
-          </Link>
-        </li>
+
         <li className="p-4">
           <Link href="/dynamicInputDemoRefactor">
-            Dynamic Input Demo Page Refactor
+            Note and Accidental Input Demo
           </Link>
         </li>
       </ul>
