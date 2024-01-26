@@ -16,27 +16,26 @@ export type Chord = {
   duration: string;
 };
 
+export type StateType = {
+  isEraserActive: boolean;
+  isEnterNotesActive: boolean;
+  isSharpActive: boolean;
+  noNoteFound: boolean;
+  tooManyBeatsInMeasure: boolean;
+  isFlatActive: boolean;
+};
 export type StaveType = InstanceType<typeof Stave>;
 export type StaveNoteType = InstanceType<typeof StaveNote>;
 
-export interface StaveNoteAndUserClickXAndYCoords {
+export interface StaveNoteAbsoluteXCoordUserClickY {
   newStaveNote: StaveNoteType;
-  userClickX: number;
+  staveNoteAbsoluteX: number;
   userClickY: number;
-  absoluteXCoord?: number[];
 }
 
-export interface NoteStringAndYMinAndYMax {
+export interface NoteStringYMinAndYMaxUserClickY {
   note: string;
   yCoordinateMin: number;
   yCoordinateMax: number;
-}
-
-export interface NoteStringYMinAndYMaxAndUserClickCoords {
-  note: string;
-  yCoordinateMin: number;
-  yCoordinateMax: number;
-  userClickX: number;
-  userClickY: number;
-  absoluteXCoord?: number[];
+  userClickY?: number;
 }

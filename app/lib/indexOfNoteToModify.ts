@@ -1,27 +1,11 @@
-import {
-  NoteStringAndYMinAndYMax,
-  StaveNoteAndUserClickXAndYCoords,
-} from "./typesAndInterfaces";
+import { StaveNoteAbsoluteXCoordUserClickY } from "./typesAndInterfaces";
 
 export const indexOfNoteToModify = (
-  staveData: StaveNoteAndUserClickXAndYCoords[],
-  noteObj: NoteStringAndYMinAndYMax
+  staveData: StaveNoteAbsoluteXCoordUserClickY[],
+  userClickX: number
 ): number => {
   const index: number = staveData?.findIndex(
-    (note) =>
-      note.userClickY >= noteObj.yCoordinateMin &&
-      note.userClickY <= noteObj.yCoordinateMax
-  );
-  return index;
-};
-export const indexOfNoteToModify2 = (
-  staveData: StaveNoteAndUserClickXAndYCoords[],
-  noteObj: NoteStringAndYMinAndYMax
-): number => {
-  const index: number = staveData?.findIndex(
-    (note) =>
-      note.userClickY >= noteObj.yCoordinateMin &&
-      note.userClickY <= noteObj.yCoordinateMax
+    (note) => Math.abs(note.staveNoteAbsoluteX - userClickX) <= 10
   );
   return index;
 };
