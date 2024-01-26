@@ -21,7 +21,7 @@ import {
 import VexFlow from "vexflow";
 
 const VF = VexFlow.Flow;
-const { Formatter, Renderer, StaveNote, Accidental } = VF;
+const { Formatter, Renderer, StaveNote } = VF;
 
 const CLEF = "treble";
 const TIME_SIG = "4/4";
