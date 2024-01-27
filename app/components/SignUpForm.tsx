@@ -1,6 +1,7 @@
 // SignUpForm.js
-import React, { useState } from "react";
+import React, { useState, ChangeEvent } from "react";
 import { TextField, Button, Container, Link, Typography } from "@mui/material";
+import { signUp } from "@/firebase/authAPI";
 
 const SignUpForm = () => {
   const [firstName, setFirstName] = useState("");
@@ -8,10 +9,17 @@ const SignUpForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Add your form submission logic here
-    console.log("Form submitted:", { firstName, lastName, email, password });
+  const handleSubmit = async (event: ChangeEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const { result, error } = await signUp(
+      email,
+      password,
+      `${firstName} ${lastName}`
+    );
+    if (error) {
+      return console.log("signUp error:", error);
+    }
+    console.log("signUp result:", result);
   };
 
   return (
