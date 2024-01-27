@@ -1,48 +1,27 @@
 import React, { useState, ChangeEvent } from "react";
 import { TextField, Button, Container, Typography } from "@mui/material";
-import { signUp } from "@/firebase/authAPI";
+import Link from "next/link";
+import { signIn } from "@/firebase/authAPI";
 
-const SignUpForm = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+const SignInForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const { result, error } = await signUp(
-      email,
-      password,
-      `${firstName} ${lastName}`
-    );
+    const { result, error } = await signIn(email, password);
     if (error) {
-      return console.log("signUp error:", error);
+      return console.log("signIn error:", error);
     }
-    console.log("signUp result:", result);
+    console.log("signIn result:", result);
   };
 
   return (
     <Container component="main" maxWidth="xs" sx={{ fontFamily: "Monospace" }}>
       <Typography variant="h5" align="center">
-        Sign Up
+        Sign In
       </Typography>
       <form onSubmit={handleSubmit}>
-        <TextField
-          margin="normal"
-          fullWidth
-          label="First Name"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-          required
-        />
-        <TextField
-          margin="normal"
-          fullWidth
-          label="Last Name"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-          required
-        />
         <TextField
           margin="normal"
           fullWidth
@@ -68,11 +47,12 @@ const SignUpForm = () => {
           color="primary"
           sx={{ mt: 3 }}
         >
-          Sign Up
+          Sign In
         </Button>
       </form>
+      <Link href="/forgot-password">Forgot Password?</Link>
     </Container>
   );
 };
 
-export default SignUpForm;
+export default SignInForm;

@@ -1,9 +1,10 @@
-import React from "react";
+"use client";
+import React, { ChangeEvent } from "react";
 import { Container, Typography, TextField, Button } from "@mui/material";
 
 const ForgotPassword = () => {
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = (event: ChangeEvent<HTMLFormElement>) => {
+    event.preventDefault();
     console.log("Forgot Password logic to be implemented");
   };
 

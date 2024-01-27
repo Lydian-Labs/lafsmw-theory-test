@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import SignUpForm from "./components/SignUpForm";
+import SignInForm from "./components/SignInForm";
 
 export default function Home() {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -34,6 +35,7 @@ export default function Home() {
           </>
         )}
         {isSignUp && <SignUpForm />}
+        {isSignIn && <SignInForm />}
       </Stack>
     </main>
   );
