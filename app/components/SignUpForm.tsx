@@ -1,4 +1,3 @@
-// SignUpForm.js
 import React, { useState, ChangeEvent } from "react";
 import { TextField, Button, Container, Link, Typography } from "@mui/material";
 import { signUp } from "@/firebase/authAPI";
@@ -23,7 +22,7 @@ const SignUpForm = () => {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="xs" sx={{ fontFamily: "Monospace" }}>
       <Typography variant="h5" align="center">
         Sign Up
       </Typography>

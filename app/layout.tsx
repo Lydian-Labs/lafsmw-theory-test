@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Navbar from "./components/Navbar";
 import { Inter, Montserrat } from "next/font/google";
+import { ThemeProvider } from "@mui/material/styles";
+import theme from "./theme";
 import "./styles/globals.css";
 import AuthContextProvider from "@/firebase/authContext";
 
@@ -20,8 +22,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={montserrat.className}>
         <AuthContextProvider>
-          <Navbar />
-          {children}
+          <ThemeProvider theme={theme}>
+            <Navbar />
+            {children}
+          </ThemeProvider>
         </AuthContextProvider>
       </body>
     </html>
