@@ -5,6 +5,7 @@ import KaseyBlankStaves from "../components/KaseyBlankStaves";
 import { sharpKeySignature, flatKeySignature } from "../lib/keySignatures";
 import { StaveType } from "../lib/typesAndInterfaces";
 import VexFlow from "vexflow";
+import { AccidentalStateType } from "../lib/typesAndInterfaces";
 
 const VF = VexFlow.Flow;
 const { Renderer } = VF;
@@ -21,15 +22,35 @@ const CreateKeySignatures = () => {
   const [blankStaves, setBlankStaves] = useState<StaveType[]>([]);
   const [sharps, setSharps] = useState<string[]>([]);
   const [flats, setFlats] = useState<string[]>([]);
+  const [state, setState] = useState<AccidentalStateType>({
+    isClearMeasuresActive: false,
+    isAddSharpActive: false,
+    isAddFlatActive: false,
+    isRemoveFlatActive: false,
+    isRemoveSharpActive: false,
+  });
+  const toggleState = (key: keyof AccidentalStateType) => {
+    setState((prevState: AccidentalStateType) => {
+      let newState: AccidentalStateType = { ...prevState };
+      for (let stateKey in newState) {
+        newState[stateKey as keyof AccidentalStateType] = false;
+      }
+      newState[key] = true;
+      return newState;
+    });
+  };
 
   const createSharpKey = (): void => {
     setSharps((prevState) => [...prevState, "#"]);
+    toggleState("isAddSharpActive");
   };
   const createFlatKey = (): void => {
     setFlats((prevState) => [...prevState, "b"]);
+    toggleState("isAddFlatActive");
   };
 
   const removeSharpButton = () => {
+    toggleState("isRemoveSharpActive");
     setSharps((prevState) => {
       if (prevState.length > 0) {
         const newSharps = [...prevState];
@@ -41,6 +62,7 @@ const CreateKeySignatures = () => {
   };
 
   const removeFlatButton = () => {
+    toggleState("isRemoveFlatActive");
     setFlats((prevState) => {
       if (prevState.length > 0) {
         const newFlats = [...prevState];
@@ -53,6 +75,7 @@ const CreateKeySignatures = () => {
   };
 
   const clearKeySignatureButton = () => {
+    toggleState("isClearMeasuresActive");
     setFlats(() => []);
     setSharps(() => []);
     KEY_SIG = "C";
@@ -62,27 +85,27 @@ const CreateKeySignatures = () => {
     {
       button: createSharpKey,
       text: "Add Sharp",
-      stateFunction: createSharpKey,
+      stateFunction: state.isAddSharpActive,
     },
     {
       button: createFlatKey,
       text: "Add Flat",
-      stateFunction: createFlatKey,
+      stateFunction: state.isAddFlatActive,
     },
     {
       button: removeFlatButton,
       text: "Remove Flat",
-      stateFunction: removeFlatButton,
+      stateFunction: state.isRemoveFlatActive,
     },
     {
       button: removeSharpButton,
       text: "Remove Sharp",
-      stateFunction: removeSharpButton,
+      stateFunction: state.isRemoveSharpActive,
     },
     {
       button: clearKeySignatureButton,
       text: "Clear Key Signature",
-      stateFunction: clearKeySignatureButton,
+      stateFunction: state.isClearMeasuresActive,
     },
   ];
 
@@ -157,7 +180,11 @@ const CreateKeySignatures = () => {
       <div className="mt-2 ml-3">
         {buttons.map((button) => {
           return (
-            <BlueButton key={button.text} onClick={button.button} isEnabled>
+            <BlueButton
+              key={button.text}
+              onClick={button.button}
+              isEnabled={button.stateFunction}
+            >
               {button.text}
             </BlueButton>
           );

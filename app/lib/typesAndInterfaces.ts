@@ -21,8 +21,15 @@ export type StateType = {
   isEnterNotesActive: boolean;
   isSharpActive: boolean;
   noNoteFound: boolean;
-  tooManyBeatsInMeasure: boolean;
+  tooManyBeatsInMeasure?: boolean;
   isFlatActive: boolean;
+};
+export type AccidentalStateType = {
+  isAddSharpActive: boolean;
+  isAddFlatActive: boolean;
+  isRemoveSharpActive: boolean;
+  isRemoveFlatActive: boolean;
+  isClearMeasuresActive: boolean;
 };
 export type StaveType = InstanceType<typeof Stave>;
 export type StaveNoteType = InstanceType<typeof StaveNote>;
