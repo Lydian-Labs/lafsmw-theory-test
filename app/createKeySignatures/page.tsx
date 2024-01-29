@@ -2,75 +2,89 @@
 import React, { useEffect, useRef, useState } from "react";
 import BlueButton from "../components/BlueButton";
 import KaseyBlankStaves from "../components/KaseyBlankStaves";
-import { addAccidentalToNote } from "../lib/addAccidentalToNote";
-import { findBarIndex } from "../lib/findBar";
-import { indexOfNoteToModify } from "../lib/indexOfNoteToModify";
-
-import {
-  NoteStringYMinAndYMaxUserClickY,
-  StateType,
-  StaveNoteAbsoluteXCoordUserClickY,
-  StaveNoteType,
-  StaveType,
-} from "../lib/typesAndInterfaces";
-
+import { sharpKeySignature, flatKeySignature } from "../lib/keySignatures";
+import { StaveType } from "../lib/typesAndInterfaces";
 import VexFlow from "vexflow";
 
 const VF = VexFlow.Flow;
-const { Formatter, Renderer, StaveNote } = VF;
-
-export type KeySigStateType = {
-  isEraserActive: boolean;
-  isSharpActive: boolean;
-  isFlatActive: boolean;
-};
+const { Renderer } = VF;
 
 const CLEF = "treble";
 const TIME_SIG = "4/4";
-let NUM_STAVES = 2;
+let KEY_SIG = "C";
+let NUM_STAVES = 1;
 let Y_POSITION_OF_STAVES = 150;
-
-const INITIAL_NOTES: StaveNoteAbsoluteXCoordUserClickY[][] = new Array(
-  NUM_STAVES
-).fill([]);
 
 const CreateKeySignatures = () => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
   const [blankStaves, setBlankStaves] = useState<StaveType[]>([]);
-  const [notesData, setNotesData] = useState(INITIAL_NOTES); //contains staveNote need to update userClickX
-  const [state, setState] = useState<KeySigStateType>({
-    isEraserActive: false,
-    isSharpActive: false,
-    isFlatActive: false,
-  });
+  const [sharps, setSharps] = useState<string[]>([]);
+  const [flats, setFlats] = useState<string[]>([]);
 
-  const toggleState = (key: keyof KeySigStateType) => {
-    setState((prevState: KeySigStateType) => {
-      let newState: KeySigStateType = { ...prevState };
-      for (let stateKey in newState) {
-        newState[stateKey as keyof KeySigStateType] = false;
+  const createSharpKey = (): void => {
+    setSharps((prevState) => [...prevState, "#"]);
+  };
+  const createFlatKey = (): void => {
+    setFlats((prevState) => [...prevState, "b"]);
+  };
+
+  const removeSharpButton = () => {
+    setSharps((prevState) => {
+      if (prevState.length > 0) {
+        const newSharps = [...prevState];
+        newSharps.pop();
+        return newSharps;
       }
-      newState[key] = true;
-      return newState;
+      return prevState;
     });
   };
 
-  const eraser = () => toggleState("isEraserActive");
-  const addSharp = () => toggleState("isSharpActive");
-  const addFlat = () => toggleState("isFlatActive");
+  const removeFlatButton = () => {
+    setFlats((prevState) => {
+      if (prevState.length > 0) {
+        const newFlats = [...prevState];
+        newFlats.pop();
+        KEY_SIG = sharpKeySignature(newFlats.length);
+        return newFlats;
+      }
+      return prevState;
+    });
+  };
+
+  const clearKeySignatureButton = () => {
+    setFlats(() => []);
+    setSharps(() => []);
+    KEY_SIG = "C";
+  };
 
   const buttons = [
-    { button: addSharp, text: "Add Sharp", stateFunction: state.isSharpActive },
-    { button: addFlat, text: "Add Flat", stateFunction: state.isFlatActive },
-    { button: eraser, text: "Eraser", stateFunction: state.isEraserActive },
+    {
+      button: createSharpKey,
+      text: "Add Sharp",
+      stateFunction: createSharpKey,
+    },
+    {
+      button: createFlatKey,
+      text: "Add Flat",
+      stateFunction: createFlatKey,
+    },
+    {
+      button: removeFlatButton,
+      text: "Remove Flat",
+      stateFunction: removeFlatButton,
+    },
+    {
+      button: removeSharpButton,
+      text: "Remove Sharp",
+      stateFunction: removeSharpButton,
+    },
+    {
+      button: clearKeySignatureButton,
+      text: "Clear Key Signature",
+      stateFunction: clearKeySignatureButton,
+    },
   ];
-
-  const clearMeasures = () => {
-    setNotesData(() => INITIAL_NOTES);
-    initializeRenderer();
-    renderStavesAndNotes();
-  };
 
   const initializeRenderer = () => {
     if (!rendererRef.current && container.current) {
@@ -81,7 +95,7 @@ const CreateKeySignatures = () => {
     }
   };
 
-  const renderStavesAndNotes = () => {
+  const renderStavesAndKeySignature = () => {
     const renderer = rendererRef.current;
     const context = renderer && renderer.getContext();
     context?.setFont("Arial", 10);
@@ -92,24 +106,16 @@ const CreateKeySignatures = () => {
           KaseyBlankStaves(
             NUM_STAVES,
             context,
-            220,
+            240,
             160,
             10,
             Y_POSITION_OF_STAVES,
             CLEF,
-            TIME_SIG
+            TIME_SIG,
+            KEY_SIG
           )
         );
     }
-    notesData.forEach((barData, index) => {
-      if (barData) {
-        const staveNotes = barData.map(({ newStaveNote }) => newStaveNote);
-        if (staveNotes.length > 0) {
-          context &&
-            Formatter.FormatAndDraw(context, blankStaves[index], staveNotes);
-        }
-      }
-    });
   };
 
   useEffect(() => {
@@ -121,81 +127,41 @@ const CreateKeySignatures = () => {
     context &&
       setBlankStaves(
         KaseyBlankStaves(
-          4,
+          NUM_STAVES,
           context,
           240,
           180,
           10,
           Y_POSITION_OF_STAVES,
           CLEF,
-          TIME_SIG
+          TIME_SIG,
+          KEY_SIG
         )
       );
   }, []);
 
   useEffect(() => {
-    renderStavesAndNotes();
-  }, [notesData]);
+    KEY_SIG = sharpKeySignature(sharps.length);
+    renderStavesAndKeySignature();
+  }, [sharps]);
 
-  let foundNoteDataAndUserClickY: NoteStringYMinAndYMaxUserClickY;
-
-  const handleClick = (e: React.MouseEvent) => {
-    const rect = container.current?.getBoundingClientRect();
-    const userClickY = rect ? e.clientY - rect.top : 0;
-    const userClickX = rect ? e.clientX - rect.left : 0;
-    const topStaveYPosition = blankStaves[0].getYForTopText();
-
-    const highGYPosition: number = topStaveYPosition - 33;
-
-    const barIndex: number = findBarIndex(blankStaves, userClickX);
-
-    let notesDataCopy = [...notesData];
-    const barOfStaveNotes = notesDataCopy[barIndex].map((noteData) => ({
-      ...noteData,
-      staveNoteAbsoluteX: noteData.newStaveNote.getAbsoluteX(),
-    }));
-
-    if (state.isEraserActive) {
-      const indexOfNoteToErase = indexOfNoteToModify(
-        barOfStaveNotes,
-        userClickX
-      );
-      barOfStaveNotes.splice(indexOfNoteToErase, 1);
-      notesDataCopy[barIndex] = barOfStaveNotes;
-    } else if (state.isSharpActive) {
-      addAccidentalToNote(
-        barOfStaveNotes,
-        userClickX,
-        "#",
-        indexOfNoteToModify
-      );
-    } else if (state.isFlatActive) {
-      addAccidentalToNote(
-        barOfStaveNotes,
-        userClickX,
-        "b",
-        indexOfNoteToModify
-      );
-    }
-  };
+  useEffect(() => {
+    KEY_SIG = flatKeySignature(flats.length);
+    renderStavesAndKeySignature();
+  }, [flats]);
 
   return (
     <>
-      <div ref={container} onClick={handleClick} />
+      <div ref={container} />
 
       <div className="mt-2 ml-3">
-        {buttons.map((button, index) => {
+        {buttons.map((button) => {
           return (
-            <BlueButton
-              key={button.text}
-              onClick={button.button}
-              isEnabled={button.stateFunction}
-            >
+            <BlueButton key={button.text} onClick={button.button} isEnabled>
               {button.text}
             </BlueButton>
           );
         })}
-        <BlueButton onClick={clearMeasures}>Clear Measures</BlueButton>
       </div>
     </>
   );

@@ -11,7 +11,8 @@ const KaseyBlankStaves = (
   x: number,
   y: number,
   clef?: string,
-  timeSig?: string
+  timeSig?: string,
+  keySig?: string
 ) => {
   const stavesArray: InstanceType<typeof Stave>[] = [];
 
@@ -20,6 +21,7 @@ const KaseyBlankStaves = (
     let stave = new Stave(x, y, staveWidth);
     i === 0 && clef ? stave.addClef(clef) : null;
     i === 0 && timeSig ? stave.addTimeSignature(timeSig) : null;
+    i === 0 && keySig ? stave.addKeySignature(keySig) : null;
     i === numStaves - 1 ? stave.setEndBarType(3) : null;
     context ? stave.setContext(context).draw() : null;
     x += staveWidth;
