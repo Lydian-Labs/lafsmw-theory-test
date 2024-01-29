@@ -1,7 +1,7 @@
 "use client";
-import Link from "next/link";
-import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Link from "next/link";
 
 export default function Home() {
   return (

@@ -1,9 +1,9 @@
 "use client";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import { FC } from "react";
 import { signOutOfApp } from "@/firebase/authAPI";
-import { Button, Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { FC } from "react";
 
 const Navbar: FC = () => {
   const router = useRouter();

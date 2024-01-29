@@ -1,6 +1,6 @@
-import React, { useState, ChangeEvent } from "react";
-import { TextField, Button, Container, Typography } from "@mui/material";
 import { signUp } from "@/firebase/authAPI";
+import { Button, Container, TextField, Typography } from "@mui/material";
+import { ChangeEvent, useState } from "react";
 
 const SignUpForm = () => {
   const [firstName, setFirstName] = useState("");

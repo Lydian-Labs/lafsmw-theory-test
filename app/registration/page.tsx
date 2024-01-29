@@ -1,10 +1,10 @@
 "use client";
-import React, { useState } from "react";
-import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import SignUpForm from "../components/SignUpForm";
+import { useState } from "react";
 import SignInForm from "../components/SignInForm";
+import SignUpForm from "../components/SignUpForm";
 
 export default function Registration() {
   const [isSignUp, setIsSignUp] = useState(false);

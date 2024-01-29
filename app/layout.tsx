@@ -1,10 +1,10 @@
-import type { Metadata } from "next";
-import Navbar from "./components/Navbar";
-import { Inter, Montserrat } from "next/font/google";
-import { ThemeProvider } from "@mui/material/styles";
-import theme from "./theme";
-import "./styles/globals.css";
 import AuthContextProvider from "@/firebase/authContext";
+import { ThemeProvider } from "@mui/material/styles";
+import type { Metadata } from "next";
+import { Inter, Montserrat } from "next/font/google";
+import Navbar from "./components/Navbar";
+import "./styles/globals.css";
+import theme from "./theme";
 
 const inter = Inter({ subsets: ["latin"] });
 const montserrat = Montserrat({ subsets: ["latin"] });

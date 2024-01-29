@@ -1,6 +1,6 @@
 "use client";
-import React, { ChangeEvent } from "react";
-import { Container, Typography, TextField, Button } from "@mui/material";
+import { Button, Container, TextField, Typography } from "@mui/material";
+import { ChangeEvent } from "react";
 
 const ForgotPassword = () => {
   const handleSubmit = (event: ChangeEvent<HTMLFormElement>) => {
