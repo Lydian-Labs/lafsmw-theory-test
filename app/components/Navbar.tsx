@@ -4,6 +4,7 @@ import { Box, Button } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FC } from "react";
+import { useAuthContext } from "@/firebase/authContext";
 
 const Navbar: FC = () => {
   const router = useRouter();
@@ -11,6 +12,8 @@ const Navbar: FC = () => {
     signOutOfApp();
     router.push("/");
   };
+
+  const { user } = useAuthContext();
 
   return (
     <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={2}>
@@ -35,12 +38,15 @@ const Navbar: FC = () => {
           </ul>
         </div>
       </Box>
+
       <Box gridColumn="span 1">
-        <div>
-          <Button variant="text" color="primary" onClick={signOutOfAppButton}>
-            Sign Out
-          </Button>
-        </div>
+        {user !== null ? (
+          <div>
+            <Button variant="text" color="primary" onClick={signOutOfAppButton}>
+              Sign Out {user.email}
+            </Button>
+          </div>
+        ) : null}
       </Box>
     </Box>
   );

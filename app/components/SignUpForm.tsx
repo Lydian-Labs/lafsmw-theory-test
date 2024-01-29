@@ -1,12 +1,15 @@
 import { signUp } from "@/firebase/authAPI";
 import { Button, Container, TextField, Typography } from "@mui/material";
 import { ChangeEvent, useState } from "react";
+import { useRouter } from "next/navigation";
 
 const SignUpForm = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const router = useRouter();
 
   const handleSubmit = async (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -19,6 +22,7 @@ const SignUpForm = () => {
       return console.log("signUp error:", error);
     }
     console.log("signUp result:", result);
+    router.push("/examSample");
   };
 
   return (

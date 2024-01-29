@@ -2,10 +2,13 @@ import { signIn } from "@/firebase/authAPI";
 import { Button, Container, TextField, Typography } from "@mui/material";
 import Link from "next/link";
 import { ChangeEvent, useState } from "react";
+import { useRouter } from "next/navigation";
 
 const SignInForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const router = useRouter();
 
   const handleSubmit = async (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -14,6 +17,7 @@ const SignInForm = () => {
       return console.log("signIn error:", error);
     }
     console.log("signIn result:", result);
+    router.push("/examSample");
   };
 
   return (
