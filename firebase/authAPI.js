@@ -12,8 +12,6 @@ export async function signUp(email, password, displayName) {
   try {
     result = await createUserWithEmailAndPassword(auth, email, password);
 
-    console.log("auth.currentUser:", auth.currentUser);
-
     if (displayName) {
       const user = auth.currentUser;
       user.displayName = displayName;
