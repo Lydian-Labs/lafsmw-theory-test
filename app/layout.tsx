@@ -1,12 +1,11 @@
 import AuthContextProvider from "@/firebase/authContext";
 import { ThemeProvider } from "@mui/material/styles";
 import type { Metadata } from "next";
-import { Inter, Montserrat } from "next/font/google";
+import { Montserrat } from "next/font/google";
 import Navbar from "./components/Navbar";
 import "./styles/globals.css";
 import theme from "./theme";
 
-const inter = Inter({ subsets: ["latin"] });
 const montserrat = Montserrat({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "LAFSMW Theory Test",
