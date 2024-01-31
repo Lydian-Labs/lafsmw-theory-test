@@ -13,13 +13,15 @@ const { Renderer } = VF;
 const CLEF = "treble";
 const TIME_SIG = "4/4";
 let KEY_SIG = "C";
-let NUM_STAVES = 1;
+let NUM_STAVES_PER_KEY_SIG = 1;
+const TOTAL_NUM_STAVES = 1;
 let Y_POSITION_OF_STAVES = 150;
+const INITIAL_STAVES: StaveType[] = new Array(TOTAL_NUM_STAVES).fill([]);
 
 const CreateKeySignatures = () => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
-  const [blankStaves, setBlankStaves] = useState<StaveType[]>([]);
+  const [blankStaves, setBlankStaves] = useState(INITIAL_STAVES);
   const [sharps, setSharps] = useState<string[]>([]);
   const [flats, setFlats] = useState<string[]>([]);
   const [state, setState] = useState<AccidentalStateType>({
@@ -39,7 +41,7 @@ const CreateKeySignatures = () => {
       return newState;
     });
   };
-
+  console.log(blankStaves);
   const createSharpKey = (): void => {
     setSharps((prevState) => [...prevState, "#"]);
     toggleState("isAddSharpActive");
@@ -125,32 +127,37 @@ const CreateKeySignatures = () => {
     context?.clear();
     if (context) {
       context &&
-        setBlankStaves(() =>
-          KaseyBlankStaves(
-            NUM_STAVES,
-            context,
-            240,
-            160,
-            10,
-            Y_POSITION_OF_STAVES,
-            CLEF,
-            TIME_SIG,
-            KEY_SIG
-          )
-        );
+        setBlankStaves((prevState) => {
+          const newStaves = [prevState];
+          let xPosition = 10;
+          for (let i = 0; i < TOTAL_NUM_STAVES; i++) {
+            KaseyBlankStaves(
+              NUM_STAVES_PER_KEY_SIG,
+              context,
+              240,
+              0,
+              xPosition,
+              Y_POSITION_OF_STAVES,
+              CLEF,
+              TIME_SIG,
+              KEY_SIG
+            );
+            xPosition += 250;
+          }
+        });
     }
   };
 
   useEffect(() => {
     initializeRenderer();
     const renderer = rendererRef.current;
-    renderer?.resize(800, 300);
+    renderer?.resize(1100, 300);
     const context = renderer && renderer.getContext();
     context?.setFont("Arial", 10);
     context &&
       setBlankStaves(
         KaseyBlankStaves(
-          NUM_STAVES,
+          NUM_STAVES_PER_KEY_SIG,
           context,
           240,
           180,

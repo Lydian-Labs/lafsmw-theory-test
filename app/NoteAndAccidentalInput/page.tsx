@@ -103,8 +103,8 @@ const CreateAndEraseNotesFromStave = () => {
           KaseyBlankStaves(
             NUM_STAVES,
             context,
-            220,
-            160,
+            200,
+            180,
             10,
             Y_POSITION_OF_STAVES,
             CLEF,
@@ -134,8 +134,8 @@ const CreateAndEraseNotesFromStave = () => {
         KaseyBlankStaves(
           4,
           context,
-          240,
-          180,
+          500,
+          480,
           10,
           Y_POSITION_OF_STAVES,
           CLEF,

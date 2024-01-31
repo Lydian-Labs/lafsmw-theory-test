@@ -23,7 +23,7 @@ const Navbar: FC = () => {
           </Link>
         </li>
         <li className="p-4">
-          <Link href="/createKeySignatures">Create Key Signatures</Link>
+          <Link href="/createKeySignatures">Create Key Signatures Demo</Link>
         </li>
       </ul>
     </div>
