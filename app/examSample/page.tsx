@@ -120,20 +120,18 @@ export default function ExamSample() {
           >
             Choose your Level IV class preference:
           </label>
-
           <select name="levels" id="level-select" onChange={handleLevel}>
-            <option value="">Please choose an option</option>
-            <option value="advanced-theory">Advanced theory</option>
-            <option value="advanced-improvisation">
-              Advanced improvisation
-            </option>
+            <option value="sibelius-class">Sibelius class</option>
+            <option value="rhythm-class">Rhythm class</option>
             <option value="intro-to-arranging">Intro to arranging</option>
             <option value="intermediate-arranging">
               Intermediate arranging
             </option>
             <option value="advanced-arranging">Advanced arranging</option>
-            <option value="rhythm-class">Rhythm class</option>
-            <option value="sibelius-class">Sibelius class</option>
+            <option value="advanced-theory">Advanced theory</option>
+            <option value="advanced-improvisation">
+              Advanced improvisation
+            </option>
           </select>
         </Grid>
         <Grid item xs={12}>
