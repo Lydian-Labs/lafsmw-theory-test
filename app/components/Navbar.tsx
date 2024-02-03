@@ -1,6 +1,6 @@
 "use client";
 import { signOutOfApp } from "@/firebase/authAPI";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FC } from "react";
@@ -43,7 +43,10 @@ const Navbar: FC = () => {
         {user !== null ? (
           <div>
             <Button variant="text" color="primary" onClick={signOutOfAppButton}>
-              Sign Out {user.email}
+              <Stack>
+                <Typography fontSize={"10px"}>{user.email}</Typography>
+                <Typography>Sign Out</Typography>
+              </Stack>
             </Button>
           </div>
         ) : null}

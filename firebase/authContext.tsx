@@ -1,11 +1,11 @@
 "use client";
 import { User, onAuthStateChanged } from "firebase/auth";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, ReactNode } from "react";
 import { auth } from "../firebase/config";
 import CreateAuthContext from "./createAuthContext";
 
 type AuthContextType = {
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
 // AuthContextProvider is a wrapper component that will provide the auth context to all its children
