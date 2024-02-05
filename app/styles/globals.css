@@ -13,8 +13,10 @@
   --primary80: #eeeeee;
   --primary90: #fcfcfc;
   --primary100: #ffffff;
+  --primary110: #f8f8ff;
+
 }
 
 body {
-  background-color: var(--primary100);
+  background-color: var(--primary110);
 }
