@@ -13,12 +13,14 @@
     "@emotion/styled": "^11.11.0",
     "@mui/material": "^5.14.17",
     "@types/vexflow": "^1.2.42",
+    "firebase": "^10.7.2",
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.1",
     "next": "14.0.2",
     "react": "^18",
     "react-dom": "^18",
     "react-icons": "^4.12.0",
+    "typeface-montserrat": "^1.1.13",
     "vexflow": "^4.2.3"
   },
   "devDependencies": {

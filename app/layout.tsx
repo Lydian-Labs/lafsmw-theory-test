@@ -1,12 +1,13 @@
+import AuthContextProvider from "@/firebase/authContext";
+import { ThemeProvider } from "@mui/material/styles";
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import Navbar from "./components/Navbar";
-
-import { Inter, Montserrat } from "next/font/google";
-
 import "./styles/globals.css";
+import theme from "./theme";
 
 const inter = Inter({ subsets: ["latin"] });
-const montserrat = Montserrat({ subsets: ["latin"] });
+
 export const metadata: Metadata = {
   title: "LAFSMW Theory Test",
   description: "Authored by Kasey Knudsen and Brett Eastman",
@@ -19,9 +20,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={montserrat.className}>
-        <Navbar />
-        {children}
+      <body className={inter.className}>
+        <AuthContextProvider>
+          <ThemeProvider theme={theme}>
+            <Navbar />
+            {children}
+          </ThemeProvider>
+        </AuthContextProvider>
       </body>
     </html>
   );
