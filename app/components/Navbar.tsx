@@ -36,6 +36,11 @@ const Navbar: FC = () => {
                 Note and Accidental Input Demo
               </Link>
             </li>
+            <li className="p-4">
+              <Link href="/createKeySignatures">
+                Create Key Signature
+              </Link>
+            </li>
           </ul>
         </div>
       </Box>
