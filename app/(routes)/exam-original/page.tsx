@@ -4,19 +4,19 @@ import Grid from "@mui/material/Grid";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { useEffect, useRef, useState } from "react";
-import ChordNames from "../components/ChordNames";
-import IdentifyChords from "../components/IdentifyChords";
-import IdentifyKeySignatures from "../components/IdentifyKeySignatures";
-import Staff from "../components/Staff";
-import SubmitButton from "../components/SubmitButton";
-import WriteBlues from "../components/WriteBlues";
-import WriteProgression from "../components/WriteProgression";
-import keySignaturesText from "../lib/data/keySignaturesText";
-import scalesText from "../lib/data/scalesText";
-import seventhChords from "../lib/data/seventhChords";
-import seventhChordsText from "../lib/data/seventhChordsText";
-import triadsText from "../lib/data/triadsText";
-import { InputData, SelectEvent } from "../lib/typesAndInterfaces";
+import ChordNames from "../../components/ChordNames";
+import IdentifyChords from "../../components/IdentifyChords";
+import IdentifyKeySignatures from "../../components/IdentifyKeySignatures";
+import Staff from "../../components/Staff";
+import SubmitButton from "../../components/SubmitButton";
+import WriteBlues from "../../components/WriteBlues";
+import WriteProgression from "../../components/WriteProgression";
+import keySignaturesText from "../../lib/data/keySignaturesText";
+import scalesText from "../../lib/data/scalesText";
+import seventhChords from "../../lib/data/seventhChords";
+import seventhChordsText from "../../lib/data/seventhChordsText";
+import triadsText from "../../lib/data/triadsText";
+import { InputData, SelectEvent } from "../../lib/typesAndInterfaces";
 
 type Level =
   | "advanced-theory"
@@ -44,7 +44,7 @@ const initialFormInputState: InputState = {
   blues: {},
 };
 
-export default function ExamSample() {
+export default function ExamOriginal() {
   const [formInput, setFormInput] = useState(initialFormInputState);
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);

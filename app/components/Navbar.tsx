@@ -27,13 +27,15 @@ const Navbar: FC = () => {
 
           <ul className="hidden sm:text-1xl py-20 sm:py-1 sm:flex">
             <li className="p-4">
-              <Link href="/examSample">Exam Sample</Link>
-            </li>
-
-            <li className="p-4">
               <Link href="/NoteAndAccidentalInput">
                 Note and Accidental Input Demo
               </Link>
+            </li>
+            <li className="p-4">
+              <Link href="/exam-original">Exam Original</Link>
+            </li>
+            <li className="p-4">
+              <Link href="/exam-new">Exam New</Link>
             </li>
           </ul>
         </div>

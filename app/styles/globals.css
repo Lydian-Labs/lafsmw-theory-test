@@ -13,6 +13,37 @@
   --primary80: #eeeeee;
   --primary90: #fcfcfc;
   --primary100: #ffffff;
+  --sdGlobalMdSysColorMainBackgroundColor: #6b8287; /* This is the main background color that will appear behind the card */
+  --sdGlobalMdSysColorCardBackgroundColor: #f6f6f6; /* This will be the background color for the cards */
+  --sdGlobalMdSysColorPressedButtonColor: #a6a7a7; /* This will be the color for the buttons when they are pressed */
+  --sdGlobalMdSysColorEnabledButtonColor: #f6d168; /* This will be the color when the buttons are enabled */
+  --sdGlobalMdSysColorUnfilledProgressBarColor: #cacaca; /* This will be the color for section of the progress bar that has not been filled */
+  --sdGlobalMdSysColorFilledProgressBarColor: #fde55b; /* This will be the color for the section of the progress bar that has been filled */
+  --sdGlobalMdSysTypescaleSectionTitle: 500 25px / auto Poppins; /* Use this font for the "Section 1: Key Signatures" title (and for every section title) */
+  --sdGlobalMdSysTypescalePageTitle: 500 20px/20 Poppins; /* Use this for the page title on the right side above the staff: "Write the following key signature" */
+  --sdGlobalMdSysTypescaleProgressBarText: semi-bold 14px / auto Poppins; /* Use this font for the text above the progress bar: "Question 1/45" */
+  --sdGlobalMdSysTypescaleUserInstructions: 400 11px / auto Poppins; /* Use this text for the user instructions on the left side (after the underlined title) */
+  --sdGlobalMdSysTypescaleUserInstructionTitles: semi-bold 11px / auto Poppins; /* use this text for the underlined titles and numbers in the user instructions: 1. Select the accidental: */
+  --sdGlobalMdSysTypescaleButtonText: 500 16px/20 Poppins; /* use this text for disabled buttons */
+  --sdGlobalMdSysTypescaleTutorialTitle: 500 18px / auto Poppins; /* Use this for the "Tutorial" font */
+  --sdGlobalMdSysGridMediumDesktopGrid: desktop grid; /* column count is 12 | row count is 5 | column gutter is 20 | row gutter is 0 | margin is 8 */
+  --sdGlobalMdSysShadowGreyBackgroundDropShadow1: 0 783px 219px 0 #000000; /* drop shadow 1 for grey background */
+  --sdGlobalMdSysShadowGreyBackgroundDropShadow2: 0 501px 200px 0 #000000
+    opacity 1%; /* drop shadow 2 for grey background */
+  --sdGlobalMdSysShadowGreyBackgroundDropShadow3: 0 282px 169px 0 #000000
+    opacity 5%; /* box shadow 3 for grey background */
+  --sdGlobalMdSysShadowGreyBackgroundDropShadow4: 0 125px 125px 0 #000000
+    opacity 9%; /* drop shadow #4 for grey background */
+  --sdGlobalMdSysShadowGreyBackgroundDropShadow5: 0 31px 69px 0 #000000 opacity
+    10%; /* Drop shadow #5 for grey background */
+  --sdGlobalMdSysBorderRadius: 12px; /* use the border radius of 12 for everything */
+  --sdGlobalMdSysSizingButtonSizing: 40px; /* buttons below the staff have a height of 40 | horizontal padding of 24  */
+  --sdGlobalMdSysSizingMainCardSize: Width 569 | Height 540; /* this is for the card on the right */
+  --sdGlobalMdSysSizingTutorialCardSize: Width 273 | Height 456; /* Use this sizing for the tutorial card */
+  --sdGlobalMdSysSizingGreyBackgroundSize: Width 1139 | Height 637; /* use this sizing for the grey rectangle behind the cards */
+  --sdGlobalMdSysSizingNextQuestionButtonSizing: 40px; /* Height 40 | Left side padding 24 | right side padding 16 */
+  --sdGlobalMdSysSizingProgressBarSize: Height 13 | Width 216; /* total progress bar size */
+  --sdGlobalMdSysSpacingGreyBackroundBoxMargins: margins; /* vertical margins 40 | horizontal margins 70 */
 }
 
 body {

@@ -1,14 +1,14 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import BlueButton from "../components/BlueButton";
-import CheckIfNoteFound from "../components/CheckIfNoteFound";
-import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
-import KaseyBlankStaves from "../components/KaseyBlankStaves";
-import { addAccidentalToNote } from "../lib/addAccidentalToNote";
-import { findBarIndex } from "../lib/findBar";
-import generateYMinAndYMaxForAllNotes from "../lib/generateYMinAndMaxForAllNotes";
-import { indexOfNoteToModify } from "../lib/indexOfNoteToModify";
-import { notesArray } from "../lib/noteArray";
+import BlueButton from "../../components/BlueButton";
+import CheckIfNoteFound from "../../components/CheckIfNoteFound";
+import CheckNumBeatsInMeasure from "../../components/CheckNumBeatsInMeasure";
+import KaseyBlankStaves from "../../components/KaseyBlankStaves";
+import { addAccidentalToNote } from "../../lib/addAccidentalToNote";
+import { findBarIndex } from "../../lib/findBar";
+import generateYMinAndYMaxForAllNotes from "../../lib/generateYMinAndMaxForAllNotes";
+import { indexOfNoteToModify } from "../../lib/indexOfNoteToModify";
+import { notesArray } from "../../lib/noteArray";
 
 import {
   NoteStringYMinAndYMaxUserClickY,
@@ -16,7 +16,7 @@ import {
   StaveNoteAbsoluteXCoordUserClickY,
   StaveNoteType,
   StaveType,
-} from "../lib/typesAndInterfaces";
+} from "../../lib/typesAndInterfaces";
 
 import VexFlow from "vexflow";
 

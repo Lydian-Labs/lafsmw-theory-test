@@ -1,0 +1,34 @@
+/**
+ * Do not edit directly
+ * Generated on Fri, 16 Feb 2024 03:10:41 GMT
+ */
+
+:root {
+  --global-md-sys-color-main-background-color: #6B8287;
+  --global-md-sys-color-card-background-color: #F6F6F6;
+  --global-md-sys-color-pressed-button-color: #A6A7A7;
+  --global-md-sys-color-enabled-button-color: #F6D168;
+  --global-md-sys-color-unfilled-progress-bar-color: #CACACA;
+  --global-md-sys-color-filled-progress-bar-color: #FDE55B;
+  --global-md-sys-typescale-section-title: [object Object];
+  --global-md-sys-typescale-page-title: [object Object];
+  --global-md-sys-typescale-progress-bar-text: [object Object];
+  --global-md-sys-typescale-user-instructions: [object Object];
+  --global-md-sys-typescale-user-instruction-titles: [object Object];
+  --global-md-sys-typescale-button-text: [object Object];
+  --global-md-sys-typescale-tutorial-title: [object Object];
+  --global-md-sys-grid-medium-desktop-grid: desktop grid;
+  --global-md-sys-shadow-grey-background-drop-shadow-1: [object Object];
+  --global-md-sys-shadow-grey-background-drop-shadow-2: [object Object];
+  --global-md-sys-shadow-grey-background-drop-shadow-3: [object Object];
+  --global-md-sys-shadow-grey-background-drop-shadow-4: [object Object];
+  --global-md-sys-shadow-grey-background-drop-shadow-5: [object Object];
+  --global-md-sys-border-radius: 12;
+  --global-md-sys-sizing-button-sizing: 40;
+  --global-md-sys-sizing-main-card-size: Width 569 | Height 540;
+  --global-md-sys-sizing-tutorial-card-size: Width 273 | Height 456;
+  --global-md-sys-sizing-grey-background-size: Width 1139 | Height 637;
+  --global-md-sys-sizing-next-question-button-sizing: 40;
+  --global-md-sys-sizing-progress-bar-size: Height 13 | Width 216;
+  --global-md-sys-spacing-grey-backround-box-margins: margins;
+}
