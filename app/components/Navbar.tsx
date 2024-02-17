@@ -35,6 +35,9 @@ const Navbar: FC = () => {
                 Note and Accidental Input Demo
               </Link>
             </li>
+            <li className="p-4">
+              <Link href="/doubleSizeOfStaff">Double Size Of Measure</Link>
+            </li>
           </ul>
         </div>
       </Box>
