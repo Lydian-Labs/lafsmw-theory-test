@@ -1,14 +1,6 @@
 "use client";
 import { createTheme } from "@mui/material/styles";
-// import { createMuiTheme } from "@material-ui/core/styles";
-
-// import Montserrat from "typeface-montserrat";
-
-// const theme = createTheme({
-//   typography: {
-//     fontFamily: "Montserrat, sans-serif",
-//   },
-// });
+import Poppins from "@fontsource/poppins";
 
 const theme = createTheme({
   palette: {
@@ -75,7 +67,6 @@ const theme = createTheme({
     nextQuestionButtonSizing: "40px", // --sdGlobalMdSysSizingNextQuestionButtonSizing
     progressBarSize: "13px", // --sdGlobalMdSysSizingProgressBarSize
   },
-  // Define custom spacing here
 });
 
 export default theme;

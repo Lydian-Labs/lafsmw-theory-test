@@ -4,12 +4,12 @@
  */
 
 :root {
-  --global-md-sys-color-main-background-color: #6B8287;
-  --global-md-sys-color-card-background-color: #F6F6F6;
-  --global-md-sys-color-pressed-button-color: #A6A7A7;
-  --global-md-sys-color-enabled-button-color: #F6D168;
-  --global-md-sys-color-unfilled-progress-bar-color: #CACACA;
-  --global-md-sys-color-filled-progress-bar-color: #FDE55B;
+  --global-md-sys-color-main-background-color: #6b8287;
+  --global-md-sys-color-card-background-color: #f6f6f6;
+  --global-md-sys-color-pressed-button-color: #a6a7a7;
+  --global-md-sys-color-enabled-button-color: #f6d168;
+  --global-md-sys-color-unfilled-progress-bar-color: #cacaca;
+  --global-md-sys-color-filled-progress-bar-color: #fde55b;
   --global-md-sys-typescale-section-title: [object Object];
   --global-md-sys-typescale-page-title: [object Object];
   --global-md-sys-typescale-progress-bar-text: [object Object];
