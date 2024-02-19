@@ -61,7 +61,7 @@ export default function ExamNew() {
 
   return (
     <Container component="main" maxWidth="md">
-      <Typography variant="h2" align="center" color="secondary.main">
+      <Typography variant="sectionTitle" align="center" color="black">
         Section 1: Key Signatures
       </Typography>
       <Grid item xs={12}>
