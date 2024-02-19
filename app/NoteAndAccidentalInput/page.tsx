@@ -4,10 +4,7 @@ import BlueButton from "../components/BlueButton";
 import CheckIfNoteFound from "../components/CheckIfNoteFound";
 import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
 import KaseyBlankStaves from "../components/KaseyBlankStaves";
-import {
-  addAccidentalToNote,
-  indexOfNoteWithAccidental,
-} from "../lib/addAndRemoveAccidentals";
+import { addAccidentalToNote } from "../lib/addAndRemoveAccidentals";
 import { findBarIndex } from "../lib/findBar";
 import generateYMinAndYMaxForAllNotes from "../lib/generateYMinAndMaxForAllNotes";
 import GetUserClickInfo from "../lib/getUserClickInfo";
@@ -48,6 +45,7 @@ const CreateAndEraseNotesFromStave = () => {
     noNoteFound: false,
     tooManyBeatsInMeasure: false,
     isFlatActive: false,
+    isChangeNoteActive: false,
   });
   const toggleState = (key: keyof StateType) => {
     setState((prevState: StateType) => {
@@ -65,6 +63,7 @@ const CreateAndEraseNotesFromStave = () => {
   const addSharp = () => toggleState("isSharpActive");
   const addFlat = () => toggleState("isFlatActive");
   const eraseAccidental = () => toggleState("isEraseAccidentalActive");
+  const changeNote = () => toggleState("isChangeNoteActive");
 
   const buttons = [
     {
@@ -84,6 +83,11 @@ const CreateAndEraseNotesFromStave = () => {
     },
     { button: addSharp, text: "Add Sharp", stateFunction: state.isSharpActive },
     { button: addFlat, text: "Add Flat", stateFunction: state.isFlatActive },
+    {
+      button: changeNote,
+      text: "Change Note",
+      stateFunction: state.isChangeNoteActive,
+    },
   ];
 
   const clearMeasures = () => {
@@ -212,11 +216,23 @@ const CreateAndEraseNotesFromStave = () => {
         indexOfNoteToModify
       );
     } else if (state.isEraseAccidentalActive) {
-      const indexOfNote = indexOfNoteWithAccidental(
-        barOfStaveNotes,
-        userClickX,
-        indexOfNoteToModify
-      );
+      const indexOfNote = indexOfNoteToModify(barOfStaveNotes, userClickX);
+      barOfStaveNotes.splice(indexOfNote, 1);
+      notesDataCopy[barIndex] = barOfStaveNotes;
+      const newStaveNote: StaveNoteType = new StaveNote({
+        keys: [foundNoteDataAndUserClickY.note],
+        duration: "q",
+      });
+      notesDataCopy[barIndex] = [
+        ...barOfStaveNotes,
+        {
+          newStaveNote,
+          staveNoteAbsoluteX: 0,
+          userClickY,
+        },
+      ];
+    } else if (state.isChangeNoteActive) {
+      const indexOfNote = indexOfNoteToModify(barOfStaveNotes, userClickX);
       barOfStaveNotes.splice(indexOfNote, 1);
       notesDataCopy[barIndex] = barOfStaveNotes;
       const newStaveNote: StaveNoteType = new StaveNote({

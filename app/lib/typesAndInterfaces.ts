@@ -19,6 +19,7 @@ export type Chord = {
 export type StateType = {
   isEraseNoteActive: boolean;
   isEraseAccidentalActive: boolean;
+  isChangeNoteActive: boolean;
   isEnterNoteActive: boolean;
   isSharpActive: boolean;
   noNoteFound: boolean;
@@ -31,6 +32,7 @@ export type AccidentalStateType = {
   isRemoveSharpActive: boolean;
   isRemoveFlatActive: boolean;
   isClearMeasuresActive: boolean;
+  
 };
 export type StaveType = InstanceType<typeof Stave>;
 export type StaveNoteType = InstanceType<typeof StaveNote>;
