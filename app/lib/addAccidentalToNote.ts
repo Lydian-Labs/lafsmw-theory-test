@@ -1,14 +1,14 @@
 import VexFlow from "vexflow";
-import { StaveNoteAbsoluteXCoordUserClickY } from "./typesAndInterfaces";
+import { StaveNoteData } from "./typesAndInterfaces";
 const VF = VexFlow.Flow;
 const { Accidental } = VF;
 
 export const addAccidentalToNote = (
-  barOfStaveNotes: StaveNoteAbsoluteXCoordUserClickY[],
+  barOfStaveNotes: StaveNoteData[],
   userClickX: number,
   accidental: string,
   findIndexFunction: (
-    barOfStaveNotes: StaveNoteAbsoluteXCoordUserClickY[],
+    barOfStaveNotes: StaveNoteData[],
     userClickX: number
   ) => number
 ) => {

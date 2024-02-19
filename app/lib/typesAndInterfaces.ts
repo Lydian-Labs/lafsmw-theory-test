@@ -34,13 +34,13 @@ export type AccidentalStateType = {
 export type StaveType = InstanceType<typeof Stave>;
 export type StaveNoteType = InstanceType<typeof StaveNote>;
 
-export interface StaveNoteAbsoluteXCoordUserClickY {
+export interface StaveNoteData {
   newStaveNote: StaveNoteType;
   staveNoteAbsoluteX: number;
   userClickY: number;
 }
 
-export interface NoteStringYMinAndYMaxUserClickY {
+export interface NoteStringData {
   note: string;
   yCoordinateMin: number;
   yCoordinateMax: number;

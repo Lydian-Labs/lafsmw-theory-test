@@ -11,9 +11,9 @@ import { indexOfNoteToModify } from "../lib/indexOfNoteToModify";
 import { notesArray } from "../lib/noteArray";
 
 import {
-  NoteStringYMinAndYMaxUserClickY,
+  NoteStringData,
   StateType,
-  StaveNoteAbsoluteXCoordUserClickY,
+  StaveNoteData,
   StaveNoteType,
   StaveType,
 } from "../lib/typesAndInterfaces";
@@ -29,15 +29,13 @@ const BEATS_IN_MEASURE = parseInt(TIME_SIG.split("/")[0]);
 let NUM_STAVES = 4;
 let Y_POSITION_OF_STAVES = 150;
 
-const INITIAL_NOTES: StaveNoteAbsoluteXCoordUserClickY[][] = new Array(
-  NUM_STAVES
-).fill([]);
+const INITIAL_NOTES: StaveNoteData[][] = new Array(NUM_STAVES).fill([]);
 
 const CreateAndEraseNotesFromStave = () => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
   const [blankStaves, setBlankStaves] = useState<StaveType[]>([]);
-  const [notesData, setNotesData] = useState(INITIAL_NOTES); //contains staveNote need to update userClickX
+  const [notesData, setNotesData] = useState(INITIAL_NOTES);
   const [state, setState] = useState<StateType>({
     isEraserActive: false,
     isEnterNotesActive: true,
@@ -61,10 +59,6 @@ const CreateAndEraseNotesFromStave = () => {
   const enterNotes = () => toggleState("isEnterNotesActive");
   const addSharp = () => toggleState("isSharpActive");
   const addFlat = () => toggleState("isFlatActive");
-  const accidentalMap = {
-    isSharpActive: "#",
-    isFlatActive: "b",
-  };
 
   const buttons = [
     { button: eraser, text: "Eraser", stateFunction: state.isEraserActive },
@@ -148,7 +142,7 @@ const CreateAndEraseNotesFromStave = () => {
     renderStavesAndNotes();
   }, [notesData]);
 
-  let foundNoteDataAndUserClickY: NoteStringYMinAndYMaxUserClickY;
+  let foundNoteDataAndUserClickY: NoteStringData;
 
   const handleClick = (e: React.MouseEvent) => {
     const rect = container.current?.getBoundingClientRect();
