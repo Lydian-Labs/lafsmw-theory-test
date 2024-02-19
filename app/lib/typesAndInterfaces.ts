@@ -55,9 +55,4 @@ export interface NoteStringData {
   yCoordinateMax: number;
   userClickY?: number;
 }
-export interface AccidentalData {
-  newStaveNote: StaveNoteType;
-  AccidentalAbsoluteX: number;
-  userClickY: number;
-  userClickX: number;
-}
+

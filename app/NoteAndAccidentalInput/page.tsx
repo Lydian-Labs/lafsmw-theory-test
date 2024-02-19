@@ -7,7 +7,7 @@ import KaseyBlankStaves from "../components/KaseyBlankStaves";
 import {
   addAccidentalToNote,
   indexOfNoteWithAccidental,
-} from "../lib/addAccidentalToNote";
+} from "../lib/addAndRemoveAccidentals";
 import { findBarIndex } from "../lib/findBar";
 import generateYMinAndYMaxForAllNotes from "../lib/generateYMinAndMaxForAllNotes";
 import GetUserClickInfo from "../lib/getUserClickInfo";
@@ -15,7 +15,6 @@ import { indexOfNoteToModify } from "../lib/indexOfNoteToModify";
 import { notesArray } from "../lib/noteArray";
 
 import {
-  AccidentalData,
   NoteStringData,
   StateType,
   StaveNoteData,
@@ -41,7 +40,6 @@ const CreateAndEraseNotesFromStave = () => {
   const container = useRef<HTMLDivElement | null>(null);
   const [blankStaves, setBlankStaves] = useState<StaveType[]>([]);
   const [notesData, setNotesData] = useState(INITIAL_NOTES);
-  const [accidentals, setAccidentals] = useState([]);
   const [state, setState] = useState<StateType>({
     isEraseNoteActive: false,
     isEraseAccidentalActive: false,
