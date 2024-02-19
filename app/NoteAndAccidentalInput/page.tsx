@@ -191,22 +191,22 @@ const CreateAndEraseNotesFromStave = () => {
       ...noteData,
       staveNoteAbsoluteX: noteData.newStaveNote.getAbsoluteX(),
     }));
-    const updatedBarOfStaveNotes = (
-      staveNote: StaveNoteType,
-      absoluteX: number,
-      userClickY: number
-    ): StaveNoteData[] => {
-      let newBarOfStaveNotes = notesDataCopy[barIndex];
-      newBarOfStaveNotes = [
-        ...barOfStaveNotes,
-        {
-          newStaveNote: staveNote,
-          staveNoteAbsoluteX: absoluteX,
-          userClickY,
-        },
-      ];
-      return newBarOfStaveNotes;
-    };
+    // const updatedBarOfStaveNotes = (
+    //   staveNote: StaveNoteType,
+    //   absoluteX: number,
+    //   userClickY: number
+    // ): StaveNoteData[] => {
+    //   let newBarOfStaveNotes = notesDataCopy[barIndex];
+    //   newBarOfStaveNotes = [
+    //     ...barOfStaveNotes,
+    //     {
+    //       newStaveNote: staveNote,
+    //       staveNoteAbsoluteX: absoluteX,
+    //       userClickY,
+    //     },
+    //   ];
+    //   return newBarOfStaveNotes;
+    // };
 
     if (!foundNoteDataAndUserClickY) {
       toggleState("noNoteFound");
@@ -217,11 +217,18 @@ const CreateAndEraseNotesFromStave = () => {
       );
       barOfStaveNotes.splice(indexOfNoteToErase, 1);
       notesDataCopy[barIndex] = barOfStaveNotes;
-    } else if (state.isSharpActive || state.isFlatActive) {
+    } else if (state.isSharpActive) {
       addAccidentalToNote(
         barOfStaveNotes,
         userClickX,
-        state.isSharpActive ? "#" : "b",
+        "#",
+        indexOfNoteToModify
+      );
+    } else if (state.isFlatActive) {
+      addAccidentalToNote(
+        barOfStaveNotes,
+        userClickX,
+        "b",
         indexOfNoteToModify
       );
     } else if (state.isEraseAccidentalActive) {
@@ -235,11 +242,19 @@ const CreateAndEraseNotesFromStave = () => {
         keys: noteToString,
         duration: "q",
       });
-      updatedBarOfStaveNotes(
-        redrawnStaveNote,
-        savedUserClickX,
-        savedUserClickY
-      );
+      notesDataCopy[barIndex] = [
+        ...barOfStaveNotes,
+        {
+          newStaveNote: redrawnStaveNote,
+          staveNoteAbsoluteX: savedUserClickX,
+          userClickY: savedUserClickY,
+        },
+      ];
+      // updatedBarOfStaveNotes(
+      //   redrawnStaveNote,
+      //   savedUserClickX,
+      //   savedUserClickY
+      // );
     } else if (state.isChangeNoteActive) {
       const indexOfNote = indexOfNoteToModify(barOfStaveNotes, userClickX);
       barOfStaveNotes.splice(indexOfNote, 1);
@@ -252,7 +267,14 @@ const CreateAndEraseNotesFromStave = () => {
         duration: "q",
       });
 
-      updatedBarOfStaveNotes(newStaveNote, 0, userClickY);
+      notesDataCopy[barIndex] = [
+        ...barOfStaveNotes,
+        {
+          newStaveNote,
+          staveNoteAbsoluteX: 0,
+          userClickY,
+        },
+      ];
     }
     setNotesData(() => notesDataCopy);
   };
