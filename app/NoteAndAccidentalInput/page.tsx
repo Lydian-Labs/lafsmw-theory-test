@@ -217,18 +217,22 @@ const CreateAndEraseNotesFromStave = () => {
       );
     } else if (state.isEraseAccidentalActive) {
       const indexOfNote = indexOfNoteToModify(barOfStaveNotes, userClickX);
+      const noteToRedraw = barOfStaveNotes[indexOfNote].newStaveNote;
+      const savedUserClickY = barOfStaveNotes[indexOfNote].userClickY;
+      const savedUserClickX = barOfStaveNotes[indexOfNote].staveNoteAbsoluteX;
+      const noteToString = noteToRedraw.getKeys();
       barOfStaveNotes.splice(indexOfNote, 1);
       notesDataCopy[barIndex] = barOfStaveNotes;
-      const newStaveNote: StaveNoteType = new StaveNote({
-        keys: [foundNoteDataAndUserClickY.note],
+      const redrawnStaveNote: StaveNoteType = new StaveNote({
+        keys: noteToString,
         duration: "q",
       });
       notesDataCopy[barIndex] = [
         ...barOfStaveNotes,
         {
-          newStaveNote,
-          staveNoteAbsoluteX: 0,
-          userClickY,
+          newStaveNote: redrawnStaveNote,
+          staveNoteAbsoluteX: savedUserClickX,
+          userClickY: savedUserClickY,
         },
       ];
     } else if (state.isChangeNoteActive) {
@@ -239,14 +243,6 @@ const CreateAndEraseNotesFromStave = () => {
         keys: [foundNoteDataAndUserClickY.note],
         duration: "q",
       });
-      notesDataCopy[barIndex] = [
-        ...barOfStaveNotes,
-        {
-          newStaveNote,
-          staveNoteAbsoluteX: 0,
-          userClickY,
-        },
-      ];
     } else if (barOfStaveNotes && barOfStaveNotes.length >= BEATS_IN_MEASURE) {
       toggleState("tooManyBeatsInMeasure");
     } else {
