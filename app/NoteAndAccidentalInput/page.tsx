@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import BlueButton from "../components/BlueButton";
 import CheckIfNoteFound from "../components/CheckIfNoteFound";
+import GetUserClickInfo from "../lib/getUserClickInfo";
 import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
 import KaseyBlankStaves from "../components/KaseyBlankStaves";
 import { addAccidentalToNote } from "../lib/addAccidentalToNote";
@@ -145,12 +146,8 @@ const CreateAndEraseNotesFromStave = () => {
   let foundNoteDataAndUserClickY: NoteStringData;
 
   const handleClick = (e: React.MouseEvent) => {
-    const rect = container.current?.getBoundingClientRect();
-    const userClickY = rect ? e.clientY - rect.top : 0;
-    const userClickX = rect ? e.clientX - rect.left : 0;
-    const topStaveYPosition = blankStaves[0].getYForTopText();
-
-    const highGYPosition: number = topStaveYPosition - 33;
+    const { userClickY, userClickX, topStaveYPosition, highGYPosition } =
+      GetUserClickInfo(e, container, blankStaves[0]);
 
     let foundNoteData = generateYMinAndYMaxForAllNotes(
       highGYPosition,
