@@ -1,13 +1,6 @@
 import React from "react";
-import { StaveType } from "./typesAndInterfaces";
+import { UserClickInfo, StaveType } from "../lib/typesAndInterfaces";
 
-interface UserClickInfo {
-  rect: DOMRect | undefined;
-  userClickX: number;
-  userClickY: number;
-  topStaveYPosition: number;
-  highGYPosition: number;
-}
 export const GetUserClickInfo = (
   e: React.MouseEvent,
   container: React.RefObject<HTMLDivElement>,

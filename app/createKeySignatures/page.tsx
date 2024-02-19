@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import BlueButton from "../components/BlueButton";
+import GetUserClickInfo from "../lib/getUserClickInfo";
 import KaseyBlankStaves from "../components/KaseyBlankStaves";
 import { sharpKeySignature, flatKeySignature } from "../lib/keySignatures";
 import { StaveType } from "../lib/typesAndInterfaces";

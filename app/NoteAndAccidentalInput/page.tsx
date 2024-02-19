@@ -2,12 +2,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import BlueButton from "../components/BlueButton";
 import CheckIfNoteFound from "../components/CheckIfNoteFound";
-import GetUserClickInfo from "../lib/getUserClickInfo";
 import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
 import KaseyBlankStaves from "../components/KaseyBlankStaves";
 import { addAccidentalToNote } from "../lib/addAccidentalToNote";
 import { findBarIndex } from "../lib/findBar";
 import generateYMinAndYMaxForAllNotes from "../lib/generateYMinAndMaxForAllNotes";
+import GetUserClickInfo from "../lib/getUserClickInfo";
 import { indexOfNoteToModify } from "../lib/indexOfNoteToModify";
 import { notesArray } from "../lib/noteArray";
 
@@ -146,8 +146,11 @@ const CreateAndEraseNotesFromStave = () => {
   let foundNoteDataAndUserClickY: NoteStringData;
 
   const handleClick = (e: React.MouseEvent) => {
-    const { userClickY, userClickX, topStaveYPosition, highGYPosition } =
-      GetUserClickInfo(e, container, blankStaves[0]);
+    const { userClickY, userClickX, highGYPosition } = GetUserClickInfo(
+      e,
+      container,
+      blankStaves[0]
+    );
 
     let foundNoteData = generateYMinAndYMaxForAllNotes(
       highGYPosition,

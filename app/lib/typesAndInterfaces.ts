@@ -34,6 +34,14 @@ export type AccidentalStateType = {
 export type StaveType = InstanceType<typeof Stave>;
 export type StaveNoteType = InstanceType<typeof StaveNote>;
 
+export interface UserClickInfo {
+  rect: DOMRect | undefined;
+  userClickX: number;
+  userClickY: number;
+  topStaveYPosition: number;
+  highGYPosition: number;
+}
+
 export interface StaveNoteData {
   newStaveNote: StaveNoteType;
   staveNoteAbsoluteX: number;
