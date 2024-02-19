@@ -217,18 +217,11 @@ const CreateAndEraseNotesFromStave = () => {
       );
       barOfStaveNotes.splice(indexOfNoteToErase, 1);
       notesDataCopy[barIndex] = barOfStaveNotes;
-    } else if (state.isSharpActive) {
+    } else if (state.isSharpActive || state.isFlatActive) {
       addAccidentalToNote(
         barOfStaveNotes,
         userClickX,
-        "#",
-        indexOfNoteToModify
-      );
-    } else if (state.isFlatActive) {
-      addAccidentalToNote(
-        barOfStaveNotes,
-        userClickX,
-        "b",
+        state.isSharpActive ? "#" : "b",
         indexOfNoteToModify
       );
     } else if (state.isEraseAccidentalActive) {
