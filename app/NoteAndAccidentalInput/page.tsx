@@ -239,10 +239,6 @@ const CreateAndEraseNotesFromStave = () => {
       const indexOfNote = indexOfNoteToModify(barOfStaveNotes, userClickX);
       barOfStaveNotes.splice(indexOfNote, 1);
       notesDataCopy[barIndex] = barOfStaveNotes;
-      const newStaveNote: StaveNoteType = new StaveNote({
-        keys: [foundNoteDataAndUserClickY.note],
-        duration: "q",
-      });
     } else if (barOfStaveNotes && barOfStaveNotes.length >= BEATS_IN_MEASURE) {
       toggleState("tooManyBeatsInMeasure");
     } else {
