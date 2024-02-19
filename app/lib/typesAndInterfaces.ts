@@ -17,8 +17,9 @@ export type Chord = {
 };
 
 export type StateType = {
-  isEraserActive: boolean;
-  isEnterNotesActive: boolean;
+  isEraseNoteActive: boolean;
+  isEraseAccidentalActive: boolean;
+  isEnterNoteActive: boolean;
   isSharpActive: boolean;
   noNoteFound: boolean;
   tooManyBeatsInMeasure?: boolean;
@@ -53,4 +54,10 @@ export interface NoteStringData {
   yCoordinateMin: number;
   yCoordinateMax: number;
   userClickY?: number;
+}
+export interface AccidentalData {
+  newStaveNote: StaveNoteType;
+  AccidentalAbsoluteX: number;
+  userClickY: number;
+  userClickX: number;
 }

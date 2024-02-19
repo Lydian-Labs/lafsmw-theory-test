@@ -4,7 +4,10 @@ import BlueButton from "../components/BlueButton";
 import CheckIfNoteFound from "../components/CheckIfNoteFound";
 import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
 import KaseyBlankStaves from "../components/KaseyBlankStaves";
-import { addAccidentalToNote } from "../lib/addAccidentalToNote";
+import {
+  addAccidentalToNote,
+  indexOfNoteWithAccidental,
+} from "../lib/addAccidentalToNote";
 import { findBarIndex } from "../lib/findBar";
 import generateYMinAndYMaxForAllNotes from "../lib/generateYMinAndMaxForAllNotes";
 import GetUserClickInfo from "../lib/getUserClickInfo";
@@ -12,6 +15,7 @@ import { indexOfNoteToModify } from "../lib/indexOfNoteToModify";
 import { notesArray } from "../lib/noteArray";
 
 import {
+  AccidentalData,
   NoteStringData,
   StateType,
   StaveNoteData,
@@ -37,9 +41,11 @@ const CreateAndEraseNotesFromStave = () => {
   const container = useRef<HTMLDivElement | null>(null);
   const [blankStaves, setBlankStaves] = useState<StaveType[]>([]);
   const [notesData, setNotesData] = useState(INITIAL_NOTES);
+  const [accidentals, setAccidentals] = useState([]);
   const [state, setState] = useState<StateType>({
-    isEraserActive: false,
-    isEnterNotesActive: true,
+    isEraseNoteActive: false,
+    isEraseAccidentalActive: false,
+    isEnterNoteActive: true,
     isSharpActive: false,
     noNoteFound: false,
     tooManyBeatsInMeasure: false,
@@ -56,17 +62,27 @@ const CreateAndEraseNotesFromStave = () => {
     });
   };
 
-  const eraser = () => toggleState("isEraserActive");
-  const enterNotes = () => toggleState("isEnterNotesActive");
+  const eraseNote = () => toggleState("isEraseNoteActive");
+  const enterNote = () => toggleState("isEnterNoteActive");
   const addSharp = () => toggleState("isSharpActive");
   const addFlat = () => toggleState("isFlatActive");
+  const eraseAccidental = () => toggleState("isEraseAccidentalActive");
 
   const buttons = [
-    { button: eraser, text: "Eraser", stateFunction: state.isEraserActive },
     {
-      button: enterNotes,
+      button: eraseNote,
+      text: "Erase Note",
+      stateFunction: state.isEraseNoteActive,
+    },
+    {
+      button: eraseAccidental,
+      text: "Erase Accidental",
+      stateFunction: state.isEraseAccidentalActive,
+    },
+    {
+      button: enterNote,
       text: "Enter Notes",
-      stateFunction: state.isEnterNotesActive,
+      stateFunction: state.isEnterNoteActive,
     },
     { button: addSharp, text: "Add Sharp", stateFunction: state.isSharpActive },
     { button: addFlat, text: "Add Flat", stateFunction: state.isFlatActive },
@@ -176,7 +192,7 @@ const CreateAndEraseNotesFromStave = () => {
 
     if (!foundNoteDataAndUserClickY) {
       toggleState("noNoteFound");
-    } else if (state.isEraserActive) {
+    } else if (state.isEraseNoteActive) {
       const indexOfNoteToErase = indexOfNoteToModify(
         barOfStaveNotes,
         userClickX
@@ -197,6 +213,26 @@ const CreateAndEraseNotesFromStave = () => {
         "b",
         indexOfNoteToModify
       );
+    } else if (state.isEraseAccidentalActive) {
+      const indexOfNote = indexOfNoteWithAccidental(
+        barOfStaveNotes,
+        userClickX,
+        indexOfNoteToModify
+      );
+      barOfStaveNotes.splice(indexOfNote, 1);
+      notesDataCopy[barIndex] = barOfStaveNotes;
+      const newStaveNote: StaveNoteType = new StaveNote({
+        keys: [foundNoteDataAndUserClickY.note],
+        duration: "q",
+      });
+      notesDataCopy[barIndex] = [
+        ...barOfStaveNotes,
+        {
+          newStaveNote,
+          staveNoteAbsoluteX: 0,
+          userClickY,
+        },
+      ];
     } else if (barOfStaveNotes && barOfStaveNotes.length >= BEATS_IN_MEASURE) {
       toggleState("tooManyBeatsInMeasure");
     } else {
@@ -222,11 +258,11 @@ const CreateAndEraseNotesFromStave = () => {
       <div ref={container} onClick={handleClick} />
       <CheckNumBeatsInMeasure
         tooManyBeatsInMeasure={state.tooManyBeatsInMeasure}
-        openEnterNotes={enterNotes}
+        openEnterNotes={enterNote}
       />
       <CheckIfNoteFound
         noNoteFound={state.noNoteFound}
-        openEnterNotes={enterNotes}
+        openEnterNotes={enterNote}
       />
       <div className="mt-2 ml-3">
         {buttons.map((button, index) => {
