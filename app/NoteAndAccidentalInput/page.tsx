@@ -191,6 +191,22 @@ const CreateAndEraseNotesFromStave = () => {
       ...noteData,
       staveNoteAbsoluteX: noteData.newStaveNote.getAbsoluteX(),
     }));
+    const updatedBarOfStaveNotes = (
+      staveNote: StaveNoteType,
+      absoluteX: number,
+      userClickY: number
+    ): StaveNoteData[] => {
+      let newBarOfStaveNotes = notesDataCopy[barIndex];
+      newBarOfStaveNotes = [
+        ...barOfStaveNotes,
+        {
+          newStaveNote: staveNote,
+          staveNoteAbsoluteX: absoluteX,
+          userClickY,
+        },
+      ];
+      return newBarOfStaveNotes;
+    };
 
     if (!foundNoteDataAndUserClickY) {
       toggleState("noNoteFound");
@@ -222,19 +238,15 @@ const CreateAndEraseNotesFromStave = () => {
       const savedUserClickX = barOfStaveNotes[indexOfNote].staveNoteAbsoluteX;
       const noteToString = noteToRedraw.getKeys();
       barOfStaveNotes.splice(indexOfNote, 1);
-      notesDataCopy[barIndex] = barOfStaveNotes;
       const redrawnStaveNote: StaveNoteType = new StaveNote({
         keys: noteToString,
         duration: "q",
       });
-      notesDataCopy[barIndex] = [
-        ...barOfStaveNotes,
-        {
-          newStaveNote: redrawnStaveNote,
-          staveNoteAbsoluteX: savedUserClickX,
-          userClickY: savedUserClickY,
-        },
-      ];
+      updatedBarOfStaveNotes(
+        redrawnStaveNote,
+        savedUserClickX,
+        savedUserClickY
+      );
     } else if (state.isChangeNoteActive) {
       const indexOfNote = indexOfNoteToModify(barOfStaveNotes, userClickX);
       barOfStaveNotes.splice(indexOfNote, 1);
@@ -247,14 +259,7 @@ const CreateAndEraseNotesFromStave = () => {
         duration: "q",
       });
 
-      notesDataCopy[barIndex] = [
-        ...barOfStaveNotes,
-        {
-          newStaveNote,
-          staveNoteAbsoluteX: 0,
-          userClickY,
-        },
-      ];
+      updatedBarOfStaveNotes(newStaveNote, 0, userClickY);
     }
     setNotesData(() => notesDataCopy);
   };
