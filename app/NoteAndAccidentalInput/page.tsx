@@ -106,8 +106,9 @@ const CreateAndEraseNotesFromStave = () => {
     }
   };
 
-  const renderStavesAndNotes = () => {
+  const renderStavesAndNotes = (): void => {
     const renderer = rendererRef.current;
+    renderer?.resize(800, 300);
     const context = renderer && renderer.getContext();
     context?.setFont("Arial", 10);
     context?.clear();
@@ -139,23 +140,7 @@ const CreateAndEraseNotesFromStave = () => {
 
   useEffect(() => {
     initializeRenderer();
-    const renderer = rendererRef.current;
-    renderer?.resize(800, 300);
-    const context = renderer && renderer.getContext();
-    context?.setFont("Arial", 10);
-    context &&
-      setBlankStaves(
-        KaseyBlankStaves(
-          4,
-          context,
-          250,
-          180,
-          10,
-          Y_POSITION_OF_STAVES,
-          CLEF,
-          TIME_SIG
-        )
-      );
+    renderStavesAndNotes()
   }, []);
 
   useEffect(() => {
