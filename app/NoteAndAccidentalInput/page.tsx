@@ -94,6 +94,7 @@ const CreateAndEraseNotesFromStave = () => {
     setNotesData(() => INITIAL_NOTES);
     initializeRenderer();
     renderStavesAndNotes();
+    enterNote()
   };
 
   const initializeRenderer = () => {
