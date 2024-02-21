@@ -192,32 +192,9 @@ const CreateAndEraseNotesFromStave = () => {
       ...noteData,
       staveNoteAbsoluteX: noteData.newStaveNote.getAbsoluteX(),
     }));
-    // const updatedBarOfStaveNotes = (
-    //   staveNote: StaveNoteType,
-    //   absoluteX: number,
-    //   userClickY: number
-    // ): StaveNoteData[] => {
-    //   let newBarOfStaveNotes = notesDataCopy[barIndex];
-    //   newBarOfStaveNotes = [
-    //     ...barOfStaveNotes,
-    //     {
-    //       newStaveNote: staveNote,
-    //       staveNoteAbsoluteX: absoluteX,
-    //       userClickY,
-    //     },
-    //   ];
-    //   return newBarOfStaveNotes;
-    // };
 
     if (!updatedFoundNoteData) {
       toggleState("noNoteFound");
-    } else if (state.isEraseNoteActive) {
-      const indexOfNoteToErase = indexOfNoteToModify(
-        barOfStaveNotes,
-        userClickX
-      );
-      barOfStaveNotes.splice(indexOfNoteToErase, 1);
-      notesDataCopy[barIndex] = barOfStaveNotes;
     } else if (state.isSharpActive || state.isFlatActive) {
       addAccidentalToNote(
         barOfStaveNotes,
@@ -225,6 +202,13 @@ const CreateAndEraseNotesFromStave = () => {
         state.isSharpActive ? "#" : "b",
         indexOfNoteToModify
       );
+    } else if (state.isEraseNoteActive) {
+      const indexOfNoteToErase = indexOfNoteToModify(
+        barOfStaveNotes,
+        userClickX
+      );
+      barOfStaveNotes.splice(indexOfNoteToErase, 1);
+      notesDataCopy[barIndex] = barOfStaveNotes;
     } else if (state.isEraseAccidentalActive) {
       const indexOfNote = indexOfNoteToModify(barOfStaveNotes, userClickX);
       const noteToRedraw = barOfStaveNotes[indexOfNote].newStaveNote;
@@ -244,12 +228,7 @@ const CreateAndEraseNotesFromStave = () => {
           userClickY: savedUserClickY,
         },
       ];
-
-      // updatedBarOfStaveNotes(
-      //   redrawnStaveNote,
-      //   savedUserClickX,
-      //   savedUserClickY
-      // );
+      
     } else if (state.isChangeNoteActive) {
       const indexOfNote = indexOfNoteToModify(barOfStaveNotes, userClickX);
       const savedUserClickX = barOfStaveNotes[indexOfNote].staveNoteAbsoluteX;
