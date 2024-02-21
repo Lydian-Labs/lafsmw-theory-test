@@ -94,7 +94,7 @@ const CreateAndEraseNotesFromStave = () => {
     setNotesData(() => INITIAL_NOTES);
     initializeRenderer();
     renderStavesAndNotes();
-    enterNote()
+    enterNote();
   };
 
   const initializeRenderer = () => {
@@ -162,13 +162,13 @@ const CreateAndEraseNotesFromStave = () => {
     renderStavesAndNotes();
   }, [notesData]);
 
-  let foundNoteDataAndUserClickY: NoteStringData;
+  let updatedFoundNoteData: NoteStringData;
 
   const handleClick = (e: React.MouseEvent) => {
     const { userClickY, userClickX, highGYPosition } = GetUserClickInfo(
       e,
       container,
-      blankStaves[0]
+      blankStaves[0] //array index doesn't matter because we are using this argument to find the height of the top stave
     );
 
     let foundNoteData = generateYMinAndYMaxForAllNotes(
@@ -180,7 +180,7 @@ const CreateAndEraseNotesFromStave = () => {
     );
 
     if (foundNoteData)
-      foundNoteDataAndUserClickY = {
+      updatedFoundNoteData = {
         ...foundNoteData,
         userClickY: userClickY,
       };
@@ -209,7 +209,7 @@ const CreateAndEraseNotesFromStave = () => {
     //   return newBarOfStaveNotes;
     // };
 
-    if (!foundNoteDataAndUserClickY) {
+    if (!updatedFoundNoteData) {
       toggleState("noNoteFound");
     } else if (state.isEraseNoteActive) {
       const indexOfNoteToErase = indexOfNoteToModify(
@@ -258,13 +258,26 @@ const CreateAndEraseNotesFromStave = () => {
       // );
     } else if (state.isChangeNoteActive) {
       const indexOfNote = indexOfNoteToModify(barOfStaveNotes, userClickX);
+      const savedUserClickX = barOfStaveNotes[indexOfNote].staveNoteAbsoluteX;
       barOfStaveNotes.splice(indexOfNote, 1);
-      notesDataCopy[barIndex] = barOfStaveNotes;
+      const newStaveNote: StaveNoteType = new StaveNote({
+        keys: [updatedFoundNoteData.note],
+        duration: "q",
+      });
+
+      notesDataCopy[barIndex] = [
+        ...barOfStaveNotes,
+        {
+          newStaveNote,
+          staveNoteAbsoluteX: savedUserClickX,
+          userClickY,
+        },
+      ];
     } else if (barOfStaveNotes && barOfStaveNotes.length >= BEATS_IN_MEASURE) {
       toggleState("tooManyBeatsInMeasure");
     } else {
       const newStaveNote: StaveNoteType = new StaveNote({
-        keys: [foundNoteDataAndUserClickY.note],
+        keys: [updatedFoundNoteData.note],
         duration: "q",
       });
 
