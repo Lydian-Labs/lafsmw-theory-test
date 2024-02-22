@@ -90,14 +90,14 @@ const CreateAndEraseNotesFromStave = () => {
     },
   ];
 
-  const clearMeasures = () => {
+  const clearMeasures = (): void => {
     setNotesData(() => INITIAL_NOTES);
     initializeRenderer();
     renderStavesAndNotes();
     enterNote();
   };
 
-  const initializeRenderer = () => {
+  const initializeRenderer = (): void => {
     if (!rendererRef.current && container.current) {
       rendererRef.current = new Renderer(
         container.current,
@@ -140,7 +140,7 @@ const CreateAndEraseNotesFromStave = () => {
 
   useEffect(() => {
     initializeRenderer();
-    renderStavesAndNotes()
+    renderStavesAndNotes();
   }, []);
 
   useEffect(() => {
@@ -200,37 +200,30 @@ const CreateAndEraseNotesFromStave = () => {
       const savedUserClickY = barOfStaveNotes[indexOfNote].userClickY;
       const savedUserClickX = barOfStaveNotes[indexOfNote].staveNoteAbsoluteX;
       const noteToString = noteToRedraw.getKeys();
-      barOfStaveNotes.splice(indexOfNote, 1);
       const redrawnStaveNote: StaveNoteType = new StaveNote({
         keys: noteToString,
         duration: "q",
       });
-      notesDataCopy[barIndex] = [
-        ...barOfStaveNotes,
-        {
-          newStaveNote: redrawnStaveNote,
-          staveNoteAbsoluteX: savedUserClickX,
-          userClickY: savedUserClickY,
-        },
-      ];
-      
+      barOfStaveNotes.splice(indexOfNote, 1, {
+        newStaveNote: redrawnStaveNote,
+        staveNoteAbsoluteX: savedUserClickX,
+        userClickY: savedUserClickY,
+      });
+      notesDataCopy[barIndex] = barOfStaveNotes;
     } else if (state.isChangeNoteActive) {
       const indexOfNote = indexOfNoteToModify(barOfStaveNotes, userClickX);
       const savedUserClickX = barOfStaveNotes[indexOfNote].staveNoteAbsoluteX;
-      barOfStaveNotes.splice(indexOfNote, 1);
       const newStaveNote: StaveNoteType = new StaveNote({
         keys: [updatedFoundNoteData.note],
         duration: "q",
       });
 
-      notesDataCopy[barIndex] = [
-        ...barOfStaveNotes,
-        {
-          newStaveNote,
-          staveNoteAbsoluteX: savedUserClickX,
-          userClickY,
-        },
-      ];
+      barOfStaveNotes.splice(indexOfNote, 1, {
+        newStaveNote,
+        staveNoteAbsoluteX: savedUserClickX,
+        userClickY,
+      });
+      notesDataCopy[barIndex] = barOfStaveNotes;
     } else if (barOfStaveNotes && barOfStaveNotes.length >= BEATS_IN_MEASURE) {
       toggleState("tooManyBeatsInMeasure");
     } else {
