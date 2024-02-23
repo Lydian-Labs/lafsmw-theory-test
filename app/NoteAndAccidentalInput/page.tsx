@@ -1,23 +1,25 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useReducer } from "react";
 import BlueButton from "../components/BlueButton";
 import CheckIfNoteFound from "../components/CheckIfNoteFound";
 import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
 import KaseyBlankStaves from "../components/KaseyBlankStaves";
 import { addAccidentalToNote } from "../lib/addAccidental";
+import changeNoteFunction from "../lib/changeNoteFunction";
 import { eraseAccidentalFunction } from "../lib/eraseAccidentalFunction";
 import { findBarIndex } from "../lib/findBar";
 import generateYMinAndYMaxForAllNotes from "../lib/generateYMinAndMaxForAllNotes";
 import GetUserClickInfo from "../lib/getUserClickInfo";
 import { indexOfNoteToModify } from "../lib/indexOfNoteToModify";
 import { notesArray } from "../lib/noteArray";
-import changeNoteFunction from "../lib/changeNoteFunction";
 import {
   NoteStringData,
   StateType,
   StaveNoteData,
   StaveNoteType,
   StaveType,
+  initialState,
+  Action,
 } from "../lib/typesAndInterfaces";
 
 import VexFlow from "vexflow";
@@ -37,33 +39,28 @@ const ManageStaveNotes = () => {
   const container = useRef<HTMLDivElement | null>(null);
   const [blankStaves, setBlankStaves] = useState<StaveType[]>([]);
   const [notesData, setNotesData] = useState(INITIAL_NOTES);
-  const [state, setState] = useState<StateType>({
-    isEraseNoteActive: false,
-    isEraseAccidentalActive: false,
-    isEnterNoteActive: true,
-    isSharpActive: false,
-    noNoteFound: false,
-    tooManyBeatsInMeasure: false,
-    isFlatActive: false,
-    isChangeNoteActive: false,
-  });
-  const toggleState = (key: keyof StateType) => {
-    setState((prevState: StateType) => {
-      let newState: StateType = { ...prevState };
-      for (let stateKey in newState) {
-        newState[stateKey as keyof StateType] = false;
-      }
-      newState[key] = true;
-      return newState;
-    });
+
+  const reducer = (state: StateType, action: Action): StateType => {
+    let newState = { ...state };
+    for (let stateKey in newState) {
+      newState[stateKey as keyof StateType] = false;
+    }
+    newState[action.type] = true;
+    return newState;
   };
 
-  const eraseNote = () => toggleState("isEraseNoteActive");
-  const enterNote = () => toggleState("isEnterNoteActive");
-  const addSharp = () => toggleState("isSharpActive");
-  const addFlat = () => toggleState("isFlatActive");
-  const eraseAccidental = () => toggleState("isEraseAccidentalActive");
-  const changeNote = () => toggleState("isChangeNoteActive");
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  const eraseNote = () => dispatch({ type: "isEraseNoteActive" });
+  const enterNote = () => dispatch({ type: "isEnterNoteActive" });
+  const addSharp = () => dispatch({ type: "isSharpActive" });
+  const addFlat = () => dispatch({ type: "isFlatActive" });
+  const eraseAccidental = () => dispatch({ type: "isEraseAccidentalActive" });
+  const changeNote = () => dispatch({ type: "isChangeNoteActive" });
+
+  const noNoteFound = () => dispatch({ type: "noNoteFound" });
+  const tooManyBeatsInMeasure = () =>
+    dispatch({ type: "tooManyBeatsInMeasure" });
 
   const buttons = [
     {
@@ -179,7 +176,7 @@ const ManageStaveNotes = () => {
     }));
 
     if (!updatedFoundNoteData) {
-      toggleState("noNoteFound");
+      noNoteFound();
     } else if (state.isSharpActive || state.isFlatActive) {
       addAccidentalToNote(
         barOfStaveNotes,
@@ -206,7 +203,7 @@ const ManageStaveNotes = () => {
       );
       notesDataCopy[barIndex] = barOfStaveNotes;
     } else if (barOfStaveNotes && barOfStaveNotes.length >= BEATS_IN_MEASURE) {
-      toggleState("tooManyBeatsInMeasure");
+      tooManyBeatsInMeasure();
     } else {
       const newStaveNote: StaveNoteType = new StaveNote({
         keys: [updatedFoundNoteData.note],

@@ -26,13 +26,25 @@ export type StateType = {
   tooManyBeatsInMeasure?: boolean;
   isFlatActive: boolean;
 };
+
+export type Action = { type: keyof StateType };
+
+export const initialState: StateType = {
+  isEraseNoteActive: false,
+  isEraseAccidentalActive: false,
+  isEnterNoteActive: true,
+  isSharpActive: false,
+  noNoteFound: false,
+  tooManyBeatsInMeasure: false,
+  isFlatActive: false,
+  isChangeNoteActive: false,
+};
 export type AccidentalStateType = {
   isAddSharpActive: boolean;
   isAddFlatActive: boolean;
   isRemoveSharpActive: boolean;
   isRemoveFlatActive: boolean;
   isClearMeasuresActive: boolean;
-  
 };
 export type StaveType = InstanceType<typeof Stave>;
 export type StaveNoteType = InstanceType<typeof StaveNote>;
@@ -59,6 +71,6 @@ export interface NoteStringData {
 }
 
 export interface CheckNumBeatsInMeasureProps {
-  tooManyBeatsInMeasure: boolean;
+  tooManyBeatsInMeasure: boolean | undefined;
   openEnterNotes: React.Dispatch<React.SetStateAction<boolean>>;
 }
