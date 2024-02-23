@@ -11,7 +11,7 @@ import generateYMinAndYMaxForAllNotes from "../lib/generateYMinAndMaxForAllNotes
 import GetUserClickInfo from "../lib/getUserClickInfo";
 import { indexOfNoteToModify } from "../lib/indexOfNoteToModify";
 import { notesArray } from "../lib/noteArray";
-
+import changeNoteFunction from "../lib/changeNoteFunction";
 import {
   NoteStringData,
   StateType,
@@ -198,18 +198,12 @@ const ManageStaveNotes = () => {
       eraseAccidentalFunction(barOfStaveNotes, userClickX);
       notesDataCopy[barIndex] = barOfStaveNotes;
     } else if (state.isChangeNoteActive) {
-      const indexOfNote = indexOfNoteToModify(barOfStaveNotes, userClickX);
-      const savedUserClickX = barOfStaveNotes[indexOfNote].staveNoteAbsoluteX;
-      const newStaveNote: StaveNoteType = new StaveNote({
-        keys: [updatedFoundNoteData.note],
-        duration: "q",
-      });
-
-      barOfStaveNotes.splice(indexOfNote, 1, {
-        newStaveNote,
-        staveNoteAbsoluteX: savedUserClickX,
-        userClickY,
-      });
+      changeNoteFunction(
+        barOfStaveNotes,
+        userClickX,
+        updatedFoundNoteData,
+        userClickY
+      );
       notesDataCopy[barIndex] = barOfStaveNotes;
     } else if (barOfStaveNotes && barOfStaveNotes.length >= BEATS_IN_MEASURE) {
       toggleState("tooManyBeatsInMeasure");

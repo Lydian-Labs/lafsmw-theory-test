@@ -1,21 +1,30 @@
 import { indexOfNoteToModify } from "./indexOfNoteToModify";
-import { StaveNoteData, StaveNoteType } from "./typesAndInterfaces";
+import {
+  StaveNoteData,
+  StaveNoteType,
+  NoteStringData,
+} from "./typesAndInterfaces";
 import VexFlow from "vexflow";
 const { StaveNote } = VexFlow.Flow;
 
-const changeNoteFunction = (notes: StaveNoteData[], x:number, noteData, y:number ): void => {
-    const indexOfNote = indexOfNoteToModify(notes, x);
-    const savedUserClickX = notes[indexOfNote].staveNoteAbsoluteX;
-    const newStaveNote: StaveNoteType = new StaveNote({
-      keys: [noteData.note],
-      duration: "q",
-    });
+const changeNoteFunction = (
+  notes: StaveNoteData[],
+  x: number,
+  noteData: NoteStringData,
+  y: number
+): void => {
+  const savedStaveNoteAbsoluteX =
+    notes[indexOfNoteToModify(notes, x)].staveNoteAbsoluteX;
+  const newStaveNote: StaveNoteType = new StaveNote({
+    keys: [noteData.note],
+    duration: "q",
+  });
 
-    notes.splice(indexOfNote, 1, {
-      newStaveNote,
-      staveNoteAbsoluteX: savedUserClickX,
-      y,
-    });
-}
+  notes.splice(indexOfNoteToModify(notes, x), 1, {
+    newStaveNote,
+    staveNoteAbsoluteX: savedStaveNoteAbsoluteX,
+    userClickY: y,
+  });
+};
 
-export default changeNoteFunction
+export default changeNoteFunction;
