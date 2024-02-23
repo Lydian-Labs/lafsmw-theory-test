@@ -58,3 +58,7 @@ export interface NoteStringData {
   userClickY?: number;
 }
 
+export interface CheckNumBeatsInMeasureProps {
+  tooManyBeatsInMeasure: boolean;
+  openEnterNotes: React.Dispatch<React.SetStateAction<boolean>>;
+}

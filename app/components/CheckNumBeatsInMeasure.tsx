@@ -1,9 +1,5 @@
 import { Snackbar, Alert } from "@mui/material/";
-
-interface CheckNumBeatsInMeasureProps {
-  tooManyBeatsInMeasure: boolean;
-  openEnterNotes: React.Dispatch<React.SetStateAction<boolean>>;
-}
+import { CheckNumBeatsInMeasureProps } from "../lib/typesAndInterfaces";
 
 const CheckNumBeatsInMeasure: React.FC<CheckNumBeatsInMeasureProps> = ({
   tooManyBeatsInMeasure,
