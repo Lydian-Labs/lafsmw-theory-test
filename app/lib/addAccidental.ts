@@ -1,7 +1,6 @@
 import VexFlow from "vexflow";
 import { StaveNoteData } from "./typesAndInterfaces";
-const VF = VexFlow.Flow;
-const { Accidental } = VF;
+const { Accidental } = VexFlow.Flow;
 
 export const addAccidentalToNote = (
   barOfStaveNotes: StaveNoteData[],
@@ -17,19 +16,5 @@ export const addAccidentalToNote = (
     barOfStaveNotes[indexOfNote].newStaveNote.addModifier(
       new Accidental(accidental)
     );
-  }
-};
-
-export const indexOfNoteWithAccidental = (
-  barOfStaveNotes: StaveNoteData[],
-  userClickX: number,
-  findIndexFunction: (
-    barOfStaveNotes: StaveNoteData[],
-    userClickX: number
-  ) => number
-) => {
-  const indexOfNote: number = findIndexFunction(barOfStaveNotes, userClickX);
-  if (barOfStaveNotes[indexOfNote]?.newStaveNote) {
-    return indexOfNote;
   }
 };

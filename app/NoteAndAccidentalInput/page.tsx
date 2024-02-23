@@ -4,7 +4,8 @@ import BlueButton from "../components/BlueButton";
 import CheckIfNoteFound from "../components/CheckIfNoteFound";
 import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
 import KaseyBlankStaves from "../components/KaseyBlankStaves";
-import { addAccidentalToNote } from "../lib/addAndRemoveAccidentals";
+import { addAccidentalToNote } from "../lib/addAccidental";
+import { eraseAccidentalFunction } from "../lib/eraseAccidentalFunction";
 import { findBarIndex } from "../lib/findBar";
 import generateYMinAndYMaxForAllNotes from "../lib/generateYMinAndMaxForAllNotes";
 import GetUserClickInfo from "../lib/getUserClickInfo";
@@ -195,20 +196,7 @@ const CreateAndEraseNotesFromStave = () => {
       barOfStaveNotes.splice(indexOfNoteToErase, 1);
       notesDataCopy[barIndex] = barOfStaveNotes;
     } else if (state.isEraseAccidentalActive) {
-      const indexOfNote = indexOfNoteToModify(barOfStaveNotes, userClickX);
-      const noteToRedraw = barOfStaveNotes[indexOfNote].newStaveNote;
-      const savedUserClickY = barOfStaveNotes[indexOfNote].userClickY;
-      const savedUserClickX = barOfStaveNotes[indexOfNote].staveNoteAbsoluteX;
-      const noteToString = noteToRedraw.getKeys();
-      const redrawnStaveNote: StaveNoteType = new StaveNote({
-        keys: noteToString,
-        duration: "q",
-      });
-      barOfStaveNotes.splice(indexOfNote, 1, {
-        newStaveNote: redrawnStaveNote,
-        staveNoteAbsoluteX: savedUserClickX,
-        userClickY: savedUserClickY,
-      });
+      eraseAccidentalFunction(barOfStaveNotes, userClickX);
       notesDataCopy[barIndex] = barOfStaveNotes;
     } else if (state.isChangeNoteActive) {
       const indexOfNote = indexOfNoteToModify(barOfStaveNotes, userClickX);
