@@ -68,26 +68,26 @@ const CreateAndEraseNotesFromStave = () => {
 
   const buttons = [
     {
+      button: enterNote,
+      text: "Enter Note",
+      stateFunction: state.isEnterNoteActive,
+    },
+    {
       button: eraseNote,
       text: "Erase Note",
       stateFunction: state.isEraseNoteActive,
     },
     {
-      button: eraseAccidental,
-      text: "Erase Accidental",
-      stateFunction: state.isEraseAccidentalActive,
-    },
-    {
-      button: enterNote,
-      text: "Enter Notes",
-      stateFunction: state.isEnterNoteActive,
+      button: changeNote,
+      text: "Change Note",
+      stateFunction: state.isChangeNoteActive,
     },
     { button: addSharp, text: "Add Sharp", stateFunction: state.isSharpActive },
     { button: addFlat, text: "Add Flat", stateFunction: state.isFlatActive },
     {
-      button: changeNote,
-      text: "Change Note",
-      stateFunction: state.isChangeNoteActive,
+      button: eraseAccidental,
+      text: "Erase Accidental",
+      stateFunction: state.isEraseAccidentalActive,
     },
   ];
 
