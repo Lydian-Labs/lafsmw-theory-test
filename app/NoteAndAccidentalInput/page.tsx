@@ -22,8 +22,7 @@ import {
 
 import VexFlow from "vexflow";
 
-const VF = VexFlow.Flow;
-const { Formatter, Renderer, StaveNote } = VF;
+const { Formatter, Renderer, StaveNote } = VexFlow.Flow;
 
 const CLEF = "treble";
 const TIME_SIG = "4/4";
@@ -219,7 +218,6 @@ const CreateAndEraseNotesFromStave = () => {
         keys: [updatedFoundNoteData.note],
         duration: "q",
       });
-
       notesDataCopy[barIndex] = [
         ...barOfStaveNotes,
         {
@@ -244,7 +242,7 @@ const CreateAndEraseNotesFromStave = () => {
         openEnterNotes={enterNote}
       />
       <div className="mt-2 ml-3">
-        {buttons.map((button, index) => {
+        {buttons.map((button) => {
           return (
             <BlueButton
               key={button.text}
