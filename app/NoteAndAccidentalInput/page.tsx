@@ -32,7 +32,7 @@ let Y_POSITION_OF_STAVES = 150;
 
 const INITIAL_NOTES: StaveNoteData[][] = new Array(NUM_STAVES).fill([]);
 
-const CreateAndEraseNotesFromStave = () => {
+const ManageStaveNotes = () => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
   const [blankStaves, setBlankStaves] = useState<StaveType[]>([]);
@@ -259,4 +259,4 @@ const CreateAndEraseNotesFromStave = () => {
   );
 };
 
-export default CreateAndEraseNotesFromStave;
+export default ManageStaveNotes;
