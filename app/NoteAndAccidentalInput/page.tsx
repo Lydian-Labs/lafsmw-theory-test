@@ -57,7 +57,6 @@ const ManageStaveNotes = () => {
   const addFlat = () => dispatch({ type: "isFlatActive" });
   const eraseAccidental = () => dispatch({ type: "isEraseAccidentalActive" });
   const changeNote = () => dispatch({ type: "isChangeNoteActive" });
-
   const noNoteFound = () => dispatch({ type: "noNoteFound" });
   const tooManyBeatsInMeasure = () =>
     dispatch({ type: "tooManyBeatsInMeasure" });
