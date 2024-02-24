@@ -25,6 +25,7 @@ export type StateType = {
   noNoteFound: boolean;
   tooManyBeatsInMeasure?: boolean;
   isFlatActive: boolean;
+  [key: string]: boolean | undefined; //This is an index signature. This is a type in TypeScript that allows indexing into an object with a string
 };
 
 export type Action = { type: keyof StateType };
