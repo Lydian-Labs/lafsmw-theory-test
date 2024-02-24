@@ -4,14 +4,16 @@ import BlueButton from "../components/BlueButton";
 import CheckIfNoteFound from "../components/CheckIfNoteFound";
 import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
 import KaseyBlankStaves from "../components/KaseyBlankStaves";
-import { addAccidentalToNote } from "../lib/addAccidental";
-import changeNoteFunction from "../lib/changeNoteFunction";
-import { eraseAccidentalFunction } from "../lib/eraseAccidentalFunction";
 import { findBarIndex } from "../lib/findBar";
 import generateYMinAndYMaxForAllNotes from "../lib/generateYMinAndMaxForAllNotes";
 import GetUserClickInfo from "../lib/getUserClickInfo";
 import { indexOfNoteToModify } from "../lib/indexOfNoteToModify";
 import { notesArray } from "../lib/noteArray";
+import {
+  addAccidentalToNote,
+  eraseAccidentalFunction,
+  changeNoteFunction,
+} from "../lib/modifyNotes";
 import {
   NoteStringData,
   StaveNoteData,
