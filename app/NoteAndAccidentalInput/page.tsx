@@ -14,14 +14,12 @@ import { indexOfNoteToModify } from "../lib/indexOfNoteToModify";
 import { notesArray } from "../lib/noteArray";
 import {
   NoteStringData,
-  StateType,
   StaveNoteData,
   StaveNoteType,
   StaveType,
   initialState,
-  Action,
 } from "../lib/typesAndInterfaces";
-
+import { reducer, buttonActions } from "../lib/manageStaveNotesState";
 import VexFlow from "vexflow";
 
 const { Formatter, Renderer, StaveNote } = VexFlow.Flow;
@@ -40,15 +38,6 @@ const ManageStaveNotes = () => {
   const [blankStaves, setBlankStaves] = useState<StaveType[]>([]);
   const [notesData, setNotesData] = useState(INITIAL_NOTES);
 
-  const reducer = (state: StateType, action: Action): StateType => {
-    let newState = { ...state };
-    for (let stateKey in newState) {
-      newState[stateKey as keyof StateType] = false;
-    }
-    newState[action.type] = true;
-    return newState;
-  };
-
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const eraseNote = () => dispatch({ type: "isEraseNoteActive" });
@@ -61,30 +50,24 @@ const ManageStaveNotes = () => {
   const tooManyBeatsInMeasure = () =>
     dispatch({ type: "tooManyBeatsInMeasure" });
 
-  const buttons = [
+  const buttonConfig = [
+    { action: enterNote, text: "Enter Note", stateKey: "isEnterNoteActive" },
+    { action: eraseNote, text: "Erase Note", stateKey: "isEraseNoteActive" },
+    { action: changeNote, text: "Change Note", stateKey: "isChangeNoteActive" },
+    { action: addSharp, text: "Add Sharp", stateKey: "isSharpActive" },
+    { action: addFlat, text: "Add Flat", stateKey: "isFlatActive" },
     {
-      button: enterNote,
-      text: "Enter Note",
-      stateFunction: state.isEnterNoteActive,
-    },
-    {
-      button: eraseNote,
-      text: "Erase Note",
-      stateFunction: state.isEraseNoteActive,
-    },
-    {
-      button: changeNote,
-      text: "Change Note",
-      stateFunction: state.isChangeNoteActive,
-    },
-    { button: addSharp, text: "Add Sharp", stateFunction: state.isSharpActive },
-    { button: addFlat, text: "Add Flat", stateFunction: state.isFlatActive },
-    {
-      button: eraseAccidental,
+      action: eraseAccidental,
       text: "Erase Accidental",
-      stateFunction: state.isEraseAccidentalActive,
+      stateKey: "isEraseAccidentalActive",
     },
   ];
+
+  const buttons = buttonConfig.map(({ action, text, stateKey }) => ({
+    button: action,
+    text,
+    stateFunction: state[stateKey],
+  }));
 
   const clearMeasures = (): void => {
     setNotesData(() => INITIAL_NOTES);
