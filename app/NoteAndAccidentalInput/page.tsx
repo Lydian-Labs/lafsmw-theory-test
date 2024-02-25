@@ -21,7 +21,8 @@ import {
   StaveType,
   initialState,
 } from "../lib/typesAndInterfaces";
-import { reducer, buttonActions } from "../lib/manageStaveNotesState";
+import { reducer } from "../lib/manageStaveNotesState";
+import { modifyStaveNotesButtonGroup } from "../lib/buttonGroups";
 import VexFlow from "vexflow";
 
 const { Formatter, Renderer, StaveNote } = VexFlow.Flow;
@@ -42,30 +43,15 @@ const ManageStaveNotes = () => {
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const eraseNote = () => dispatch({ type: "isEraseNoteActive" });
   const enterNote = () => dispatch({ type: "isEnterNoteActive" });
-  const addSharp = () => dispatch({ type: "isSharpActive" });
-  const addFlat = () => dispatch({ type: "isFlatActive" });
-  const eraseAccidental = () => dispatch({ type: "isEraseAccidentalActive" });
-  const changeNote = () => dispatch({ type: "isChangeNoteActive" });
+
   const noNoteFound = () => dispatch({ type: "noNoteFound" });
   const tooManyBeatsInMeasure = () =>
     dispatch({ type: "tooManyBeatsInMeasure" });
 
-  const buttonConfig = [
-    { action: enterNote, text: "Enter Note", stateKey: "isEnterNoteActive" },
-    { action: eraseNote, text: "Erase Note", stateKey: "isEraseNoteActive" },
-    { action: changeNote, text: "Change Note", stateKey: "isChangeNoteActive" },
-    { action: addSharp, text: "Add Sharp", stateKey: "isSharpActive" },
-    { action: addFlat, text: "Add Flat", stateKey: "isFlatActive" },
-    {
-      action: eraseAccidental,
-      text: "Erase Accidental",
-      stateKey: "isEraseAccidentalActive",
-    },
-  ];
+  const createButtons = modifyStaveNotesButtonGroup(dispatch);
 
-  const buttons = buttonConfig.map(({ action, text, stateKey }) => ({
+  const buttons = createButtons.map(({ action, text, stateKey }) => ({
     button: action,
     text,
     stateFunction: state[stateKey],
