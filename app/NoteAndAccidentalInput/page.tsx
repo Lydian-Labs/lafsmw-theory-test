@@ -1,19 +1,27 @@
 "use client";
-import React, { useEffect, useRef, useState, useReducer } from "react";
+import React, { useEffect, useReducer, useRef, useState } from "react";
+import VexFlow from "vexflow";
 import BlueButton from "../components/BlueButton";
 import CheckIfNoteFound from "../components/CheckIfNoteFound";
 import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
 import KaseyBlankStaves from "../components/KaseyBlankStaves";
+import {
+  modifyStaveNotesButtonGroup,
+  enterNote,
+  clearMeasures2,
+} from "../lib/buttonsAndButtonGroups";
 import { findBarIndex } from "../lib/findBar";
 import generateYMinAndYMaxForAllNotes from "../lib/generateYMinAndMaxForAllNotes";
 import GetUserClickInfo from "../lib/getUserClickInfo";
 import { indexOfNoteToModify } from "../lib/indexOfNoteToModify";
-import { notesArray } from "../lib/noteArray";
+import { initializeRenderer } from "../lib/initializeRenderer";
+import { reducer } from "../lib/manageStaveNotesState";
 import {
   addAccidentalToNote,
-  eraseAccidentalFunction,
   changeNoteFunction,
+  eraseAccidentalFunction,
 } from "../lib/modifyNotes";
+import { notesArray } from "../lib/noteArray";
 import {
   NoteStringData,
   StaveNoteData,
@@ -21,9 +29,6 @@ import {
   StaveType,
   initialState,
 } from "../lib/typesAndInterfaces";
-import { reducer } from "../lib/manageStaveNotesState";
-import { modifyStaveNotesButtonGroup } from "../lib/buttonGroups";
-import VexFlow from "vexflow";
 
 const { Formatter, Renderer, StaveNote } = VexFlow.Flow;
 
@@ -40,18 +45,15 @@ const ManageStaveNotes = () => {
   const container = useRef<HTMLDivElement | null>(null);
   const [blankStaves, setBlankStaves] = useState<StaveType[]>([]);
   const [notesData, setNotesData] = useState(INITIAL_NOTES);
-
   const [state, dispatch] = useReducer(reducer, initialState);
-
-  const enterNote = () => dispatch({ type: "isEnterNoteActive" });
 
   const noNoteFound = () => dispatch({ type: "noNoteFound" });
   const tooManyBeatsInMeasure = () =>
     dispatch({ type: "tooManyBeatsInMeasure" });
 
-  const createButtons = modifyStaveNotesButtonGroup(dispatch);
+  const buttonGroup = modifyStaveNotesButtonGroup(dispatch);
 
-  const buttons = createButtons.map(({ action, text, stateKey }) => ({
+  const buttons = buttonGroup.map(({ action, text, stateKey }) => ({
     button: action,
     text,
     stateFunction: state[stateKey],
@@ -59,18 +61,9 @@ const ManageStaveNotes = () => {
 
   const clearMeasures = (): void => {
     setNotesData(() => INITIAL_NOTES);
-    initializeRenderer();
+    initializeRenderer(rendererRef, container);
     renderStavesAndNotes();
-    enterNote();
-  };
-
-  const initializeRenderer = (): void => {
-    if (!rendererRef.current && container.current) {
-      rendererRef.current = new Renderer(
-        container.current,
-        Renderer.Backends.SVG
-      );
-    }
+    enterNote(dispatch);
   };
 
   const renderStavesAndNotes = (): void => {
@@ -105,8 +98,17 @@ const ManageStaveNotes = () => {
     });
   };
 
+  // const clearMeasure = clearMeasures2(
+  //   setNotesData,
+  //   INITIAL_NOTES,
+  //   rendererRef,
+  //   container,
+  //   dispatch,
+  //   renderStavesAndNotes
+  // );
+
   useEffect(() => {
-    initializeRenderer();
+    initializeRenderer(rendererRef, container);
     renderStavesAndNotes();
   }, []);
 

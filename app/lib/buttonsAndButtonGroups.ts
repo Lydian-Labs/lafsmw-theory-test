@@ -1,5 +1,12 @@
+import React from "react";
+import * as VexFlow from "vexflow";
+const { Renderer } = VexFlow.Flow;
+import { Action, StaveNoteData } from "./typesAndInterfaces";
+import { initializeRenderer } from "./initializeRenderer";
 
-export const modifyStaveNotesButtonGroup = (dispatch) => {
+export const modifyStaveNotesButtonGroup = (
+  dispatch: React.Dispatch<Action>
+) => {
   const eraseNote = () => dispatch({ type: "isEraseNoteActive" });
   const enterNote = () => dispatch({ type: "isEnterNoteActive" });
   const addSharp = () => dispatch({ type: "isSharpActive" });
@@ -21,4 +28,22 @@ export const modifyStaveNotesButtonGroup = (dispatch) => {
   ];
 
   return buttonConfig;
+};
+
+export const enterNote = (dispatch: React.Dispatch<Action>) => {
+  dispatch({ type: "isEnterNoteActive" });
+};
+
+export const clearMeasures2 = (
+  setNotes: React.Dispatch<React.SetStateAction<StaveNoteData[][]>>,
+  initialNotes: StaveNoteData[][],
+  renderer: React.MutableRefObject<InstanceType<typeof Renderer> | null>,
+  container: React.RefObject<HTMLDivElement | null>,
+  dispatch: React.Dispatch<Action>,
+  renderStavesAndStaveNotes: () => void
+): void => {
+  setNotes(() => initialNotes);
+  initializeRenderer(renderer, container);
+  renderStavesAndStaveNotes();
+  enterNote(dispatch);
 };
