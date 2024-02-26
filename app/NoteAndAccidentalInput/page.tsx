@@ -18,8 +18,8 @@ import { initializeRenderer } from "../lib/initializeRenderer";
 import { reducer } from "../lib/manageStaveNotesState";
 import {
   addAccidentalToNote,
-  changeNoteFunction,
-  eraseAccidentalFunction,
+  changeNoteFunction as changeNotePosition,
+  eraseAccidentalFunction as deleteAccidental,
 } from "../lib/modifyNotes";
 import { notesArray } from "../lib/noteArray";
 import {
@@ -158,10 +158,10 @@ const ManageStaveNotes = () => {
       barOfStaveNotes.splice(indexOfNoteToErase, 1);
       notesDataCopy[barIndex] = barOfStaveNotes;
     } else if (state.isEraseAccidentalActive) {
-      eraseAccidentalFunction(barOfStaveNotes, userClickX);
+      deleteAccidental(barOfStaveNotes, userClickX);
       notesDataCopy[barIndex] = barOfStaveNotes;
     } else if (state.isChangeNoteActive) {
-      changeNoteFunction(
+      changeNotePosition(
         barOfStaveNotes,
         userClickX,
         updatedFoundNoteData,
