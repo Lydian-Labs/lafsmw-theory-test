@@ -6,7 +6,8 @@ import CheckIfNoteFound from "../components/CheckIfNoteFound";
 import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
 import KaseyBlankStaves from "../components/KaseyBlankStaves";
 import {
-  modifyStaveNotesButtonGroup,
+  // modifyStaveNotesButtonGroup,
+  modifyStaveNotesButtonGroup2,
   enterNote,
   clearAllMeasures,
 } from "../lib/buttonsAndButtonGroups";
@@ -52,13 +53,14 @@ const ManageStaveNotes = () => {
   const tooManyBeatsInMeasure = () =>
     dispatch({ type: "tooManyBeatsInMeasure" });
 
-  const buttonGroup = modifyStaveNotesButtonGroup(dispatch);
+  //const buttonGroup = modifyStaveNotesButtonGroup(dispatch);
+  const buttonGroup2 = modifyStaveNotesButtonGroup2(dispatch, initialState);
 
-  const buttons = buttonGroup.map(({ action, text, stateKey }) => ({
-    button: action,
-    text,
-    stateFunction: state[stateKey],
-  }));
+  // const buttons = buttonGroup.map(({ action, text, stateKey }) => ({
+  //   button: action,
+  //   text,
+  //   stateFunction: state[stateKey],
+  // }));
 
   const clearMeasures = () =>
     clearAllMeasures(
@@ -196,12 +198,12 @@ const ManageStaveNotes = () => {
         openEnterNotes={enterNote}
       />
       <div className="mt-2 ml-3">
-        {buttons.map((button) => {
+        {buttonGroup2.map((button) => {
           return (
             <BlueButton
               key={button.text}
-              onClick={button.button}
-              isEnabled={button.stateFunction}
+              onClick={button.action}
+              isEnabled={button.isEnabled}
             >
               {button.text}
             </BlueButton>
