@@ -34,6 +34,8 @@ export const enterNote = (dispatch: React.Dispatch<Action>) => {
   dispatch({ type: "isEnterNoteActive" });
 };
 
+
+
 export const clearAllMeasures = (
   setNotes: React.Dispatch<React.SetStateAction<StaveNoteData[][]>>,
   initialNotes: StaveNoteData[][],

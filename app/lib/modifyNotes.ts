@@ -24,7 +24,7 @@ export const addAccidentalToNote = (
   }
 };
 
-export const changeNoteFunction = (
+export const changeNotePosition = (
   notes: StaveNoteData[],
   x: number,
   noteData: NoteStringData,
@@ -44,10 +44,12 @@ export const changeNoteFunction = (
   });
 };
 
-export const eraseAccidentalFunction = (
-  notes: StaveNoteData[],
-  x: number
-): void => {
+export const deleteNote = (notes: StaveNoteData[], x: number) => {
+  const indexOfNoteToErase = indexOfNoteToModify(notes, x);
+  notes.splice(indexOfNoteToErase, 1);
+};
+
+export const deleteAccidental = (notes: StaveNoteData[], x: number): void => {
   const indexOfNote = indexOfNoteToModify(notes, x);
   const noteToRedraw = notes[indexOfNote].newStaveNote;
   const savedUserClickY = notes[indexOfNote].userClickY;
