@@ -8,7 +8,7 @@ import KaseyBlankStaves from "../components/KaseyBlankStaves";
 import {
   modifyStaveNotesButtonGroup,
   enterNote,
-  clearMeasures2,
+  clearAllMeasures,
 } from "../lib/buttonsAndButtonGroups";
 import { findBarIndex } from "../lib/findBar";
 import generateYMinAndYMaxForAllNotes from "../lib/generateYMinAndMaxForAllNotes";
@@ -59,12 +59,15 @@ const ManageStaveNotes = () => {
     stateFunction: state[stateKey],
   }));
 
-  const clearMeasures = (): void => {
-    setNotesData(() => INITIAL_NOTES);
-    initializeRenderer(rendererRef, container);
-    renderStavesAndNotes();
-    enterNote(dispatch);
-  };
+  const clearMeasures = () =>
+    clearAllMeasures(
+      setNotesData,
+      INITIAL_NOTES,
+      rendererRef,
+      container,
+      dispatch,
+      renderStavesAndNotes
+    );
 
   const renderStavesAndNotes = (): void => {
     const renderer = rendererRef.current;
@@ -97,15 +100,6 @@ const ManageStaveNotes = () => {
       }
     });
   };
-
-  // const clearMeasure = clearMeasures2(
-  //   setNotesData,
-  //   INITIAL_NOTES,
-  //   rendererRef,
-  //   container,
-  //   dispatch,
-  //   renderStavesAndNotes
-  // );
 
   useEffect(() => {
     initializeRenderer(rendererRef, container);

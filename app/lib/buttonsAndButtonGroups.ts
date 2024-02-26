@@ -34,11 +34,11 @@ export const enterNote = (dispatch: React.Dispatch<Action>) => {
   dispatch({ type: "isEnterNoteActive" });
 };
 
-export const clearMeasures2 = (
+export const clearAllMeasures = (
   setNotes: React.Dispatch<React.SetStateAction<StaveNoteData[][]>>,
   initialNotes: StaveNoteData[][],
   renderer: React.MutableRefObject<InstanceType<typeof Renderer> | null>,
-  container: React.RefObject<HTMLDivElement | null>,
+  container: React.MutableRefObject<HTMLDivElement | null>,
   dispatch: React.Dispatch<Action>,
   renderStavesAndStaveNotes: () => void
 ): void => {
