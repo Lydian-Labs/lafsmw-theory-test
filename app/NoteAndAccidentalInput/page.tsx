@@ -51,7 +51,7 @@ const ManageStaveNotes = () => {
   const tooManyBeatsInMeasure = () =>
     dispatch({ type: "tooManyBeatsInMeasure" });
 
-  const buttonGroup2 = useMemo(
+  const buttonGroup = useMemo(
     () => modifyStaveNotesButtonGroup(dispatch, state),
     [dispatch, state]
   );
@@ -192,7 +192,7 @@ const ManageStaveNotes = () => {
         openEnterNotes={enterNote}
       />
       <div className="mt-2 ml-3">
-        {buttonGroup2.map((button) => {
+        {buttonGroup.map((button) => {
           return (
             <BlueButton
               key={button.text}
