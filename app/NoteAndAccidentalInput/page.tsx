@@ -1,13 +1,12 @@
 "use client";
-import React, { useEffect, useReducer, useRef, useState } from "react";
+import React, { useEffect, useReducer, useRef, useState, useMemo } from "react";
 import VexFlow from "vexflow";
 import BlueButton from "../components/BlueButton";
 import CheckIfNoteFound from "../components/CheckIfNoteFound";
 import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
 import KaseyBlankStaves from "../components/KaseyBlankStaves";
 import {
-  // modifyStaveNotesButtonGroup,
-  modifyStaveNotesButtonGroup2,
+  modifyStaveNotesButtonGroup,
   enterNote,
   clearAllMeasures,
 } from "../lib/buttonsAndButtonGroups";
@@ -16,7 +15,6 @@ import generateYMinAndYMaxForAllNotes from "../lib/generateYMinAndMaxForAllNotes
 import GetUserClickInfo from "../lib/getUserClickInfo";
 import { indexOfNoteToModify } from "../lib/indexOfNoteToModify";
 import { initializeRenderer } from "../lib/initializeRenderer";
-import { reducer } from "../lib/manageStaveNotesState";
 import {
   addAccidentalToNote,
   changeNotePosition,
@@ -31,7 +29,7 @@ import {
   StaveType,
   initialState,
 } from "../lib/typesAndInterfaces";
-
+import { reducer } from "../lib/reducer";
 const { Formatter, Renderer, StaveNote } = VexFlow.Flow;
 
 const CLEF = "treble";
@@ -53,14 +51,10 @@ const ManageStaveNotes = () => {
   const tooManyBeatsInMeasure = () =>
     dispatch({ type: "tooManyBeatsInMeasure" });
 
-  //const buttonGroup = modifyStaveNotesButtonGroup(dispatch);
-  const buttonGroup2 = modifyStaveNotesButtonGroup2(dispatch, initialState);
-
-  // const buttons = buttonGroup.map(({ action, text, stateKey }) => ({
-  //   button: action,
-  //   text,
-  //   stateFunction: state[stateKey],
-  // }));
+  const buttonGroup2 = useMemo(
+    () => modifyStaveNotesButtonGroup(dispatch, state),
+    [dispatch, state]
+  );
 
   const clearMeasures = () =>
     clearAllMeasures(
