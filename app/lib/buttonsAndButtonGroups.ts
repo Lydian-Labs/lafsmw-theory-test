@@ -35,12 +35,10 @@ export const modifyStaveNotesButtonGroup = (
   dispatch: React.Dispatch<Action>,
   state: StateType
 ) => {
-  const buttonConfig = Object.entries(actionTypes).map(([stateKey, text]) => ({
+  return Object.entries(actionTypes).map(([stateKey, text]) => ({
     action: () => dispatch({ type: stateKey }),
     text,
     stateKey,
     isEnabled: state[stateKey as keyof StateType],
   }));
-
-  return buttonConfig;
 };
