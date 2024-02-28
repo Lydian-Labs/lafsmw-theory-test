@@ -4,6 +4,15 @@ const { Renderer } = VexFlow.Flow;
 import { Action, StateType, StaveNoteData } from "./typesAndInterfaces";
 import { initializeRenderer } from "./initializeRenderer";
 
+const actionTypes = {
+  isEnterNoteActive: "Enter Note",
+  isEraseNoteActive: "Erase Note",
+  isChangeNoteActive: "Change Note",
+  isSharpActive: "Add Sharp",
+  isFlatActive: "Add Flat",
+  isEraseAccidentalActive: "Erase Accidental",
+};
+
 export const enterNote = (dispatch: React.Dispatch<Action>) => {
   dispatch({ type: "isEnterNoteActive" });
 };
@@ -26,15 +35,6 @@ export const modifyStaveNotesButtonGroup = (
   dispatch: React.Dispatch<Action>,
   state: StateType
 ) => {
-  const actionTypes = {
-    isEnterNoteActive: "Enter Note",
-    isEraseNoteActive: "Erase Note",
-    isChangeNoteActive: "Change Note",
-    isSharpActive: "Add Sharp",
-    isFlatActive: "Add Flat",
-    isEraseAccidentalActive: "Erase Accidental",
-  };
-
   const buttonConfig = Object.entries(actionTypes).map(([stateKey, text]) => ({
     action: () => dispatch({ type: stateKey }),
     text,
