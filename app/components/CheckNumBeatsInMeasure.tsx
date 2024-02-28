@@ -10,7 +10,7 @@ const CheckNumBeatsInMeasure: React.FC<CheckNumBeatsInMeasureProps> = ({
       <Snackbar
         open={tooManyBeatsInMeasure}
         autoHideDuration={3000}
-        onClose={() => openEnterNotes(true)}
+        onClose={() => openEnterNotes({ type: "isEnterNoteActive" })}
         anchorOrigin={{ vertical: "top", horizontal: "left" }}
       >
         <Alert variant="filled" severity="error">

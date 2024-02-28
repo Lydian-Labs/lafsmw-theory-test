@@ -48,6 +48,7 @@ const ManageStaveNotes = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const noNoteFound = () => dispatch({ type: "noNoteFound" });
+
   const tooManyBeatsInMeasure = () =>
     dispatch({ type: "tooManyBeatsInMeasure" });
 
@@ -185,11 +186,11 @@ const ManageStaveNotes = () => {
       <div ref={container} onClick={handleClick} />
       <CheckNumBeatsInMeasure
         tooManyBeatsInMeasure={state.tooManyBeatsInMeasure}
-        openEnterNotes={enterNote}
+        openEnterNotes={dispatch}
       />
       <CheckIfNoteFound
         noNoteFound={state.noNoteFound}
-        openEnterNotes={enterNote}
+        openEnterNotes={dispatch}
       />
       <div className="mt-2 ml-3">
         {buttonGroup.map((button) => {

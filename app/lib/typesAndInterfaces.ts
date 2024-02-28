@@ -48,6 +48,7 @@ export type AccidentalStateType = {
   isClearMeasuresActive: boolean;
 };
 export type StaveType = InstanceType<typeof Stave>;
+
 export type StaveNoteType = InstanceType<typeof StaveNote>;
 
 export interface UserClickInfo {
@@ -73,5 +74,5 @@ export interface NoteStringData {
 
 export interface CheckNumBeatsInMeasureProps {
   tooManyBeatsInMeasure: boolean | undefined;
-  openEnterNotes: React.Dispatch<React.SetStateAction<boolean>>;
+  openEnterNotes: React.Dispatch<Action>;
 }
