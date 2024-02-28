@@ -1,9 +1,5 @@
 import { Snackbar, Alert } from "@mui/material/";
-import { Action } from "../lib/typesAndInterfaces";
-interface CheckIfNoteFoundProps {
-  noNoteFound: boolean;
-  openEnterNotes: React.Dispatch<Action>;
-}
+import { CheckIfNoteFoundProps } from "../lib/typesAndInterfaces";
 
 const CheckIfNoteFound: React.FC<CheckIfNoteFoundProps> = ({
   noNoteFound: noNoteFound,

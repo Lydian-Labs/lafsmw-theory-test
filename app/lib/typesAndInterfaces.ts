@@ -76,3 +76,8 @@ export interface CheckNumBeatsInMeasureProps {
   tooManyBeatsInMeasure: boolean | undefined;
   openEnterNotes: React.Dispatch<Action>;
 }
+
+export interface CheckIfNoteFoundProps {
+  noNoteFound: boolean;
+  openEnterNotes: React.Dispatch<Action>;
+}
