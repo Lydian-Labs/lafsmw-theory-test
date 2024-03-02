@@ -1,11 +1,7 @@
 import VexFlow from "vexflow";
 const VF = VexFlow.Flow;
-const { StaveNote, Stave } = VF;
-export type FormEvent = React.FormEvent<HTMLFormElement>;
-export type MouseEvent = React.MouseEvent<HTMLButtonElement>;
-export type ChangeEvent = React.ChangeEvent<HTMLInputElement>;
-export type SelectEvent = React.ChangeEvent<HTMLSelectElement>;
-export type KeyboardEvent = React.KeyboardEvent<HTMLInputElement>;
+const { StaveNote, Stave, Renderer } = VF;
+import { RefObject, Dispatch, SetStateAction } from "react";
 
 export type InputData = {
   [key: string]: string;
@@ -15,6 +11,11 @@ export type Chord = {
   keys: string[];
   duration: string;
 };
+
+export type RendererRef = RefObject<InstanceType<typeof Renderer>>;
+export type SetStaves = Dispatch<SetStateAction<StaveType[]>>;
+export type BlankStaves = StaveType[];
+export type NoteData = StaveNoteData[][];
 
 export type StateType = {
   isEraseNoteActive: boolean;
