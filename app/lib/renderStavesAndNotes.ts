@@ -1,30 +1,28 @@
 import VexFlow from "vexflow";
 import KaseyBlankStaves from "../components/KaseyBlankStaves";
 const { Formatter } = VexFlow.Flow;
-import {
-  RendererRef,
-  SetStaves,
-  NoteData,
-  BlankStaves,
-} from "./typesAndInterfaces";
+import { RenderStavesAndNotesParams } from "./typesAndInterfaces";
 
 export const renderStavesAndNotes = (
-  rendererRef: RendererRef,
-  font: string,
-  fontSize: number,
-  numStaves: number,
-  rendererWidth: number,
-  rendererHeight: number,
-  yPositionOfStaves: number,
-  xPositionOfStaves: number,
-  clef: string,
-  timeSig: string,
-  firstStaveWidth: number,
-  regularStaveWidth: number,
-  setStaves: SetStaves,
-  notesData: NoteData,
-  blankStaves: BlankStaves
+  params: RenderStavesAndNotesParams
 ): void => {
+  const {
+    rendererRef,
+    font,
+    fontSize,
+    numStaves,
+    rendererWidth,
+    rendererHeight,
+    yPositionOfStaves,
+    xPositionOfStaves,
+    clef,
+    timeSig,
+    firstStaveWidth,
+    regularStaveWidth,
+    setStaves,
+    notesData,
+    blankStaves,
+  } = params;
   const renderer = rendererRef.current;
   renderer?.resize(rendererWidth, rendererHeight);
   const context = renderer && renderer.getContext();

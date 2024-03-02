@@ -82,3 +82,21 @@ export interface CheckIfNoteFoundProps {
   noNoteFound: boolean;
   openEnterNotes: React.Dispatch<Action>;
 }
+
+export interface RenderStavesAndNotesParams {
+  rendererRef: RendererRef;
+  font: string;
+  fontSize: number;
+  numStaves: number;
+  rendererWidth: number;
+  rendererHeight: number;
+  yPositionOfStaves: number;
+  xPositionOfStaves: number;
+  clef: string;
+  timeSig: string;
+  firstStaveWidth: number;
+  regularStaveWidth: number;
+  setStaves: SetStaves;
+  notesData: NoteData;
+  blankStaves: BlankStaves;
+}
