@@ -9,9 +9,9 @@ import {
   modifyStaveNotesButtonGroup,
 } from "../lib/buttonsAndButtonGroups";
 import {
-  question1,
-  NUM_STAVES,
   BEATS_IN_MEASURE,
+  NUM_STAVES,
+  question1,
 } from "../lib/data/stavesData";
 import { findBarIndex } from "../lib/findBar";
 import generateYMinAndYMaxForAllNotes from "../lib/generateYMinAndMaxForAllNotes";

@@ -7,6 +7,9 @@ import {
   NoteStringData,
 } from "./typesAndInterfaces";
 
+const getNoteIndex = (notes: StaveNoteData[], x: number): number =>
+  indexOfNoteToModify(notes, x);
+
 export const addAccidentalToNote = (
   barOfStaveNotes: StaveNoteData[],
   userClickX: number,
@@ -22,22 +25,24 @@ export const addAccidentalToNote = (
 
 export const changeNotePosition = (
   notes: StaveNoteData[],
-  x: number,
+  xPositionOfNote: number,
   noteData: NoteStringData,
-  y: number
+  yPositionOfNote: number
 ): void => {
-  const savedStaveNoteAbsoluteX = notes[indexOfNoteToModify(notes, x)]
-    ? notes[indexOfNoteToModify(notes, x)].staveNoteAbsoluteX
+  const savedStaveNoteAbsoluteX = notes[
+    indexOfNoteToModify(notes, xPositionOfNote)
+  ]
+    ? notes[indexOfNoteToModify(notes, xPositionOfNote)].staveNoteAbsoluteX
     : null;
   const newStaveNote: StaveNoteType = new StaveNote({
     keys: [noteData.note],
     duration: "q",
   });
   savedStaveNoteAbsoluteX &&
-    notes.splice(indexOfNoteToModify(notes, x), 1, {
+    notes.splice(indexOfNoteToModify(notes, xPositionOfNote), 1, {
       newStaveNote,
       staveNoteAbsoluteX: savedStaveNoteAbsoluteX,
-      userClickY: y,
+      userClickY: yPositionOfNote,
     });
 };
 

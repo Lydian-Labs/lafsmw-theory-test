@@ -98,9 +98,9 @@ export interface RenderStavesAndNotesParams {
   yPositionOfStaves: number;
   xPositionOfStaves: number;
   clef: string;
-  timeSig: string;
+  timeSig?: string;
   firstStaveWidth: number;
-  regularStaveWidth: number;
+  regularStaveWidth?: number;
   setStaves: SetStaves;
   notesData: NoteData;
   staves: BlankStaves;
