@@ -31,7 +31,7 @@ export type StateType = {
 
 export type Action = { type: keyof StateType };
 
-export type BarCoordinatesData = {
+export type BarMetrics = {
   barWidth: number;
   xMaxCoordinate: number;
 };
