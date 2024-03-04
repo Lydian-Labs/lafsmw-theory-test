@@ -120,7 +120,6 @@ const ManageStaveNotes = () => {
         barOfStaveNotes,
         userClickX,
         state.isSharpActive ? "#" : "b",
-        indexOfNoteToModify
       );
     } else if (state.isEraseNoteActive) {
       deleteNote(barOfStaveNotes, userClickX);

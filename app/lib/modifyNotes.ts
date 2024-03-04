@@ -1,22 +1,17 @@
 import VexFlow from "vexflow";
 const { Accidental, StaveNote } = VexFlow.Flow;
-import { indexOfNoteToModify } from "./indexOfNoteToModify";
-import {
-  StaveNoteData,
-  StaveNoteType,
-  NoteStringData,
-} from "./typesAndInterfaces";
+import { indexOfNoteToModify as indexOfNote } from "./indexOfNoteToModify";
+import { StaveNoteData, NoteStringData } from "./typesAndInterfaces";
 
 const getNoteIndex = (notes: StaveNoteData[], x: number): number =>
-  indexOfNoteToModify(notes, x);
+  indexOfNote(notes, x);
 
 export const addAccidentalToNote = (
   barOfStaveNotes: StaveNoteData[],
   userClickX: number,
-  accidental: string,
-  findIndex: (barOfStaveNotes: StaveNoteData[], userClickX: number) => number
+  accidental: string
 ): void => {
-  const indexOfNote: number = findIndex(barOfStaveNotes, userClickX);
+  const indexOfNote: number = getNoteIndex(barOfStaveNotes, userClickX);
   barOfStaveNotes[indexOfNote]?.newStaveNote &&
     barOfStaveNotes[indexOfNote].newStaveNote.addModifier(
       new Accidental(accidental)
@@ -24,46 +19,48 @@ export const addAccidentalToNote = (
 };
 
 export const changeNotePosition = (
-  notes: StaveNoteData[],
-  xPositionOfNote: number,
+  barOfStaveNotes: StaveNoteData[],
+  userClickX: number,
   noteData: NoteStringData,
-  yPositionOfNote: number
+  userClickY: number
 ): void => {
-  const savedStaveNoteAbsoluteX = notes[
-    indexOfNoteToModify(notes, xPositionOfNote)
-  ]
-    ? notes[indexOfNoteToModify(notes, xPositionOfNote)].staveNoteAbsoluteX
+  const indexOfNote: number = getNoteIndex(barOfStaveNotes, userClickX);
+  const staveNoteAbsoluteX = barOfStaveNotes[indexOfNote]
+    ? barOfStaveNotes[indexOfNote].staveNoteAbsoluteX
     : null;
-  const newStaveNote: StaveNoteType = new StaveNote({
-    keys: [noteData.note],
-    duration: "q",
-  });
-  savedStaveNoteAbsoluteX &&
-    notes.splice(indexOfNoteToModify(notes, xPositionOfNote), 1, {
-      newStaveNote,
-      staveNoteAbsoluteX: savedStaveNoteAbsoluteX,
-      userClickY: yPositionOfNote,
+  staveNoteAbsoluteX &&
+    barOfStaveNotes.splice(indexOfNote, 1, {
+      newStaveNote: new StaveNote({
+        keys: [noteData.note],
+        duration: "q",
+      }),
+      staveNoteAbsoluteX,
+      userClickY,
     });
 };
 
-export const deleteNote = (notes: StaveNoteData[], x: number) => {
-  const indexOfNoteToErase = indexOfNoteToModify(notes, x);
-  notes.splice(indexOfNoteToErase, 1);
+export const deleteNote = (
+  barOfStaveNotes: StaveNoteData[],
+  userClickX: number
+): void => {
+  const indexOfNote = getNoteIndex(barOfStaveNotes, userClickX);
+  indexOfNote ? barOfStaveNotes.splice(indexOfNote, 1) : null;
 };
 
-export const deleteAccidental = (notes: StaveNoteData[], x: number): void => {
-  const indexOfNote = indexOfNoteToModify(notes, x);
-  const noteToRedraw = notes[indexOfNote].newStaveNote;
-  const savedUserClickY = notes[indexOfNote].userClickY;
-  const savedUserClickX = notes[indexOfNote].staveNoteAbsoluteX;
-  const noteToString = noteToRedraw.getKeys();
-  const redrawnStaveNote: StaveNoteType = new StaveNote({
-    keys: noteToString,
-    duration: "q",
-  });
-  notes.splice(indexOfNote, 1, {
-    newStaveNote: redrawnStaveNote,
-    staveNoteAbsoluteX: savedUserClickX,
-    userClickY: savedUserClickY,
+export const deleteAccidental = (
+  barOfStaveNotes: StaveNoteData[],
+  userClickX: number
+): void => {
+  const indexOfNote = getNoteIndex(barOfStaveNotes, userClickX);
+  const { newStaveNote, userClickY, staveNoteAbsoluteX } =
+    barOfStaveNotes[indexOfNote];
+  const noteToString = newStaveNote.getKeys();
+  barOfStaveNotes.splice(indexOfNote, 1, {
+    newStaveNote: new StaveNote({
+      keys: noteToString,
+      duration: "q",
+    }),
+    staveNoteAbsoluteX,
+    userClickY,
   });
 };
