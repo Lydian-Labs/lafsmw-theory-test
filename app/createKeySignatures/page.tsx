@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import BlueButton from "../components/BlueButton";
 import GetUserClickInfo from "../lib/getUserClickInfo";
-import KaseyBlankStaves from "../components/CreateBlankStaves";
+import CreateBlankStaves from "../components/CreateBlankStaves";
 import { sharpKeySignature, flatKeySignature } from "../lib/keySignatures";
 import { StaveType } from "../lib/typesAndInterfaces";
 import VexFlow from "vexflow";
@@ -132,7 +132,7 @@ const CreateKeySignatures = () => {
           const newStaves = [prevState];
           let xPosition = 10;
           for (let i = 0; i < TOTAL_NUM_STAVES; i++) {
-            KaseyBlankStaves(
+            CreateBlankStaves(
               NUM_STAVES_PER_KEY_SIG,
               context,
               240,
@@ -157,7 +157,7 @@ const CreateKeySignatures = () => {
     context?.setFont("Arial", 10);
     context &&
       setBlankStaves(
-        KaseyBlankStaves(
+        CreateBlankStaves(
           NUM_STAVES_PER_KEY_SIG,
           context,
           240,

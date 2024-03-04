@@ -1,5 +1,5 @@
 import VexFlow from "vexflow";
-import KaseyBlankStaves from "../components/CreateBlankStaves";
+import CreateBlankStaves from "../components/CreateBlankStaves";
 const { Formatter } = VexFlow.Flow;
 import { RenderStavesAndNotesParams } from "./typesAndInterfaces";
 
@@ -21,7 +21,7 @@ export const renderStavesAndNotes2 = (
     regularStaveWidth,
     setStaves,
     notesData,
-    blankStaves,
+    staves: blankStaves,
   } = params;
   const renderer = rendererRef?.current;
   renderer?.resize(rendererWidth, rendererHeight);
@@ -31,7 +31,7 @@ export const renderStavesAndNotes2 = (
   if (context && rendererRef) {
     context &&
       setStaves(() =>
-        KaseyBlankStaves(
+        CreateBlankStaves(
           numStaves,
           context,
           firstStaveWidth,

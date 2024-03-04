@@ -3,7 +3,7 @@ import VexFlow, { IRenderContext } from "vexflow";
 const VF = VexFlow.Flow;
 const { Stave } = VF;
 
-const KaseyBlankStaves = (
+const CreateBlankStaves = (
   numStaves: number,
   context: IRenderContext,
   firstStaveWidth: number,
@@ -31,4 +31,4 @@ const KaseyBlankStaves = (
   return stavesArray;
 };
 
-export default KaseyBlankStaves;
+export default CreateBlankStaves;

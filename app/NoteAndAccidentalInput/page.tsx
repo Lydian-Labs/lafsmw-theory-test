@@ -1,13 +1,18 @@
 "use client";
-import React, { useEffect, useReducer, useRef, useState, useMemo } from "react";
+import React, { useEffect, useMemo, useReducer, useRef, useState } from "react";
 import VexFlow from "vexflow";
 import BlueButton from "../components/BlueButton";
 import CheckIfNoteFound from "../components/CheckIfNoteFound";
 import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
 import {
-  modifyStaveNotesButtonGroup,
   clearAllMeasures,
+  modifyStaveNotesButtonGroup,
 } from "../lib/buttonsAndButtonGroups";
+import {
+  question1,
+  NUM_STAVES,
+  BEATS_IN_MEASURE,
+} from "../lib/data/stavesData";
 import { findBarIndex } from "../lib/findBar";
 import generateYMinAndYMaxForAllNotes from "../lib/generateYMinAndMaxForAllNotes";
 import GetUserClickInfo from "../lib/getUserClickInfo";
@@ -20,6 +25,7 @@ import {
   deleteNote,
 } from "../lib/modifyNotes";
 import { notesArray } from "../lib/noteArray";
+import { reducer } from "../lib/reducer";
 import { renderStavesAndNotes2 } from "../lib/renderStavesAndNotes";
 import {
   NoteStringData,
@@ -28,21 +34,14 @@ import {
   StaveType,
   initialState,
 } from "../lib/typesAndInterfaces";
-import { reducer } from "../lib/reducer";
 const { Renderer, StaveNote } = VexFlow.Flow;
-
-const CLEF = "treble";
-const TIME_SIG = "4/4";
-const BEATS_IN_MEASURE = parseInt(TIME_SIG.split("/")[0]);
-let NUM_STAVES = 4;
-let Y_POSITION_OF_STAVES = 150;
 
 const INITIAL_NOTES: StaveNoteData[][] = new Array(NUM_STAVES).fill([]);
 
 const ManageStaveNotes = () => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
-  const [blankStaves, setBlankStaves] = useState<StaveType[]>([]);
+  const [staves, setStaves] = useState<StaveType[]>([]);
   const [notesData, setNotesData] = useState(INITIAL_NOTES);
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -68,20 +67,10 @@ const ManageStaveNotes = () => {
   const renderStavesAndNotes = (): void =>
     renderStavesAndNotes2({
       rendererRef,
-      font: "Arial",
-      fontSize: 12,
-      numStaves: 1,
-      rendererWidth: 800,
-      rendererHeight: 300,
-      yPositionOfStaves: Y_POSITION_OF_STAVES,
-      xPositionOfStaves: 10,
-      clef: "treble",
-      timeSig: "4/4",
-      firstStaveWidth: 400,
-      regularStaveWidth: 300,
-      setStaves: setBlankStaves,
+      ...question1,
+      setStaves,
       notesData,
-      blankStaves,
+      staves,
     });
 
   useEffect(() => {
@@ -99,7 +88,7 @@ const ManageStaveNotes = () => {
     const { userClickY, userClickX, highGYPosition } = GetUserClickInfo(
       e,
       container,
-      blankStaves[0] //array index doesn't matter because we are using this argument to find the height of the top stave
+      staves[0] //array index doesn't matter because we are using this argument to find the height of the top stave
     );
 
     let foundNoteData = generateYMinAndYMaxForAllNotes(
@@ -116,7 +105,7 @@ const ManageStaveNotes = () => {
         userClickY: userClickY,
       };
 
-    const barIndex: number = findBarIndex(blankStaves, userClickX);
+    const barIndex: number = findBarIndex(staves, userClickX);
 
     let notesDataCopy = [...notesData];
     const barOfStaveNotes = notesDataCopy[barIndex].map((noteData) => ({

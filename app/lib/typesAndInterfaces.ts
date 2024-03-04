@@ -103,5 +103,5 @@ export interface RenderStavesAndNotesParams {
   regularStaveWidth: number;
   setStaves: SetStaves;
   notesData: NoteData;
-  blankStaves: BlankStaves;
+  staves: BlankStaves;
 }
