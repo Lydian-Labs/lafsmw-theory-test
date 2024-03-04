@@ -1,9 +1,9 @@
 import VexFlow from "vexflow";
-import KaseyBlankStaves from "../components/KaseyBlankStaves";
+import KaseyBlankStaves from "../components/CreateBlankStaves";
 const { Formatter } = VexFlow.Flow;
 import { RenderStavesAndNotesParams } from "./typesAndInterfaces";
 
-export const renderStavesAndNotes = (
+export const renderStavesAndNotes2 = (
   params: RenderStavesAndNotesParams
 ): void => {
   const {
@@ -23,12 +23,12 @@ export const renderStavesAndNotes = (
     notesData,
     blankStaves,
   } = params;
-  const renderer = rendererRef.current;
+  const renderer = rendererRef?.current;
   renderer?.resize(rendererWidth, rendererHeight);
   const context = renderer && renderer.getContext();
   context?.setFont(font, fontSize);
   context?.clear();
-  if (context) {
+  if (context && rendererRef) {
     context &&
       setStaves(() =>
         KaseyBlankStaves(
@@ -43,13 +43,14 @@ export const renderStavesAndNotes = (
         )
       );
   }
-  notesData.forEach((barData, index) => {
-    if (barData) {
-      const staveNotes = barData.map(({ newStaveNote }) => newStaveNote);
-      if (staveNotes.length > 0) {
-        context &&
-          Formatter.FormatAndDraw(context, blankStaves[index], staveNotes);
+  notesData &&
+    notesData.forEach((barData, index) => {
+      if (barData) {
+        const staveNotes = barData.map(({ newStaveNote }) => newStaveNote);
+        if (staveNotes.length > 0) {
+          context &&
+            Formatter.FormatAndDraw(context, blankStaves[index], staveNotes);
+        }
       }
-    }
-  });
+    });
 };

@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import BlueButton from "../components/BlueButton";
 import GetUserClickInfo from "../lib/getUserClickInfo";
-import KaseyBlankStaves from "../components/KaseyBlankStaves";
+import KaseyBlankStaves from "../components/CreateBlankStaves";
 import { sharpKeySignature, flatKeySignature } from "../lib/keySignatures";
 import { StaveType } from "../lib/typesAndInterfaces";
 import VexFlow from "vexflow";

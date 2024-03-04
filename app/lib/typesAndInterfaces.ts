@@ -31,6 +31,11 @@ export type StateType = {
 
 export type Action = { type: keyof StateType };
 
+export type BarCoordinatesData = {
+  barWidth: number;
+  xMaxCoordinate: number;
+};
+
 export const initialState: StateType = {
   isEraseNoteActive: false,
   isEraseAccidentalActive: false,
@@ -84,7 +89,7 @@ export interface CheckIfNoteFoundProps {
 }
 
 export interface RenderStavesAndNotesParams {
-  rendererRef: RendererRef;
+  rendererRef: RendererRef | null;
   font: string;
   fontSize: number;
   numStaves: number;

@@ -4,10 +4,8 @@ import VexFlow from "vexflow";
 import BlueButton from "../components/BlueButton";
 import CheckIfNoteFound from "../components/CheckIfNoteFound";
 import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
-import KaseyBlankStaves from "../components/KaseyBlankStaves";
 import {
   modifyStaveNotesButtonGroup,
-  enterNote,
   clearAllMeasures,
 } from "../lib/buttonsAndButtonGroups";
 import { findBarIndex } from "../lib/findBar";
@@ -22,6 +20,7 @@ import {
   deleteNote,
 } from "../lib/modifyNotes";
 import { notesArray } from "../lib/noteArray";
+import { renderStavesAndNotes2 } from "../lib/renderStavesAndNotes";
 import {
   NoteStringData,
   StaveNoteData,
@@ -30,7 +29,7 @@ import {
   initialState,
 } from "../lib/typesAndInterfaces";
 import { reducer } from "../lib/reducer";
-const { Formatter, Renderer, StaveNote } = VexFlow.Flow;
+const { Renderer, StaveNote } = VexFlow.Flow;
 
 const CLEF = "treble";
 const TIME_SIG = "4/4";
@@ -66,38 +65,24 @@ const ManageStaveNotes = () => {
       dispatch,
       renderStavesAndNotes
     );
-
-  const renderStavesAndNotes = (): void => {
-    const renderer = rendererRef.current;
-    renderer?.resize(800, 300);
-    const context = renderer && renderer.getContext();
-    context?.setFont("Arial", 10);
-    context?.clear();
-    if (context) {
-      context &&
-        setBlankStaves(() =>
-          KaseyBlankStaves(
-            NUM_STAVES,
-            context,
-            250,
-            180,
-            10,
-            Y_POSITION_OF_STAVES,
-            CLEF,
-            TIME_SIG
-          )
-        );
-    }
-    notesData.forEach((barData, index) => {
-      if (barData) {
-        const staveNotes = barData.map(({ newStaveNote }) => newStaveNote);
-        if (staveNotes.length > 0) {
-          context &&
-            Formatter.FormatAndDraw(context, blankStaves[index], staveNotes);
-        }
-      }
+  const renderStavesAndNotes = (): void =>
+    renderStavesAndNotes2({
+      rendererRef,
+      font: "Arial",
+      fontSize: 12,
+      numStaves: 1,
+      rendererWidth: 800,
+      rendererHeight: 300,
+      yPositionOfStaves: Y_POSITION_OF_STAVES,
+      xPositionOfStaves: 10,
+      clef: "treble",
+      timeSig: "4/4",
+      firstStaveWidth: 400,
+      regularStaveWidth: 300,
+      setStaves: setBlankStaves,
+      notesData,
+      blankStaves,
     });
-  };
 
   useEffect(() => {
     initializeRenderer(rendererRef, container);

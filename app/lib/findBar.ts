@@ -2,10 +2,7 @@ import VexFlow from "vexflow";
 const VF = VexFlow.Flow;
 const { Stave } = VF;
 
-type BarCoordinatesData = {
-  barWidth: number;
-  xMaxCoordinate: number;
-};
+import { BarCoordinatesData } from "./typesAndInterfaces";
 
 export const findBarIndex = (
   bars: InstanceType<typeof Stave>[],
@@ -17,7 +14,11 @@ export const findBarIndex = (
     (bar, index) => {
       const barWidth = bar.getWidth();
       const xMaxCoordinateForBar1 = bars[0].getWidth();
-      let xMaxCoordinate = xMaxCoordinateForBar1 + bars[1].getWidth() * index;
+
+      let xMaxCoordinate =
+        bars.length > 1
+          ? xMaxCoordinateForBar1 + bars[1].getWidth() * index
+          : xMaxCoordinateForBar1;
       return {
         barWidth,
         xMaxCoordinate,
