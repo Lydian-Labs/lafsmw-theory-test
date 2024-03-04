@@ -3,8 +3,18 @@ const { Accidental, StaveNote } = VexFlow.Flow;
 import { indexOfNoteToModify as indexOfNote } from "./indexOfNoteToModify";
 import { StaveNoteData, NoteStringData } from "./typesAndInterfaces";
 
-const getNoteIndex = (notes: StaveNoteData[], x: number): number =>
-  indexOfNote(notes, x);
+const getNoteIndex = (
+  barOfStaveNotes: StaveNoteData[],
+  userClickX: number
+): number => indexOfNote(barOfStaveNotes, userClickX);
+
+const getNote = (
+  barOfStaveNotes: StaveNoteData[],
+  userClickX: number
+): StaveNoteData | undefined => {
+  const indexOfNote = getNoteIndex(barOfStaveNotes, userClickX);
+  return barOfStaveNotes[indexOfNote];
+};
 
 export const addAccidentalToNote = (
   barOfStaveNotes: StaveNoteData[],
