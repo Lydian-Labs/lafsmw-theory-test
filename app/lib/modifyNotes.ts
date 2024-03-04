@@ -30,18 +30,19 @@ export const changeNotePosition = (
   noteData: NoteStringData,
   y: number
 ): void => {
-  const savedStaveNoteAbsoluteX =
-    notes[indexOfNoteToModify(notes, x)].staveNoteAbsoluteX;
+  const savedStaveNoteAbsoluteX = notes[indexOfNoteToModify(notes, x)]
+    ? notes[indexOfNoteToModify(notes, x)].staveNoteAbsoluteX
+    : null;
   const newStaveNote: StaveNoteType = new StaveNote({
     keys: [noteData.note],
     duration: "q",
   });
-
-  notes.splice(indexOfNoteToModify(notes, x), 1, {
-    newStaveNote,
-    staveNoteAbsoluteX: savedStaveNoteAbsoluteX,
-    userClickY: y,
-  });
+  savedStaveNoteAbsoluteX &&
+    notes.splice(indexOfNoteToModify(notes, x), 1, {
+      newStaveNote,
+      staveNoteAbsoluteX: savedStaveNoteAbsoluteX,
+      userClickY: y,
+    });
 };
 
 export const deleteNote = (notes: StaveNoteData[], x: number) => {
