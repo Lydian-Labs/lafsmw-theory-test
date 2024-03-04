@@ -11,17 +11,13 @@ export const addAccidentalToNote = (
   barOfStaveNotes: StaveNoteData[],
   userClickX: number,
   accidental: string,
-  findIndexFunction: (
-    barOfStaveNotes: StaveNoteData[],
-    userClickX: number
-  ) => number
+  findIndex: (barOfStaveNotes: StaveNoteData[], userClickX: number) => number
 ): void => {
-  const indexOfNote: number = findIndexFunction(barOfStaveNotes, userClickX);
-  if (barOfStaveNotes[indexOfNote]?.newStaveNote) {
+  const indexOfNote: number = findIndex(barOfStaveNotes, userClickX);
+  barOfStaveNotes[indexOfNote]?.newStaveNote &&
     barOfStaveNotes[indexOfNote].newStaveNote.addModifier(
       new Accidental(accidental)
     );
-  }
 };
 
 export const changeNotePosition = (
