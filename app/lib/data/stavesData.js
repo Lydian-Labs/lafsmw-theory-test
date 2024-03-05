@@ -1,5 +1,3 @@
-import { StaveNoteData } from "../typesAndInterfaces";
-
 const CLEF = "treble";
 const TIME_SIG = "8/4";
 export const NUM_STAVES = 1;
@@ -10,7 +8,6 @@ const FONT_SIZE = 12;
 const RENDERER_WIDTH = 800;
 const RENDERER_HEIGHT = 300;
 const FIRST_STAVE_WIDTH = 600;
-const REGULAR_STAVE_WIDTH = 350;
 
 export const question1 = {
   font: FONT,
@@ -21,9 +18,7 @@ export const question1 = {
   yPositionOfStaves: Y_POSITION_OF_STAVES,
   xPositionOfStaves: X_POSITION_OF_STAVES,
   clef: CLEF,
-  //timeSig: TIME_SIG,
   firstStaveWidth: FIRST_STAVE_WIDTH,
-  //regularStaveWidth: REGULAR_STAVE_WIDTH,
 };
 
 export const BEATS_IN_MEASURE = parseInt(TIME_SIG.split("/")[0]);
