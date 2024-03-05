@@ -77,6 +77,10 @@ export interface NoteStringData {
   yCoordinateMax: number;
   userClickY?: number;
 }
+export interface ModifyNoteData {
+  barOfStaveNotes: StaveNoteData;
+  noteIndex: number;
+}
 
 export interface CheckNumBeatsInMeasureProps {
   tooManyBeatsInMeasure: boolean | undefined;

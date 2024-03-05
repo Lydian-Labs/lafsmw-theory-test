@@ -1,3 +1,5 @@
+import { StaveNoteData } from "../typesAndInterfaces";
+
 const CLEF = "treble";
 const TIME_SIG = "8/4";
 export const NUM_STAVES = 1;

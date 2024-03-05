@@ -16,7 +16,6 @@ import {
 import { findBarIndex } from "../lib/findBar";
 import generateYMinAndYMaxForAllNotes from "../lib/generateYMinAndMaxForAllNotes";
 import GetUserClickInfo from "../lib/getUserClickInfo";
-import { indexOfNoteToModify } from "../lib/indexOfNoteToModify";
 import { initializeRenderer } from "../lib/initializeRenderer";
 import {
   addAccidentalToNote,
