@@ -63,18 +63,18 @@ export const deleteAccidental = (
   barOfStaveNotes: StaveNoteData[],
   userClickX: number
 ): void => {
-  const { noteIndex, barOfStaveNotes: noteData } = getNoteData(
-    barOfStaveNotes,
-    userClickX
-  );
-  if (noteIndex != null && barOfStaveNotes != null) {
-    barOfStaveNotes.splice(noteIndex, 1, {
+  const noteData = getNoteData(barOfStaveNotes, userClickX);
+  if (noteData.noteIndex != null && noteData.barOfStaveNotes != null) {
+    const { newStaveNote, userClickY, staveNoteAbsoluteX } =
+      noteData.barOfStaveNotes;
+    const noteToString = newStaveNote.getKeys();
+    barOfStaveNotes.splice(noteData.noteIndex, 1, {
       newStaveNote: new StaveNote({
-        keys: noteData.newStaveNote.getKeys(),
+        keys: noteToString,
         duration: "q",
       }),
-      staveNoteAbsoluteX: noteData.staveNoteAbsoluteX,
-      userClickY: noteData.userClickY,
+      staveNoteAbsoluteX,
+      userClickY,
     });
   }
 };
