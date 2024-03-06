@@ -1,18 +1,24 @@
 import VexFlow, { IRenderContext } from "vexflow";
-import { BlankStaves } from "../lib/typesAndInterfaces";
+import {
+  BlankStaves,
+  CreateBlankStavesParams,
+} from "../lib/typesAndInterfaces";
 const VF = VexFlow.Flow;
 const { Stave } = VF;
 
 const CreateBlankStaves = (
-  numStaves: number,
-  context: IRenderContext,
-  firstStaveWidth: number,
-  x: number,
-  y: number,
-  regularStaveWidth: number,
-  clef?: string,
-  timeSig?: string,
-  keySig?: string
+  params: CreateBlankStavesParams,
+  {
+    numStaves,
+    context,
+    firstStaveWidth,
+    x,
+    y,
+    regularStaveWidth,
+    clef,
+    timeSig,
+    keySig,
+  } = params
 ): BlankStaves => {
   const stavesArray: InstanceType<typeof Stave>[] = [];
   if (regularStaveWidth)

@@ -1,4 +1,5 @@
 import VexFlow from "vexflow";
+import { IRenderContext } from "vexflow";
 const VF = VexFlow.Flow;
 const { StaveNote, Stave, Renderer } = VF;
 import { RefObject, Dispatch, SetStateAction } from "react";
@@ -108,4 +109,16 @@ export interface RenderStavesAndNotesParams {
   setStaves: SetStaves;
   notesData: NoteData;
   staves: BlankStaves;
+}
+
+export interface CreateBlankStavesParams {
+  numStaves: number;
+  context: IRenderContext;
+  firstStaveWidth: number;
+  x: number;
+  y: number;
+  regularStaveWidth: number;
+  clef?: string;
+  timeSig?: string;
+  keySig?: string;
 }
