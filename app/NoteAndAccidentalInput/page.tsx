@@ -15,7 +15,7 @@ import {
   clearAllMeasures,
   modifyStaveNotesButtonGroup,
 } from "../lib/buttonsAndButtonGroups";
-import { NUM_STAVES, question1 } from "../lib/data/stavesData";
+import { NUM_STAVES, staveData } from "../lib/data/stavesData";
 import { findBarIndex } from "../lib/findBar";
 import generateYMinAndYMaxForAllNotes from "../lib/generateYMinAndMaxForAllNotes";
 import GetUserClickInfo from "../lib/getUserClickInfo";
@@ -23,7 +23,7 @@ import { initializeRenderer } from "../lib/initializeRenderer";
 import { handleNoteInteraction } from "../lib/handleNoteInteraction";
 import { notesArray } from "../lib/noteArray";
 import { reducer } from "../lib/reducer";
-import { renderStavesAndNotes2 } from "../lib/renderStavesAndNotes";
+import { setupRendererAndDrawNotes } from "../lib/setupRendererAndDrawNotes";
 import {
   NoteStringData,
   StaveNoteData,
@@ -31,14 +31,13 @@ import {
   initialState,
 } from "../lib/typesAndInterfaces";
 const { Renderer } = VexFlow.Flow;
-
-const INITIAL_NOTES: StaveNoteData[][] = new Array(NUM_STAVES).fill([]);
+import { INITIAL_STAVES } from "../lib/data/stavesData";
 
 const ManageStaveNotes = () => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
   const [staves, setStaves] = useState<StaveType[]>([]);
-  const [notesData, setNotesData] = useState(INITIAL_NOTES);
+  const [notesData, setNotesData] = useState(INITIAL_STAVES);
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const noNoteFound = () => dispatch({ type: "noNoteFound" });
@@ -54,7 +53,7 @@ const ManageStaveNotes = () => {
   const clearMeasures = () =>
     clearAllMeasures(
       setNotesData,
-      INITIAL_NOTES,
+      INITIAL_STAVES,
       rendererRef,
       container,
       dispatch,
@@ -62,9 +61,9 @@ const ManageStaveNotes = () => {
     );
   const renderStavesAndNotes = useCallback(
     (): void =>
-      renderStavesAndNotes2({
+      setupRendererAndDrawNotes({
         rendererRef,
-        ...question1,
+        ...staveData,
         setStaves,
         notesData,
         staves,
@@ -107,10 +106,12 @@ const ManageStaveNotes = () => {
     const barIndex: number = findBarIndex(staves, userClickX);
 
     let notesDataCopy = [...notesData];
-    const barOfStaveNotes = notesDataCopy[barIndex].map((noteData) => ({
-      ...noteData,
-      staveNoteAbsoluteX: noteData.newStaveNote.getAbsoluteX(),
-    }));
+    const barOfStaveNotes = notesDataCopy[barIndex].map(
+      (noteData: StaveNoteData) => ({
+        ...noteData,
+        staveNoteAbsoluteX: noteData.newStaveNote.getAbsoluteX(),
+      })
+    );
 
     handleNoteInteraction(
       updatedFoundNoteData,

@@ -2,7 +2,8 @@ import VexFlow from "vexflow";
 import CreateBlankStaves from "../components/CreateBlankStaves";
 const { Formatter } = VexFlow.Flow;
 import { RenderStavesAndNotesParams } from "./typesAndInterfaces";
-export const renderStavesAndNotes2 = (
+  
+export const setupRendererAndDrawNotes = (
   params: RenderStavesAndNotesParams
 ): void => {
   const {

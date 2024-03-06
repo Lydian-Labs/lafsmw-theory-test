@@ -1,13 +1,11 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import BlueButton from "../components/BlueButton";
-import GetUserClickInfo from "../lib/getUserClickInfo";
 import CreateBlankStaves from "../components/CreateBlankStaves";
 import { sharpKeySignature, flatKeySignature } from "../lib/keySignatures";
-import { StaveType } from "../lib/typesAndInterfaces";
 import VexFlow from "vexflow";
 import { AccidentalStateType } from "../lib/typesAndInterfaces";
-
+import { INITIAL_STAVES } from "../lib/data/stavesData";
 const VF = VexFlow.Flow;
 const { Renderer } = VF;
 
@@ -17,7 +15,6 @@ let KEY_SIG = "C";
 let NUM_STAVES_PER_KEY_SIG = 1;
 const TOTAL_NUM_STAVES = 1;
 let Y_POSITION_OF_STAVES = 150;
-const INITIAL_STAVES: StaveType[] = new Array(TOTAL_NUM_STAVES).fill([]);
 
 const CreateKeySignatures = () => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
@@ -42,7 +39,6 @@ const CreateKeySignatures = () => {
       return newState;
     });
   };
-  console.log(blankStaves);
   const createSharpKey = (): void => {
     setSharps((prevState) => [...prevState, "#"]);
     toggleState("isAddSharpActive");
