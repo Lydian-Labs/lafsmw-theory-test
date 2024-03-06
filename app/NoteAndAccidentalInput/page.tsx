@@ -1,5 +1,12 @@
 "use client";
-import React, { useEffect, useMemo, useReducer, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useReducer,
+  useRef,
+  useState,
+} from "react";
 import VexFlow from "vexflow";
 import BlueButton from "../components/BlueButton";
 import CheckIfNoteFound from "../components/CheckIfNoteFound";
@@ -8,32 +15,22 @@ import {
   clearAllMeasures,
   modifyStaveNotesButtonGroup,
 } from "../lib/buttonsAndButtonGroups";
-import {
-  BEATS_IN_MEASURE,
-  NUM_STAVES,
-  question1,
-} from "../lib/data/stavesData";
+import { NUM_STAVES, question1 } from "../lib/data/stavesData";
 import { findBarIndex } from "../lib/findBar";
 import generateYMinAndYMaxForAllNotes from "../lib/generateYMinAndMaxForAllNotes";
 import GetUserClickInfo from "../lib/getUserClickInfo";
 import { initializeRenderer } from "../lib/initializeRenderer";
-import {
-  addAccidentalToNote,
-  changeNotePosition,
-  deleteAccidental,
-  deleteNote,
-} from "../lib/modifyNotes";
+import { handleNoteInteraction } from "../lib/handleNoteInteraction";
 import { notesArray } from "../lib/noteArray";
 import { reducer } from "../lib/reducer";
 import { renderStavesAndNotes2 } from "../lib/renderStavesAndNotes";
 import {
   NoteStringData,
   StaveNoteData,
-  StaveNoteType,
   StaveType,
   initialState,
 } from "../lib/typesAndInterfaces";
-const { Renderer, StaveNote } = VexFlow.Flow;
+const { Renderer } = VexFlow.Flow;
 
 const INITIAL_NOTES: StaveNoteData[][] = new Array(NUM_STAVES).fill([]);
 
@@ -63,14 +60,17 @@ const ManageStaveNotes = () => {
       dispatch,
       renderStavesAndNotes
     );
-  const renderStavesAndNotes = (): void =>
-    renderStavesAndNotes2({
-      rendererRef,
-      ...question1,
-      setStaves,
-      notesData,
-      staves,
-    });
+  const renderStavesAndNotes = useCallback(
+    (): void =>
+      renderStavesAndNotes2({
+        rendererRef,
+        ...question1,
+        setStaves,
+        notesData,
+        staves,
+      }),
+    [rendererRef, setStaves, notesData, staves]
+  );
 
   useEffect(() => {
     initializeRenderer(rendererRef, container);
@@ -112,44 +112,20 @@ const ManageStaveNotes = () => {
       staveNoteAbsoluteX: noteData.newStaveNote.getAbsoluteX(),
     }));
 
-    if (!updatedFoundNoteData) {
-      noNoteFound();
-    } else if (state.isSharpActive || state.isFlatActive) {
-      addAccidentalToNote(
-        barOfStaveNotes,
-        userClickX,
-        state.isSharpActive ? "#" : "b",
-      );
-    } else if (state.isEraseNoteActive) {
-      deleteNote(barOfStaveNotes, userClickX);
-      notesDataCopy[barIndex] = barOfStaveNotes;
-    } else if (state.isEraseAccidentalActive) {
-      deleteAccidental(barOfStaveNotes, userClickX);
-      notesDataCopy[barIndex] = barOfStaveNotes;
-    } else if (state.isChangeNoteActive) {
-      changeNotePosition(
-        barOfStaveNotes,
-        userClickX,
-        updatedFoundNoteData,
-        userClickY
-      );
-      notesDataCopy[barIndex] = barOfStaveNotes;
-    } else if (barOfStaveNotes && barOfStaveNotes.length >= BEATS_IN_MEASURE) {
-      tooManyBeatsInMeasure();
-    } else {
-      const newStaveNote: StaveNoteType = new StaveNote({
-        keys: [updatedFoundNoteData.note],
-        duration: "q",
-      });
-      notesDataCopy[barIndex] = [
-        ...barOfStaveNotes,
-        {
-          newStaveNote,
-          staveNoteAbsoluteX: 0,
-          userClickY,
-        },
-      ];
-    }
+    handleNoteInteraction(
+      updatedFoundNoteData,
+      noNoteFound,
+      tooManyBeatsInMeasure,
+      "tooManyBeatsInMeasure",
+      "noNoteFound",
+      barOfStaveNotes,
+      notesDataCopy,
+      state,
+      userClickX,
+      userClickY,
+      barIndex
+    );
+
     setNotesData(() => notesDataCopy);
   };
 
