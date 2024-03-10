@@ -15,7 +15,7 @@ import {
   clearAllMeasures,
   modifyStaveNotesButtonGroup,
 } from "../lib/buttonsAndButtonGroups";
-import { NUM_STAVES, staveData } from "../lib/data/stavesData";
+import { staveData } from "../lib/data/stavesData";
 import { findBarIndex } from "../lib/findBar";
 import generateYMinAndYMaxForAllNotes from "../lib/generateYMinAndMaxForAllNotes";
 import GetUserClickInfo from "../lib/getUserClickInfo";

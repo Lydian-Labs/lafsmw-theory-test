@@ -1,4 +1,4 @@
-import VexFlow, { IRenderContext } from "vexflow";
+import VexFlow from "vexflow";
 import {
   BlankStaves,
   CreateBlankStavesParams,
