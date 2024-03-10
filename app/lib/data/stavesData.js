@@ -23,5 +23,4 @@ export const staveData = {
   firstStaveWidth: FIRST_STAVE_WIDTH,
 };
 
-let KEY_SIG = "C";
-let NUM_STAVES_PER_KEY_SIG = 1;
+

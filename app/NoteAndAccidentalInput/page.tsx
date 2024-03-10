@@ -15,7 +15,7 @@ import {
   clearAllMeasures,
   modifyStaveNotesButtonGroup,
 } from "../lib/buttonsAndButtonGroups";
-import { staveData } from "../lib/data/stavesData";
+import { NUM_STAVES, staveData } from "../lib/data/stavesData";
 import { findBarIndex } from "../lib/findBar";
 import generateYMinAndYMaxForAllNotes from "../lib/generateYMinAndMaxForAllNotes";
 import GetUserClickInfo from "../lib/getUserClickInfo";
@@ -39,7 +39,7 @@ const ManageStaveNotes = () => {
   const [staves, setStaves] = useState<StaveType[]>([]);
   const [notesData, setNotesData] = useState(INITIAL_STAVES);
   const [state, dispatch] = useReducer(reducer, initialState);
-
+  
   const noNoteFound = () => dispatch({ type: "noNoteFound" });
 
   const tooManyBeatsInMeasure = () =>

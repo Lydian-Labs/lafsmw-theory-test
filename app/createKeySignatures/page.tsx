@@ -1,20 +1,17 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import BlueButton from "../components/BlueButton";
-import CreateBlankStaves from "../components/CreateBlankStaves";
 import { sharpKeySignature, flatKeySignature } from "../lib/keySignatures";
 import VexFlow from "vexflow";
-import { AccidentalStateType } from "../lib/typesAndInterfaces";
+import { AccidentalStateType, RendererRef } from "../lib/typesAndInterfaces";
 import { INITIAL_STAVES } from "../lib/data/stavesData";
 const VF = VexFlow.Flow;
 const { Renderer } = VF;
+import { initializeRenderer } from "../lib/initializeRenderer";
+import { staveData } from "../lib/data/stavesData";
+import { setupRendererAndDrawNotes } from "../lib/setupRendererAndDrawNotes";
 
-const CLEF = "treble";
-const TIME_SIG = "4/4";
 let KEY_SIG = "C";
-let NUM_STAVES_PER_KEY_SIG = 1;
-const TOTAL_NUM_STAVES = 1;
-let Y_POSITION_OF_STAVES = 150;
 
 const CreateKeySignatures = () => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
@@ -30,8 +27,8 @@ const CreateKeySignatures = () => {
     isRemoveSharpActive: false,
   });
   const toggleState = (key: keyof AccidentalStateType) => {
-    setState((prevState: AccidentalStateType) => {
-      let newState: AccidentalStateType = { ...prevState };
+    setState((prevState) => {
+      const newState = { ...prevState };
       for (let stateKey in newState) {
         newState[stateKey as keyof AccidentalStateType] = false;
       }
@@ -39,6 +36,7 @@ const CreateKeySignatures = () => {
       return newState;
     });
   };
+
   const createSharpKey = (): void => {
     setSharps((prevState) => [...prevState, "#"]);
     toggleState("isAddSharpActive");
@@ -108,73 +106,32 @@ const CreateKeySignatures = () => {
     },
   ];
 
-  const initializeRenderer = () => {
-    if (!rendererRef.current && container.current) {
-      rendererRef.current = new Renderer(
-        container.current,
-        Renderer.Backends.SVG
-      );
-    }
-  };
-
-  const renderStavesAndKeySignature = () => {
-    const renderer = rendererRef.current;
-    const context = renderer && renderer.getContext();
-    context?.setFont("Arial", 10);
-    context?.clear();
-    if (context) {
-      context &&
-        setBlankStaves((prevState) => {
-          const newStaves = [prevState];
-          let xPosition = 10;
-          for (let i = 0; i < TOTAL_NUM_STAVES; i++) {
-            CreateBlankStaves(
-              NUM_STAVES_PER_KEY_SIG,
-              context,
-              240,
-              0,
-              xPosition,
-              Y_POSITION_OF_STAVES,
-              CLEF,
-              TIME_SIG,
-              KEY_SIG
-            );
-            xPosition += 250;
-          }
-        });
-    }
-  };
+  const renderStaves = useCallback(
+    (): void =>
+      setupRendererAndDrawNotes({
+        rendererRef,
+        ...staveData,
+        keySig: KEY_SIG,
+        setStaves: setBlankStaves,
+        notesData: null,
+        staves: blankStaves,
+      }),
+    [blankStaves]
+  );
 
   useEffect(() => {
-    initializeRenderer();
-    const renderer = rendererRef.current;
-    renderer?.resize(1100, 300);
-    const context = renderer && renderer.getContext();
-    context?.setFont("Arial", 10);
-    context &&
-      setBlankStaves(
-        CreateBlankStaves(
-          NUM_STAVES_PER_KEY_SIG,
-          context,
-          240,
-          180,
-          10,
-          Y_POSITION_OF_STAVES,
-          CLEF,
-          TIME_SIG,
-          KEY_SIG
-        )
-      );
+    initializeRenderer(rendererRef, container);
+    renderStaves();
   }, []);
 
   useEffect(() => {
     KEY_SIG = sharpKeySignature(sharps.length);
-    renderStavesAndKeySignature();
+    renderStaves();
   }, [sharps]);
 
   useEffect(() => {
     KEY_SIG = flatKeySignature(flats.length);
-    renderStavesAndKeySignature();
+    renderStaves();
   }, [flats]);
 
   return (

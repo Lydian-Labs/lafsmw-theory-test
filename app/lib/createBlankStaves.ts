@@ -1,12 +1,9 @@
 import VexFlow from "vexflow";
-import {
-  BlankStaves,
-  CreateBlankStavesParams,
-} from "../lib/typesAndInterfaces";
+import { BlankStaves, CreateBlankStavesParams } from "./typesAndInterfaces";
 const VF = VexFlow.Flow;
 const { Stave } = VF;
 
-const CreateBlankStaves = (
+const createBlankStaves = (
   params: CreateBlankStavesParams,
   {
     numStaves,
@@ -40,4 +37,4 @@ const CreateBlankStaves = (
   return stavesArray;
 };
 
-export default CreateBlankStaves;
+export default createBlankStaves;
