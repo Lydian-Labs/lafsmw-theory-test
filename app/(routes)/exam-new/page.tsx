@@ -1,94 +1,100 @@
 "use client";
-import { ChangeEvent, ReactNode, useRef, useState } from "react";
 import {
   Container,
   Typography,
+  Box,
+  Stack,
   Grid,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  SelectChangeEvent,
+  List,
+  ListItem,
+  ListItemText,
 } from "@mui/material";
-import { InputData } from "../../lib/typesAndInterfaces";
+import ClassPreferenceSelector from "../../components/ClassPreferenceSelector";
 
-type Level =
-  | "advanced-theory"
-  | "advanced-improvisation"
-  | "intro-to-arranging"
-  | "intermediate-arranging"
-  | "advanced-arranging"
-  | "rhythm-class"
-  | "sibelius-class"
-  | "";
-
-type InputState = {
-  level: Level;
-  keySignatures: InputData;
-  chords: InputData;
-  progressions: InputData;
-  blues: InputData;
-};
-
-const initialFormInputState: InputState = {
-  level: "",
-  keySignatures: {},
-  chords: {},
-  progressions: {},
-  blues: {},
-};
+const instructions = [
+  {
+    instructionTitle: "Select the accidental:",
+    instructionText:
+      "Choose the flat (b) or sharp (#) button to select the type of accidental you need to add.",
+  },
+  {
+    instructionTitle: "Place it on the staff:",
+    instructionText:
+      "After selecting the accidental, click on the exact line or space on the staff where the accidental belongs.",
+  },
+  {
+    instructionTitle: "Erase a note or accidental:",
+    instructionText:
+      "If you need to erase a note or an accidental, first select the “Eraser” button, then click on the note or accidental you wish to erase.",
+  },
+  {
+    instructionTitle: "Clear a measure:",
+    instructionText:
+      "If you wish to clear an entire measure, select the “Clear Measure” button and the contents of the measure will be erased.",
+  },
+];
 
 export default function ExamNew() {
-  const [formInput, setFormInput] = useState(initialFormInputState);
-  const [loading, setLoading] = useState(false);
-  const [selectedValue, setSelectedValue] = useState("sibelius-class");
-
-  const handleSubmit = async (event: ChangeEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setLoading(true);
-    console.log("formInput:", formInput);
-    setLoading(false);
-  };
-
-  const handleLevel = (event: SelectChangeEvent<string>, child: ReactNode) => {
-    setFormInput((prev) => {
-      return {
-        ...prev,
-        level: event.target.value as Level,
-      };
-    });
-  };
-
   return (
-    <Container component="main" maxWidth="md">
-      <Typography variant="sectionTitle" align="center" color="black">
-        Section 1: Key Signatures
-      </Typography>
-      <Grid item xs={12}>
-        <FormControl fullWidth>
-          <InputLabel id="level-select-label">
-            Choose your Level IV class preference:
-          </InputLabel>
-          <Select
-            labelId="level-select-label"
-            id="level-select"
-            value={selectedValue}
-            onChange={handleLevel}
+    <Container>
+      <Box
+        component="main"
+        width={1139}
+        height={637}
+        bgcolor={"button.pressed"}
+        borderRadius="var(--borderRadius)"
+        py={3}
+        px={12}
+      >
+        <Grid container>
+          <Grid item xs={4}>
+            <Stack gap={2}>
+              <Typography variant="h5" align="center">
+                Section 1: Key Signatures
+              </Typography>
+              <ClassPreferenceSelector></ClassPreferenceSelector>
+              <Box
+                width={273}
+                height={456}
+                bgcolor={"background.card"}
+                borderRadius="var(--borderRadius)"
+              >
+                <Stack mx={3}>
+                  <Typography variant="h6" align="center">
+                    Tutorial
+                  </Typography>
+                  <List>
+                    {instructions.map((value, index) => (
+                      <ListItem key={index} disableGutters>
+                        <ListItemText
+                          primary={`${index + 1}. ${value.instructionTitle}`}
+                          secondary={value.instructionText}
+                          primaryTypographyProps={{ fontSize: "11px" }}
+                          secondaryTypographyProps={{ fontSize: "11px" }}
+                        />
+                      </ListItem>
+                    ))}
+                  </List>
+                </Stack>
+              </Box>
+            </Stack>
+          </Grid>
+          <Grid
+            item
+            xs={8}
+            sx={{ flexDirection: "row", justifyContent: "flex-end" }}
           >
-            <MenuItem value="sibelius-class">Sibelius class</MenuItem>
-            <MenuItem value="rhythm-class">Rhythm class</MenuItem>
-            <MenuItem value="intro-to-arranging">Intro to arranging</MenuItem>
-            <MenuItem value="intermediate-arranging">
-              Intermediate arranging
-            </MenuItem>
-            <MenuItem value="advanced-arranging">Advanced arranging</MenuItem>
-            <MenuItem value="advanced-theory">Advanced theory</MenuItem>
-            <MenuItem value="advanced-improvisation">
-              Advanced improvisation
-            </MenuItem>
-          </Select>
-        </FormControl>
-      </Grid>
+            <Box>
+              <Box
+                width={569}
+                height={540}
+                bgcolor={"background.card"}
+                borderRadius="var(--borderRadius)"
+              ></Box>
+            </Box>
+          </Grid>
+        </Grid>
+      </Box>
     </Container>
   );
 }

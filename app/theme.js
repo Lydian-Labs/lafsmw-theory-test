@@ -6,17 +6,16 @@ import tokens from "./tokens.json";
 const theme = createTheme({
   palette: {
     background: {
-      main: tokens.global.md.sys.color["main-background-color"]["value"],
-      card: tokens.global.md.sys.color["card-background-color"]["value"],
+      main: tokens.global.md.sys.color["main-background-color"].value,
+      card: tokens.global.md.sys.color["card-background-color"].value,
     },
     button: {
-      pressed: tokens.global.md.sys.color["pressed-button-color"]["value"],
-      enabled: tokens.global.md.sys.color["enabled-button-color"]["value"],
+      pressed: tokens.global.md.sys.color["pressed-button-color"].value,
+      enabled: tokens.global.md.sys.color["enabled-button-color"].value,
     },
     progressBar: {
-      filled: tokens.global.md.sys.color["filled-progress-bar-color"]["value"],
-      unfilled:
-        tokens.global.md.sys.color["unfilled-progress-bar-color"]["value"],
+      filled: tokens.global.md.sys.color["filled-progress-bar-color"].value,
+      unfilled: tokens.global.md.sys.color["unfilled-progress-bar-color"].value,
     },
   },
   typography: {
@@ -120,9 +119,12 @@ const theme = createTheme({
     "0 282px 169px 0 rgba(0, 0, 0, 0.05)", // 3
     "0 125px 125px 0 rgba(0, 0, 0, 0.09)", // 4
     "0 31px 69px 0 rgba(0, 0, 0, 0.1)", // 5
+    "0 25px 50px 0 rgba(0, 0, 0, 0.1)", // 6
+    "0 20px 40px 0 rgba(0, 0, 0, 0.1)", // 7
+    "0 15px 30px 0 rgba(0, 0, 0, 0.1)", // 8
   ],
   shape: {
-    borderRadius: `${tokens.global.md.sys["border-radius"].value}px`,
+    borderRadius: [`${tokens.global.md.sys["border-radius"].value}px`],
   },
 });
 
