@@ -4,7 +4,7 @@ import {
   StaveNoteData,
   NoteStringData,
   Action,
-  StateType,
+  NoteInteractionState,
   StaveNoteType,
 } from "./typesAndInterfaces";
 import { BEATS_IN_MEASURE } from "./data/stavesData";
@@ -23,7 +23,7 @@ export const handleNoteInteraction = (
   noNoteFoundAction: string,
   barOfStaveNotes: StaveNoteData[],
   notesDataCopy: StaveNoteData[][],
-  state: StateType,
+  state: NoteInteractionState,
   userClickX: number,
   userClickY: number,
   barIndex: number

@@ -1,7 +1,11 @@
 import React from "react";
 import * as VexFlow from "vexflow";
 const { Renderer } = VexFlow.Flow;
-import { Action, StateType, StaveNoteData } from "./typesAndInterfaces";
+import {
+  Action,
+  NoteInteractionState,
+  StaveNoteData,
+} from "./typesAndInterfaces";
 import { initializeRenderer } from "./initializeRenderer";
 
 const actionTypes = {
@@ -33,12 +37,12 @@ export const clearAllMeasures = (
 
 export const modifyStaveNotesButtonGroup = (
   dispatch: React.Dispatch<Action>,
-  state: StateType
+  state: NoteInteractionState
 ) => {
   return Object.entries(actionTypes).map(([stateKey, text]) => ({
     action: () => dispatch({ type: stateKey }),
     text,
     stateKey,
-    isEnabled: state[stateKey as keyof StateType],
+    isEnabled: state[stateKey as keyof NoteInteractionState],
   }));
 };

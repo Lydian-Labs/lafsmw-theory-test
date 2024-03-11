@@ -22,14 +22,14 @@ import GetUserClickInfo from "../lib/getUserClickInfo";
 import { initializeRenderer } from "../lib/initializeRenderer";
 import { handleNoteInteraction } from "../lib/handleNoteInteraction";
 import { notesArray } from "../lib/noteArray";
-import { reducer } from "../lib/reducer";
+import { noteInteractionReducer } from "../lib/reducers";
 import { setupRendererAndDrawNotes } from "../lib/setupRendererAndDrawNotes";
 import {
   NoteStringData,
   StaveNoteData,
   StaveType,
-  initialState,
 } from "../lib/typesAndInterfaces";
+import { noteInteractionInitialState } from "../lib/initialStates";
 const { Renderer } = VexFlow.Flow;
 import { INITIAL_STAVES } from "../lib/data/stavesData";
 
@@ -38,8 +38,11 @@ const ManageStaveNotes = () => {
   const container = useRef<HTMLDivElement | null>(null);
   const [staves, setStaves] = useState<StaveType[]>([]);
   const [notesData, setNotesData] = useState(INITIAL_STAVES);
-  const [state, dispatch] = useReducer(reducer, initialState);
-  
+  const [state, dispatch] = useReducer(
+    noteInteractionReducer,
+    noteInteractionInitialState
+  );
+
   const noNoteFound = () => dispatch({ type: "noNoteFound" });
 
   const tooManyBeatsInMeasure = () =>

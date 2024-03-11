@@ -1,16 +1,23 @@
 "use client";
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  useCallback,
+  useReducer,
+} from "react";
 import BlueButton from "../components/BlueButton";
 import { sharpKeySignature, flatKeySignature } from "../lib/keySignatures";
 import VexFlow from "vexflow";
-import { AccidentalStateType, RendererRef } from "../lib/typesAndInterfaces";
+import { AccidentalStateType } from "../lib/typesAndInterfaces";
 import { INITIAL_STAVES } from "../lib/data/stavesData";
 const VF = VexFlow.Flow;
 const { Renderer } = VF;
 import { initializeRenderer } from "../lib/initializeRenderer";
 import { staveData } from "../lib/data/stavesData";
 import { setupRendererAndDrawNotes } from "../lib/setupRendererAndDrawNotes";
-
+import { keySigReducer, noteInteractionReducer } from "../lib/reducers";
+import { keySigInitialState } from "../lib/initialStates";
 let KEY_SIG = "C";
 
 const CreateKeySignatures = () => {
@@ -19,6 +26,11 @@ const CreateKeySignatures = () => {
   const [blankStaves, setBlankStaves] = useState(INITIAL_STAVES);
   const [sharps, setSharps] = useState<string[]>([]);
   const [flats, setFlats] = useState<string[]>([]);
+  const [reducerState, dispatch] = useReducer(
+    keySigReducer,
+    keySigInitialState
+  );
+
   const [state, setState] = useState<AccidentalStateType>({
     isClearMeasuresActive: false,
     isAddSharpActive: false,

@@ -18,7 +18,7 @@ export type SetStaves = Dispatch<SetStateAction<StaveType[]>>;
 export type BlankStaves = StaveType[];
 export type NoteData = StaveNoteData[][];
 
-export type StateType = {
+export type NoteInteractionState = {
   isEraseNoteActive: boolean;
   isEraseAccidentalActive: boolean;
   isChangeNoteActive: boolean;
@@ -29,24 +29,21 @@ export type StateType = {
   isFlatActive: boolean;
   [key: string]: boolean | undefined; //This is an index signature. This is a type in TypeScript that allows indexing into an object with a string
 };
+export type KeySigState = {
+  isAddSharpActive: boolean;
+  isAddFlatActive: boolean;
+  isRemoveSharpActive: boolean;
+  isRemoveFlatActive: boolean;
+  [key: string]: boolean | undefined; //This is an index signature. This is a type in TypeScript that allows indexing into an object with a string
+};
 
-export type Action = { type: keyof StateType };
+export type Action = { type: keyof NoteInteractionState };
 
 export type BarMetrics = {
   barWidth: number;
   xMaxCoordinate: number;
 };
 
-export const initialState: StateType = {
-  isEraseNoteActive: false,
-  isEraseAccidentalActive: false,
-  isEnterNoteActive: true,
-  isSharpActive: false,
-  noNoteFound: false,
-  tooManyBeatsInMeasure: false,
-  isFlatActive: false,
-  isChangeNoteActive: false,
-};
 export type AccidentalStateType = {
   isAddSharpActive: boolean;
   isAddFlatActive: boolean;
