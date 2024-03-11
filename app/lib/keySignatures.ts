@@ -1,25 +1,25 @@
-export const sharpKeySignature = (numFlats: number) => {
+export const sharpKeySignature = (numSharps: number) => {
   let keySig;
-  switch (numFlats) {
-    case (numFlats = 1):
+  switch (numSharps) {
+    case (numSharps = 1):
       keySig = "G";
       break;
-    case (numFlats = 2):
+    case (numSharps = 2):
       keySig = "D";
       break;
-    case (numFlats = 3):
+    case (numSharps = 3):
       keySig = "A";
       break;
-    case (numFlats = 4):
+    case (numSharps = 4):
       keySig = "E";
       break;
-    case (numFlats = 5):
+    case (numSharps = 5):
       keySig = "B";
       break;
-    case (numFlats = 6):
+    case (numSharps = 6):
       keySig = "F#";
       break;
-    case (numFlats = 7):
+    case (numSharps = 7):
       keySig = "C#";
       break;
     default:
@@ -27,6 +27,45 @@ export const sharpKeySignature = (numFlats: number) => {
   }
   return keySig;
 };
+
+export const sharpKeyYPositions = (
+  userYClick: number,
+  topStaveYPos: number, //180
+  spacingBetweenLines: number //10
+) => {
+  let note;
+  if (Math.abs(userYClick - (topStaveYPos + spacingBetweenLines)) <= 1) {
+    note = "F#";
+  } else if (
+    Math.abs(userYClick - (topStaveYPos + (spacingBetweenLines * 2 + 5))) <= 1
+  ) {
+    note = "C#";
+  } else if (
+    Math.abs(userYClick - (topStaveYPos + spacingBetweenLines - 5)) <= 1
+  ) {
+    note = "G#";
+  } else if (
+    Math.abs(userYClick - (topStaveYPos + spacingBetweenLines * 2)) <= 1
+  ) {
+    note = "D#";
+  } else if (
+    Math.abs(userYClick - (topStaveYPos + (spacingBetweenLines * 3 + 5))) <= 1
+  ) {
+    note = "A#";
+  } else if (
+    Math.abs(userYClick - (topStaveYPos + spacingBetweenLines + 5)) <= 1
+  ) {
+    note = "E#";
+  } else if (
+    Math.abs(userYClick - (topStaveYPos + spacingBetweenLines * 3)) <= 1
+  ) {
+    note = "B#";
+  } else {
+    note = "none";
+  }
+  return note;
+};
+
 export const flatKeySignature = (numFlats: number) => {
   let keySig;
   switch (numFlats) {

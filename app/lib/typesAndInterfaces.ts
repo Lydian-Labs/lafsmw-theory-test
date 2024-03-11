@@ -34,10 +34,12 @@ export type KeySigState = {
   isAddFlatActive: boolean;
   isRemoveSharpActive: boolean;
   isRemoveFlatActive: boolean;
+  isClearKeySigActive: boolean;
   [key: string]: boolean | undefined; //This is an index signature. This is a type in TypeScript that allows indexing into an object with a string
 };
 
-export type Action = { type: keyof NoteInteractionState };
+export type NoteInteractionAction = { type: keyof NoteInteractionState };
+export type KeySigAction = { type: keyof KeySigState };
 
 export type BarMetrics = {
   barWidth: number;
@@ -61,6 +63,9 @@ export interface UserClickInfo {
   userClickY: number;
   topStaveYPosition: number;
   highGYPosition: number;
+  spacingBetweenLines?: number | undefined;
+  bottomY?: number;
+  bottomLineY?: number;
 }
 
 export interface StaveNoteData {
@@ -82,12 +87,12 @@ export interface ModifyNoteData {
 
 export interface CheckNumBeatsInMeasureProps {
   tooManyBeatsInMeasure: boolean | undefined;
-  openEnterNotes: React.Dispatch<Action>;
+  openEnterNotes: React.Dispatch<NoteInteractionAction>;
 }
 
 export interface CheckIfNoteFoundProps {
   noNoteFound: boolean;
-  openEnterNotes: React.Dispatch<Action>;
+  openEnterNotes: React.Dispatch<NoteInteractionAction>;
 }
 
 export interface RenderStavesAndNotesParams {

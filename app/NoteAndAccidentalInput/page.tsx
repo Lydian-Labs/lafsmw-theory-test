@@ -18,7 +18,7 @@ import {
 import { NUM_STAVES, staveData } from "../lib/data/stavesData";
 import { findBarIndex } from "../lib/findBar";
 import generateYMinAndYMaxForAllNotes from "../lib/generateYMinAndMaxForAllNotes";
-import GetUserClickInfo from "../lib/getUserClickInfo";
+import getUserClickInfo from "../lib/getUserClickInfo";
 import { initializeRenderer } from "../lib/initializeRenderer";
 import { handleNoteInteraction } from "../lib/handleNoteInteraction";
 import { notesArray } from "../lib/noteArray";
@@ -86,7 +86,7 @@ const ManageStaveNotes = () => {
   let updatedFoundNoteData: NoteStringData;
 
   const handleClick = (e: React.MouseEvent) => {
-    const { userClickY, userClickX, highGYPosition } = GetUserClickInfo(
+    const { userClickY, userClickX, highGYPosition } = getUserClickInfo(
       e,
       container,
       staves[0] //array index doesn't matter because we are using this argument to find the height of the top stave

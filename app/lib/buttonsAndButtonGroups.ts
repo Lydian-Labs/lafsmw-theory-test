@@ -2,13 +2,15 @@ import React from "react";
 import * as VexFlow from "vexflow";
 const { Renderer } = VexFlow.Flow;
 import {
-  Action,
+  KeySigAction,
+  KeySigState,
+  NoteInteractionAction,
   NoteInteractionState,
   StaveNoteData,
 } from "./typesAndInterfaces";
 import { initializeRenderer } from "./initializeRenderer";
 
-const actionTypes = {
+const modifyNotesActionTypes = {
   isEnterNoteActive: "Enter Note",
   isEraseNoteActive: "Erase Note",
   isChangeNoteActive: "Change Note",
@@ -17,7 +19,15 @@ const actionTypes = {
   isEraseAccidentalActive: "Erase Accidental",
 };
 
-export const enterNote = (dispatch: React.Dispatch<Action>) => {
+const modifyKeySigActionTypes = {
+  isAddSharpActive: "Add Sharp",
+  isAddFlatActive: "Add Flat",
+  isRemoveSharpActive: "Remove Sharp",
+  isRemoveFlatActive: "Remove Flat",
+  isClearKeySigActive: "Clear Key Sig",
+};
+
+export const enterNote = (dispatch: React.Dispatch<NoteInteractionAction>) => {
   dispatch({ type: "isEnterNoteActive" });
 };
 
@@ -26,7 +36,7 @@ export const clearAllMeasures = (
   initialNotes: StaveNoteData[][],
   renderer: React.MutableRefObject<InstanceType<typeof Renderer> | null>,
   container: React.MutableRefObject<HTMLDivElement | null>,
-  dispatch: React.Dispatch<Action>,
+  dispatch: React.Dispatch<NoteInteractionAction>,
   renderStavesAndStaveNotes: () => void
 ): void => {
   setNotes(() => initialNotes);
@@ -36,13 +46,25 @@ export const clearAllMeasures = (
 };
 
 export const modifyStaveNotesButtonGroup = (
-  dispatch: React.Dispatch<Action>,
+  dispatch: React.Dispatch<NoteInteractionAction>,
   state: NoteInteractionState
 ) => {
-  return Object.entries(actionTypes).map(([stateKey, text]) => ({
+  return Object.entries(modifyNotesActionTypes).map(([stateKey, text]) => ({
     action: () => dispatch({ type: stateKey }),
     text,
     stateKey,
     isEnabled: state[stateKey as keyof NoteInteractionState],
+  }));
+};
+
+export const modifyKeySigButtonGroup = (
+  dispatch: React.Dispatch<KeySigAction>,
+  state: KeySigState
+) => {
+  return Object.entries(modifyKeySigActionTypes).map(([stateKey, text]) => ({
+    action: () => dispatch({ type: stateKey }),
+    text,
+    stateKey,
+    isEnabled: state[stateKey as keyof KeySigState],
   }));
 };

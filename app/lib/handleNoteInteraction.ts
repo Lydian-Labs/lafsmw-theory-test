@@ -3,7 +3,7 @@ const { StaveNote } = VexFlow.Flow;
 import {
   StaveNoteData,
   NoteStringData,
-  Action,
+  NoteInteractionAction,
   NoteInteractionState,
   StaveNoteType,
 } from "./typesAndInterfaces";
@@ -17,8 +17,8 @@ import {
 
 export const handleNoteInteraction = (
   updatedNoteData: NoteStringData,
-  noteNotFound: React.Dispatch<Action>,
-  checkBeatsInMeasure: React.Dispatch<Action>,
+  noteNotFound: React.Dispatch<NoteInteractionAction>,
+  checkBeatsInMeasure: React.Dispatch<NoteInteractionAction>,
   beatsInMeasureAction: string,
   noNoteFoundAction: string,
   barOfStaveNotes: StaveNoteData[],
