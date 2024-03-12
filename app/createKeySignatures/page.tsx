@@ -1,16 +1,7 @@
 "use client";
-import React, {
-  useEffect,
-  useRef,
-  useState,
-  useCallback,
-  useReducer,
-  useMemo,
-} from "react";
+import React, { useEffect, useRef, useState, useReducer, useMemo } from "react";
 import BlueButton from "../components/BlueButton";
-import { sharpKeySignature, flatKeySignature } from "../lib/keySignatures";
 import VexFlow from "vexflow";
-import { AccidentalStateType } from "../lib/typesAndInterfaces";
 import { INITIAL_STAVES } from "../lib/data/stavesData";
 const VF = VexFlow.Flow;
 const { Renderer } = VF;
@@ -21,15 +12,14 @@ import { keySigReducer } from "../lib/reducers";
 import { keySigInitialState } from "../lib/initialStates";
 import { getUserClickInfo } from "../lib/getUserClickInfo";
 import { modifyKeySigButtonGroup } from "../lib/buttonsAndButtonGroups";
-let KEY_SIG = "C";
-import { sharpKeyYPositions } from "../lib/keySignatures";
+import { GlyphProps } from "../lib/typesAndInterfaces";
+import { buildKeySignature } from "../lib/buildKeySignature";
+
 const CreateKeySignatures = () => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
   const [blankStaves, setBlankStaves] = useState(INITIAL_STAVES);
-  const [sharps, setSharps] = useState<string[]>([]);
-  const [flats, setFlats] = useState<string[]>([]);
-  const [keySignature, setKeySignature] = useState("C");
+  const [glyphs, setGlyphs] = useState<GlyphProps[]>([]);
   const [state, dispatch] = useReducer(keySigReducer, keySigInitialState);
 
   const buttonGroup = useMemo(
@@ -37,50 +27,48 @@ const CreateKeySignatures = () => {
     [dispatch, state]
   );
 
-  const renderStaves = useCallback(
-    (): void =>
-      setupRendererAndDrawNotes({
-        rendererRef,
-        ...staveData,
-        keySig: keySignature,
-        setStaves: setBlankStaves,
-        staves: blankStaves,
-      }),
-    [blankStaves, keySignature]
-  );
+  const context = rendererRef.current?.getContext();
+
+  const renderStaves = (): void => {
+    setupRendererAndDrawNotes({
+      rendererRef,
+      ...staveData,
+      setStaves: setBlankStaves,
+      staves: blankStaves,
+    });
+  };
 
   useEffect(() => {
     initializeRenderer(rendererRef, container);
     renderStaves();
-  }, [keySignature]);
+  }, []);
+
+  useEffect(() => {
+    initializeRenderer(rendererRef, container);
+    renderStaves();
+    context?.clear();
+    context && buildKeySignature(glyphs, 40, context, blankStaves[0]);
+  }, [glyphs]);
 
   const handleClick = (e: React.MouseEvent) => {
-    const { rect, userClickY, spacingBetweenLines, topStaveYPosition } =
-      getUserClickInfo(e, container, blankStaves[0]);
-    const noteClickedOn =
-      rect &&
-      sharpKeyYPositions(userClickY, topStaveYPosition, spacingBetweenLines);
+    const { userClickY, userClickX } = getUserClickInfo(
+      e,
+      container,
+      blankStaves[0]
+    );
 
-    if (state.isAddSharpActive) {
-      if (noteClickedOn === "F#") {
-        setKeySignature(() => "G");
-      } else if (noteClickedOn === "C#") {
-        setKeySignature(() => "D");
-      } else if (noteClickedOn === "G#") {
-        setKeySignature(() => "A");
-      } else if (noteClickedOn === "D#") {
-        setKeySignature(() => "E");
-      } else if (noteClickedOn === "A#") {
-        setKeySignature(() => "B");
-      } else if (noteClickedOn === "E#") {
-        setKeySignature(() => "F#");
-      } else if (noteClickedOn === "B#") {
-        setKeySignature(() => "C#");
-      } else return;
-    }
-    if (state.isClearKeySigActive) {
-      setKeySignature(() => "C");
-    }
+    setGlyphs((prevState) => [
+      ...prevState,
+      {
+        xPosition: userClickX,
+        yPosition: userClickY,
+        glyph: state.isAddSharpActive
+          ? "accidentalSharp"
+          : state.isAddFlatActive
+          ? "accidentalFlat"
+          : "",
+      },
+    ]);
   };
 
   return (

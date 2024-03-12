@@ -24,7 +24,9 @@ export const addAccidentalToNote = (
   noteData.barOfStaveNotes &&
     noteData.barOfStaveNotes.newStaveNote.addModifier(
       new Accidental(accidental)
+      
     );
+    console.log(new Accidental("#"))
 };
 
 export const changeNotePosition = (

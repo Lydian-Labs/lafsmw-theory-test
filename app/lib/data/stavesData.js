@@ -22,5 +22,3 @@ export const staveData = {
   clef: CLEF,
   firstStaveWidth: FIRST_STAVE_WIDTH,
 };
-
-

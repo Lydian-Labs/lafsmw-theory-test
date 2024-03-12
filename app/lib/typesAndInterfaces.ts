@@ -1,7 +1,7 @@
 import VexFlow from "vexflow";
 import { IRenderContext } from "vexflow";
 const VF = VexFlow.Flow;
-const { StaveNote, Stave, Renderer } = VF;
+const { StaveNote, Stave, Renderer, Glyph } = VF;
 import { RefObject, Dispatch, SetStateAction } from "react";
 
 export type InputData = {
@@ -54,7 +54,7 @@ export type AccidentalStateType = {
   isClearMeasuresActive: boolean;
 };
 export type StaveType = InstanceType<typeof Stave>;
-
+export type GlyphType = InstanceType<typeof Glyph>;
 export type StaveNoteType = InstanceType<typeof StaveNote>;
 
 export interface UserClickInfo {
@@ -124,4 +124,10 @@ export interface CreateBlankStavesParams {
   clef?: string;
   timeSig?: string;
   keySig?: string;
+}
+
+export interface GlyphProps {
+  xPosition: number;
+  yPosition: number;
+  glyph: string;
 }

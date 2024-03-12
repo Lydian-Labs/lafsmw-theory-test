@@ -22,6 +22,11 @@ const createBlankStaves = (
     for (let i = 0; i < numStaves; i++) {
       let staveWidth = i === 0 ? firstStaveWidth : regularStaveWidth;
       let stave = new Stave(x, y, staveWidth);
+      // console.log(stave.getYForLine(1))
+      // console.log(stave.getYForLine(2))
+      // console.log(stave.getYForLine(3))
+      // console.log(stave.getYForLine(4))
+      // console.log(stave.getYForLine(5))
       i === 0 && clef ? stave.addClef(clef) : null;
       i === 0 && timeSig ? stave.addTimeSignature(timeSig) : null;
       i === 0 && keySig ? stave.addKeySignature(keySig) : null;

@@ -10,9 +10,6 @@ export const getUserClickInfo = (
   const userClickY = rect ? e.clientY - rect.top : 0;
   const userClickX = rect ? e.clientX - rect.left : 0;
   const topStaveYPosition = stave && stave.getYForTopText();
-  const bottomY = stave && stave.getBottomY();
-  const bottomLineY = stave && stave.getBottomLineY();
-  const spacingBetweenLines = stave && stave.getSpacingBetweenLines();
 
   const highGYPosition = topStaveYPosition - 33;
 
@@ -21,9 +18,6 @@ export const getUserClickInfo = (
     userClickY,
     userClickX,
     topStaveYPosition,
-    bottomY,
-    bottomLineY,
-    spacingBetweenLines,
     highGYPosition,
   };
 };
