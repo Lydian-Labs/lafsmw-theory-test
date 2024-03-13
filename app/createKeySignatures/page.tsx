@@ -11,10 +11,12 @@ import { setupRendererAndDrawNotes } from "../lib/setupRendererAndDrawNotes";
 import { keySigReducer } from "../lib/reducers";
 import { keySigInitialState } from "../lib/initialStates";
 import { getUserClickInfo } from "../lib/getUserClickInfo";
-import { modifyKeySigButtonGroup } from "../lib/buttonsAndButtonGroups";
+import {
+  modifyKeySigButtonGroup,
+  clearKeySignature,
+} from "../lib/buttonsAndButtonGroups";
 import { GlyphProps } from "../lib/typesAndInterfaces";
 import { buildKeySignature } from "../lib/buildKeySignature";
-
 const CreateKeySignatures = () => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
@@ -36,6 +38,10 @@ const CreateKeySignatures = () => {
       setStaves: setBlankStaves,
       staves: blankStaves,
     });
+  };
+  const clearKey = () => {
+    clearKeySignature(setGlyphs, rendererRef, container, renderStaves),
+      dispatch({ type: "" });
   };
 
   useEffect(() => {
@@ -87,6 +93,7 @@ const CreateKeySignatures = () => {
             </BlueButton>
           );
         })}
+        <BlueButton onClick={clearKey}>Clear Key Signature</BlueButton>
       </div>
     </>
   );

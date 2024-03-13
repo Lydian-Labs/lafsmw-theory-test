@@ -62,6 +62,7 @@ const ManageStaveNotes = () => {
       dispatch,
       renderStavesAndNotes
     );
+    
   const renderStavesAndNotes = useCallback(
     (): void =>
       setupRendererAndDrawNotes({

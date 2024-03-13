@@ -1,6 +1,7 @@
 import React from "react";
 import * as VexFlow from "vexflow";
 const { Renderer } = VexFlow.Flow;
+import { GlyphProps } from "./typesAndInterfaces";
 import {
   KeySigAction,
   KeySigState,
@@ -9,7 +10,7 @@ import {
   StaveNoteData,
 } from "./typesAndInterfaces";
 import { initializeRenderer } from "./initializeRenderer";
-
+import { keySigInitialState } from "./initialStates";
 const modifyNotesActionTypes = {
   isEnterNoteActive: "Enter Note",
   isEraseNoteActive: "Erase Note",
@@ -24,7 +25,6 @@ const modifyKeySigActionTypes = {
   isAddFlatActive: "Add Flat",
   isRemoveSharpActive: "Remove Sharp",
   isRemoveFlatActive: "Remove Flat",
-  isClearKeySigActive: "Clear Key Sig",
 };
 
 export const enterNote = (dispatch: React.Dispatch<NoteInteractionAction>) => {
@@ -67,4 +67,16 @@ export const modifyKeySigButtonGroup = (
     stateKey,
     isEnabled: state[stateKey as keyof KeySigState],
   }));
+};
+
+export const clearKeySignature = (
+  setGlyphs: React.Dispatch<React.SetStateAction<GlyphProps[]>>,
+  renderer: React.MutableRefObject<InstanceType<typeof Renderer> | null>,
+  container: React.MutableRefObject<HTMLDivElement | null>,
+  renderStaves: () => void
+): void => {
+  setGlyphs(() => []);
+  initializeRenderer(renderer, container);
+  renderStaves();
+  
 };
