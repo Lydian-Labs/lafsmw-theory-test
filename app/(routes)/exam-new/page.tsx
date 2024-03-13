@@ -8,8 +8,19 @@ import {
   List,
   ListItem,
   ListItemText,
+  Button,
 } from "@mui/material";
 import ClassPreferenceSelector from "../../components/ClassPreferenceSelector";
+import Staff from "@/app/components/Staff";
+
+// const buttonStyle = {
+//   backgroundColor: "button.enabled",
+//   boxShadow: "shadows[1]",
+//   "&:hover": {
+//     backgroundColor: "button.pressed",
+//     boxShadow: "none",
+//   },
+// };
 
 const instructions = [
   {
@@ -46,7 +57,7 @@ export default function ExamNew() {
         py={3}
         px={12}
       >
-        <Grid container>
+        <Grid container spacing={4}>
           <Grid item xs={4}>
             <Stack gap={2}>
               <Typography variant="h5" align="center">
@@ -79,18 +90,44 @@ export default function ExamNew() {
               </Box>
             </Stack>
           </Grid>
-          <Grid
-            item
-            xs={8}
-            sx={{ flexDirection: "row", justifyContent: "flex-end" }}
-          >
+          <Grid item xs={8}>
             <Box>
               <Box
                 width={569}
                 height={540}
                 bgcolor={"background.card"}
                 borderRadius="var(--borderRadius)"
-              ></Box>
+              >
+                <Stack mx={3}>
+                  <Typography variant="h6" align="center">
+                    Add the following key signature: Db Major
+                  </Typography>
+                  <Staff
+                    addDoubleBarLine={true}
+                    width={472}
+                    noTimeSignature={true}
+                    numBars={1}
+                  />
+                  <Stack
+                    direction="row"
+                    justifyContent="center"
+                    mt={2}
+                    spacing={2}
+                  >
+                    <Button variant="contained">#</Button>
+                    <Button variant="contained">b</Button>
+                  </Stack>
+                  <Stack
+                    direction="row"
+                    justifyContent="center"
+                    mt={2}
+                    spacing={2}
+                  >
+                    <Button variant="contained">Eraser</Button>
+                    <Button variant="contained">Clear Measure</Button>
+                  </Stack>
+                </Stack>
+              </Box>
             </Box>
           </Grid>
         </Grid>

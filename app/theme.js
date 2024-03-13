@@ -1,5 +1,5 @@
 "use client";
-import { createTheme } from "@mui/material/styles";
+import { createTheme } from "@mui/material";
 import Poppins from "@fontsource/poppins";
 import tokens from "./tokens.json";
 
@@ -125,6 +125,30 @@ const theme = createTheme({
   ],
   shape: {
     borderRadius: [`${tokens.global.md.sys["border-radius"].value}px`],
+  },
+  components: {
+    // MuiCssBaseline: {
+    //   styleOverrides: {
+    //     "@global": {
+    //       "@font-face": [Poppins],
+    //     },
+    //   },
+    // },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: `${tokens.global.md.sys["border-radius"].value}px`,
+          backgroundColor:
+            tokens.global.md.sys.color["pressed-button-color"].value,
+          boxShadow: "0 501px 200px 0 rgba(0, 0, 0, 0.01)",
+          "&:hover": {
+            backgroundColor:
+              tokens.global.md.sys.color["enabled-button-color"].value,
+            boxShadow: "none",
+          },
+        },
+      },
+    },
   },
 });
 
