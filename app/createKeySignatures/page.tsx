@@ -6,6 +6,7 @@ import { INITIAL_STAVES } from "../lib/data/stavesData";
 const VF = VexFlow.Flow;
 const { Renderer } = VF;
 import { initializeRenderer } from "../lib/initializeRenderer";
+import isClickWithinStaveBounds from "../lib/isClickWithinStaveBounds";
 import { staveData } from "../lib/data/stavesData";
 import { setupRendererAndDrawNotes } from "../lib/setupRendererAndDrawNotes";
 import { keySigReducer } from "../lib/reducers";
@@ -58,11 +59,23 @@ const CreateKeySignatures = () => {
   }, [glyphs]);
 
   const handleClick = (e: React.MouseEvent) => {
-    const { userClickY, userClickX } = getUserClickInfo(
-      e,
-      container,
-      blankStaves[0]
-    );
+    const { userClickY, userClickX, topStaveYCoord, bottomStaveYCoord } =
+      getUserClickInfo(e, container, blankStaves[0]);
+
+    const { maxRightClick, minLeftClick, minTopClick, maxBottomClick } =
+      isClickWithinStaveBounds(
+        blankStaves[0],
+        topStaveYCoord,
+        bottomStaveYCoord
+      );
+    if (
+      typeof maxBottomClick === "undefined" ||
+      userClickX < minLeftClick ||
+      userClickX > maxRightClick ||
+      userClickY < minTopClick ||
+      userClickY > maxBottomClick
+    )
+      return;
 
     setGlyphs((prevState) => [
       ...prevState,

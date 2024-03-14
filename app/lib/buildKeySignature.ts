@@ -9,11 +9,11 @@ export const buildKeySignature = (
   context: IRenderContext,
   stave: StaveType
 ) => {
-  glyphs.forEach((glyphInfo) => {
-    const glyph = new Glyph(glyphInfo.glyph, sizeOfGlyph);
-    glyph.setContext(context);
-    glyph.setStave(stave);
-    glyph.render(context, glyphInfo.xPosition, glyphInfo.yPosition);
-    
-  });
+  glyphs &&
+    glyphs.forEach((glyphInfo) => {
+      const glyph = new Glyph(glyphInfo.glyph, sizeOfGlyph);
+      glyph.setContext(context);
+      glyph.setStave(stave);
+      glyph.render(context, glyphInfo.xPosition, glyphInfo.yPosition);
+    });
 };

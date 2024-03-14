@@ -61,11 +61,11 @@ export interface UserClickInfo {
   rect: DOMRect | undefined;
   userClickX: number;
   userClickY: number;
-  topStaveYPosition: number;
+  topStaveYCoord: number;
   highGYPosition: number;
   spacingBetweenLines?: number | undefined;
   bottomY?: number;
-  bottomLineY?: number;
+  bottomStaveYCoord?: number;
 }
 
 export interface StaveNoteData {

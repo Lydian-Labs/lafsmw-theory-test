@@ -9,15 +9,16 @@ export const getUserClickInfo = (
   const rect = container && container.current?.getBoundingClientRect();
   const userClickY = rect ? e.clientY - rect.top : 0;
   const userClickX = rect ? e.clientX - rect.left : 0;
-  const topStaveYPosition = stave && stave.getYForTopText();
-
-  const highGYPosition = topStaveYPosition - 33;
+  const topStaveYCoord = stave && stave.getYForTopText();
+  const bottomStaveYCoord = stave && stave.getYForBottomText() || undefined;
+  const highGYPosition = topStaveYCoord - 33;
 
   return {
     rect,
     userClickY,
     userClickX,
-    topStaveYPosition,
+    topStaveYCoord,
+    bottomStaveYCoord,
     highGYPosition,
   };
 };
