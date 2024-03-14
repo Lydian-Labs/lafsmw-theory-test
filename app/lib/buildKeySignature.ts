@@ -12,8 +12,9 @@ export const buildKeySignature = (
   glyphs &&
     glyphs.forEach((glyphInfo) => {
       const glyph = new Glyph(glyphInfo.glyph, sizeOfGlyph);
-      glyph.setContext(context);
-      glyph.setStave(stave);
-      glyph.render(context, glyphInfo.xPosition, glyphInfo.yPosition);
+      glyph
+        .setContext(context)
+        .setStave(stave)
+        .render(context, glyphInfo.xPosition, glyphInfo.yPosition);
     });
 };
