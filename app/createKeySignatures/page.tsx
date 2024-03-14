@@ -35,6 +35,7 @@ const CreateKeySignatures = () => {
     setupRendererAndDrawNotes({
       rendererRef,
       ...staveData,
+      firstStaveWidth: 300,
       setStaves: setBlankStaves,
       staves: blankStaves,
     });

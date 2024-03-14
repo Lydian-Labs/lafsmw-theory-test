@@ -10,7 +10,6 @@ import {
   StaveNoteData,
 } from "./typesAndInterfaces";
 import { initializeRenderer } from "./initializeRenderer";
-import { keySigInitialState } from "./initialStates";
 const modifyNotesActionTypes = {
   isEnterNoteActive: "Enter Note",
   isEraseNoteActive: "Erase Note",
