@@ -5,6 +5,12 @@ import tokens from "./tokens.json";
 
 const theme = createTheme({
   palette: {
+    primary: {
+      main: tokens.global.md.sys.color["enabled-button-color"].value,
+    },
+    secondary: {
+      main: tokens.global.md.sys.color["pressed-button-color"].value,
+    },
     background: {
       main: tokens.global.md.sys.color["main-background-color"].value,
       card: tokens.global.md.sys.color["card-background-color"].value,
@@ -113,19 +119,20 @@ const theme = createTheme({
   //   },
   // },
   components: {
-    // MuiCssBaseline: {
-    //   styleOverrides: {
-    //     "@global": {
-    //       "@font-face": [Poppins],
-    //     },
-    //   },
-    // },
+    MuiCssBaseline: {
+      styleOverrides: {
+        "@global": {
+          "@font-face": [Poppins],
+        },
+      },
+    },
     MuiButton: {
       styleOverrides: {
         root: {
           borderRadius: `${tokens.global.md.sys["border-radius"].value}px`,
           backgroundColor:
             tokens.global.md.sys.color["pressed-button-color"].value,
+          color: "black",
           boxShadow:
             "0px 1px 3px 1px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.30)",
           fontFamily:
@@ -135,7 +142,6 @@ const theme = createTheme({
           "&:hover": {
             backgroundColor:
               tokens.global.md.sys.color["enabled-button-color"].value,
-            boxShadow: "none",
           },
         },
       },

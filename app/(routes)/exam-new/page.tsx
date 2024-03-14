@@ -16,6 +16,8 @@ import LinearProgress from "@mui/material/LinearProgress";
 import ClassPreferenceSelector from "../../components/ClassPreferenceSelector";
 import Staff from "@/app/components/Staff";
 
+import ProgressBar from "@/app/components/ProgressBar";
+
 // const buttonStyle = {
 //   backgroundColor: "button.enabled",
 //   boxShadow: "shadows[1]",
@@ -130,14 +132,12 @@ export default function ExamNew() {
                     <Button variant="contained">Clear Measure</Button>
                   </Stack>
                   <Divider sx={{ paddingY: "16px", marginBottom: "12px" }} />
-                  <Stack direction="row" justifyContent="center">
-                    <Typography variant="body1">Question 1/45</Typography>
-                    <LinearProgress
-                      variant="query"
-                      value={50}
-                      color="inherit"
-                    ></LinearProgress>
-                    <Button variant="contained">Next Question</Button>
+                  <Stack direction="row" justifyContent="center" spacing={8}>
+                    <Stack gap={2}>
+                      <Typography variant="body1">Question 1/45</Typography>
+                      <ProgressBar value={4} />
+                    </Stack>
+                    <Button variant="contained">{"Next Question >"}</Button>
                   </Stack>
                 </Stack>
               </Box>
