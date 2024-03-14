@@ -1,23 +1,23 @@
 "use client";
-import React, { useEffect, useRef, useState, useReducer, useMemo } from "react";
-import BlueButton from "../components/BlueButton";
+import React, { useEffect, useMemo, useReducer, useRef, useState } from "react";
 import VexFlow from "vexflow";
-import { INITIAL_STAVES } from "../lib/data/stavesData";
-const VF = VexFlow.Flow;
-const { Renderer } = VF;
+import BlueButton from "../components/BlueButton";
+import { buildKeySignature } from "../lib/buildKeySignature";
+import {
+  clearKeySignature,
+  modifyKeySigButtonGroup,
+} from "../lib/buttonsAndButtonGroups";
+import { INITIAL_STAVES, staveData } from "../lib/data/stavesData";
+import { getUserClickInfo } from "../lib/getUserClickInfo";
+import { keySigInitialState } from "../lib/initialStates";
 import { initializeRenderer } from "../lib/initializeRenderer";
 import isClickWithinStaveBounds from "../lib/isClickWithinStaveBounds";
-import { staveData } from "../lib/data/stavesData";
-import { setupRendererAndDrawNotes } from "../lib/setupRendererAndDrawNotes";
 import { keySigReducer } from "../lib/reducers";
-import { keySigInitialState } from "../lib/initialStates";
-import { getUserClickInfo } from "../lib/getUserClickInfo";
-import {
-  modifyKeySigButtonGroup,
-  clearKeySignature,
-} from "../lib/buttonsAndButtonGroups";
+import { setupRendererAndDrawNotes } from "../lib/setupRendererAndDrawNotes";
 import { GlyphProps } from "../lib/typesAndInterfaces";
-import { buildKeySignature } from "../lib/buildKeySignature";
+const VF = VexFlow.Flow;
+const { Renderer } = VF;
+
 const CreateKeySignatures = () => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
@@ -59,6 +59,8 @@ const CreateKeySignatures = () => {
   }, [glyphs]);
 
   const handleClick = (e: React.MouseEvent) => {
+    if (!state.isAddSharpActive && !state.isAddFlatActive) return;
+    
     const { userClickY, userClickX, topStaveYCoord, bottomStaveYCoord } =
       getUserClickInfo(e, container, blankStaves[0]);
 
