@@ -26,7 +26,6 @@ export const addAccidentalToNote = (
       new Accidental(accidental)
       
     );
-    console.log(new Accidental("#"))
 };
 
 export const changeNotePosition = (
