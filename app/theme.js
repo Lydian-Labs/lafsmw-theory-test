@@ -19,6 +19,11 @@ const theme = createTheme({
       pressed: tokens.global.md.sys.color["pressed-button-color"].value,
       enabled: tokens.global.md.sys.color["enabled-button-color"].value,
     },
+    card: {
+      background: "#FAF5F3",
+      shadow:
+        "0px 1px 3px 1px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.30)",
+    },
     progressBar: {
       filled: tokens.global.md.sys.color["filled-progress-bar-color"].value,
       unfilled: tokens.global.md.sys.color["unfilled-progress-bar-color"].value,

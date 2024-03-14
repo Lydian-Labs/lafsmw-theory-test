@@ -72,7 +72,7 @@ export default function ExamNew() {
               <Box
                 width={273}
                 height={456}
-                bgcolor={"background.card"}
+                bgcolor={"card.background"}
                 borderRadius="var(--borderRadius)"
               >
                 <Stack mx={3}>
@@ -100,7 +100,7 @@ export default function ExamNew() {
               <Box
                 width={569}
                 height={540}
-                bgcolor={"background.card"}
+                bgcolor={"card.background"}
                 borderRadius="var(--borderRadius)"
               >
                 <Stack mx={3}>
@@ -137,7 +137,9 @@ export default function ExamNew() {
                       <Typography variant="body1">Question 1/45</Typography>
                       <ProgressBar value={4} />
                     </Stack>
-                    <Button variant="contained">{"Next Question >"}</Button>
+                    <Button variant="contained" sx={{ height: "33px" }}>
+                      {"Next Question >"}
+                    </Button>
                   </Stack>
                 </Stack>
               </Box>
