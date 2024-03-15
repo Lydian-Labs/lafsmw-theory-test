@@ -1,31 +1,21 @@
 "use client";
 import {
-  Container,
-  Typography,
   Box,
-  Stack,
+  Button,
+  Container,
+  Divider,
   Grid,
   List,
   ListItem,
   ListItemText,
-  Button,
-  Divider,
+  Stack,
+  Typography,
 } from "@mui/material";
-import LinearProgress from "@mui/material/LinearProgress";
 
-import ClassPreferenceSelector from "../../components/ClassPreferenceSelector";
 import Staff from "@/app/components/Staff";
+import ClassPreferenceSelector from "../../components/ClassPreferenceSelector";
 
 import ProgressBar from "@/app/components/ProgressBar";
-
-// const buttonStyle = {
-//   backgroundColor: "button.enabled",
-//   boxShadow: "shadows[1]",
-//   "&:hover": {
-//     backgroundColor: "button.pressed",
-//     boxShadow: "none",
-//   },
-// };
 
 const instructions = [
   {
@@ -59,12 +49,11 @@ export default function ExamNew() {
         height={637}
         bgcolor={"button.pressed"}
         borderRadius="var(--borderRadius)"
-        py={3}
-        px={12}
+        m={"auto"}
       >
-        <Grid container spacing={4}>
+        <Grid container spacing={4} m={"auto"} p={0}>
           <Grid item xs={4}>
-            <Stack gap={2}>
+            <Stack gap={2} alignItems={"center"}>
               <Typography variant="h5" align="center">
                 Section 1: Key Signatures
               </Typography>
@@ -75,7 +64,7 @@ export default function ExamNew() {
                 bgcolor={"card.background"}
                 borderRadius="var(--borderRadius)"
               >
-                <Stack mx={3}>
+                <Stack mx={3} p={2}>
                   <Typography variant="h6" align="center">
                     Tutorial
                   </Typography>
@@ -95,24 +84,29 @@ export default function ExamNew() {
               </Box>
             </Stack>
           </Grid>
-          <Grid item xs={8}>
-            <Box>
-              <Box
-                width={569}
-                height={540}
-                bgcolor={"card.background"}
-                borderRadius="var(--borderRadius)"
-              >
-                <Stack mx={3}>
+          <Grid item xs={8} margin={"auto"}>
+            <Box
+              width={569}
+              height={540}
+              bgcolor={"card.background"}
+              borderRadius="var(--borderRadius)"
+              margin={"auto"}
+            >
+              <Grid container columns={1} direction="column" p={4}>
+                <Grid item>
                   <Typography variant="h6" align="center">
                     Add the following key signature: Db Major
                   </Typography>
+                </Grid>
+                <Grid item>
                   <Staff
                     addDoubleBarLine={true}
                     width={472}
                     noTimeSignature={true}
                     numBars={1}
                   />
+                </Grid>
+                <Grid item>
                   <Stack
                     direction="row"
                     justifyContent="center"
@@ -122,6 +116,8 @@ export default function ExamNew() {
                     <Button variant="contained">#</Button>
                     <Button variant="contained">b</Button>
                   </Stack>
+                </Grid>
+                <Grid item>
                   <Stack
                     direction="row"
                     justifyContent="center"
@@ -131,7 +127,11 @@ export default function ExamNew() {
                     <Button variant="contained">Eraser</Button>
                     <Button variant="contained">Clear Measure</Button>
                   </Stack>
+                </Grid>
+                <Grid item>
                   <Divider sx={{ paddingY: "16px", marginBottom: "12px" }} />
+                </Grid>
+                <Grid item>
                   <Stack direction="row" justifyContent="center" spacing={8}>
                     <Stack gap={2}>
                       <Typography variant="body1">Question 1/45</Typography>
@@ -141,8 +141,8 @@ export default function ExamNew() {
                       {"Next Question >"}
                     </Button>
                   </Stack>
-                </Stack>
-              </Box>
+                </Grid>
+              </Grid>
             </Box>
           </Grid>
         </Grid>
