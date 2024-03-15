@@ -50,6 +50,7 @@ export default function ExamNew() {
         bgcolor={"button.pressed"}
         borderRadius="var(--borderRadius)"
         m={"auto"}
+        boxShadow={"0px 4px 4px rgba(0, 0, 0, 0.25)"}
       >
         <Grid container spacing={4} m={"auto"} p={0}>
           <Grid item xs={4}>
@@ -63,6 +64,9 @@ export default function ExamNew() {
                 height={456}
                 bgcolor={"card.background"}
                 borderRadius="var(--borderRadius)"
+                boxShadow={
+                  "0px 13px 28px 0px rgba(0, 0, 0, 0.10), 0px 50px 50px 0px rgba(0, 0, 0, 0.09), 0px 113px 68px 0px rgba(0, 0, 0, 0.05), 0px 201px 80px 0px rgba(0, 0, 0, 0.01), 0px 314px 88px 0px rgba(0, 0, 0, 0.00)"
+                }
               >
                 <Stack mx={3} p={2}>
                   <Typography variant="h6" align="center">
@@ -91,6 +95,9 @@ export default function ExamNew() {
               bgcolor={"card.background"}
               borderRadius="var(--borderRadius)"
               margin={"auto"}
+              boxShadow={
+                "0px 13px 28px 0px rgba(0, 0, 0, 0.10), 0px 50px 50px 0px rgba(0, 0, 0, 0.09), 0px 113px 68px 0px rgba(0, 0, 0, 0.05), 0px 201px 80px 0px rgba(0, 0, 0, 0.01), 0px 314px 88px 0px rgba(0, 0, 0, 0.00)"
+              }
             >
               <Grid container columns={1} direction="column" p={4}>
                 <Grid item>
