@@ -8,6 +8,7 @@ import {
   modifyKeySigButtonGroup,
 } from "../lib/buttonsAndButtonGroups";
 import { INITIAL_STAVES, staveData } from "../lib/data/stavesData";
+import deleteAccidentalFromKeySig from "../lib/deleteAccidentalFromKeySig";
 import { getUserClickInfo } from "../lib/getUserClickInfo";
 import { keySigInitialState } from "../lib/initialStates";
 import { initializeRenderer } from "../lib/initializeRenderer";
@@ -15,7 +16,6 @@ import isClickWithinStaveBounds from "../lib/isClickWithinStaveBounds";
 import { keySigReducer } from "../lib/reducers";
 import { setupRendererAndDrawNotes } from "../lib/setupRendererAndDrawNotes";
 import { GlyphProps } from "../lib/typesAndInterfaces";
-import indexOfAccidental from "../lib/indexOfAccidental";
 const VF = VexFlow.Flow;
 const { Renderer } = VF;
 
@@ -85,15 +85,7 @@ const CreateKeySignatures = () => {
     )
       return;
     if (state.isRemoveAccidentalActive) {
-      setGlyphs((prevState) =>
-        prevState.filter(
-          (glyph) =>
-            !(
-              Math.abs(glyph.xPosition - userClickX) <= tolerance &&
-              Math.abs(glyph.yPosition - userClickY) <= tolerance
-            )
-        )
-      );
+      deleteAccidentalFromKeySig(setGlyphs, userClickX, userClickY);
       return;
     }
     setGlyphs((prevState) => [
