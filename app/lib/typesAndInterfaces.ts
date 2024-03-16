@@ -73,8 +73,6 @@ export interface StaveNoteData {
   userClickY: number;
 }
 
-
-
 export interface NoteStringData {
   note: string;
   yCoordinateMin: number;

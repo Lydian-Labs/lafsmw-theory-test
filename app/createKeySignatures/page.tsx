@@ -32,7 +32,6 @@ const CreateKeySignatures = () => {
   );
 
   const context = rendererRef.current?.getContext();
-  const tolerance = 5;
   const renderStaves = (): void => {
     setupRendererAndDrawNotes({
       rendererRef,
