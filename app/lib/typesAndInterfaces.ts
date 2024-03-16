@@ -27,15 +27,14 @@ export type NoteInteractionState = {
   noNoteFound: boolean;
   tooManyBeatsInMeasure?: boolean;
   isFlatActive: boolean;
-  [key: string]: boolean | undefined; //This is an index signature. This is a type in TypeScript that allows indexing into an object with a string
+  [key: string]: boolean | undefined;
 };
 export type KeySigState = {
   isAddSharpActive: boolean;
   isAddFlatActive: boolean;
-  isRemoveSharpActive: boolean;
-  isRemoveFlatActive: boolean;
+  isRemoveAccidentalActive: boolean;
   isClearKeySigActive: boolean;
-  [key: string]: boolean | undefined; //This is an index signature. This is a type in TypeScript that allows indexing into an object with a string
+  [key: string]: boolean | undefined;
 };
 
 export type NoteInteractionAction = { type: keyof NoteInteractionState };
@@ -73,6 +72,8 @@ export interface StaveNoteData {
   staveNoteAbsoluteX: number;
   userClickY: number;
 }
+
+
 
 export interface NoteStringData {
   note: string;

@@ -62,7 +62,7 @@ const ManageStaveNotes = () => {
       dispatch,
       renderStavesAndNotes
     );
-    
+
   const renderStavesAndNotes = useCallback(
     (): void =>
       setupRendererAndDrawNotes({
@@ -90,7 +90,7 @@ const ManageStaveNotes = () => {
     const { userClickY, userClickX, highGYPosition } = getUserClickInfo(
       e,
       container,
-      staves[0] //array index doesn't matter because we are using this argument to find the height of the top stave
+      staves[0]
     );
 
     let foundNoteData = generateYMinAndYMaxForAllNotes(

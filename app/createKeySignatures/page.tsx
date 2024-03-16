@@ -15,6 +15,7 @@ import isClickWithinStaveBounds from "../lib/isClickWithinStaveBounds";
 import { keySigReducer } from "../lib/reducers";
 import { setupRendererAndDrawNotes } from "../lib/setupRendererAndDrawNotes";
 import { GlyphProps } from "../lib/typesAndInterfaces";
+import indexOfAccidental from "../lib/indexOfAccidental";
 const VF = VexFlow.Flow;
 const { Renderer } = VF;
 
@@ -31,7 +32,7 @@ const CreateKeySignatures = () => {
   );
 
   const context = rendererRef.current?.getContext();
-
+  const tolerance = 5;
   const renderStaves = (): void => {
     setupRendererAndDrawNotes({
       rendererRef,
@@ -59,8 +60,13 @@ const CreateKeySignatures = () => {
   }, [glyphs]);
 
   const handleClick = (e: React.MouseEvent) => {
-    if (!state.isAddSharpActive && !state.isAddFlatActive) return;
-    
+    if (
+      !state.isAddSharpActive &&
+      !state.isAddFlatActive &&
+      !state.isRemoveAccidentalActive
+    )
+      return;
+
     const { userClickY, userClickX, topStaveYCoord, bottomStaveYCoord } =
       getUserClickInfo(e, container, blankStaves[0]);
 
@@ -78,7 +84,18 @@ const CreateKeySignatures = () => {
       userClickY > maxBottomClick
     )
       return;
-
+    if (state.isRemoveAccidentalActive) {
+      setGlyphs((prevState) =>
+        prevState.filter(
+          (glyph) =>
+            !(
+              Math.abs(glyph.xPosition - userClickX) <= tolerance &&
+              Math.abs(glyph.yPosition - userClickY) <= tolerance
+            )
+        )
+      );
+      return;
+    }
     setGlyphs((prevState) => [
       ...prevState,
       {

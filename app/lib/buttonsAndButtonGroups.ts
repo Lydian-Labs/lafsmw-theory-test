@@ -20,10 +20,9 @@ const modifyNotesActionTypes = {
 };
 
 const modifyKeySigActionTypes = {
-  isAddSharpActive: "Add Sharp",
-  isAddFlatActive: "Add Flat",
-  isRemoveSharpActive: "Remove Sharp",
-  isRemoveFlatActive: "Remove Flat",
+  isAddSharpActive: "add sharp",
+  isAddFlatActive: "add flat",
+  isRemoveAccidentalActive: "Delete Accidental",
 };
 
 export const enterNote = (dispatch: React.Dispatch<NoteInteractionAction>) => {
@@ -77,5 +76,4 @@ export const clearKeySignature = (
   setGlyphs(() => []);
   initializeRenderer(renderer, container);
   renderStaves();
-  
 };

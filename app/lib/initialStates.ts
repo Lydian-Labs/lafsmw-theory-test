@@ -14,6 +14,6 @@ export const noteInteractionInitialState: NoteInteractionState = {
 export const keySigInitialState: KeySigState = {
   isAddSharpActive: false,
   isAddFlatActive: false,
-  isRemoveSharpActive: false,
-  isRemoveFlatActive: false,
+  isRemoveAccidentalActive: false,
+  isClearKeySigActive: false,
 };

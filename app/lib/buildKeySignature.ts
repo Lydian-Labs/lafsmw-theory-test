@@ -16,5 +16,6 @@ export const buildKeySignature = (
         .setContext(context)
         .setStave(stave)
         .render(context, glyphInfo.xPosition, glyphInfo.yPosition);
+      console.log(glyph);
     });
 };
