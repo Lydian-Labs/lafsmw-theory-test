@@ -7,7 +7,6 @@ import {
   ModifyNoteData,
 } from "./typesAndInterfaces";
 
-//helper function
 const getNoteData = (
   barOfStaveNotes: StaveNoteData[],
   userClickX: number
