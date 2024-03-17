@@ -2,32 +2,31 @@ import VexFlow from "vexflow";
 const VF = VexFlow.Flow;
 const { Stave } = VF;
 
-type BarCoordinatesData = {
-  barWidth: number;
-  xMaxCoordinate: number;
-};
+import { BarMetrics } from "./typesAndInterfaces";
 
 export const findBarIndex = (
   bars: InstanceType<typeof Stave>[],
-  userClickXCoordinate: number
+  userClickX: number
 ): number => {
   let staveIndex: number = 0;
 
-  const barWidthAndXMaxCoordinate: BarCoordinatesData[] = bars.map(
-    (bar, index) => {
-      const barWidth = bar.getWidth();
-      const xMaxCoordinateForBar1 = bars[0].getWidth();
-      let xMaxCoordinate = xMaxCoordinateForBar1 + bars[1].getWidth() * index;
-      return {
-        barWidth,
-        xMaxCoordinate,
-      };
-    }
-  );
+  const barMetrics: BarMetrics[] = bars.map((bar, index) => {
+    const barWidth = bar.getWidth();
+    const firstBarMaxX = bars[0].getWidth();
 
-  for (let i = 0; i < barWidthAndXMaxCoordinate.length; i++) {
-    if (userClickXCoordinate < barWidthAndXMaxCoordinate[i].xMaxCoordinate) {
-      staveIndex = i;
+    let currentBarMaxX =
+      bars.length > 1
+        ? firstBarMaxX + bars[1].getWidth() * index
+        : firstBarMaxX;
+    return {
+      barWidth,
+      xMaxCoordinate: currentBarMaxX,
+    };
+  });
+
+  for (let barIndex = 0; barIndex < barMetrics.length; barIndex++) {
+    if (userClickX < barMetrics[barIndex].xMaxCoordinate) {
+      staveIndex = barIndex;
       break;
     }
   }

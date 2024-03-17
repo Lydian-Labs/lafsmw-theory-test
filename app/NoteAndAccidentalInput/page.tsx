@@ -1,162 +1,96 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useReducer,
+  useRef,
+  useState,
+} from "react";
+import VexFlow from "vexflow";
 import BlueButton from "../components/BlueButton";
 import CheckIfNoteFound from "../components/CheckIfNoteFound";
 import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
-import KaseyBlankStaves from "../components/KaseyBlankStaves";
-import { addAccidentalToNote } from "../lib/addAccidentalToNote";
+import {
+  clearAllMeasures,
+  modifyStaveNotesButtonGroup,
+} from "../lib/buttonsAndButtonGroups";
+import { INITIAL_STAVES, staveData } from "../lib/data/stavesData";
 import { findBarIndex } from "../lib/findBar";
 import generateYMinAndYMaxForAllNotes from "../lib/generateYMinAndMaxForAllNotes";
-import { indexOfNoteToModify } from "../lib/indexOfNoteToModify";
+import getUserClickInfo from "../lib/getUserClickInfo";
+import { handleNoteInteraction } from "../lib/handleNoteInteraction";
+import { noteInteractionInitialState } from "../lib/initialStates";
+import { initializeRenderer } from "../lib/initializeRenderer";
 import { notesArray } from "../lib/noteArray";
-
+import { noteInteractionReducer } from "../lib/reducers";
+import { setupRendererAndDrawNotes } from "../lib/setupRendererAndDrawNotes";
 import {
-  NoteStringYMinAndYMaxUserClickY,
-  StateType,
-  StaveNoteAbsoluteXCoordUserClickY,
-  StaveNoteType,
+  NoteStringData,
+  StaveNoteData,
   StaveType,
 } from "../lib/typesAndInterfaces";
+const { Renderer } = VexFlow.Flow;
 
-import VexFlow from "vexflow";
-
-const VF = VexFlow.Flow;
-const { Formatter, Renderer, StaveNote } = VF;
-
-const CLEF = "treble";
-const TIME_SIG = "4/4";
-const BEATS_IN_MEASURE = parseInt(TIME_SIG.split("/")[0]);
-let NUM_STAVES = 4;
-let Y_POSITION_OF_STAVES = 150;
-
-const INITIAL_NOTES: StaveNoteAbsoluteXCoordUserClickY[][] = new Array(
-  NUM_STAVES
-).fill([]);
-
-const CreateAndEraseNotesFromStave = () => {
+const ManageStaveNotes = () => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
-  const [blankStaves, setBlankStaves] = useState<StaveType[]>([]);
-  const [notesData, setNotesData] = useState(INITIAL_NOTES); //contains staveNote need to update userClickX
-  const [state, setState] = useState<StateType>({
-    isEraserActive: false,
-    isEnterNotesActive: true,
-    isSharpActive: false,
-    noNoteFound: false,
-    tooManyBeatsInMeasure: false,
-    isFlatActive: false,
-  });
-  const toggleState = (key: keyof StateType) => {
-    setState((prevState: StateType) => {
-      let newState: StateType = { ...prevState };
-      for (let stateKey in newState) {
-        newState[stateKey as keyof StateType] = false;
-      }
-      newState[key] = true;
-      return newState;
-    });
-  };
+  const [staves, setStaves] = useState<StaveType[]>([]);
+  const [notesData, setNotesData] = useState(INITIAL_STAVES);
+  const [state, dispatch] = useReducer(
+    noteInteractionReducer,
+    noteInteractionInitialState
+  );
 
-  const eraser = () => toggleState("isEraserActive");
-  const enterNotes = () => toggleState("isEnterNotesActive");
-  const addSharp = () => toggleState("isSharpActive");
-  const addFlat = () => toggleState("isFlatActive");
-  const accidentalMap = {
-    isSharpActive: "#",
-    isFlatActive: "b",
-  };
+  const noNoteFound = () => dispatch({ type: "noNoteFound" });
 
-  const buttons = [
-    { button: eraser, text: "Eraser", stateFunction: state.isEraserActive },
-    {
-      button: enterNotes,
-      text: "Enter Notes",
-      stateFunction: state.isEnterNotesActive,
-    },
-    { button: addSharp, text: "Add Sharp", stateFunction: state.isSharpActive },
-    { button: addFlat, text: "Add Flat", stateFunction: state.isFlatActive },
-  ];
+  const tooManyBeatsInMeasure = () =>
+    dispatch({ type: "tooManyBeatsInMeasure" });
 
-  const clearMeasures = () => {
-    setNotesData(() => INITIAL_NOTES);
-    initializeRenderer();
-    renderStavesAndNotes();
-  };
+  const buttonGroup = useMemo(
+    () => modifyStaveNotesButtonGroup(dispatch, state),
+    [dispatch, state]
+  );
 
-  const initializeRenderer = () => {
-    if (!rendererRef.current && container.current) {
-      rendererRef.current = new Renderer(
-        container.current,
-        Renderer.Backends.SVG
-      );
-    }
-  };
+  const clearMeasures = () =>
+    clearAllMeasures(
+      setNotesData,
+      INITIAL_STAVES,
+      rendererRef,
+      container,
+      dispatch,
+      renderStavesAndNotes
+    );
 
-  const renderStavesAndNotes = () => {
-    const renderer = rendererRef.current;
-    const context = renderer && renderer.getContext();
-    context?.setFont("Arial", 10);
-    context?.clear();
-    if (context) {
-      context &&
-        setBlankStaves(() =>
-          KaseyBlankStaves(
-            NUM_STAVES,
-            context,
-            220,
-            160,
-            10,
-            Y_POSITION_OF_STAVES,
-            CLEF,
-            TIME_SIG
-          )
-        );
-    }
-    notesData.forEach((barData, index) => {
-      if (barData) {
-        const staveNotes = barData.map(({ newStaveNote }) => newStaveNote);
-        if (staveNotes.length > 0) {
-          context &&
-            Formatter.FormatAndDraw(context, blankStaves[index], staveNotes);
-        }
-      }
-    });
-  };
+  const renderStavesAndNotes = useCallback(
+    (): void =>
+      setupRendererAndDrawNotes({
+        rendererRef,
+        ...staveData,
+        setStaves,
+        notesData,
+        staves,
+      }),
+    [rendererRef, setStaves, notesData, staves]
+  );
 
   useEffect(() => {
-    initializeRenderer();
-    const renderer = rendererRef.current;
-    renderer?.resize(800, 300);
-    const context = renderer && renderer.getContext();
-    context?.setFont("Arial", 10);
-    context &&
-      setBlankStaves(
-        KaseyBlankStaves(
-          4,
-          context,
-          240,
-          180,
-          10,
-          Y_POSITION_OF_STAVES,
-          CLEF,
-          TIME_SIG
-        )
-      );
+    initializeRenderer(rendererRef, container);
+    renderStavesAndNotes();
   }, []);
 
   useEffect(() => {
     renderStavesAndNotes();
   }, [notesData]);
 
-  let foundNoteDataAndUserClickY: NoteStringYMinAndYMaxUserClickY;
+  let updatedFoundNoteData: NoteStringData;
 
   const handleClick = (e: React.MouseEvent) => {
-    const rect = container.current?.getBoundingClientRect();
-    const userClickY = rect ? e.clientY - rect.top : 0;
-    const userClickX = rect ? e.clientX - rect.left : 0;
-    const topStaveYPosition = blankStaves[0].getYForTopText();
-
-    const highGYPosition: number = topStaveYPosition - 33;
+    const { userClickY, userClickX, highGYPosition } = getUserClickInfo(
+      e,
+      container,
+      staves[0]
+    );
 
     let foundNoteData = generateYMinAndYMaxForAllNotes(
       highGYPosition,
@@ -167,59 +101,35 @@ const CreateAndEraseNotesFromStave = () => {
     );
 
     if (foundNoteData)
-      foundNoteDataAndUserClickY = {
+      updatedFoundNoteData = {
         ...foundNoteData,
         userClickY: userClickY,
       };
 
-    const barIndex: number = findBarIndex(blankStaves, userClickX);
+    const barIndex: number = findBarIndex(staves, userClickX);
 
     let notesDataCopy = [...notesData];
-    const barOfStaveNotes = notesDataCopy[barIndex].map((noteData) => ({
-      ...noteData,
-      staveNoteAbsoluteX: noteData.newStaveNote.getAbsoluteX(),
-    }));
+    const barOfStaveNotes = notesDataCopy[barIndex].map(
+      (noteData: StaveNoteData) => ({
+        ...noteData,
+        staveNoteAbsoluteX: noteData.newStaveNote.getAbsoluteX(),
+      })
+    );
 
-    if (!foundNoteDataAndUserClickY) {
-      toggleState("noNoteFound");
-    } else if (state.isEraserActive) {
-      const indexOfNoteToErase = indexOfNoteToModify(
-        barOfStaveNotes,
-        userClickX
-      );
-      barOfStaveNotes.splice(indexOfNoteToErase, 1);
-      notesDataCopy[barIndex] = barOfStaveNotes;
-    } else if (state.isSharpActive) {
-      addAccidentalToNote(
-        barOfStaveNotes,
-        userClickX,
-        "#",
-        indexOfNoteToModify
-      );
-    } else if (state.isFlatActive) {
-      addAccidentalToNote(
-        barOfStaveNotes,
-        userClickX,
-        "b",
-        indexOfNoteToModify
-      );
-    } else if (barOfStaveNotes && barOfStaveNotes.length >= BEATS_IN_MEASURE) {
-      toggleState("tooManyBeatsInMeasure");
-    } else {
-      const newStaveNote: StaveNoteType = new StaveNote({
-        keys: [foundNoteDataAndUserClickY.note],
-        duration: "q",
-      });
+    handleNoteInteraction(
+      updatedFoundNoteData,
+      noNoteFound,
+      tooManyBeatsInMeasure,
+      "tooManyBeatsInMeasure",
+      "noNoteFound",
+      barOfStaveNotes,
+      notesDataCopy,
+      state,
+      userClickX,
+      userClickY,
+      barIndex
+    );
 
-      notesDataCopy[barIndex] = [
-        ...barOfStaveNotes,
-        {
-          newStaveNote,
-          staveNoteAbsoluteX: 0,
-          userClickY,
-        },
-      ];
-    }
     setNotesData(() => notesDataCopy);
   };
 
@@ -228,19 +138,19 @@ const CreateAndEraseNotesFromStave = () => {
       <div ref={container} onClick={handleClick} />
       <CheckNumBeatsInMeasure
         tooManyBeatsInMeasure={state.tooManyBeatsInMeasure}
-        openEnterNotes={enterNotes}
+        openEnterNotes={dispatch}
       />
       <CheckIfNoteFound
         noNoteFound={state.noNoteFound}
-        openEnterNotes={enterNotes}
+        openEnterNotes={dispatch}
       />
       <div className="mt-2 ml-3">
-        {buttons.map((button, index) => {
+        {buttonGroup.map((button) => {
           return (
             <BlueButton
               key={button.text}
-              onClick={button.button}
-              isEnabled={button.stateFunction}
+              onClick={button.action}
+              isEnabled={button.isEnabled}
             >
               {button.text}
             </BlueButton>
@@ -252,4 +162,4 @@ const CreateAndEraseNotesFromStave = () => {
   );
 };
 
-export default CreateAndEraseNotesFromStave;
+export default ManageStaveNotes;

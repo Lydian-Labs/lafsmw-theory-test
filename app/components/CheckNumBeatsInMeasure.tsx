@@ -1,9 +1,5 @@
 import { Snackbar, Alert } from "@mui/material/";
-
-interface CheckNumBeatsInMeasureProps {
-  tooManyBeatsInMeasure: boolean;
-  openEnterNotes: React.Dispatch<React.SetStateAction<boolean>>;
-}
+import { CheckNumBeatsInMeasureProps } from "../lib/typesAndInterfaces";
 
 const CheckNumBeatsInMeasure: React.FC<CheckNumBeatsInMeasureProps> = ({
   tooManyBeatsInMeasure,
@@ -14,7 +10,7 @@ const CheckNumBeatsInMeasure: React.FC<CheckNumBeatsInMeasureProps> = ({
       <Snackbar
         open={tooManyBeatsInMeasure}
         autoHideDuration={3000}
-        onClose={() => openEnterNotes(true)}
+        onClose={() => openEnterNotes({ type: "isEnterNoteActive" })}
         anchorOrigin={{ vertical: "top", horizontal: "left" }}
       >
         <Alert variant="filled" severity="error">

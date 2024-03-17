@@ -1,9 +1,5 @@
 import { Snackbar, Alert } from "@mui/material/";
-
-interface CheckIfNoteFoundProps {
-  noNoteFound: boolean;
-  openEnterNotes: React.Dispatch<React.SetStateAction<boolean>>;
-}
+import { CheckIfNoteFoundProps } from "../lib/typesAndInterfaces";
 
 const CheckIfNoteFound: React.FC<CheckIfNoteFoundProps> = ({
   noNoteFound: noNoteFound,
@@ -14,10 +10,10 @@ const CheckIfNoteFound: React.FC<CheckIfNoteFoundProps> = ({
       <Snackbar
         open={noNoteFound}
         autoHideDuration={3000}
-        onClose={() => openEnterNotes(true)}
+        onClose={() => openEnterNotes({ type: "isEnterNoteActive" })}
         anchorOrigin={{ vertical: "top", horizontal: "left" }}
       >
-     <Alert variant="filled" severity="error">
+        <Alert variant="filled" severity="error">
           {"The location you clicked doesn't correspond to a note"}
         </Alert>
       </Snackbar>
