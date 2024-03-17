@@ -1,19 +1,19 @@
 import VexFlow from "vexflow";
-const { StaveNote } = VexFlow.Flow;
-import {
-  StaveNoteData,
-  NoteStringData,
-  NoteInteractionAction,
-  NoteInteractionState,
-  StaveNoteType,
-} from "./typesAndInterfaces";
 import { BEATS_IN_MEASURE } from "./data/stavesData";
 import {
   addAccidentalToNote,
-  deleteNote,
-  deleteAccidental,
   changeNotePosition,
+  deleteAccidental,
+  deleteNote,
 } from "./modifyNotes";
+import {
+  NoteInteractionAction,
+  NoteInteractionState,
+  NoteStringData,
+  StaveNoteData,
+  StaveNoteType,
+} from "./typesAndInterfaces";
+const { StaveNote } = VexFlow.Flow;
 
 export const handleNoteInteraction = (
   updatedNoteData: NoteStringData,

@@ -1,15 +1,15 @@
 import React from "react";
 import * as VexFlow from "vexflow";
-const { Renderer } = VexFlow.Flow;
-import { GlyphProps } from "./typesAndInterfaces";
+import { initializeRenderer } from "./initializeRenderer";
 import {
-  KeySigAction,
+  GlyphProps, KeySigAction,
   KeySigState,
   NoteInteractionAction,
   NoteInteractionState,
-  StaveNoteData,
+  StaveNoteData
 } from "./typesAndInterfaces";
-import { initializeRenderer } from "./initializeRenderer";
+const { Renderer } = VexFlow.Flow;
+
 const modifyNotesActionTypes = {
   isEnterNoteActive: "Enter Note",
   isEraseNoteActive: "Erase Note",

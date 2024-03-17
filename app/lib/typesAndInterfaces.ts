@@ -1,8 +1,7 @@
-import VexFlow from "vexflow";
-import { IRenderContext } from "vexflow";
+import { Dispatch, RefObject, SetStateAction } from "react";
+import VexFlow, { IRenderContext } from "vexflow";
 const VF = VexFlow.Flow;
 const { StaveNote, Stave, Renderer, Glyph } = VF;
-import { RefObject, Dispatch, SetStateAction } from "react";
 
 export type InputData = {
   [key: string]: string;

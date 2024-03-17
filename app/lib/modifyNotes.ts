@@ -1,11 +1,11 @@
 import VexFlow from "vexflow";
-const { Accidental, StaveNote } = VexFlow.Flow;
 import { indexOfNoteToModify as indexOfNote } from "./indexOfNoteToModify";
 import {
-  StaveNoteData,
-  NoteStringData,
   ModifyNoteData,
+  NoteStringData,
+  StaveNoteData,
 } from "./typesAndInterfaces";
+const { Accidental, StaveNote } = VexFlow.Flow;
 
 const getNoteData = (
   barOfStaveNotes: StaveNoteData[],

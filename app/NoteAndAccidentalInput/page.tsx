@@ -15,12 +15,13 @@ import {
   clearAllMeasures,
   modifyStaveNotesButtonGroup,
 } from "../lib/buttonsAndButtonGroups";
-import { staveData } from "../lib/data/stavesData";
+import { INITIAL_STAVES, staveData } from "../lib/data/stavesData";
 import { findBarIndex } from "../lib/findBar";
 import generateYMinAndYMaxForAllNotes from "../lib/generateYMinAndMaxForAllNotes";
 import getUserClickInfo from "../lib/getUserClickInfo";
-import { initializeRenderer } from "../lib/initializeRenderer";
 import { handleNoteInteraction } from "../lib/handleNoteInteraction";
+import { noteInteractionInitialState } from "../lib/initialStates";
+import { initializeRenderer } from "../lib/initializeRenderer";
 import { notesArray } from "../lib/noteArray";
 import { noteInteractionReducer } from "../lib/reducers";
 import { setupRendererAndDrawNotes } from "../lib/setupRendererAndDrawNotes";
@@ -29,9 +30,7 @@ import {
   StaveNoteData,
   StaveType,
 } from "../lib/typesAndInterfaces";
-import { noteInteractionInitialState } from "../lib/initialStates";
 const { Renderer } = VexFlow.Flow;
-import { INITIAL_STAVES } from "../lib/data/stavesData";
 
 const ManageStaveNotes = () => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);

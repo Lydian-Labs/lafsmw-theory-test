@@ -1,6 +1,6 @@
 import VexFlow, { IRenderContext } from "vexflow";
-const VF = VexFlow.Flow;
 import { GlyphProps, StaveType } from "./typesAndInterfaces";
+const VF = VexFlow.Flow;
 const { Glyph } = VF;
 
 export const buildKeySignature = (
