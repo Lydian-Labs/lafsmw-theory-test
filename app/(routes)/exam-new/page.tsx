@@ -68,7 +68,7 @@ export default function ExamNew() {
                   "0px 13px 28px 0px rgba(0, 0, 0, 0.10), 0px 50px 50px 0px rgba(0, 0, 0, 0.09), 0px 113px 68px 0px rgba(0, 0, 0, 0.05), 0px 201px 80px 0px rgba(0, 0, 0, 0.01), 0px 314px 88px 0px rgba(0, 0, 0, 0.00)"
                 }
               >
-                <Stack mx={3} p={2}>
+                <Stack mx={3} p={1}>
                   <Typography variant="h6" align="center">
                     Tutorial
                   </Typography>
