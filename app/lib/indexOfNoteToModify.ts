@@ -1,7 +1,7 @@
-import { StaveNoteAbsoluteXCoordUserClickY } from "./typesAndInterfaces";
+import { StaveNoteData } from "./typesAndInterfaces";
 
 export const indexOfNoteToModify = (
-  staveData: StaveNoteAbsoluteXCoordUserClickY[],
+  staveData: StaveNoteData[],
   userClickX: number
 ): number => {
   const index: number = staveData?.findIndex(

@@ -37,6 +37,9 @@ const Navbar: FC = () => {
             <li className="p-4">
               <Link href="/exam-new">Exam New</Link>
             </li>
+            <li className="p-4">
+              <Link href="/createKeySignatures">Create Key Signature</Link>
+            </li>
           </ul>
         </div>
       </Box>
