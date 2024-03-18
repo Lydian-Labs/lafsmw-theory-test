@@ -24,7 +24,6 @@ const Navbar: FC = () => {
               <h1 className="text-2xl sm:text-3xl">Vexflow Projects</h1>
             </Link>
           </div>
-
           <ul className="hidden sm:text-1xl py-20 sm:py-1 sm:flex">
             <li className="p-4">
               <Link href="/NoteAndAccidentalInput">
@@ -32,13 +31,13 @@ const Navbar: FC = () => {
               </Link>
             </li>
             <li className="p-4">
+              <Link href="/createKeySignatures">Create Key Signature</Link>
+            </li>
+            <li className="p-4">
               <Link href="/exam-original">Exam Original</Link>
             </li>
             <li className="p-4">
               <Link href="/exam-new">Exam New</Link>
-            </li>
-            <li className="p-4">
-              <Link href="/createKeySignatures">Create Key Signature</Link>
             </li>
           </ul>
         </div>
