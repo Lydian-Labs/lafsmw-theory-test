@@ -1,4 +1,8 @@
-import { KeySigState, NoteInteractionState } from "./typesAndInterfaces";
+import {
+  KeySigState,
+  NoteInteractionState,
+  ChordInteractionState,
+} from "./typesAndInterfaces";
 
 export const noteInteractionInitialState: NoteInteractionState = {
   isEraseNoteActive: false,
@@ -16,4 +20,15 @@ export const keySigInitialState: KeySigState = {
   isAddFlatActive: false,
   isRemoveAccidentalActive: false,
   isClearKeySigActive: false,
+};
+
+export const chordInteractionInitialState: ChordInteractionState = {
+  isEraseNoteActive: false,
+  isEraseAccidentalActive: false,
+  isEnterNoteActive: true,
+  isSharpActive: false,
+  noNoteFound: false,
+  tooManyBeatsInMeasure: false,
+  isFlatActive: false,
+  isChangeNoteActive: false,
 };

@@ -23,7 +23,7 @@ export const handleNoteInteraction = (
   noNoteFoundAction: string,
   barOfStaveNotes: StaveNoteData[],
   notesDataCopy: StaveNoteData[][],
-  state: NoteInteractionState,
+  state: { [key: string]: any },
   userClickX: number,
   userClickY: number,
   barIndex: number

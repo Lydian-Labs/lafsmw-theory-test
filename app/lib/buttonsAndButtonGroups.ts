@@ -2,11 +2,12 @@ import React from "react";
 import * as VexFlow from "vexflow";
 import { initializeRenderer } from "./initializeRenderer";
 import {
-  GlyphProps, KeySigAction,
+  GlyphProps,
+  KeySigAction,
   KeySigState,
   NoteInteractionAction,
   NoteInteractionState,
-  StaveNoteData
+  StaveNoteData,
 } from "./typesAndInterfaces";
 const { Renderer } = VexFlow.Flow;
 
@@ -64,6 +65,19 @@ export const modifyKeySigButtonGroup = (
     text,
     stateKey,
     isEnabled: state[stateKey as keyof KeySigState],
+  }));
+};
+
+export const buttonGroup = <Action>(
+  dispatch: React.Dispatch<Action>,
+  buttonState: { [key: string]: any },
+  actionTypes: { [key: string]: any }
+) => {
+  return Object.entries(actionTypes).map(([stateKey, text]) => ({
+    action: () => dispatch({ type: stateKey } as Action),
+    text,
+    stateKey,
+    isEnabled: buttonState[stateKey],
   }));
 };
 

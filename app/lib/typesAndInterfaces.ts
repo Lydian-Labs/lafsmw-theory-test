@@ -1,3 +1,4 @@
+import { chownSync } from "fs";
 import { Dispatch, RefObject, SetStateAction } from "react";
 import VexFlow, { IRenderContext } from "vexflow";
 const VF = VexFlow.Flow;
@@ -35,9 +36,20 @@ export type KeySigState = {
   isClearKeySigActive: boolean;
   [key: string]: boolean | undefined;
 };
+export type ChordInteractionState = {
+  isEraseNoteActive: boolean;
+  isEraseAccidentalActive: boolean;
+  isEnterNoteActive: boolean;
+  isSharpActive: boolean;
+  noNoteFound: boolean;
+  tooManyBeatsInMeasure?: boolean;
+  isFlatActive: boolean;
+  [key: string]: boolean | undefined;
+};
 
 export type NoteInteractionAction = { type: keyof NoteInteractionState };
 export type KeySigAction = { type: keyof KeySigState };
+export type ChordInteractionAction = { type: keyof ChordInteractionState };
 
 export type BarMetrics = {
   barWidth: number;
