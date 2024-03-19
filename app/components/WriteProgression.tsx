@@ -4,7 +4,7 @@ import createInitialState from "../lib/createInitialState";
 import gatherWidthInfo from "../lib/gatherWidthInfo";
 import {
   ChangeEvent,
-  Chord,
+  ChordType,
   FormEvent,
   InputData,
 } from "../lib/typesAndInterfaces";
@@ -13,7 +13,7 @@ import Staff from "./Staff";
 
 type WriteProgProps = {
   numBars: number;
-  chords?: Chord[];
+  chords?: ChordType[];
   width: number;
   handleProg: (progressions: InputData) => void;
 };

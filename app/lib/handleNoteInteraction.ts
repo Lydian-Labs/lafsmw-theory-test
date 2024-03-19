@@ -8,7 +8,6 @@ import {
 } from "./modifyNotes";
 import {
   NoteInteractionAction,
-  NoteInteractionState,
   NoteStringData,
   StaveNoteData,
   StaveNoteType,

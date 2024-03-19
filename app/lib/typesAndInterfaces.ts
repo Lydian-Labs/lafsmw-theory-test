@@ -1,4 +1,3 @@
-import { chownSync } from "fs";
 import { Dispatch, RefObject, SetStateAction } from "react";
 import VexFlow, { IRenderContext } from "vexflow";
 const VF = VexFlow.Flow;
@@ -8,7 +7,7 @@ export type InputData = {
   [key: string]: string;
 };
 
-export type Chord = {
+export type ChordType = {
   keys: string[];
   duration: string;
 };

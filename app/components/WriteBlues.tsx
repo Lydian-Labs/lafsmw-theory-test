@@ -3,7 +3,7 @@ import { ForwardedRef, forwardRef, useState } from "react";
 import createInitialState from "../lib/createInitialState";
 import {
   ChangeEvent,
-  Chord,
+  ChordType,
   FormEvent,
   InputData,
 } from "../lib/typesAndInterfaces";
@@ -12,7 +12,7 @@ import Staff from "./Staff";
 
 type WriteBluesProps = {
   numBars?: number;
-  chords?: Chord[];
+  chords?: ChordType[];
   width: number;
   handleBlues: (blues: InputData) => void;
 };

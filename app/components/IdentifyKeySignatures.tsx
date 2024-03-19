@@ -3,7 +3,7 @@ import createInitialState from "../lib/createInitialState";
 import gatherWidthInfo from "../lib/gatherWidthInfo";
 import {
   ChangeEvent,
-  Chord,
+  ChordType,
   FormEvent,
   InputData,
 } from "../lib/typesAndInterfaces";
@@ -12,7 +12,7 @@ import Staff from "./Staff";
 
 type IdentifyKeySignatureProps = {
   numBars: number;
-  chords?: Chord[];
+  chords?: ChordType[];
   width: number;
   handleKeySignatures: (keySignatures: InputData) => void;
 };

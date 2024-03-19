@@ -28,6 +28,7 @@ import {
   NoteStringData,
   StaveNoteData,
   StaveType,
+  ChordType,
 } from "../lib/typesAndInterfaces";
 const { Renderer } = VexFlow.Flow;
 
