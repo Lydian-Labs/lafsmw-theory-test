@@ -16,6 +16,7 @@ export type RendererRef = RefObject<InstanceType<typeof Renderer>>;
 export type SetStaves = Dispatch<SetStateAction<StaveType[]>>;
 export type BlankStaves = StaveType[];
 export type NoteData = StaveNoteData[][];
+export type ChordData = StaveNotesData[][]
 
 export type NoteInteractionState = {
   isEraseNoteActive: boolean;
@@ -83,6 +84,13 @@ export interface StaveNoteData {
   userClickY: number;
 }
 
+export interface StaveNotesData {
+  newStaveNotes: ChordData;
+  staveNoteAbsoluteX: number;
+  userClickY: number;
+}
+
+
 export interface NoteStringData {
   note: string;
   yCoordinateMin: number;
@@ -120,6 +128,7 @@ export interface RenderStavesAndNotesParams {
   regularStaveWidth?: number | null;
   setStaves: SetStaves;
   notesData?: NoteData | null;
+  chordsData?: ChordData | null;
   staves: BlankStaves;
 }
 

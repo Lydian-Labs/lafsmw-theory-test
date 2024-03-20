@@ -23,8 +23,8 @@ import { handleNoteInteraction } from "../lib/handleNoteInteraction";
 import { noteInteractionInitialState } from "../lib/initialStates";
 import { initializeRenderer } from "../lib/initializeRenderer";
 import { notesArray } from "../lib/noteArray";
-import { noteInteractionReducer } from "../lib/reducers";
 import { setupRendererAndDrawNotes } from "../lib/setupRendererAndDrawNotes";
+import { noteInteractionReducer } from "../lib/reducers";
 import {
   NoteStringData,
   StaveNoteData,
@@ -115,7 +115,6 @@ const ManageStaveNotes = () => {
         staveNoteAbsoluteX: noteData.newStaveNote.getAbsoluteX(),
       })
     );
-
     handleNoteInteraction(
       updatedFoundNoteData,
       noNoteFound,
