@@ -8,8 +8,8 @@ import React, {
   useState,
 } from "react";
 import VexFlow from "vexflow";
-const VF = VexFlow.Flow;
 import BlueButton from "../components/BlueButton";
+import { ChordInteractionAction } from "../lib/typesAndInterfaces";
 import CheckIfNoteFound from "../components/CheckIfNoteFound";
 import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
 import { clearAllMeasures, buttonGroup } from "../lib/buttonsAndButtonGroups";
@@ -18,87 +18,148 @@ import { findBarIndex } from "../lib/findBar";
 import generateYMinAndYMaxForAllNotes from "../lib/generateYMinAndMaxForAllNotes";
 import getUserClickInfo from "../lib/getUserClickInfo";
 import { handleNoteInteraction } from "../lib/handleNoteInteraction";
-import { chordInteractionInitialState } from "../lib/initialStates";
+import {
+  chordInteractionInitialState,
+} from "../lib/initialStates";
 import { initializeRenderer } from "../lib/initializeRenderer";
 import { notesArray } from "../lib/noteArray";
-import { chordInteractionReducer } from "../lib/reducers";
-import { modifyChordsActionTypes } from "../lib/actionTypes";
 import { setupRendererAndDrawNotes } from "../lib/setupRendererAndDrawNotes";
+import { chordInteractionReducer } from "../lib/reducers";
 import {
-  ChordInteractionAction,
   NoteStringData,
   StaveNoteData,
   StaveType,
-  ChordType,
-  StaveNoteType,
 } from "../lib/typesAndInterfaces";
-import createBlankStaves from "../lib/createBlankStaves";
+import { modifyChordsActionTypes } from "../lib/actionTypes";
 const { Renderer } = VexFlow.Flow;
 
-const CreateChords = () => {
+const ManageStaveNotes = () => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
   const [staves, setStaves] = useState<StaveType[]>([]);
-  const [chordData, setChordData] = useState(INITIAL_STAVES);
+  const [notesData, setNotesData] = useState(INITIAL_STAVES);
   const [state, dispatch] = useReducer(
     chordInteractionReducer,
     chordInteractionInitialState
   );
 
-  const renderMusic = (notes: StaveNoteType[]) => {
-    if (notes.length > 0 && context) {
-      // Create a voice and add the chord notes
-      const voice = new VF.Voice({ num_beats: 4, beat_value: 1 }).addTickables(
-        notes
-      );
-      // Format and draw the notes
-      new VF.Formatter().joinVoices([voice]).format([voice], 300);
-      voice.draw(context, staves[0]);
-    }
-  };
-  const addNoteToChord = (noteName = "C/4") => {
-    const staveNote = new VF.StaveNote({
-      keys: [noteName],
-      duration: "q",
-    });
+  const noNoteFound = () => dispatch({ type: "noNoteFound" });
 
-    const newChordNotes = [...chordData, staveNote];
-    setChordData(newChordNotes);
-    renderMusic(newChordNotes);
-  };
-  const context = rendererRef.current?.getContext();
+  const tooManyBeatsInMeasure = () =>
+    dispatch({ type: "tooManyBeatsInMeasure" });
+
+  const createChordsButtonGroup = buttonGroup<ChordInteractionAction>(
+    dispatch,
+    state,
+    modifyChordsActionTypes
+  );
+  const clearMeasures = () =>
+    clearAllMeasures(
+      setNotesData,
+      INITIAL_STAVES,
+      rendererRef,
+      container,
+      dispatch,
+      renderStavesAndNotes
+    );
+
+  const renderStavesAndNotes = useCallback(
+    (): void =>
+      setupRendererAndDrawNotes({
+        rendererRef,
+        ...staveData,
+        setStaves,
+        notesData,
+        staves,
+      }),
+    [rendererRef, setStaves, notesData, staves]
+  );
 
   useEffect(() => {
     initializeRenderer(rendererRef, container);
-    const renderer = rendererRef?.current;
-    renderer?.resize(800, 300);
-    const context = renderer && renderer.getContext();
-    context?.setFont("Arial", 12);
-    context?.clear();
-    if (context && rendererRef) {
-      setStaves(() =>
-        createBlankStaves({
-          numStaves: 1,
-          context,
-          firstStaveWidth: 300,
-          x: 10,
-          y: 150,
-          regularStaveWidth: 300,
-          clef: "treble",
-        })
-      );
-    }
+    renderStavesAndNotes();
   }, []);
 
   useEffect(() => {
-    renderMusic(chordData);
-  }, [chordData]);
+    renderStavesAndNotes();
+  }, [notesData]);
+
+  let updatedFoundNoteData: NoteStringData;
+
+  const handleClick = (e: React.MouseEvent) => {
+    const { userClickY, userClickX, highGYPosition } = getUserClickInfo(
+      e,
+      container,
+      staves[0]
+    );
+
+    let foundNoteData = generateYMinAndYMaxForAllNotes(
+      highGYPosition,
+      notesArray
+    ).find(
+      ({ yCoordinateMin, yCoordinateMax }) =>
+        userClickY >= yCoordinateMin && userClickY <= yCoordinateMax
+    );
+
+    if (foundNoteData)
+      updatedFoundNoteData = {
+        ...foundNoteData,
+        userClickY: userClickY,
+      };
+
+    const barIndex: number = findBarIndex(staves, userClickX);
+
+    let notesDataCopy = [...notesData];
+    const barOfStaveNotes = notesDataCopy[barIndex].map(
+      (noteData: StaveNoteData) => ({
+        ...noteData,
+        staveNoteAbsoluteX: noteData.newStaveNote.getAbsoluteX(),
+      })
+    );
+    handleNoteInteraction(
+      updatedFoundNoteData,
+      noNoteFound,
+      tooManyBeatsInMeasure,
+      "tooManyBeatsInMeasure",
+      "noNoteFound",
+      barOfStaveNotes,
+      notesDataCopy,
+      state,
+      userClickX,
+      userClickY,
+      barIndex
+    );
+
+    setNotesData(() => notesDataCopy);
+  };
 
   return (
     <>
-      <div ref={container} onClick={() => addNoteToChord()} />
+      <div ref={container} onClick={handleClick} />
+      <CheckNumBeatsInMeasure
+        tooManyBeatsInMeasure={state.tooManyBeatsInMeasure}
+        openEnterNotes={dispatch}
+      />
+      <CheckIfNoteFound
+        noNoteFound={state.noNoteFound}
+        openEnterNotes={dispatch}
+      />
+      <div className="mt-2 ml-3">
+        {createChordsButtonGroup.map((button) => {
+          return (
+            <BlueButton
+              key={button.text}
+              onClick={button.action}
+              isEnabled={button.isEnabled}
+            >
+              {button.text}
+            </BlueButton>
+          );
+        })}
+        <BlueButton onClick={clearMeasures}>Clear Measures</BlueButton>
+      </div>
     </>
   );
 };
 
-export default CreateChords;
+export default ManageStaveNotes;
