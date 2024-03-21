@@ -44,18 +44,6 @@ export const clearAllMeasures = (
   enterNote(dispatch);
 };
 
-export const modifyStaveNotesButtonGroup = (
-  dispatch: React.Dispatch<NoteInteractionAction>,
-  state: NoteInteractionState
-) => {
-  return Object.entries(modifyNotesActionTypes).map(([stateKey, text]) => ({
-    action: () => dispatch({ type: stateKey }),
-    text,
-    stateKey,
-    isEnabled: state[stateKey as keyof NoteInteractionState],
-  }));
-};
-
 export const modifyKeySigButtonGroup = (
   dispatch: React.Dispatch<KeySigAction>,
   state: KeySigState

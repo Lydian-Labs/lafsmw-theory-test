@@ -13,8 +13,9 @@ import CheckIfNoteFound from "../components/CheckIfNoteFound";
 import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
 import {
   clearAllMeasures,
-  modifyStaveNotesButtonGroup,
+  buttonGroup,
 } from "../lib/buttonsAndButtonGroups";
+import { NoteInteractionAction } from "../lib/typesAndInterfaces";
 import { INITIAL_STAVES, staveData } from "../lib/data/stavesData";
 import { findBarIndex } from "../lib/findBar";
 import generateYMinAndYMaxForAllNotes from "../lib/generateYMinAndMaxForAllNotes";
@@ -30,6 +31,7 @@ import {
   StaveNoteData,
   StaveType,
 } from "../lib/typesAndInterfaces";
+import { modifyNotesActionTypes } from "../lib/actionTypes";
 const { Renderer } = VexFlow.Flow;
 
 const ManageStaveNotes = () => {
@@ -47,8 +49,13 @@ const ManageStaveNotes = () => {
   const tooManyBeatsInMeasure = () =>
     dispatch({ type: "tooManyBeatsInMeasure" });
 
-  const buttonGroup = useMemo(
-    () => modifyStaveNotesButtonGroup(dispatch, state),
+  const modifyStaveNotesButtonGroup = useMemo(
+    () =>
+      buttonGroup<NoteInteractionAction>(
+        dispatch,
+        state,
+        modifyNotesActionTypes
+      ),
     [dispatch, state]
   );
 
@@ -144,7 +151,7 @@ const ManageStaveNotes = () => {
         openEnterNotes={dispatch}
       />
       <div className="mt-2 ml-3">
-        {buttonGroup.map((button) => {
+        {modifyStaveNotesButtonGroup.map((button) => {
           return (
             <BlueButton
               key={button.text}
