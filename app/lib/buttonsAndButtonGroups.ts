@@ -3,28 +3,10 @@ import * as VexFlow from "vexflow";
 import { initializeRenderer } from "./initializeRenderer";
 import {
   GlyphProps,
-  KeySigAction,
-  KeySigState,
   NoteInteractionAction,
-  NoteInteractionState,
   StaveNoteData,
 } from "./typesAndInterfaces";
 const { Renderer } = VexFlow.Flow;
-
-const modifyNotesActionTypes = {
-  isEnterNoteActive: "Enter Note",
-  isEraseNoteActive: "Erase Note",
-  isChangeNoteActive: "Change Note",
-  isSharpActive: "Add Sharp",
-  isFlatActive: "Add Flat",
-  isEraseAccidentalActive: "Erase Accidental",
-};
-
-const modifyKeySigActionTypes = {
-  isAddSharpActive: "add sharp",
-  isAddFlatActive: "add flat",
-  isRemoveAccidentalActive: "Delete Accidental",
-};
 
 export const enterNote = (dispatch: React.Dispatch<NoteInteractionAction>) => {
   dispatch({ type: "isEnterNoteActive" });
@@ -42,18 +24,6 @@ export const clearAllMeasures = (
   initializeRenderer(renderer, container);
   renderStavesAndStaveNotes();
   enterNote(dispatch);
-};
-
-export const modifyKeySigButtonGroup = (
-  dispatch: React.Dispatch<KeySigAction>,
-  state: KeySigState
-) => {
-  return Object.entries(modifyKeySigActionTypes).map(([stateKey, text]) => ({
-    action: () => dispatch({ type: stateKey }),
-    text,
-    stateKey,
-    isEnabled: state[stateKey as keyof KeySigState],
-  }));
 };
 
 export const buttonGroup = <Action>(

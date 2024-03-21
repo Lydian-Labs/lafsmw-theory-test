@@ -11,11 +11,11 @@ import VexFlow from "vexflow";
 import BlueButton from "../components/BlueButton";
 import CheckIfNoteFound from "../components/CheckIfNoteFound";
 import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
+import { modifyNotesActionTypes } from "../lib/actionTypes";
 import {
-  clearAllMeasures,
   buttonGroup,
+  clearAllMeasures,
 } from "../lib/buttonsAndButtonGroups";
-import { NoteInteractionAction } from "../lib/typesAndInterfaces";
 import { INITIAL_STAVES, staveData } from "../lib/data/stavesData";
 import { findBarIndex } from "../lib/findBar";
 import generateYMinAndYMaxForAllNotes from "../lib/generateYMinAndMaxForAllNotes";
@@ -24,14 +24,13 @@ import { handleNoteInteraction } from "../lib/handleNoteInteraction";
 import { noteInteractionInitialState } from "../lib/initialStates";
 import { initializeRenderer } from "../lib/initializeRenderer";
 import { notesArray } from "../lib/noteArray";
-import { setupRendererAndDrawNotes } from "../lib/setupRendererAndDrawNotes";
 import { noteInteractionReducer } from "../lib/reducers";
+import { setupRendererAndDrawNotes } from "../lib/setupRendererAndDrawNotes";
 import {
-  NoteStringData,
+  NoteInteractionAction, NoteStringData,
   StaveNoteData,
-  StaveType,
+  StaveType
 } from "../lib/typesAndInterfaces";
-import { modifyNotesActionTypes } from "../lib/actionTypes";
 const { Renderer } = VexFlow.Flow;
 
 const ManageStaveNotes = () => {

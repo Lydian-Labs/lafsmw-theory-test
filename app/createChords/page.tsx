@@ -9,28 +9,25 @@ import React, {
 } from "react";
 import VexFlow from "vexflow";
 import BlueButton from "../components/BlueButton";
-import { ChordInteractionAction } from "../lib/typesAndInterfaces";
 import CheckIfNoteFound from "../components/CheckIfNoteFound";
 import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
-import { clearAllMeasures, buttonGroup } from "../lib/buttonsAndButtonGroups";
+import { modifyChordsActionTypes } from "../lib/actionTypes";
+import { buttonGroup, clearAllMeasures } from "../lib/buttonsAndButtonGroups";
 import { INITIAL_STAVES, staveData } from "../lib/data/stavesData";
 import { findBarIndex } from "../lib/findBar";
 import generateYMinAndYMaxForAllNotes from "../lib/generateYMinAndMaxForAllNotes";
 import getUserClickInfo from "../lib/getUserClickInfo";
 import { handleNoteInteraction } from "../lib/handleNoteInteraction";
-import {
-  chordInteractionInitialState,
-} from "../lib/initialStates";
+import { chordInteractionInitialState } from "../lib/initialStates";
 import { initializeRenderer } from "../lib/initializeRenderer";
 import { notesArray } from "../lib/noteArray";
-import { setupRendererAndDrawNotes } from "../lib/setupRendererAndDrawNotes";
 import { chordInteractionReducer } from "../lib/reducers";
+import { setupRendererAndDrawNotes } from "../lib/setupRendererAndDrawNotes";
 import {
-  NoteStringData,
+  ChordInteractionAction, NoteStringData,
   StaveNoteData,
-  StaveType,
+  StaveType
 } from "../lib/typesAndInterfaces";
-import { modifyChordsActionTypes } from "../lib/actionTypes";
 const { Renderer } = VexFlow.Flow;
 
 const ManageStaveNotes = () => {
@@ -48,11 +45,16 @@ const ManageStaveNotes = () => {
   const tooManyBeatsInMeasure = () =>
     dispatch({ type: "tooManyBeatsInMeasure" });
 
-  const createChordsButtonGroup = buttonGroup<ChordInteractionAction>(
-    dispatch,
-    state,
-    modifyChordsActionTypes
+  const createChordsButtonGroup = useMemo(
+    () =>
+      buttonGroup<ChordInteractionAction>(
+        dispatch,
+        state,
+        modifyChordsActionTypes
+      ),
+    [state, dispatch]
   );
+
   const clearMeasures = () =>
     clearAllMeasures(
       setNotesData,
