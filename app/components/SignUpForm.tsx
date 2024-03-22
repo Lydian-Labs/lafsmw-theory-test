@@ -22,7 +22,7 @@ const SignUpForm = () => {
       return console.log("signUp error:", error);
     }
     console.log("signUp result:", result);
-    router.push("/examSample");
+    router.push("/exam-new");
   };
 
   return (

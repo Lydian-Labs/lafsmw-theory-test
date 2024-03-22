@@ -3,8 +3,8 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
-import SignInForm from "../components/SignInForm";
-import SignUpForm from "../components/SignUpForm";
+import SignInForm from "../../components/SignInForm";
+import SignUpForm from "../../components/SignUpForm";
 
 export default function Registration() {
   const [isSignUp, setIsSignUp] = useState(false);

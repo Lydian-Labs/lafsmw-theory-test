@@ -14,9 +14,21 @@
   --primary90: #fcfcfc;
   --primary100: #ffffff;
   --primary110: #f8f8ff;
-
+  --colorMainBackgroundColor: #6b8287; /* This is the main background color that will appear behind the card */
+  --colorCardBackgroundColor: #f6f6f6; /* This will be the background color for the cards */
+  --colorPressedButtonColor: #a6a7a7; /* This will be the color for the buttons when they are pressed */
+  --colorEnabledButtonColor: #f6d168; /* This will be the color when the buttons are enabled */
+  --colorUnfilledProgressBarColor: #cacaca; /* This will be the color for section of the progress bar that has not been filled */
+  --colorFilledProgressBarColor: #fde55b; /* This will be the color for the section of the progress bar that has been filled */
+  --shadowGreyBackgroundDropShadow1: 0 783px 219px 0 #000000; /* drop shadow 1 for grey background */
+  --shadowGreyBackgroundDropShadow2: 0 501px 200px 0 #000000 opacity 1%; /* drop shadow 2 for grey background */
+  --shadowGreyBackgroundDropShadow3: 0 282px 169px 0 #000000 opacity 5%; /* box shadow 3 for grey background */
+  --shadowGreyBackgroundDropShadow4: 0 125px 125px 0 #000000 opacity 9%; /* drop shadow #4 for grey background */
+  --shadowGreyBackgroundDropShadow5: 0 31px 69px 0 #000000 opacity 10%; /* Drop shadow #5 for grey background */
+  --borderRadius: 12px; /* use the border radius of 12 for everything */
+  --sizingButtonSizing: 40px; /* buttons below the staff have a height of 40 | horizontal padding of 24  */
 }
 
 body {
-  background-color: var(--primary110);
+  background-color: var(--colorMainBackgroundColor);
 }

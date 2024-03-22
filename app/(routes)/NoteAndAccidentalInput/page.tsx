@@ -8,28 +8,29 @@ import React, {
   useState,
 } from "react";
 import VexFlow from "vexflow";
-import BlueButton from "../components/BlueButton";
-import CheckIfNoteFound from "../components/CheckIfNoteFound";
-import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
+import BlueButton from "../../components/BlueButton";
+import CheckIfNoteFound from "../../components/CheckIfNoteFound";
+import CheckNumBeatsInMeasure from "../../components/CheckNumBeatsInMeasure";
 import {
   clearAllMeasures,
   modifyStaveNotesButtonGroup,
-} from "../lib/buttonsAndButtonGroups";
-import { INITIAL_STAVES, staveData } from "../lib/data/stavesData";
-import { findBarIndex } from "../lib/findBar";
-import generateYMinAndYMaxForAllNotes from "../lib/generateYMinAndMaxForAllNotes";
-import getUserClickInfo from "../lib/getUserClickInfo";
-import { handleNoteInteraction } from "../lib/handleNoteInteraction";
-import { noteInteractionInitialState } from "../lib/initialStates";
-import { initializeRenderer } from "../lib/initializeRenderer";
-import { notesArray } from "../lib/noteArray";
-import { noteInteractionReducer } from "../lib/reducers";
-import { setupRendererAndDrawNotes } from "../lib/setupRendererAndDrawNotes";
+} from "../../lib/buttonsAndButtonGroups";
+import { INITIAL_STAVES, staveData } from "../../lib/data/stavesData";
+import { findBarIndex } from "../../lib/findBar";
+import generateYMinAndYMaxForAllNotes from "../../lib/generateYMinAndMaxForAllNotes";
+import getUserClickInfo from "../../lib/getUserClickInfo";
+import { handleNoteInteraction } from "../../lib/handleNoteInteraction";
+import { noteInteractionInitialState } from "../../lib/initialStates";
+import { initializeRenderer } from "../../lib/initializeRenderer";
+import { notesArray } from "../../lib/noteArray";
+import { noteInteractionReducer } from "../../lib/reducers";
+import { setupRendererAndDrawNotes } from "../../lib/setupRendererAndDrawNotes";
 import {
   NoteStringData,
   StaveNoteData,
   StaveType,
-} from "../lib/typesAndInterfaces";
+} from "../../lib/typesAndInterfaces";
+
 const { Renderer } = VexFlow.Flow;
 
 const ManageStaveNotes = () => {
