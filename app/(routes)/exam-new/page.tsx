@@ -47,7 +47,7 @@ export default function ExamNew() {
         component="main"
         width={1139}
         height={637}
-        bgcolor={"button.pressed"}
+        bgcolor={"secondary.main"}
         borderRadius="var(--borderRadius)"
         m={"auto"}
         boxShadow={"0px 4px 4px rgba(0, 0, 0, 0.25)"}
@@ -99,7 +99,7 @@ export default function ExamNew() {
                 "0px 13px 28px 0px rgba(0, 0, 0, 0.10), 0px 50px 50px 0px rgba(0, 0, 0, 0.09), 0px 113px 68px 0px rgba(0, 0, 0, 0.05), 0px 201px 80px 0px rgba(0, 0, 0, 0.01), 0px 314px 88px 0px rgba(0, 0, 0, 0.00)"
               }
             >
-              <Grid container columns={1} direction="column" p={4}>
+              <Grid container columns={1} direction="column" p={4} spacing={2}>
                 <Grid item>
                   <Typography variant="h6" align="center">
                     Add the following key signature: Db Major
@@ -144,7 +144,10 @@ export default function ExamNew() {
                       <Typography variant="body1">Question 1/45</Typography>
                       <ProgressBar value={4} />
                     </Stack>
-                    <Button variant="contained" sx={{ height: "33px" }}>
+                    <Button
+                      variant="contained"
+                      sx={{ height: "33px", marginTop: "8px" }}
+                    >
                       {"Next Question >"}
                     </Button>
                   </Stack>

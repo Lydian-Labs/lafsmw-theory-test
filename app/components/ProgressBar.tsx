@@ -1,7 +1,7 @@
 import React from "react";
 import LinearProgress from "@mui/material/LinearProgress";
 
-export default function ProgressBar({ value }) {
+export default function ProgressBar({ value }: { value: number }) {
   return (
     <div>
       <LinearProgress
