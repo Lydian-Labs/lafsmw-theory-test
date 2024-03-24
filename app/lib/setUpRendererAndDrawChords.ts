@@ -1,7 +1,7 @@
 import VexFlow from "vexflow";
 import createBlankStaves from "./createBlankStaves";
 import { RenderStavesAndNotesParams } from "./typesAndInterfaces";
-const { Formatter } = VexFlow.Flow;
+const { Formatter, StaveNote } = VexFlow.Flow;
 
 export const setupRendererAndDrawChords = (
   params: RenderStavesAndNotesParams
@@ -44,10 +44,22 @@ export const setupRendererAndDrawChords = (
   notesData &&
     notesData.forEach((barData, index) => {
       if (barData) {
-        const staveChords = barData.map(({ newStaveNote }) => newStaveNote);
-        if (staveChords.length > 0) {
+        const staveNotes = barData
+          // Filter out noteData without keys
+          .map(
+            (noteData) =>
+              new StaveNote({
+                keys: ["c/4", "e/4", "g/4", "b/4"], // Now we know keys is not undefined
+                duration: "w",
+              })
+          );
+
+        const keys = staveNotes.map((note) => {
+          return note.getKeys();
+        });
+        if (staveNotes.length > 0) {
           context &&
-            Formatter.FormatAndDraw(context, blankStaves[index], staveChords);
+            Formatter.FormatAndDraw(context, blankStaves[index], staveNotes);
         }
       }
     });

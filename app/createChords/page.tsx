@@ -22,11 +22,12 @@ import { chordInteractionInitialState } from "../lib/initialStates";
 import { initializeRenderer } from "../lib/initializeRenderer";
 import { notesArray } from "../lib/noteArray";
 import { chordInteractionReducer } from "../lib/reducers";
-import { setupRendererAndDrawNotes } from "../lib/setupRendererAndDrawNotes";
+import { setupRendererAndDrawChords } from "../lib/setUpRendererAndDrawChords";
 import {
-  ChordInteractionAction, NoteStringData,
+  ChordInteractionAction,
+  NoteStringData,
   StaveNoteData,
-  StaveType
+  StaveType,
 } from "../lib/typesAndInterfaces";
 const { Renderer } = VexFlow.Flow;
 
@@ -34,7 +35,7 @@ const ManageStaveNotes = () => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
   const [staves, setStaves] = useState<StaveType[]>([]);
-  const [notesData, setNotesData] = useState(INITIAL_STAVES);
+  const [chordsData, setChordsData] = useState(INITIAL_STAVES);
   const [state, dispatch] = useReducer(
     chordInteractionReducer,
     chordInteractionInitialState
@@ -57,7 +58,7 @@ const ManageStaveNotes = () => {
 
   const clearMeasures = () =>
     clearAllMeasures(
-      setNotesData,
+      setChordsData,
       INITIAL_STAVES,
       rendererRef,
       container,
@@ -67,14 +68,14 @@ const ManageStaveNotes = () => {
 
   const renderStavesAndNotes = useCallback(
     (): void =>
-      setupRendererAndDrawNotes({
+      setupRendererAndDrawChords({
         rendererRef,
         ...staveData,
         setStaves,
-        notesData,
+        notesData: chordsData,
         staves,
       }),
-    [rendererRef, setStaves, notesData, staves]
+    [rendererRef, setStaves, chordsData, staves]
   );
 
   useEffect(() => {
@@ -84,7 +85,7 @@ const ManageStaveNotes = () => {
 
   useEffect(() => {
     renderStavesAndNotes();
-  }, [notesData]);
+  }, [chordsData]);
 
   let updatedFoundNoteData: NoteStringData;
 
@@ -111,8 +112,8 @@ const ManageStaveNotes = () => {
 
     const barIndex: number = findBarIndex(staves, userClickX);
 
-    let notesDataCopy = [...notesData];
-    const barOfStaveNotes = notesDataCopy[barIndex].map(
+    let chordsDataCopy = [...chordsData];
+    const barOfStaveNotes = chordsDataCopy[barIndex].map(
       (noteData: StaveNoteData) => ({
         ...noteData,
         staveNoteAbsoluteX: noteData.newStaveNote.getAbsoluteX(),
@@ -125,14 +126,14 @@ const ManageStaveNotes = () => {
       "tooManyBeatsInMeasure",
       "noNoteFound",
       barOfStaveNotes,
-      notesDataCopy,
+      chordsDataCopy,
       state,
       userClickX,
       userClickY,
       barIndex
     );
 
-    setNotesData(() => notesDataCopy);
+    setChordsData(() => chordsDataCopy);
   };
 
   return (
