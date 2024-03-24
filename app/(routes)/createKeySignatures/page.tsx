@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useMemo, useReducer, useRef, useState } from "react";
 import VexFlow from "vexflow";
+<<<<<<< HEAD:app/createKeySignatures/page.tsx
 import BlueButton from "../components/BlueButton";
 import { modifyKeySigActionTypes } from "../lib/actionTypes";
 import { buildKeySignature } from "../lib/buildKeySignature";
@@ -14,6 +15,24 @@ import isClickWithinStaveBounds from "../lib/isClickWithinStaveBounds";
 import { keySigReducer } from "../lib/reducers";
 import { setupRendererAndDrawNotes } from "../lib/setupRendererAndDrawNotes";
 import { GlyphProps, KeySigAction } from "../lib/typesAndInterfaces";
+=======
+import BlueButton from "../../components/BlueButton";
+import { buildKeySignature } from "../../lib/buildKeySignature";
+import {
+  clearKeySignature,
+  modifyKeySigButtonGroup,
+} from "../../lib/buttonsAndButtonGroups";
+import { INITIAL_STAVES, staveData } from "../../lib/data/stavesData";
+import deleteAccidentalFromKeySig from "../../lib/deleteAccidentalFromKeySig";
+import { getUserClickInfo } from "../../lib/getUserClickInfo";
+import { keySigInitialState } from "../../lib/initialStates";
+import { initializeRenderer } from "../../lib/initializeRenderer";
+import isClickWithinStaveBounds from "../../lib/isClickWithinStaveBounds";
+import { keySigReducer } from "../../lib/reducers";
+import { setupRendererAndDrawNotes } from "../../lib/setupRendererAndDrawNotes";
+import { GlyphProps } from "../../lib/typesAndInterfaces";
+
+>>>>>>> main:app/(routes)/createKeySignatures/page.tsx
 const VF = VexFlow.Flow;
 const { Renderer } = VF;
 

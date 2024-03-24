@@ -10,7 +10,7 @@ export default function Home() {
   console.log("user:", user);
   const router = useRouter();
   if (user) {
-    router.push("/examSample");
+    router.push("/exam-new");
   }
 
   return (

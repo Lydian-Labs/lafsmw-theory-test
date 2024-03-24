@@ -17,7 +17,7 @@ const SignInForm = () => {
       return console.log("signIn error:", error);
     }
     console.log("signIn result:", result);
-    router.push("/examSample");
+    router.push("/exam-new");
   };
 
   return (
