@@ -3,6 +3,12 @@ import VexFlow, { IRenderContext } from "vexflow";
 const VF = VexFlow.Flow;
 const { StaveNote, Stave, Renderer, Glyph } = VF;
 
+export type FormEvent = React.FormEvent<HTMLFormElement>;
+export type MouseEvent = React.MouseEvent<HTMLButtonElement>;
+export type ChangeEvent = React.ChangeEvent<HTMLInputElement>;
+export type SelectEvent = React.ChangeEvent<HTMLSelectElement>;
+export type KeyboardEvent = React.KeyboardEvent<HTMLInputElement>;
+
 export type InputData = {
   [key: string]: string;
 };

@@ -121,7 +121,7 @@ export default function keySignaturesText() {
                     type="text"
                     value={""}
                     width="70px"
-                    ohChange={() => {}}
+                    onChange={() => {}}
                     // onChange={(e: ChangeEvent) =>
                     //   setKeysInput({ ...keysInput, [key]: e.target.value })
                     // }
