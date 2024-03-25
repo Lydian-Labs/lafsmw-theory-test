@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 
 import Staff from "@/app/components/Staff";
-import ClassPreferenceSelector from "../../components/ClassPreferenceSelector";
+import ClassPreferenceSelector from "../../../components/ClassPreferenceSelector";
 
 import ProgressBar from "@/app/components/ProgressBar";
 
@@ -40,7 +40,7 @@ const instructions = [
   },
 ];
 
-export default function ExamNew() {
+export default function keySignaturesNote() {
   return (
     <Container>
       <Box
@@ -56,7 +56,7 @@ export default function ExamNew() {
           <Grid item xs={4}>
             <Stack gap={2} alignItems={"center"}>
               <Typography variant="h5" align="center">
-                Section 1: Key Signatures
+                Section 1: Write Key Signatures
               </Typography>
               <ClassPreferenceSelector></ClassPreferenceSelector>
               <Box
