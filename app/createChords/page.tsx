@@ -19,28 +19,31 @@ import generateYMinAndYMaxForAllNotes from "../lib/generateYMinAndMaxForAllNotes
 import getUserClickInfo from "../lib/getUserClickInfo";
 import { handleNoteInteraction } from "../lib/handleNoteInteraction";
 import { chordInteractionInitialState } from "../lib/initialStates";
+import { ChordType } from "../lib/typesAndInterfaces";
 import { initializeRenderer } from "../lib/initializeRenderer";
 import { notesArray } from "../lib/noteArray";
 import { chordInteractionReducer } from "../lib/reducers";
-import { setupRendererAndDrawChords } from "../lib/setUpRendererAndDrawChords";
+import { setupRendererAndDrawStaves } from "../lib/setUpRendererAndDrawChords";
 import {
   ChordInteractionAction,
   NoteStringData,
   StaveNoteData,
   StaveType,
 } from "../lib/typesAndInterfaces";
-const { Renderer } = VexFlow.Flow;
+const { Renderer, StaveNote, Formatter } = VexFlow.Flow;
 
-const ManageStaveNotes = () => {
+const ManageStaveChords = () => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
   const [staves, setStaves] = useState<StaveType[]>([]);
-  const [chordsData, setChordsData] = useState(INITIAL_STAVES);
+  const [initialStaves, setInitialStaves] = useState(INITIAL_STAVES);
+  const [chordsData, setChordsData] = useState<ChordType[]>([]);
   const [state, dispatch] = useReducer(
     chordInteractionReducer,
     chordInteractionInitialState
   );
-
+  const renderer = rendererRef.current;
+  const context = renderer?.getContext();
   const noNoteFound = () => dispatch({ type: "noNoteFound" });
 
   const tooManyBeatsInMeasure = () =>
@@ -58,7 +61,7 @@ const ManageStaveNotes = () => {
 
   const clearMeasures = () =>
     clearAllMeasures(
-      setChordsData,
+      setInitialStaves,
       INITIAL_STAVES,
       rendererRef,
       container,
@@ -68,14 +71,13 @@ const ManageStaveNotes = () => {
 
   const renderStavesAndNotes = useCallback(
     (): void =>
-      setupRendererAndDrawChords({
+      setupRendererAndDrawStaves({
         rendererRef,
         ...staveData,
         setStaves,
-        notesData: chordsData,
         staves,
       }),
-    [rendererRef, setStaves, chordsData, staves]
+    [rendererRef, setStaves, staves]
   );
 
   useEffect(() => {
@@ -85,7 +87,7 @@ const ManageStaveNotes = () => {
 
   useEffect(() => {
     renderStavesAndNotes();
-  }, [chordsData]);
+  }, []);
 
   let updatedFoundNoteData: NoteStringData;
 
@@ -107,18 +109,26 @@ const ManageStaveNotes = () => {
     if (foundNoteData)
       updatedFoundNoteData = {
         ...foundNoteData,
-        userClickY: userClickY,
+        userClickY,
+        note: foundNoteData.note,
       };
-
     const barIndex: number = findBarIndex(staves, userClickX);
 
-    let chordsDataCopy = [...chordsData];
-    const barOfStaveNotes = chordsDataCopy[barIndex].map(
+    let initialStavesCopy = [...initialStaves];
+
+    const barOfStaveNotes = initialStavesCopy[barIndex].map(
       (noteData: StaveNoteData) => ({
         ...noteData,
-        staveNoteAbsoluteX: noteData.newStaveNote.getAbsoluteX(),
       })
     );
+    if (updatedFoundNoteData.note) {
+      const newNote = new StaveNote({
+        keys: [updatedFoundNoteData.note],
+        duration: "w",
+      });
+      context && Formatter.FormatAndDraw(context, staves[0], [newNote]);
+    }
+
     handleNoteInteraction(
       updatedFoundNoteData,
       noNoteFound,
@@ -126,14 +136,12 @@ const ManageStaveNotes = () => {
       "tooManyBeatsInMeasure",
       "noNoteFound",
       barOfStaveNotes,
-      chordsDataCopy,
+      initialStavesCopy,
       state,
       userClickX,
       userClickY,
       barIndex
     );
-
-    setChordsData(() => chordsDataCopy);
   };
 
   return (
@@ -165,4 +173,4 @@ const ManageStaveNotes = () => {
   );
 };
 
-export default ManageStaveNotes;
+export default ManageStaveChords;
