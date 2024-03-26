@@ -8,33 +8,13 @@ import React, {
   useState,
 } from "react";
 import VexFlow from "vexflow";
-<<<<<<< HEAD:app/NoteAndAccidentalInput/page.tsx
-import BlueButton from "../components/BlueButton";
-import CheckIfNoteFound from "../components/CheckIfNoteFound";
-import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
-import { modifyNotesActionTypes } from "../lib/actionTypes";
-=======
-import BlueButton from "../../components/BlueButton";
-import CheckIfNoteFound from "../../components/CheckIfNoteFound";
-import CheckNumBeatsInMeasure from "../../components/CheckNumBeatsInMeasure";
->>>>>>> main:app/(routes)/NoteAndAccidentalInput/page.tsx
+import BlueButton from "@/app/components/BlueButton";
+import CheckIfNoteFound from "@/app/components/CheckIfNoteFound";
+import CheckNumBeatsInMeasure from "@/app/components/CheckNumBeatsInMeasure";
+import { modifyNotesActionTypes } from "@/app/lib/actionTypes";
 import {
   buttonGroup,
   clearAllMeasures,
-<<<<<<< HEAD:app/NoteAndAccidentalInput/page.tsx
-} from "../lib/buttonsAndButtonGroups";
-import { INITIAL_STAVES, staveData } from "../lib/data/stavesData";
-import { findBarIndex } from "../lib/findBar";
-import generateYMinAndYMaxForAllNotes from "../lib/generateYMinAndMaxForAllNotes";
-import getUserClickInfo from "../lib/getUserClickInfo";
-import { handleNoteInteraction } from "../lib/handleNoteInteraction";
-import { noteInteractionInitialState } from "../lib/initialStates";
-import { initializeRenderer } from "../lib/initializeRenderer";
-import { notesArray } from "../lib/noteArray";
-import { noteInteractionReducer } from "../lib/reducers";
-import { setupRendererAndDrawNotes } from "../lib/setupRendererAndDrawNotes";
-=======
-  modifyStaveNotesButtonGroup,
 } from "../../lib/buttonsAndButtonGroups";
 import { INITIAL_STAVES, staveData } from "../../lib/data/stavesData";
 import { findBarIndex } from "../../lib/findBar";
@@ -46,18 +26,13 @@ import { initializeRenderer } from "../../lib/initializeRenderer";
 import { notesArray } from "../../lib/noteArray";
 import { noteInteractionReducer } from "../../lib/reducers";
 import { setupRendererAndDrawNotes } from "../../lib/setupRendererAndDrawNotes";
->>>>>>> main:app/(routes)/NoteAndAccidentalInput/page.tsx
 import {
-  NoteInteractionAction, NoteStringData,
+  NoteInteractionAction,
+  NoteStringData,
   StaveNoteData,
-<<<<<<< HEAD:app/NoteAndAccidentalInput/page.tsx
-  StaveType
-} from "../lib/typesAndInterfaces";
-=======
   StaveType,
 } from "../../lib/typesAndInterfaces";
 
->>>>>>> main:app/(routes)/NoteAndAccidentalInput/page.tsx
 const { Renderer } = VexFlow.Flow;
 
 const ManageStaveNotes = () => {

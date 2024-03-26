@@ -37,7 +37,10 @@ const ManageStaveChords = () => {
   const container = useRef<HTMLDivElement | null>(null);
   const [staves, setStaves] = useState<StaveType[]>([]);
   const [initialStaves, setInitialStaves] = useState(INITIAL_STAVES);
-  const [chordsData, setChordsData] = useState<ChordType[]>([]);
+  const [chordsData, setChordsData] = useState<ChordType>({
+    keys: [],
+    duration: "w",
+  });
   const [state, dispatch] = useReducer(
     chordInteractionReducer,
     chordInteractionInitialState
@@ -59,17 +62,22 @@ const ManageStaveChords = () => {
     [state, dispatch]
   );
 
-  const clearMeasures = () =>
+  const clearMeasures = () => {
     clearAllMeasures(
       setInitialStaves,
       INITIAL_STAVES,
       rendererRef,
       container,
       dispatch,
-      renderStavesAndNotes
-    );
+      renderStaves
+    ),
+      setChordsData((): ChordType => {
+        const newState = { keys: [], duration: "w" };
+        return newState;
+      });
+  };
 
-  const renderStavesAndNotes = useCallback(
+  const renderStaves = useCallback(
     (): void =>
       setupRendererAndDrawStaves({
         rendererRef,
@@ -80,14 +88,28 @@ const ManageStaveChords = () => {
     [rendererRef, setStaves, staves]
   );
 
+  const drawNotes = () => {
+    if (!rendererRef.current || chordsData.keys.length === 0) {
+      return;
+    }
+    const newChord = new StaveNote({
+      keys: chordsData.keys,
+      duration: chordsData.duration,
+    });
+    if (staves.length > 0 && context) {
+      Formatter.FormatAndDraw(context, staves[0], [newChord]);
+    }
+  };
+
   useEffect(() => {
     initializeRenderer(rendererRef, container);
-    renderStavesAndNotes();
+    renderStaves();
   }, []);
 
   useEffect(() => {
-    renderStavesAndNotes();
-  }, []);
+    renderStaves();
+    drawNotes();
+  }, [chordsData]);
 
   let updatedFoundNoteData: NoteStringData;
 
@@ -121,13 +143,16 @@ const ManageStaveChords = () => {
         ...noteData,
       })
     );
-    if (updatedFoundNoteData.note) {
-      const newNote = new StaveNote({
-        keys: [updatedFoundNoteData.note],
-        duration: "w",
-      });
-      context && Formatter.FormatAndDraw(context, staves[0], [newNote]);
-    }
+
+    setChordsData((prevChordsData) => {
+      if (prevChordsData.keys.length < 4) {
+        const updatedKeys = [...prevChordsData.keys, updatedFoundNoteData.note];
+        return { ...prevChordsData, keys: updatedKeys };
+      } else {
+        // Here you could also handle feedback to the user that no more notes can be added
+        return prevChordsData; // Return the previous state without changes
+      }
+    });
 
     handleNoteInteraction(
       updatedFoundNoteData,
