@@ -18,31 +18,10 @@ import Staff from "@/app/components/Staff";
 
 import FormInput from "@/app/components/FormInput";
 import ProgressBar from "@/app/components/ProgressBar";
-import { useState } from "react";
 import { useExamContext } from "@/app/context/examContext";
-
-const instructions = [
-  {
-    instructionTitle: "Select the accidental:",
-    instructionText:
-      "Choose the flat (b) or sharp (#) button to select the type of accidental you need to add.",
-  },
-  {
-    instructionTitle: "Place it on the staff:",
-    instructionText:
-      "After selecting the accidental, click on the exact line or space on the staff where the accidental belongs.",
-  },
-  {
-    instructionTitle: "Erase a note or accidental:",
-    instructionText:
-      "If you need to erase a note or an accidental, first select the “Eraser” button, then click on the note or accidental you wish to erase.",
-  },
-  {
-    instructionTitle: "Clear a measure:",
-    instructionText:
-      "If you wish to clear an entire measure, select the “Clear Measure” button and the contents of the measure will be erased.",
-  },
-];
+import { instructions } from "@/app/lib/instructions";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function KeySignaturesText() {
   const [first, setFirst] = useState("");
@@ -50,19 +29,18 @@ export default function KeySignaturesText() {
   const [third, setThird] = useState("");
   const [fourth, setFourth] = useState("");
 
-  const formInput = useExamContext();
+  const router = useRouter();
 
-  console.log("formInput", formInput);
+  const examValues = useExamContext();
+
+  console.log("examValues", examValues);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const added = await createUser(first, second, third, fourth);
     if (added) {
-      setFirst("");
-      setSecond("");
-      setThird("");
-      setFourth("");
       alert("User added successfully");
+      router.push("/exam/write-scales");
     }
   };
 
@@ -74,10 +52,10 @@ export default function KeySignaturesText() {
         height={637}
         bgcolor={"secondary.main"}
         borderRadius="var(--borderRadius)"
-        m={"auto"}
+        p={2}
         boxShadow={"0px 4px 4px rgba(0, 0, 0, 0.25)"}
       >
-        <Grid container spacing={4} m={"auto"} p={0}>
+        <Grid container spacing={4} p={2}>
           <Grid item xs={4}>
             <Stack gap={2} alignItems={"center"}>
               <Typography variant="h5" align="center">
@@ -123,9 +101,17 @@ export default function KeySignaturesText() {
                 "0px 13px 28px 0px rgba(0, 0, 0, 0.10), 0px 50px 50px 0px rgba(0, 0, 0, 0.09), 0px 113px 68px 0px rgba(0, 0, 0, 0.05), 0px 201px 80px 0px rgba(0, 0, 0, 0.01), 0px 314px 88px 0px rgba(0, 0, 0, 0.00)"
               }
             >
-              <Grid container columns={1} direction="column" p={4} spacing={2}>
+              <Grid
+                container
+                columns={1}
+                direction="column"
+                alignItems={"center"}
+                marginY={"auto"}
+                p={4}
+                spacing={2}
+              >
                 <Grid item>
-                  <Typography variant="h6" align="center">
+                  <Typography variant="h6">
                     Identify the following key signatures:
                   </Typography>
                 </Grid>
@@ -138,7 +124,7 @@ export default function KeySignaturesText() {
                   />
                 </Grid>
                 <Grid item>
-                  <form onSubmit={handleSubmit}>
+                  <form onSubmit={handleSubmit} id="keySigs">
                     <Stack direction={"row"} spacing={4}>
                       <FormInput
                         name={"input1"}
@@ -173,7 +159,7 @@ export default function KeySignaturesText() {
                         required={false}
                       />
                     </Stack>
-                    <Button type="submit">Submit</Button>
+                    {/* <Button type="submit">Submit</Button> */}
                     {/* <button type="submit">Submit</button> */}
                   </form>
                 </Grid>
@@ -183,11 +169,13 @@ export default function KeySignaturesText() {
                 <Grid item>
                   <Stack direction="row" justifyContent="center" spacing={8}>
                     <Stack gap={2}>
-                      <Typography variant="body1">Question 1/45</Typography>
+                      <Typography variant="body1">Question 2/45</Typography>
                       <ProgressBar value={4} />
                     </Stack>
                     <Button
                       variant="contained"
+                      type="submit"
+                      form="keySigs"
                       sx={{ height: "33px", marginTop: "8px" }}
                     >
                       {"Next Question >"}

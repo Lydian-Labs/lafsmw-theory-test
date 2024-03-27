@@ -12,21 +12,12 @@ import {
   Typography,
 } from "@mui/material";
 
-import Staff from "@/app/components/Staff";
-import ClassPreferenceSelector from "../../../components/ClassPreferenceSelector";
-
 import ProgressBar from "@/app/components/ProgressBar";
+import { useExamContext } from "@/app/context/examContext";
 import { instructions } from "@/app/lib/instructions";
 
-import { useRouter } from "next/navigation";
-
-export default function KeySignaturesNote() {
-  const router = useRouter();
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    router.push("/exam/key-signatures-text");
-  };
+export default function WriteScales() {
+  const examValues = useExamContext();
 
   return (
     <Container>
@@ -36,16 +27,15 @@ export default function KeySignaturesNote() {
         height={637}
         bgcolor={"secondary.main"}
         borderRadius="var(--borderRadius)"
-        m={"auto"}
+        p={2}
         boxShadow={"0px 4px 4px rgba(0, 0, 0, 0.25)"}
       >
-        <Grid container spacing={4} m={"auto"} p={0}>
+        <Grid container spacing={4} p={2}>
           <Grid item xs={4}>
             <Stack gap={2} alignItems={"center"}>
               <Typography variant="h5" align="center">
-                Section 1: Write Key Signatures
+                Section 3: Write Scales
               </Typography>
-              <ClassPreferenceSelector></ClassPreferenceSelector>
               <Box
                 width={273}
                 height={456}
@@ -86,41 +76,19 @@ export default function KeySignaturesNote() {
                 "0px 13px 28px 0px rgba(0, 0, 0, 0.10), 0px 50px 50px 0px rgba(0, 0, 0, 0.09), 0px 113px 68px 0px rgba(0, 0, 0, 0.05), 0px 201px 80px 0px rgba(0, 0, 0, 0.01), 0px 314px 88px 0px rgba(0, 0, 0, 0.00)"
               }
             >
-              <Grid container columns={1} direction="column" p={4} spacing={2}>
+              <Grid
+                container
+                columns={1}
+                direction="column"
+                alignItems={"center"}
+                marginY={"auto"}
+                p={4}
+                spacing={2}
+              >
                 <Grid item>
-                  <Typography variant="h6" align="center">
-                    Add the following key signature: Db Major
+                  <Typography variant="h6">
+                    Write the following scales:
                   </Typography>
-                </Grid>
-                <Grid item>
-                  <Staff
-                    addDoubleBarLine={true}
-                    width={472}
-                    noTimeSignature={true}
-                    numBars={1}
-                  />
-                </Grid>
-                <Grid item>
-                  <Stack
-                    direction="row"
-                    justifyContent="center"
-                    mt={2}
-                    spacing={2}
-                  >
-                    <Button variant="contained">#</Button>
-                    <Button variant="contained">b</Button>
-                  </Stack>
-                </Grid>
-                <Grid item>
-                  <Stack
-                    direction="row"
-                    justifyContent="center"
-                    mt={2}
-                    spacing={2}
-                  >
-                    <Button variant="contained">Eraser</Button>
-                    <Button variant="contained">Clear Measure</Button>
-                  </Stack>
                 </Grid>
                 <Grid item>
                   <Divider sx={{ paddingY: "16px", marginBottom: "12px" }} />
@@ -128,12 +96,11 @@ export default function KeySignaturesNote() {
                 <Grid item>
                   <Stack direction="row" justifyContent="center" spacing={8}>
                     <Stack gap={2}>
-                      <Typography variant="body1">Question 1/45</Typography>
+                      <Typography variant="body1">Question 3/45</Typography>
                       <ProgressBar value={4} />
                     </Stack>
                     <Button
                       variant="contained"
-                      onClick={handleSubmit}
                       sx={{ height: "33px", marginTop: "8px" }}
                     >
                       {"Next Question >"}

@@ -46,7 +46,7 @@ const Navbar: FC = () => {
         </div>
       </Box>
 
-      <Box gridColumn="span 1">
+      <Box gridColumn="span 1" padding={2}>
         {user !== null ? (
           <div>
             <Button variant="text" color="primary" onClick={signOutOfAppButton}>
