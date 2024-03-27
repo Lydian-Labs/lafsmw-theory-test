@@ -40,7 +40,7 @@ const instructions = [
   },
 ];
 
-export default function keySignaturesNote() {
+export default function KeySignaturesNote() {
   return (
     <Container>
       <Box

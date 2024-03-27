@@ -17,7 +17,7 @@ const SignInForm = () => {
       return console.log("signIn error:", error);
     }
     console.log("signIn result:", result);
-    router.push("/exam-new");
+    router.push("/exam/key-signatures-note");
   };
 
   return (

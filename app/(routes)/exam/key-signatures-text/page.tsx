@@ -12,12 +12,14 @@ import {
   Typography,
 } from "@mui/material";
 
-import Staff from "@/app/components/Staff";
-import ClassPreferenceSelector from "../../../components/ClassPreferenceSelector";
+import { createUser } from "@/firebase/firestore/model";
 
-import ProgressBar from "@/app/components/ProgressBar";
-import { Input } from "postcss";
+import Staff from "@/app/components/Staff";
+
 import FormInput from "@/app/components/FormInput";
+import ProgressBar from "@/app/components/ProgressBar";
+import { useState } from "react";
+import { useExamContext } from "@/app/context/examContext";
 
 const instructions = [
   {
@@ -42,7 +44,28 @@ const instructions = [
   },
 ];
 
-export default function keySignaturesText() {
+export default function KeySignaturesText() {
+  const [first, setFirst] = useState("");
+  const [second, setSecond] = useState("");
+  const [third, setThird] = useState("");
+  const [fourth, setFourth] = useState("");
+
+  const formInput = useExamContext();
+
+  console.log("formInput", formInput);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const added = await createUser(first, second, third, fourth);
+    if (added) {
+      setFirst("");
+      setSecond("");
+      setThird("");
+      setFourth("");
+      alert("User added successfully");
+    }
+  };
+
   return (
     <Container>
       <Box
@@ -115,18 +138,44 @@ export default function keySignaturesText() {
                   />
                 </Grid>
                 <Grid item>
-                  <FormInput
-                    key={1}
-                    name={"1st input"}
-                    type="text"
-                    value={""}
-                    width="70px"
-                    onChange={() => {}}
-                    // onChange={(e: ChangeEvent) =>
-                    //   setKeysInput({ ...keysInput, [key]: e.target.value })
-                    // }
-                    required={false}
-                  />
+                  <form onSubmit={handleSubmit}>
+                    <Stack direction={"row"} spacing={4}>
+                      <FormInput
+                        name={"input1"}
+                        type={"text"}
+                        value={first}
+                        width={"70px"}
+                        onChange={(e) => setFirst(e.target.value)}
+                        required={false}
+                      />
+                      <FormInput
+                        name={"input2"}
+                        type={"text"}
+                        value={second}
+                        width={"70px"}
+                        onChange={(e) => setSecond(e.target.value)}
+                        required={false}
+                      />
+                      <FormInput
+                        name={"input3"}
+                        type={"text"}
+                        value={third}
+                        width={"70px"}
+                        onChange={(e) => setThird(e.target.value)}
+                        required={false}
+                      />
+                      <FormInput
+                        name={"input4"}
+                        type={"text"}
+                        value={fourth}
+                        width={"70px"}
+                        onChange={(e) => setFourth(e.target.value)}
+                        required={false}
+                      />
+                    </Stack>
+                    <Button type="submit">Submit</Button>
+                    {/* <button type="submit">Submit</button> */}
+                  </form>
                 </Grid>
                 <Grid item>
                   <Divider sx={{ paddingY: "16px", marginBottom: "12px" }} />
