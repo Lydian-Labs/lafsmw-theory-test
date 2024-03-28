@@ -1,13 +1,13 @@
 interface FormInputProps {
   labelText?: string;
   name: string;
-  type: string;
+  type?: string;
   value: string;
   placeholder?: string;
   maxLength?: number;
   width?: string;
   onChange: any;
-  required: boolean;
+  required?: boolean;
 }
 
 export default function FormInput({

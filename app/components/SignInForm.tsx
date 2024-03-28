@@ -1,16 +1,17 @@
 import { signIn } from "@/firebase/authAPI";
 import { Button, Container, TextField, Typography } from "@mui/material";
 import Link from "next/link";
-import { ChangeEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { FormEvent } from "../lib/typesAndInterfaces";
 
-const SignInForm = () => {
+export default function SignInForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const router = useRouter();
 
-  const handleSubmit = async (event: ChangeEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
     const { result, error } = await signIn(email, password);
     if (error) {
@@ -57,6 +58,4 @@ const SignInForm = () => {
       <Link href="/forgot-password">Forgot Password?</Link>
     </Container>
   );
-};
-
-export default SignInForm;
+}

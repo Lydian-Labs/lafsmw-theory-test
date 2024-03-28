@@ -17,13 +17,14 @@ import ClassPreferenceSelector from "../../../components/ClassPreferenceSelector
 
 import ProgressBar from "@/app/components/ProgressBar";
 import { instructions } from "@/app/lib/instructions";
+import { MouseEvent } from "@/app/lib/typesAndInterfaces";
 
 import { useRouter } from "next/navigation";
 
 export default function KeySignaturesNote() {
   const router = useRouter();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: MouseEvent) => {
     e.preventDefault();
     router.push("/exam/key-signatures-text");
   };
@@ -33,13 +34,13 @@ export default function KeySignaturesNote() {
       <Box
         component="main"
         width={1139}
-        height={637}
+        height={700}
         bgcolor={"secondary.main"}
         borderRadius="var(--borderRadius)"
-        m={"auto"}
+        p={2}
         boxShadow={"0px 4px 4px rgba(0, 0, 0, 0.25)"}
       >
-        <Grid container spacing={4} m={"auto"} p={0}>
+        <Grid container spacing={4} p={2}>
           <Grid item xs={4}>
             <Stack gap={2} alignItems={"center"}>
               <Typography variant="h5" align="center">
@@ -86,9 +87,17 @@ export default function KeySignaturesNote() {
                 "0px 13px 28px 0px rgba(0, 0, 0, 0.10), 0px 50px 50px 0px rgba(0, 0, 0, 0.09), 0px 113px 68px 0px rgba(0, 0, 0, 0.05), 0px 201px 80px 0px rgba(0, 0, 0, 0.01), 0px 314px 88px 0px rgba(0, 0, 0, 0.00)"
               }
             >
-              <Grid container columns={1} direction="column" p={4} spacing={2}>
+              <Grid
+                container
+                columns={1}
+                direction="column"
+                alignItems={"center"}
+                marginY={"auto"}
+                p={4}
+                spacing={2}
+              >
                 <Grid item>
-                  <Typography variant="h6" align="center">
+                  <Typography variant="h6">
                     Add the following key signature: Db Major
                   </Typography>
                 </Grid>

@@ -1,9 +1,10 @@
 import { signUp } from "@/firebase/authAPI";
 import { Button, Container, TextField, Typography } from "@mui/material";
-import { ChangeEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { FormEvent } from "../lib/typesAndInterfaces";
 
-const SignUpForm = () => {
+export default function SignUpForm() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -11,7 +12,7 @@ const SignUpForm = () => {
 
   const router = useRouter();
 
-  const handleSubmit = async (event: ChangeEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
     const { result, error } = await signUp(
       email,
@@ -77,6 +78,4 @@ const SignUpForm = () => {
       </form>
     </Container>
   );
-};
-
-export default SignUpForm;
+}

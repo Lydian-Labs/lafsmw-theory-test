@@ -20,8 +20,9 @@ import FormInput from "@/app/components/FormInput";
 import ProgressBar from "@/app/components/ProgressBar";
 import { useExamContext } from "@/app/context/examContext";
 import { instructions } from "@/app/lib/instructions";
+import { FormEvent } from "@/app/lib/typesAndInterfaces";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 
 export default function KeySignaturesText() {
   const [first, setFirst] = useState("");
@@ -35,7 +36,7 @@ export default function KeySignaturesText() {
 
   console.log("examValues", examValues);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const added = await createUser(first, second, third, fourth);
     if (added) {
@@ -128,39 +129,37 @@ export default function KeySignaturesText() {
                     <Stack direction={"row"} spacing={4}>
                       <FormInput
                         name={"input1"}
-                        type={"text"}
                         value={first}
                         width={"70px"}
-                        onChange={(e) => setFirst(e.target.value)}
-                        required={false}
+                        onChange={(e: {
+                          target: { value: SetStateAction<string> };
+                        }) => setFirst(e.target.value)}
                       />
                       <FormInput
                         name={"input2"}
-                        type={"text"}
                         value={second}
                         width={"70px"}
-                        onChange={(e) => setSecond(e.target.value)}
-                        required={false}
+                        onChange={(e: {
+                          target: { value: SetStateAction<string> };
+                        }) => setSecond(e.target.value)}
                       />
                       <FormInput
                         name={"input3"}
-                        type={"text"}
                         value={third}
                         width={"70px"}
-                        onChange={(e) => setThird(e.target.value)}
-                        required={false}
+                        onChange={(e: {
+                          target: { value: SetStateAction<string> };
+                        }) => setThird(e.target.value)}
                       />
                       <FormInput
                         name={"input4"}
-                        type={"text"}
                         value={fourth}
                         width={"70px"}
-                        onChange={(e) => setFourth(e.target.value)}
-                        required={false}
+                        onChange={(e: {
+                          target: { value: SetStateAction<string> };
+                        }) => setFourth(e.target.value)}
                       />
                     </Stack>
-                    {/* <Button type="submit">Submit</Button> */}
-                    {/* <button type="submit">Submit</button> */}
                   </form>
                 </Grid>
                 <Grid item>
