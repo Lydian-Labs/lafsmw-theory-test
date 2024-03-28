@@ -15,6 +15,7 @@ export async function signUp(email, password, displayName) {
     if (displayName) {
       const user = auth.currentUser;
       user.displayName = displayName;
+      console.log("user:", user);
     }
   } catch (e) {
     error = e;

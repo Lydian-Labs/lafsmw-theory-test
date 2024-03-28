@@ -7,13 +7,15 @@ import {
 } from "firebase/firestore";
 import { db } from "../config";
 
-export async function createUser(first, second, third, fourth) {
+export async function addKeySigData(first, second, third, fourth) {
   try {
     const docRef = await addDoc(collection(db, "users"), {
       first: first,
       second: second,
       third: third,
       fourth: fourth,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
     });
     console.log("Document written with ID: ", docRef.id);
     return true;

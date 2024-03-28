@@ -2,6 +2,8 @@
 import React, { useContext, useEffect, useState, ReactNode } from "react";
 import ExamContext from "./createExamContext";
 import { InputData } from "../lib/typesAndInterfaces";
+import { collection, query, getDocs } from "firebase/firestore";
+import { db } from "@/firebase/config";
 
 type ExamContextType = {
   children: ReactNode;
@@ -18,6 +20,7 @@ type Level =
   | "";
 
 type InputState = {
+  user: any;
   level: Level;
   keySignatures: InputData;
   chords: InputData;
@@ -26,6 +29,7 @@ type InputState = {
 };
 
 const initialFormInputState: InputState = {
+  user: null,
   level: "",
   keySignatures: {},
   chords: {},
@@ -37,8 +41,22 @@ export default function ExamContextProvider({ children }: ExamContextType) {
   const [formInput, setFormInput] = useState<InputState>(initialFormInputState);
 
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<null | any>(null);
+
+  async function getAndSetUser() {
+    const q = query(collection(db, "users"));
+
+    const querySnapshot = await getDocs(q);
+    setUser(querySnapshot);
+    setFormInput({ ...formInput, user: querySnapshot });
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      console.log(doc.id, " => ", doc.data());
+    });
+  }
 
   useEffect(() => {
+    getAndSetUser();
     setLoading(false);
   }, []);
 
