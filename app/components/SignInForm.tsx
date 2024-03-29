@@ -13,11 +13,7 @@ export default function SignInForm() {
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
-    const { result, error } = await signIn(email, password);
-    if (error) {
-      return console.log("signIn error:", error);
-    }
-    console.log("signIn result:", result);
+    await signIn(email, password);
     router.push("/exam/key-signatures-note");
   };
 
