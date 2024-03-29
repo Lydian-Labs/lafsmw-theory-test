@@ -7,11 +7,11 @@ import { useRouter } from "next/navigation";
 
 export default function Home() {
   const { user } = useAuthContext();
-  console.log("user:", user);
-  // const router = useRouter();
-  // if (user) {
-  //   router.push("/exam/key-signatures-note");
-  // }
+  console.log("user (Home page):", user);
+  const router = useRouter();
+  if (user) {
+    router.push("/exam/key-signatures-note");
+  }
 
   return (
     <main className="flex min-h-[500px] flex-col items-center justify-start mt-12 gap-20">

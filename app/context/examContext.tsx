@@ -43,22 +43,26 @@ export default function ExamContextProvider({ children }: ExamContextType) {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<null | any>(null);
 
-  const userRef = auth.currentUser;
-
-  async function getAndSetUser() {
+  async function getUsersSnapshot() {
     const q = query(collection(db, "users"));
     const querySnapshot = await getDocs(q);
 
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      console.log(doc.id, " => ", doc.data());
+    });
+  }
+
+  async function getAndSetUser() {
+    const userRef = auth.currentUser;
     setUser(userRef?.displayName);
     setFormInput({ ...formInput, user: userRef?.displayName });
-    console.log("name?", formInput.user);
-    // querySnapshot.forEach((doc) => {
-    //   // doc.data() is never undefined for query doc snapshots
-    //   console.log(doc.id, " => ", doc.data());
-    // });
+    console.log("name from user", user);
+    console.log("name from formInput?", formInput.user);
   }
 
   useEffect(() => {
+    getUsersSnapshot();
     getAndSetUser();
     setLoading(false);
   }, []);

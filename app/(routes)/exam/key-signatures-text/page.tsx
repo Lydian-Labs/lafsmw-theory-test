@@ -12,7 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import { addKeySigData } from "@/firebase/firestore/model";
+import { addKeySigData, setKeySigData } from "@/firebase/firestore/model";
 
 import Staff from "@/app/components/Staff";
 
@@ -33,14 +33,13 @@ export default function KeySignaturesText() {
   const router = useRouter();
 
   const examValues = useExamContext();
-
-  console.log("examValues:", examValues);
+  const { user } = examValues;
+  console.log("examValues user:", user);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    const added = await addKeySigData(first, second, third, fourth);
+    const added = await setKeySigData(first, second, third, fourth, user);
     if (added) {
-      alert("User added successfully");
       router.push("/exam/write-scales");
     }
   };
