@@ -22,11 +22,10 @@ import { MouseEvent } from "@/app/lib/typesAndInterfaces";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useExamContext } from "@/app/context/examContext";
-import { setLevelData } from "@/firebase/firestore/model";
+import { setStudentData } from "@/firebase/firestore/model";
 import { initialFormInputState } from "@/app/lib/initialStates";
 
 export default function KeySignaturesNote() {
-  const [level, setLevel] = useState("");
   const [formInput, setFormInput] = useState(initialFormInputState);
 
   const router = useRouter();
@@ -38,8 +37,10 @@ export default function KeySignaturesNote() {
   const handleSubmit = async (e: MouseEvent) => {
     e.preventDefault();
     console.log("formInput:", formInput);
-    // const added = await setLevelData(level, user);
-    // router.push("/exam/key-signatures-text");
+    const added = await setStudentData(formInput, user);
+    if (added) {
+      router.push("/exam/key-signatures-text");
+    }
   };
 
   return (

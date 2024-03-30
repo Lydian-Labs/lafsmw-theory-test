@@ -12,7 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import { setKeySigData } from "@/firebase/firestore/model";
+import { setStudentData } from "@/firebase/firestore/model";
 
 import Staff from "@/app/components/Staff";
 
@@ -23,21 +23,38 @@ import { instructions } from "@/app/lib/instructions";
 import { FormEvent } from "@/app/lib/typesAndInterfaces";
 import { useRouter } from "next/navigation";
 import { SetStateAction, useState } from "react";
+import { initialFormInputState } from "@/app/lib/initialStates";
 
 export default function KeySignaturesText() {
-  const [first, setFirst] = useState("");
-  const [second, setSecond] = useState("");
-  const [third, setThird] = useState("");
-  const [fourth, setFourth] = useState("");
+  const examValues = useExamContext();
+  const { user } = examValues;
+  const [keySigText, setKeySigText] = useState({
+    input1: "",
+    input2: "",
+    input3: "",
+    input4: "",
+  });
+  const [formInput, setFormInput] = useState(examValues);
 
   const router = useRouter();
 
-  const examValues = useExamContext();
-  const { user } = examValues;
+  const handleInputChange = (e: {
+    target: {
+      name: string;
+      value: SetStateAction<string>;
+    };
+  }) => {
+    setKeySigText({ ...keySigText, [e.target.name]: e.target.value });
+    setFormInput({
+      ...formInput,
+      keySignatures: keySigText,
+    });
+  };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    const added = await setKeySigData(first, second, third, fourth, user);
+
+    const added = await setStudentData(formInput, user);
     if (added) {
       router.push("/exam/write-scales");
     }
@@ -127,35 +144,27 @@ export default function KeySignaturesText() {
                     <Stack direction={"row"} spacing={4}>
                       <FormInput
                         name={"input1"}
-                        value={first}
+                        value={keySigText.input1}
                         width={"70px"}
-                        onChange={(e: {
-                          target: { value: SetStateAction<string> };
-                        }) => setFirst(e.target.value)}
+                        onChange={handleInputChange}
                       />
                       <FormInput
                         name={"input2"}
-                        value={second}
+                        value={keySigText.input2}
                         width={"70px"}
-                        onChange={(e: {
-                          target: { value: SetStateAction<string> };
-                        }) => setSecond(e.target.value)}
+                        onChange={handleInputChange}
                       />
                       <FormInput
                         name={"input3"}
-                        value={third}
+                        value={keySigText.input3}
                         width={"70px"}
-                        onChange={(e: {
-                          target: { value: SetStateAction<string> };
-                        }) => setThird(e.target.value)}
+                        onChange={handleInputChange}
                       />
                       <FormInput
                         name={"input4"}
-                        value={fourth}
+                        value={keySigText.input4}
                         width={"70px"}
-                        onChange={(e: {
-                          target: { value: SetStateAction<string> };
-                        }) => setFourth(e.target.value)}
+                        onChange={handleInputChange}
                       />
                     </Stack>
                   </form>

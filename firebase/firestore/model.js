@@ -23,15 +23,15 @@ export async function setKeySigData(first, second, third, fourth, currentUser) {
   }
 }
 
-export async function setLevelData(level, currentUser) {
+export async function setStudentData(formInput, currentUser) {
   try {
-    await setDoc(doc(db, `${currentUser}`, "level"), {
-      level: level,
+    await setDoc(doc(db, `${currentUser}`, "formInput"), {
+      formInput: formInput,
       updatedAt: serverTimestamp(),
     });
     return true;
   } catch (e) {
-    console.error("setLevel error: ", e);
+    console.error("setStudentData error: ", e);
     return false;
   }
 }
