@@ -12,7 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import { addKeySigData, setKeySigData } from "@/firebase/firestore/model";
+import { setKeySigData } from "@/firebase/firestore/model";
 
 import Staff from "@/app/components/Staff";
 
@@ -34,7 +34,6 @@ export default function KeySignaturesText() {
 
   const examValues = useExamContext();
   const { user } = examValues;
-  console.log("examValues user:", user);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();

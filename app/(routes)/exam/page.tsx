@@ -1,4 +1,5 @@
 "use client";
+import { initialFormInputState } from "@/app/lib/initialStates";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import html2canvas from "html2canvas";
@@ -16,33 +17,7 @@ import scalesText from "../../lib/data/scalesText";
 import seventhChords from "../../lib/data/seventhChords";
 import seventhChordsText from "../../lib/data/seventhChordsText";
 import triadsText from "../../lib/data/triadsText";
-import { InputData, SelectEvent } from "../../lib/typesAndInterfaces";
-
-type Level =
-  | "advanced-theory"
-  | "advanced-improvisation"
-  | "intro-to-arranging"
-  | "intermediate-arranging"
-  | "advanced-arranging"
-  | "rhythm-class"
-  | "sibelius-class"
-  | "";
-
-type InputState = {
-  level: Level;
-  keySignatures: InputData;
-  chords: InputData;
-  progressions: InputData;
-  blues: InputData;
-};
-
-const initialFormInputState: InputState = {
-  level: "",
-  keySignatures: {},
-  chords: {},
-  progressions: {},
-  blues: {},
-};
+import { InputData, Level, SelectEvent } from "../../lib/typesAndInterfaces";
 
 export default function ExamOriginal() {
   const [formInput, setFormInput] = useState(initialFormInputState);

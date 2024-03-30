@@ -1,4 +1,3 @@
-import React, { ReactNode, useState } from "react";
 import {
   FormControl,
   InputLabel,
@@ -6,35 +5,16 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
+import { useState } from "react";
+import { Level } from "../lib/typesAndInterfaces";
 
-type Level =
-  | "advanced-theory"
-  | "advanced-improvisation"
-  | "intro-to-arranging"
-  | "intermediate-arranging"
-  | "advanced-arranging"
-  | "rhythm-class"
-  | "sibelius-class"
-  | "";
-
-type InputState = {
-  level: Level;
-  keySignatures: {};
-  chords: {};
-  progressions: {};
-  blues: {};
-};
-
-const initialFormInputState: InputState = {
-  level: "",
-  keySignatures: {},
-  chords: {},
-  progressions: {},
-  blues: {},
-};
-
-export default function ClassPreferenceSelector() {
-  const [formInput, setFormInput] = useState(initialFormInputState);
+export default function ClassPreferenceSelector({
+  setFormInput,
+  formInput,
+}: {
+  setFormInput: any;
+  formInput: any;
+}) {
   const [selectedValue, setSelectedValue] = useState("sibelius-class");
 
   // const handleSubmit = async (event: ChangeEvent<HTMLFormElement>) => {
@@ -45,14 +25,20 @@ export default function ClassPreferenceSelector() {
   //   setLoading(false);
   // };
 
-  const handleLevel = (event: SelectChangeEvent<string>, child: ReactNode) => {
-    setFormInput((prev) => {
-      return {
-        ...prev,
-        level: event.target.value as Level,
-      };
-    });
-  };
+  // const handleLevel = (event: SelectChangeEvent) => {
+  //   setFormInput((formInput) => {
+  //     return {
+  //       ...formInput,
+  //       level: event.target.value as Level,
+  //     };
+  //   });
+  // };
+
+  function handleLevel(event: SelectChangeEvent) {
+    const selectedLevel = event.target.value as Level;
+    setSelectedValue(selectedLevel);
+    setFormInput({ ...formInput, level: selectedLevel });
+  }
 
   return (
     <FormControl>

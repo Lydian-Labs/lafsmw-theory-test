@@ -1,41 +1,10 @@
 "use client";
-import React, { useContext, useEffect, useState, ReactNode } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import ExamContext from "./createExamContext";
-import { InputData } from "../lib/typesAndInterfaces";
+import { ExamContextType, InputState } from "../lib/typesAndInterfaces";
 import { collection, query, getDocs } from "firebase/firestore";
 import { db, auth } from "@/firebase/config";
-
-type ExamContextType = {
-  children: ReactNode;
-};
-
-type Level =
-  | "advanced-theory"
-  | "advanced-improvisation"
-  | "intro-to-arranging"
-  | "intermediate-arranging"
-  | "advanced-arranging"
-  | "rhythm-class"
-  | "sibelius-class"
-  | "";
-
-type InputState = {
-  user: any;
-  level: Level;
-  keySignatures: InputData;
-  chords: InputData;
-  progressions: InputData;
-  blues: InputData;
-};
-
-const initialFormInputState: InputState = {
-  user: null,
-  level: "",
-  keySignatures: {},
-  chords: {},
-  progressions: {},
-  blues: {},
-};
+import { initialFormInputState } from "../lib/initialStates";
 
 export default function ExamContextProvider({ children }: ExamContextType) {
   const [formInput, setFormInput] = useState<InputState>(initialFormInputState);

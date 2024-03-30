@@ -1,4 +1,4 @@
-import { Dispatch, RefObject, SetStateAction } from "react";
+import { Dispatch, ReactNode, RefObject, SetStateAction } from "react";
 import VexFlow, { IRenderContext } from "vexflow";
 const VF = VexFlow.Flow;
 const { StaveNote, Stave, Renderer, Glyph } = VF;
@@ -16,6 +16,29 @@ export type InputData = {
 export type Chord = {
   keys: string[];
   duration: string;
+};
+
+export type ExamContextType = {
+  children: ReactNode;
+};
+
+export type Level =
+  | "advanced-theory"
+  | "advanced-improvisation"
+  | "intro-to-arranging"
+  | "intermediate-arranging"
+  | "advanced-arranging"
+  | "rhythm-class"
+  | "sibelius-class"
+  | "";
+
+export type InputState = {
+  user: any;
+  level: Level;
+  keySignatures: InputData;
+  chords: InputData;
+  progressions: InputData;
+  blues: InputData;
 };
 
 export type RendererRef = RefObject<InstanceType<typeof Renderer>>;

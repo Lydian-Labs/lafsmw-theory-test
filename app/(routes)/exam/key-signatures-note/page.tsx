@@ -20,13 +20,26 @@ import { instructions } from "@/app/lib/instructions";
 import { MouseEvent } from "@/app/lib/typesAndInterfaces";
 
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useExamContext } from "@/app/context/examContext";
+import { setLevelData } from "@/firebase/firestore/model";
+import { initialFormInputState } from "@/app/lib/initialStates";
 
 export default function KeySignaturesNote() {
+  const [level, setLevel] = useState("");
+  const [formInput, setFormInput] = useState(initialFormInputState);
+
   const router = useRouter();
+
+  const examValues = useExamContext();
+  const { user } = examValues;
+  console.log("examValues user:", user);
 
   const handleSubmit = async (e: MouseEvent) => {
     e.preventDefault();
-    router.push("/exam/key-signatures-text");
+    console.log("formInput:", formInput);
+    // const added = await setLevelData(level, user);
+    // router.push("/exam/key-signatures-text");
   };
 
   return (
@@ -46,7 +59,10 @@ export default function KeySignaturesNote() {
               <Typography variant="h5" align="center">
                 Section 1: Write Key Signatures
               </Typography>
-              <ClassPreferenceSelector></ClassPreferenceSelector>
+              <ClassPreferenceSelector
+                formInput={formInput}
+                setFormInput={setFormInput}
+              ></ClassPreferenceSelector>
               <Box
                 width={273}
                 height={456}
