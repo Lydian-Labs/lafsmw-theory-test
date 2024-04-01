@@ -2,37 +2,74 @@ import {
   collection,
   doc,
   addDoc,
+  getDoc,
+  getDocs,
   setDoc,
+  updateDoc,
   serverTimestamp,
 } from "firebase/firestore";
 import { db } from "../config";
 
-export async function setKeySigData(first, second, third, fourth, currentUser) {
-  try {
-    await setDoc(doc(db, `${currentUser}`, "keySigsText1"), {
-      first: first,
-      second: second,
-      third: third,
-      fourth: fourth,
-      updatedAt: serverTimestamp(),
-    });
-    return true;
-  } catch (e) {
-    console.error("setKeySigData error: ", e);
-    return false;
-  }
-}
+const testCollectionRef = collection(db, "users");
+const docRef = collection(db, "users");
 
 export async function setStudentData(formInput, currentUser) {
   try {
     await setDoc(doc(db, `${currentUser}`, "formInput"), {
       formInput: formInput,
-      updatedAt: serverTimestamp(),
+      createdAt: serverTimestamp(),
     });
     return true;
   } catch (e) {
     console.error("setStudentData error: ", e);
     return false;
+  }
+}
+
+export async function updateStudentData(formInput, currentUser) {
+  try {
+    const docRef = doc(db, `${currentUser}`, "formInput");
+    await updateDoc(docRef, {
+      formInput: formInput,
+      updatedAt: serverTimestamp(),
+    });
+    return true;
+  } catch (e) {
+    console.error("updateStudentData error: ", e);
+    return false;
+  }
+}
+
+export async function setOrUpdateStudentData(formInput, currentUser) {
+  try {
+    const docRef = doc(db, `${currentUser}`, "formInput");
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      await updateStudentData(formInput, currentUser);
+    } else {
+      await setStudentData(formInput, currentUser);
+    }
+    return true;
+  } catch (e) {
+    console.error("setOrUpdateStudentData error: ", e);
+    return false;
+  }
+}
+
+export async function getDataFromUser(currentUser) {
+  try {
+    const docRef = doc(db, `${currentUser}`, "formInput");
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      console.log("Document data:", docSnap.data());
+    } else {
+      // docSnap.data() will be undefined in this case
+      console.log("No such document!");
+    }
+  } catch (err) {
+    console.error("getDataFromUser error:", err);
   }
 }
 

@@ -14,7 +14,7 @@ export async function signUp(email, password, displayName) {
     await updateProfile(auth.currentUser, { displayName: displayName }).catch(
       (err) => console.log("updateProfile error:", err)
     );
-    console.log("currentUser:", auth.currentUser);
+    console.log("Sign in successfull! CurrentUser:", auth.currentUser);
   } catch (err) {
     console.log("signUp error:", err);
   }
@@ -25,7 +25,7 @@ export async function signIn(email, password) {
     await signInWithEmailAndPassword(auth, email, password).catch((err) => {
       console.log("signInWithEmailAndPassword error:", err);
     });
-    console.log("currentUser:", auth.currentUser);
+    console.log("Sign in successfull! CurrentUser:", auth.currentUser);
   } catch (err) {
     console.log("signIn error:", err);
   }

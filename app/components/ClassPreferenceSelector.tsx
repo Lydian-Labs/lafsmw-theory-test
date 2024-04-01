@@ -17,23 +17,6 @@ export default function ClassPreferenceSelector({
 }) {
   const [selectedValue, setSelectedValue] = useState("sibelius-class");
 
-  // const handleSubmit = async (event: ChangeEvent<HTMLFormElement>) => {
-  //   event.preventDefault();
-  //   setLoading(true);
-  //   setSelectedValue(event.target.value);
-  //   console.log("formInput:", formInput);
-  //   setLoading(false);
-  // };
-
-  // const handleLevel = (event: SelectChangeEvent) => {
-  //   setFormInput((formInput) => {
-  //     return {
-  //       ...formInput,
-  //       level: event.target.value as Level,
-  //     };
-  //   });
-  // };
-
   function handleLevel(event: SelectChangeEvent) {
     const selectedLevel = event.target.value as Level;
     setSelectedValue(selectedLevel);

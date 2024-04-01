@@ -12,7 +12,10 @@ import {
   Typography,
 } from "@mui/material";
 
-import { setStudentData } from "@/firebase/firestore/model";
+import {
+  setOrUpdateStudentData,
+  getDataFromUser,
+} from "@/firebase/firestore/model";
 
 import Staff from "@/app/components/Staff";
 
@@ -23,10 +26,10 @@ import { instructions } from "@/app/lib/instructions";
 import { FormEvent } from "@/app/lib/typesAndInterfaces";
 import { useRouter } from "next/navigation";
 import { SetStateAction, useState } from "react";
-import { initialFormInputState } from "@/app/lib/initialStates";
 
 export default function KeySignaturesText() {
   const examValues = useExamContext();
+  console.log("examValues:", examValues);
   const { user } = examValues;
   const [keySigText, setKeySigText] = useState({
     input1: "",
@@ -34,7 +37,8 @@ export default function KeySignaturesText() {
     input3: "",
     input4: "",
   });
-  const [formInput, setFormInput] = useState(examValues);
+
+  console.log("getDataFromUser in keySigs text:", getDataFromUser(user));
 
   const router = useRouter();
 
@@ -45,16 +49,15 @@ export default function KeySignaturesText() {
     };
   }) => {
     setKeySigText({ ...keySigText, [e.target.name]: e.target.value });
-    setFormInput({
-      ...formInput,
-      keySignatures: keySigText,
-    });
   };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-
-    const added = await setStudentData(formInput, user);
+    const payload = {
+      ...examValues,
+      keySignatures: keySigText,
+    };
+    const added = await setOrUpdateStudentData(payload, user);
     if (added) {
       router.push("/exam/write-scales");
     }

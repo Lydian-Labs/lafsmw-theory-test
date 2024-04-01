@@ -22,22 +22,18 @@ import { MouseEvent } from "@/app/lib/typesAndInterfaces";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useExamContext } from "@/app/context/examContext";
-import { setStudentData } from "@/firebase/firestore/model";
-import { initialFormInputState } from "@/app/lib/initialStates";
+import { setOrUpdateStudentData } from "@/firebase/firestore/model";
 
 export default function KeySignaturesNote() {
-  const [formInput, setFormInput] = useState(initialFormInputState);
+  const examValues = useExamContext();
+  const { user } = examValues;
+  const [formInput, setFormInput] = useState(examValues);
 
   const router = useRouter();
 
-  const examValues = useExamContext();
-  const { user } = examValues;
-  console.log("examValues user:", user);
-
   const handleSubmit = async (e: MouseEvent) => {
     e.preventDefault();
-    console.log("formInput:", formInput);
-    const added = await setStudentData(formInput, user);
+    const added = await setOrUpdateStudentData(formInput, user);
     if (added) {
       router.push("/exam/key-signatures-text");
     }
