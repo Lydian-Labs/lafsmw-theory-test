@@ -13,10 +13,10 @@ import { db } from "../config";
 const testCollectionRef = collection(db, "users");
 const docRef = collection(db, "users");
 
-export async function setStudentData(formInput, currentUser) {
+async function setStudentData(formInput, currentUser) {
   try {
     await setDoc(doc(db, `${currentUser}`, "formInput"), {
-      formInput: formInput,
+      ...formInput,
       createdAt: serverTimestamp(),
     });
     return true;
@@ -26,11 +26,11 @@ export async function setStudentData(formInput, currentUser) {
   }
 }
 
-export async function updateStudentData(formInput, currentUser) {
+async function updateStudentData(formInput, currentUser) {
   try {
     const docRef = doc(db, `${currentUser}`, "formInput");
     await updateDoc(docRef, {
-      formInput: formInput,
+      ...formInput,
       updatedAt: serverTimestamp(),
     });
     return true;
@@ -44,6 +44,7 @@ export async function setOrUpdateStudentData(formInput, currentUser) {
   try {
     const docRef = doc(db, `${currentUser}`, "formInput");
     const docSnap = await getDoc(docRef);
+    console.log("docSnap.exists(): ", docSnap.exists());
 
     if (docSnap.exists()) {
       await updateStudentData(formInput, currentUser);
@@ -65,8 +66,7 @@ export async function getDataFromUser(currentUser) {
     if (docSnap.exists()) {
       console.log("Document data:", docSnap.data());
     } else {
-      // docSnap.data() will be undefined in this case
-      console.log("No such document!");
+      console.log("No such document! docSnap.data() is undefined.");
     }
   } catch (err) {
     console.error("getDataFromUser error:", err);

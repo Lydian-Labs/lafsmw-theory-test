@@ -5,22 +5,18 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
-import { useState } from "react";
 import { Level } from "../lib/typesAndInterfaces";
 
 export default function ClassPreferenceSelector({
-  setFormInput,
-  formInput,
+  setLevel,
+  level,
 }: {
-  setFormInput: any;
-  formInput: any;
+  setLevel: any;
+  level: any;
 }) {
-  const [selectedValue, setSelectedValue] = useState("sibelius-class");
-
   function handleLevel(event: SelectChangeEvent) {
     const selectedLevel = event.target.value as Level;
-    setSelectedValue(selectedLevel);
-    setFormInput({ ...formInput, level: selectedLevel });
+    setLevel(selectedLevel);
   }
 
   return (
@@ -29,7 +25,7 @@ export default function ClassPreferenceSelector({
       <Select
         labelId="class-preference-label"
         id="class-preference-select"
-        value={selectedValue}
+        value={level}
         label="Class Preference"
         onChange={handleLevel}
       >

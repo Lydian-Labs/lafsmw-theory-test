@@ -19,21 +19,26 @@ import ProgressBar from "@/app/components/ProgressBar";
 import { instructions } from "@/app/lib/instructions";
 import { MouseEvent } from "@/app/lib/typesAndInterfaces";
 
-import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { useExamContext } from "@/app/context/examContext";
 import { setOrUpdateStudentData } from "@/firebase/firestore/model";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function KeySignaturesNote() {
   const examValues = useExamContext();
   const { user } = examValues;
-  const [formInput, setFormInput] = useState(examValues);
+  const [level, setLevel] = useState("sibelius-class");
 
   const router = useRouter();
 
   const handleSubmit = async (e: MouseEvent) => {
     e.preventDefault();
-    const added = await setOrUpdateStudentData(formInput, user);
+    const payload = {
+      ...examValues,
+      level: level,
+    };
+    console.log("payload in handleSubmit:", payload);
+    const added = await setOrUpdateStudentData(payload, user);
     if (added) {
       router.push("/exam/key-signatures-text");
     }
@@ -57,8 +62,8 @@ export default function KeySignaturesNote() {
                 Section 1: Write Key Signatures
               </Typography>
               <ClassPreferenceSelector
-                formInput={formInput}
-                setFormInput={setFormInput}
+                level={level}
+                setLevel={setLevel}
               ></ClassPreferenceSelector>
               <Box
                 width={273}

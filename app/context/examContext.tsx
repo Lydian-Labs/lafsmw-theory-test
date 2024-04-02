@@ -1,65 +1,48 @@
 "use client";
-import React, { use, useContext, useEffect, useState } from "react";
-import ExamContext from "./createExamContext";
-import { ExamContextType, InputState } from "../lib/typesAndInterfaces";
-import { collection, query, getDocs, doc, getDoc } from "firebase/firestore";
-import { db, auth } from "@/firebase/config";
+import { auth, db } from "@/firebase/config";
+import { doc, getDoc } from "firebase/firestore";
+import { useContext, useEffect, useState } from "react";
 import { initialFormInputState } from "../lib/initialStates";
+import { ExamContextType } from "../lib/typesAndInterfaces";
+import ExamContext from "./createExamContext";
 
 export default function ExamContextProvider({ children }: ExamContextType) {
-  const [formInput, setFormInput] = useState<any>(initialFormInputState);
   const userRef = auth.currentUser;
+  const newFormInput = { ...initialFormInputState, user: userRef?.displayName };
+  const [formInput, setFormInput] = useState<any>(newFormInput);
+  console.log("newFormInput in ExamContextProvider:", newFormInput);
 
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState<null | any>(userRef?.displayName);
+  // const [user, setUser] = useState<null | any>(userRef?.displayName);
 
-  async function getUsersSnapshot(currentUser: string) {
+  async function getUsersSnapshot(currentUser: string | null | undefined) {
     try {
       const docRef = doc(db, `${currentUser}`, "formInput");
       const docSnap = await getDoc(docRef);
-      // console.log(
-      //   "docSnap.data().formInput in getUsersSnapshot:",
-      //   docSnap.data()?.formInput
-      // );
-
       if (docSnap.exists()) {
-        // console.log("Document data from examContext:", docSnap.data());
         setFormInput(docSnap.data().formInput);
-        console.log("formInput after getUsersSnapshot:", formInput);
+        console.log(
+          "formInput after getUsersSnapshot docSnap data:",
+          formInput
+        );
       } else {
-        // docSnap.data() will be undefined in this case
-        console.log("No such document!");
+        console.log("No such document! docSnap.data() is undefined");
       }
     } catch (err) {
-      console.error("getDataFromUser error:", err);
+      console.error("getUsersSnapshot error:", err);
     }
   }
-  // async function getUsersSnapshot() {
-  //   const q = query(collection(db, "users"));
-  //   const querySnapshot = await getDocs(q);
 
-  //   querySnapshot.forEach((doc) => {
-  //     // doc.data() is never undefined for query doc snapshots
-  //     console.log(doc.id, " => ", doc.data());
-  //   });
+  // function getAndSetUser() {
+  //   console.log("user in getAndSetUser:", user);
+  //   if (!user) {
+  //     setUser(userRef?.displayName);
+  //   }
+  //   getUsersSnapshot(user);
   // }
 
-  async function getAndSetUser() {
-    if (!user) {
-      setUser(userRef?.displayName);
-    }
-    getUsersSnapshot(user);
-    // setFormInput({
-    //   ...formInput,
-    //   user: userRef?.displayName,
-    //   blues: { beginner: "1", intermediate: "1", advanced: "1" }
-    // });
-  }
-
   useEffect(() => {
-    getAndSetUser();
-    // getUsersSnapshot(user);
-    console.log("formInput after examContext useEffect:", formInput);
+    getUsersSnapshot(userRef?.displayName);
     setLoading(false);
   }, []);
 

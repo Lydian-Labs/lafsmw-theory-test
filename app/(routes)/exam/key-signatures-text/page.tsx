@@ -13,8 +13,8 @@ import {
 } from "@mui/material";
 
 import {
-  setOrUpdateStudentData,
   getDataFromUser,
+  setOrUpdateStudentData,
 } from "@/firebase/firestore/model";
 
 import Staff from "@/app/components/Staff";
@@ -38,7 +38,7 @@ export default function KeySignaturesText() {
     input4: "",
   });
 
-  console.log("getDataFromUser in keySigs text:", getDataFromUser(user));
+  // console.log("getDataFromUser in keySigs text:", getDataFromUser(user));
 
   const router = useRouter();
 
