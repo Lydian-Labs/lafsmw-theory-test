@@ -37,10 +37,7 @@ const Navbar: FC = () => {
               <Link href="/exam/original">Exam Original</Link>
             </li>
             <li className="p-4">
-              <Link href="/exam/key-signatures-note">Section 1</Link>
-            </li>
-            <li className="p-4">
-              <Link href="/exam/key-signatures-text">Section 2</Link>
+              <Link href="/exam">Exam New</Link>
             </li>
           </ul>
         </div>

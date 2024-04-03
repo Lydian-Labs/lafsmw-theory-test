@@ -16,7 +16,7 @@ export async function getUserSnapshot() {
   const currentUser = auth.currentUser?.displayName;
   try {
     if (!currentUser) {
-      throw new Error("No current user");
+      throw new Error("No current user found.");
     }
     const q = query(collection(db, currentUser));
     const querySnapshot = await getDocs(q);

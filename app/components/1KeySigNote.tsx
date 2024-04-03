@@ -19,39 +19,21 @@ import ProgressBar from "@/app/components/ProgressBar";
 import { instructions } from "@/app/lib/instructions";
 import { MouseEvent } from "@/app/lib/typesAndInterfaces";
 
-import { useExamContext } from "@/app/context/examContext";
-import { setOrUpdateStudentData } from "@/firebase/firestore/model";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { auth } from "@/firebase/config";
+import { useState } from "react";
 
-export default function KeySignaturesNote() {
-  const examValues = useExamContext();
-  const [user, setUser] = useState<null | any>(auth.currentUser?.displayName);
+export default function KeySignaturesNote({
+  currentUserData,
+  setCurrentUserData,
+}) {
   const [level, setLevel] = useState("sibelius-class");
-
-  const router = useRouter();
-
-  // async function ExamData() {
-  //   examValues = useExamContext();
-  //   console.log("examValues in ExamData:", examValues);
-  // }
-
-  // useEffect(() => {
-  //   ExamData();
-  // }, [user]);
 
   const handleSubmit = async (e: MouseEvent) => {
     e.preventDefault();
     const payload = {
-      ...examValues,
+      ...currentUserData,
       level: level,
     };
-    console.log("payload in handleSubmit:", payload);
-    const added = await setOrUpdateStudentData(payload, user);
-    if (added) {
-      router.push("/exam/key-signatures-text");
-    }
+    setCurrentUserData(payload);
   };
 
   return (
@@ -173,7 +155,7 @@ export default function KeySignaturesNote() {
                       onClick={handleSubmit}
                       sx={{ height: "33px", marginTop: "8px" }}
                     >
-                      {"Next Question >"}
+                      {"Submit"}
                     </Button>
                   </Stack>
                 </Grid>
