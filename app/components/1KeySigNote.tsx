@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 
 import Staff from "@/app/components/Staff";
-import ClassPreferenceSelector from "../../../components/ClassPreferenceSelector";
+import ClassPreferenceSelector from "./ClassPreferenceSelector";
 
 import ProgressBar from "@/app/components/ProgressBar";
 import { instructions } from "@/app/lib/instructions";

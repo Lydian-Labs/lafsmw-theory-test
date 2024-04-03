@@ -7,11 +7,39 @@ import {
   setDoc,
   updateDoc,
   serverTimestamp,
+  query,
 } from "firebase/firestore";
-import { db } from "../config";
+import { db, auth } from "../config";
 
-const testCollectionRef = collection(db, "users");
-const docRef = collection(db, "users");
+export async function getUserSnapshot() {
+  // only need to retrieve displayName when fetching data
+  const currentUser = auth.currentUser?.displayName;
+  try {
+    if (!currentUser) {
+      throw new Error("No current user");
+    }
+    const q = query(collection(db, currentUser));
+    const querySnapshot = await getDocs(q);
+    console.log("querySnapshot in getUserSnapshot:", querySnapshot);
+
+    const res = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    return {
+      success: true,
+      message: `Successfully fetched ${currentUser} data`,
+      error: null,
+      res,
+    };
+  } catch (err) {
+    return {
+      success: false,
+      message: `Error fetching ${currentUser || "unknown user"} data: ${err}`,
+      error: err,
+    };
+  }
+}
 
 async function setStudentData(formInput, currentUser) {
   try {

@@ -34,7 +34,7 @@ const Navbar: FC = () => {
               <Link href="/createKeySignatures">Create Key Signature</Link>
             </li>
             <li className="p-4">
-              <Link href="/exam">Exam Original</Link>
+              <Link href="/exam/original">Exam Original</Link>
             </li>
             <li className="p-4">
               <Link href="/exam/key-signatures-note">Section 1</Link>
