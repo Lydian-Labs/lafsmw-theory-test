@@ -26,11 +26,13 @@ import { instructions } from "@/app/lib/instructions";
 import { FormEvent } from "@/app/lib/typesAndInterfaces";
 import { useRouter } from "next/navigation";
 import { SetStateAction, useState } from "react";
+import { auth } from "@/firebase/config";
 
 export default function KeySignaturesText() {
   const examValues = useExamContext();
-  console.log("examValues:", examValues);
-  const { user } = examValues;
+  // console.log("examValues in keySigText:", examValues);
+  const user = auth.currentUser?.displayName;
+  // const { user } = examValues;
   const [keySigText, setKeySigText] = useState({
     input1: "",
     input2: "",

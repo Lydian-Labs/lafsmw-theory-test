@@ -22,14 +22,24 @@ import { MouseEvent } from "@/app/lib/typesAndInterfaces";
 import { useExamContext } from "@/app/context/examContext";
 import { setOrUpdateStudentData } from "@/firebase/firestore/model";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { auth } from "@/firebase/config";
 
 export default function KeySignaturesNote() {
   const examValues = useExamContext();
-  const { user } = examValues;
+  const [user, setUser] = useState<null | any>(auth.currentUser?.displayName);
   const [level, setLevel] = useState("sibelius-class");
 
   const router = useRouter();
+
+  // async function ExamData() {
+  //   examValues = useExamContext();
+  //   console.log("examValues in ExamData:", examValues);
+  // }
+
+  // useEffect(() => {
+  //   ExamData();
+  // }, [user]);
 
   const handleSubmit = async (e: MouseEvent) => {
     e.preventDefault();
