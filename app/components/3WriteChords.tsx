@@ -13,11 +13,32 @@ import {
 } from "@mui/material";
 
 import ProgressBar from "@/app/components/ProgressBar";
-import { useExamContext } from "@/app/context/examContext";
 import { instructions } from "@/app/lib/instructions";
+import {
+  FormEvent,
+  KeySignaturesTextProps,
+} from "@/app/lib/typesAndInterfaces";
+import { useState } from "react";
 
-export default function WriteScales() {
-  const examValues = useExamContext();
+export default function WriteChords({
+  currentUserData,
+  setCurrentUserData,
+}: KeySignaturesTextProps) {
+  const [chords, setChords] = useState({
+    input1: "",
+    input2: "",
+    input3: "",
+    input4: "",
+  });
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    const payload = {
+      ...currentUserData,
+      chords: chords,
+    };
+    setCurrentUserData(payload);
+  };
 
   return (
     <Container>

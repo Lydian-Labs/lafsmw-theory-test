@@ -23,6 +23,7 @@ export const keySigInitialState: KeySigState = {
 };
 
 export const initialFormInputState: InputState = {
+  id: "",
   user: null,
   level: "",
   keySignatures: {},

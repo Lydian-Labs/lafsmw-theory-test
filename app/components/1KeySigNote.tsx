@@ -12,19 +12,20 @@ import {
   Typography,
 } from "@mui/material";
 
-import Staff from "@/app/components/Staff";
-import ClassPreferenceSelector from "./ClassPreferenceSelector";
-
 import ProgressBar from "@/app/components/ProgressBar";
+import Staff from "@/app/components/Staff";
 import { instructions } from "@/app/lib/instructions";
-import { MouseEvent } from "@/app/lib/typesAndInterfaces";
-
+import {
+  MouseEvent,
+  KeySignaturesTextProps,
+} from "@/app/lib/typesAndInterfaces";
 import { useState } from "react";
+import ClassPreferenceSelector from "./ClassPreferenceSelector";
 
 export default function KeySignaturesNote({
   currentUserData,
   setCurrentUserData,
-}) {
+}: KeySignaturesTextProps) {
   const [level, setLevel] = useState("sibelius-class");
 
   const handleSubmit = async (e: MouseEvent) => {

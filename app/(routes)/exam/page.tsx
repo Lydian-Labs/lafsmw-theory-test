@@ -1,38 +1,37 @@
 "use client";
-import {
-  Box,
-  Button,
-  Container,
-  Divider,
-  Grid,
-  List,
-  ListItem,
-  ListItemText,
-  Stack,
-  Typography,
-} from "@mui/material";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import KeySigNote from "@/app/components/1KeySigNote";
 import KeySigText from "@/app/components/2KeySigText";
-import WriteScales from "@/app/components/3WriteScales";
+import WriteChords from "@/app/components/3WriteChords";
+import {
+  MouseEvent,
+  KeySignaturesTextProps,
+  InputState,
+} from "@/app/lib/typesAndInterfaces";
+
+import { useAuthContext } from "@/firebase/authContext";
 import {
   getUserSnapshot,
   setOrUpdateStudentData,
 } from "@/firebase/firestore/model";
-import { useAuthContext } from "@/firebase/authContext";
+
+import { Button, Stack } from "@mui/material";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { initialFormInputState } from "@/app/lib/initialStates";
 
 export default function ExamHomePage() {
   const { user } = useAuthContext();
   const userName = user?.displayName;
   const userId = user?.uid;
+  const initialState = { ...initialFormInputState, userId: userId };
   // console.log("user name and ID in ExamHomePage:", userName, userId);
 
   const router = useRouter();
 
   const VIEW_STATES = { KEY_SIG_NOTE: 1, KEY_SIG_TEXT: 2, WRITE_SCALES: 3 };
   const [viewState, setViewState] = useState(VIEW_STATES.KEY_SIG_NOTE);
-  const [currentUserData, setCurrentUserData] = useState<any>(null);
+  const [currentUserData, setCurrentUserData] =
+    useState<InputState>(initialState);
 
   useEffect(() => {
     const fetchSnapshot = async () => {
@@ -75,8 +74,18 @@ export default function ExamHomePage() {
           setCurrentUserData={setCurrentUserData}
         />
       )}
-      {viewState === VIEW_STATES.KEY_SIG_TEXT && <KeySigText />}
-      {viewState === VIEW_STATES.WRITE_SCALES && <WriteScales />}
+      {viewState === VIEW_STATES.KEY_SIG_TEXT && (
+        <KeySigText
+          currentUserData={currentUserData}
+          setCurrentUserData={setCurrentUserData}
+        />
+      )}
+      {viewState === VIEW_STATES.WRITE_SCALES && (
+        <WriteChords
+          currentUserData={currentUserData}
+          setCurrentUserData={setCurrentUserData}
+        />
+      )}
       <Stack
         direction={"row"}
         sx={{ display: "flex", justifyContent: "space-around" }}

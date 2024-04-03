@@ -18,10 +18,6 @@ export type Chord = {
   duration: string;
 };
 
-export type ExamContextType = {
-  children: ReactNode;
-};
-
 export type Level =
   | "advanced-theory"
   | "advanced-improvisation"
@@ -31,15 +27,6 @@ export type Level =
   | "rhythm-class"
   | "sibelius-class"
   | "";
-
-export type InputState = {
-  user: any;
-  level: Level;
-  keySignatures: InputData;
-  chords: InputData;
-  progressions: InputData;
-  blues: InputData;
-};
 
 export type RendererRef = RefObject<InstanceType<typeof Renderer>>;
 export type SetStaves = Dispatch<SetStateAction<StaveType[]>>;
@@ -157,4 +144,19 @@ export interface GlyphProps {
   xPosition: number;
   yPosition: number;
   glyph: string;
+}
+
+export interface InputState {
+  id: string;
+  user: any;
+  level: Level;
+  keySignatures: InputData;
+  chords: InputData;
+  progressions: InputData;
+  blues: InputData;
+}
+
+export interface KeySignaturesTextProps {
+  currentUserData: InputState;
+  setCurrentUserData: (userData: InputState) => void;
 }

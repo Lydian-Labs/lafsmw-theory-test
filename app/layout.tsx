@@ -1,5 +1,4 @@
 import AuthContextProvider from "@/firebase/authContext";
-import ExamContextProvider from "./context/examContext";
 import { ThemeProvider } from "@mui/material/styles";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
@@ -23,12 +22,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <AuthContextProvider>
-          <ExamContextProvider>
-            <ThemeProvider theme={theme}>
-              <Navbar />
-              {children}
-            </ThemeProvider>
-          </ExamContextProvider>
+          <ThemeProvider theme={theme}>
+            <Navbar />
+            {children}
+          </ThemeProvider>
         </AuthContextProvider>
       </body>
     </html>
