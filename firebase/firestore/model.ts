@@ -15,6 +15,7 @@ import { InputState } from "@/app/lib/typesAndInterfaces";
 export async function getUserSnapshot() {
   // only need to retrieve displayName when fetching data
   const currentUser = auth.currentUser?.displayName;
+  console.log("auth.currentUser:", auth.currentUser);
   try {
     if (!currentUser) {
       throw new Error("No current user found.");
@@ -33,18 +34,19 @@ export async function getUserSnapshot() {
       error: null,
       res,
     };
-  } catch (err) {
+  } catch (e) {
     return {
       success: false,
-      message: `Error fetching ${currentUser || "unknown user"} data: ${err}`,
-      error: err,
+      message: `Error fetching ${currentUser || "unknown user"} data: ${e}`,
+      error: e,
     };
   }
 }
 
 async function setStudentData(formInput: InputState, currentUser: string) {
   try {
-    await setDoc(doc(db, `${currentUser}`, "formInput"), {
+    const currentUserID = auth.currentUser?.uid;
+    await setDoc(doc(db, `${currentUser}`, `${currentUserID}`), {
       ...formInput,
       createdAt: serverTimestamp(),
     });
@@ -57,7 +59,8 @@ async function setStudentData(formInput: InputState, currentUser: string) {
 
 async function updateStudentData(formInput: InputState, currentUser: string) {
   try {
-    const docRef = doc(db, `${currentUser}`, "formInput");
+    const currentUserID = auth.currentUser?.uid;
+    const docRef = doc(db, `${currentUser}`, `${currentUserID}`);
     await updateDoc(docRef, {
       ...formInput,
       updatedAt: serverTimestamp(),
@@ -73,10 +76,11 @@ export async function setOrUpdateStudentData(
   formInput: InputState,
   currentUser: string
 ) {
+  const currentUserID = auth.currentUser?.uid;
   try {
-    const docRef = doc(db, `${currentUser}`, "formInput");
+    const docRef = doc(db, `${currentUser}`, `${currentUserID}`);
     const docSnap = await getDoc(docRef);
-    console.log("docSnap.exists(): ", docSnap.exists());
+    // console.log("docSnap.exists(): ", docSnap.exists());
 
     if (docSnap.exists()) {
       await updateStudentData(formInput, currentUser);

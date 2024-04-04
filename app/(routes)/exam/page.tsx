@@ -19,7 +19,11 @@ export default function ExamHomePage() {
   const { user } = useAuthContext();
   const userName = user?.displayName;
   const userId = user?.uid;
-  const initialState = { ...initialFormInputState, userId: userId };
+  const initialState = {
+    ...initialFormInputState,
+    user: userName,
+    userId: userId,
+  };
   // console.log("user name and ID in ExamHomePage:", userName, userId);
 
   const router = useRouter();
@@ -38,7 +42,9 @@ export default function ExamHomePage() {
           console.error(message);
         } else if (res) {
           console.log(success);
-          setCurrentUserData(res[0]);
+          let inputRes = { ...currentUserData, ...res[0] };
+          // console.log("inputRes:", inputRes);
+          setCurrentUserData(inputRes);
         }
       } catch (error) {
         console.error(error);
