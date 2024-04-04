@@ -1,12 +1,8 @@
 "use client";
-import KeySigNote from "@/app/components/1KeySigNote";
-import KeySigText from "@/app/components/2KeySigText";
-import WriteChords from "@/app/components/3WriteChords";
-import {
-  MouseEvent,
-  KeySignaturesTextProps,
-  InputState,
-} from "@/app/lib/typesAndInterfaces";
+import KeySigNote from "@/app/components/ExamQuestions/1KeySigNote";
+import KeySigText from "@/app/components/ExamQuestions/2KeySigText";
+import WriteChords from "@/app/components/ExamQuestions/3WriteChords";
+import { MouseEvent, InputState } from "@/app/lib/typesAndInterfaces";
 
 import { useAuthContext } from "@/firebase/authContext";
 import {
@@ -29,8 +25,8 @@ export default function ExamHomePage() {
   const router = useRouter();
 
   const VIEW_STATES = { KEY_SIG_NOTE: 1, KEY_SIG_TEXT: 2, WRITE_SCALES: 3 };
-
   const [viewState, setViewState] = useState(VIEW_STATES.KEY_SIG_NOTE);
+
   const [currentUserData, setCurrentUserData] =
     useState<InputState>(initialState);
 
@@ -124,8 +120,8 @@ export default function ExamHomePage() {
         <Button onClick={() => setViewState(VIEW_STATES.WRITE_SCALES)}>
           Section 3
         </Button>
-        <Button onClick={incrementViewState}>Increment</Button>
-        <Button onClick={decrementViewState}>Decrement</Button>
+        <Button onClick={decrementViewState}>Back</Button>
+        <Button onClick={incrementViewState}>Forward</Button>
         <Button onClick={handleFinalSubmit}>Submit to db</Button>
       </Stack>
     </div>

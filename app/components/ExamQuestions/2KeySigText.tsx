@@ -16,16 +16,13 @@ import FormInput from "@/app/components/FormInput";
 import ProgressBar from "@/app/components/ProgressBar";
 import Staff from "@/app/components/Staff";
 import { instructions } from "@/app/lib/instructions";
-import {
-  FormEvent,
-  KeySignaturesTextProps,
-} from "@/app/lib/typesAndInterfaces";
+import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import { SetStateAction, useState } from "react";
 
 export default function KeySignaturesText({
   currentUserData,
   setCurrentUserData,
-}: KeySignaturesTextProps) {
+}: UserDataProps) {
   const [keySigText, setKeySigText] = useState({
     input1: "",
     input2: "",

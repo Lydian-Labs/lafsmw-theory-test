@@ -156,7 +156,7 @@ export interface InputState {
   blues: InputData;
 }
 
-export interface KeySignaturesTextProps {
+export interface UserDataProps {
   currentUserData: InputState;
   setCurrentUserData: (userData: InputState) => void;
 }

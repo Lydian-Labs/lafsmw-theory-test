@@ -13,29 +13,24 @@ import {
 } from "@mui/material";
 
 import ProgressBar from "@/app/components/ProgressBar";
+import Staff from "@/app/components/Staff";
 import { instructions } from "@/app/lib/instructions";
-import {
-  FormEvent,
-  KeySignaturesTextProps,
-} from "@/app/lib/typesAndInterfaces";
+import { MouseEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import { useState } from "react";
+import ClassPreferenceSelector from "../ClassPreferenceSelector";
+import { Level } from "@/app/lib/typesAndInterfaces";
 
-export default function WriteChords({
+export default function KeySignaturesNote({
   currentUserData,
   setCurrentUserData,
-}: KeySignaturesTextProps) {
-  const [chords, setChords] = useState({
-    input1: "",
-    input2: "",
-    input3: "",
-    input4: "",
-  });
+}: UserDataProps) {
+  const [level, setLevel] = useState<Level>("sibelius-class");
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = async (e: MouseEvent) => {
     e.preventDefault();
     const payload = {
       ...currentUserData,
-      chords: chords,
+      level: level,
     };
     setCurrentUserData(payload);
   };
@@ -45,7 +40,7 @@ export default function WriteChords({
       <Box
         component="main"
         width={1139}
-        height={637}
+        height={700}
         bgcolor={"secondary.main"}
         borderRadius="var(--borderRadius)"
         p={2}
@@ -55,8 +50,12 @@ export default function WriteChords({
           <Grid item xs={4}>
             <Stack gap={2} alignItems={"center"}>
               <Typography variant="h5" align="center">
-                Section 3: Write Scales
+                Section 1: Write Key Signatures
               </Typography>
+              <ClassPreferenceSelector
+                level={level}
+                setLevel={setLevel}
+              ></ClassPreferenceSelector>
               <Box
                 width={273}
                 height={456}
@@ -104,8 +103,38 @@ export default function WriteChords({
               >
                 <Grid item>
                   <Typography variant="h6">
-                    Write the following scales:
+                    Add the following key signature: Db Major
                   </Typography>
+                </Grid>
+                <Grid item>
+                  <Staff
+                    addDoubleBarLine={true}
+                    width={472}
+                    noTimeSignature={true}
+                    numBars={1}
+                  />
+                </Grid>
+                <Grid item>
+                  <Stack
+                    direction="row"
+                    justifyContent="center"
+                    mt={2}
+                    spacing={2}
+                  >
+                    <Button variant="contained">#</Button>
+                    <Button variant="contained">b</Button>
+                  </Stack>
+                </Grid>
+                <Grid item>
+                  <Stack
+                    direction="row"
+                    justifyContent="center"
+                    mt={2}
+                    spacing={2}
+                  >
+                    <Button variant="contained">Eraser</Button>
+                    <Button variant="contained">Clear Measure</Button>
+                  </Stack>
                 </Grid>
                 <Grid item>
                   <Divider sx={{ paddingY: "16px", marginBottom: "12px" }} />
@@ -113,14 +142,15 @@ export default function WriteChords({
                 <Grid item>
                   <Stack direction="row" justifyContent="center" spacing={8}>
                     <Stack gap={2}>
-                      <Typography variant="body1">Question 3/45</Typography>
+                      <Typography variant="body1">Question 1/45</Typography>
                       <ProgressBar value={4} />
                     </Stack>
                     <Button
                       variant="contained"
+                      onClick={handleSubmit}
                       sx={{ height: "33px", marginTop: "8px" }}
                     >
-                      {"Next Question >"}
+                      {"Submit"}
                     </Button>
                   </Stack>
                 </Grid>
