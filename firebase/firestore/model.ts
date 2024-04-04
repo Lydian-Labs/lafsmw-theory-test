@@ -10,6 +10,7 @@ import {
   query,
 } from "firebase/firestore";
 import { db, auth } from "../config";
+import { InputState } from "@/app/lib/typesAndInterfaces";
 
 export async function getUserSnapshot() {
   // only need to retrieve displayName when fetching data
@@ -41,7 +42,7 @@ export async function getUserSnapshot() {
   }
 }
 
-async function setStudentData(formInput, currentUser) {
+async function setStudentData(formInput: InputState, currentUser: string) {
   try {
     await setDoc(doc(db, `${currentUser}`, "formInput"), {
       ...formInput,
@@ -54,7 +55,7 @@ async function setStudentData(formInput, currentUser) {
   }
 }
 
-async function updateStudentData(formInput, currentUser) {
+async function updateStudentData(formInput: InputState, currentUser: string) {
   try {
     const docRef = doc(db, `${currentUser}`, "formInput");
     await updateDoc(docRef, {
@@ -68,7 +69,10 @@ async function updateStudentData(formInput, currentUser) {
   }
 }
 
-export async function setOrUpdateStudentData(formInput, currentUser) {
+export async function setOrUpdateStudentData(
+  formInput: InputState,
+  currentUser: string
+) {
   try {
     const docRef = doc(db, `${currentUser}`, "formInput");
     const docSnap = await getDoc(docRef);
@@ -86,20 +90,20 @@ export async function setOrUpdateStudentData(formInput, currentUser) {
   }
 }
 
-export async function getDataFromUser(currentUser) {
-  try {
-    const docRef = doc(db, `${currentUser}`, "formInput");
-    const docSnap = await getDoc(docRef);
+// export async function getDataFromUser(currentUser) {
+//   try {
+//     const docRef = doc(db, `${currentUser}`, "formInput");
+//     const docSnap = await getDoc(docRef);
 
-    if (docSnap.exists()) {
-      console.log("Document data:", docSnap.data());
-    } else {
-      console.log("No such document! docSnap.data() is undefined.");
-    }
-  } catch (err) {
-    console.error("getDataFromUser error:", err);
-  }
-}
+//     if (docSnap.exists()) {
+//       console.log("Document data:", docSnap.data());
+//     } else {
+//       console.log("No such document! docSnap.data() is undefined.");
+//     }
+//   } catch (err) {
+//     console.error("getDataFromUser error:", err);
+//   }
+// }
 
 // export async function addKeySigData(first, second, third, fourth, currentUser) {
 //   try {

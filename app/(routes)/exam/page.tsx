@@ -29,6 +29,7 @@ export default function ExamHomePage() {
   const router = useRouter();
 
   const VIEW_STATES = { KEY_SIG_NOTE: 1, KEY_SIG_TEXT: 2, WRITE_SCALES: 3 };
+
   const [viewState, setViewState] = useState(VIEW_STATES.KEY_SIG_NOTE);
   const [currentUserData, setCurrentUserData] =
     useState<InputState>(initialState);
@@ -57,10 +58,33 @@ export default function ExamHomePage() {
 
   console.log("currentUserData after useEffect:", currentUserData);
 
+  const incrementViewState = () => {
+    setViewState((prevState) => {
+      if (prevState === VIEW_STATES.WRITE_SCALES) {
+        return VIEW_STATES.KEY_SIG_NOTE;
+      } else {
+        return prevState + 1;
+      }
+    });
+  };
+
+  const decrementViewState = () => {
+    setViewState((prevState) => {
+      if (prevState === VIEW_STATES.KEY_SIG_NOTE) {
+        return VIEW_STATES.WRITE_SCALES;
+      } else {
+        return prevState - 1;
+      }
+    });
+  };
+
   const handleFinalSubmit = async (e: MouseEvent) => {
     e.preventDefault();
     try {
-      const added = await setOrUpdateStudentData(currentUserData, user);
+      if (!userName) {
+        throw new Error("No current user found.");
+      }
+      await setOrUpdateStudentData(currentUserData, userName);
     } catch (error) {
       console.error("handleSubmit error:", error);
     }
@@ -100,6 +124,9 @@ export default function ExamHomePage() {
         <Button onClick={() => setViewState(VIEW_STATES.WRITE_SCALES)}>
           Section 3
         </Button>
+        <Button onClick={incrementViewState}>Increment</Button>
+        <Button onClick={decrementViewState}>Decrement</Button>
+        <Button onClick={handleFinalSubmit}>Submit to db</Button>
       </Stack>
     </div>
   );

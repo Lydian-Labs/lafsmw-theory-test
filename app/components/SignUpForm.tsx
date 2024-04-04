@@ -15,7 +15,7 @@ export default function SignUpForm() {
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
     await signUp(email, password, `${firstName} ${lastName}`);
-    router.push("/exam/key-signatures-note");
+    router.push("/exam/");
   };
 
   return (
