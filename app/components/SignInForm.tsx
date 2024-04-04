@@ -14,7 +14,7 @@ export default function SignInForm() {
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
     await signIn(email, password);
-    router.push("/exam/");
+    router.push("/exam");
   };
 
   return (
