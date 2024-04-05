@@ -22,11 +22,14 @@ export const setupRendererAndDrawNotesNew = (
     notesData,
     staves: blankStaves,
   } = params;
+
   const renderer = rendererRef?.current;
   renderer?.resize(rendererWidth, rendererHeight);
+
   const context = renderer && renderer.getContext();
   context?.setFont(font, fontSize);
   context?.clear();
+
   if (context && rendererRef) {
     setStaves(() =>
       createBlankStavesNew({
@@ -41,6 +44,7 @@ export const setupRendererAndDrawNotesNew = (
       })
     );
   }
+
   notesData &&
     notesData.forEach((barData, index) => {
       if (barData) {

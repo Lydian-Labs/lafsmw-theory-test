@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useMemo, useReducer, useRef, useState } from "react";
 import VexFlow from "vexflow";
-import BlueButton from "../components/BlueButton";
 import RegularButton from "../components/RegularButton";
 import { buildKeySignature } from "../lib/buildKeySignature";
 import {
@@ -16,7 +15,7 @@ import { initializeRenderer } from "../lib/initializeRenderer";
 import isClickWithinStaveBounds from "../lib/isClickWithinStaveBounds";
 import { keySigReducer } from "../lib/reducers";
 
-import { setupRendererAndDrawNotesNew } from "../lib/setUpRendererAndDrawNotesNew";
+import { setupRendererAndDrawNotesNew } from "../lib/setupRendererAndDrawNotesNew";
 import { GlyphProps } from "../lib/typesAndInterfaces";
 
 const VF = VexFlow.Flow;
@@ -38,6 +37,7 @@ const NotateKeySignature = () => {
   renderer?.resize(430, 200);
 
   const context = rendererRef.current?.getContext();
+
   const renderStaves = (): void => {
     setupRendererAndDrawNotesNew({
       rendererRef,

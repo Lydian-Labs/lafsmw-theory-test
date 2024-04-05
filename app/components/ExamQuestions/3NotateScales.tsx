@@ -16,23 +16,26 @@ import ProgressBar from "@/app/components/ProgressBar";
 import { notationInstructions } from "@/app/lib/instructions";
 import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import { useState } from "react";
+import NotateScale from "../NotateScale";
 
-export default function WriteChords({
+export default function NotateScales({
   currentUserData,
   setCurrentUserData,
 }: UserDataProps) {
-  const [chords, setChords] = useState({
+  const [scales, setScales] = useState({
     input1: "",
     input2: "",
     input3: "",
     input4: "",
+    input5: "",
+    input6: "",
   });
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const payload = {
       ...currentUserData,
-      chords: chords,
+      scales: scales,
     };
     setCurrentUserData(payload);
   };
@@ -51,8 +54,8 @@ export default function WriteChords({
         <Grid container spacing={4} p={2}>
           <Grid item xs={4}>
             <Stack gap={2} alignItems={"center"}>
-              <Typography variant="h5" align="center">
-                Section 3: Write Chords
+              <Typography variant="h6" align="center">
+                Section 3: Write Scales
               </Typography>
               <Box
                 width={273}
@@ -101,8 +104,11 @@ export default function WriteChords({
               >
                 <Grid item>
                   <Typography variant="h6">
-                    Write the following chords:
+                    Write the following scale:
                   </Typography>
+                </Grid>
+                <Grid item>
+                  <NotateScale />
                 </Grid>
                 <Grid item>
                   <Divider sx={{ paddingY: "16px", marginBottom: "12px" }} />
@@ -117,7 +123,7 @@ export default function WriteChords({
                       variant="contained"
                       sx={{ height: "33px", marginTop: "8px" }}
                     >
-                      {"Next Question >"}
+                      {"Submit"}
                     </Button>
                   </Stack>
                 </Grid>
