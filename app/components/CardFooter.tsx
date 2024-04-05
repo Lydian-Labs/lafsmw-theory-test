@@ -31,7 +31,7 @@ export default function CardFooter({
       >
         <Stack gap={2}>
           <Typography variant="body1">{`Question ${questionNumber}/45`}</Typography>
-          <ProgressBar value={4} />
+          <ProgressBar value={Number(questionNumber)} />
         </Stack>
         <Button
           variant="contained"

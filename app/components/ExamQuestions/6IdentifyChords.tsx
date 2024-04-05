@@ -4,7 +4,7 @@ import { Box, Container, Grid, Stack, Typography } from "@mui/material";
 import { useRef } from "react";
 import seventhChords from "../../lib/data/seventhChords";
 import CardFooter from "../CardFooter";
-import IdentifyChords from "../IdentifyChords";
+import IdentifyNotation from "../IdentifyNotation";
 
 export default function IdentifyChordsPage({
   currentUserData,
@@ -24,14 +24,17 @@ export default function IdentifyChordsPage({
         height={637}
         bgcolor={"secondary.main"}
         borderRadius="var(--borderRadius)"
+        margin={"auto"}
         p={2}
         boxShadow={"0px 4px 4px rgba(0, 0, 0, 0.25)"}
       >
-        <Stack gap={2} alignItems={"center"}>
-          <Typography variant="h5">Section 3: Identify Chords</Typography>
+        <Stack gap={2}>
+          <Typography variant="h5" marginLeft={8} marginY={2}>
+            Section 3: Identify Chords
+          </Typography>
           <Box
             width={1000}
-            height={500}
+            height={480}
             bgcolor={"card.background"}
             borderRadius="var(--borderRadius)"
             margin={"auto"}
@@ -52,12 +55,12 @@ export default function IdentifyChordsPage({
                 </Typography>
               </Grid>
               <Grid item>
-                <IdentifyChords
+                <IdentifyNotation
                   chords={seventhChords}
                   numBars={7}
-                  handleChords={handleChords}
+                  handleInput={handleChords}
                   ref={chordsFormRef}
-                  width={800}
+                  width={950}
                 />
               </Grid>
             </Grid>

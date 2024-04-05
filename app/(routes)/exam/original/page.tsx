@@ -6,8 +6,8 @@ import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { useEffect, useRef, useState } from "react";
 import ChordNames from "../../../components/ChordNames";
-import IdentifyChords from "../../../components/IdentifyChords";
 import IdentifyKeySignatures from "../../../components/IdentifyKeySignatures";
+import IdentifyNotation from "../../../components/IdentifyNotation";
 import Staff from "../../../components/Staff";
 import SubmitButton from "../../../components/SubmitButton";
 import WriteBlues from "../../../components/WriteBlues";
@@ -169,10 +169,10 @@ export default function ExamOriginal() {
         </Grid>
         <Grid item xs={12}>
           <h2 className="ml-4 mt-4">Identify the following 7th chords:</h2>
-          <IdentifyChords
+          <IdentifyNotation
             chords={seventhChords}
             numBars={7}
-            handleChords={handleChords}
+            handleInput={handleChords}
             ref={chordsFormRef}
             width={width}
           />

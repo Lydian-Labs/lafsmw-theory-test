@@ -13,38 +13,49 @@ import {
 import FormInput from "@/app/components/FormInput";
 import Staff from "@/app/components/Staff";
 import { inputInstructions } from "@/app/lib/instructions";
-import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
-import { SetStateAction, useState } from "react";
+import {
+  FormEvent,
+  InputData,
+  UserDataProps,
+} from "@/app/lib/typesAndInterfaces";
+import { SetStateAction, useRef, useState } from "react";
 import CardFooter from "../CardFooter";
+import IdentifyNotation from "../IdentifyNotation";
 
 export default function KeySignaturesText({
   currentUserData,
   setCurrentUserData,
 }: UserDataProps) {
-  const [keySigText, setKeySigText] = useState({
-    input1: "",
-    input2: "",
-    input3: "",
-    input4: "",
-  });
+  const keySigFormRef = useRef<HTMLFormElement | null>(null);
 
-  const handleInputChange = (e: {
-    target: {
-      name: string;
-      value: SetStateAction<string>;
-    };
-  }) => {
-    setKeySigText({ ...keySigText, [e.target.name]: e.target.value });
-  };
+  // const [keySigText, setKeySigText] = useState({
+  //   input1: "",
+  //   input2: "",
+  //   input3: "",
+  //   input4: "",
+  // });
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    const payload = {
-      ...currentUserData,
-      keySignatures: keySigText,
-    };
-    setCurrentUserData(payload);
-  };
+  function handleKeySignatures(input: InputData) {
+    setCurrentUserData({ ...currentUserData, keySignatures: input });
+  }
+
+  // const handleInputChange = (e: {
+  //   target: {
+  //     name: string;
+  //     value: SetStateAction<string>;
+  //   };
+  // }) => {
+  //   setKeySigText({ ...keySigText, [e.target.name]: e.target.value });
+  // };
+
+  // const handleSubmit = async (e: FormEvent) => {
+  //   e.preventDefault();
+  //   const payload = {
+  //     ...currentUserData,
+  //     keySignatures: keySigText,
+  //   };
+  //   setCurrentUserData(payload);
+  // };
 
   return (
     <Container>
@@ -114,45 +125,20 @@ export default function KeySignaturesText({
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <Staff
-                    addDoubleBarLine={true}
+                  <IdentifyNotation
+                    handleInput={handleKeySignatures}
+                    ref={keySigFormRef}
                     width={500}
-                    noTimeSignature={true}
-                    numBars={4}
                   />
                 </Grid>
-                <Grid item>
-                  <form onSubmit={handleSubmit} id="keySigs">
-                    <Stack direction={"row"} spacing={4}>
-                      <FormInput
-                        name={"input1"}
-                        value={keySigText.input1}
-                        width={"70px"}
-                        onChange={handleInputChange}
-                      />
-                      <FormInput
-                        name={"input2"}
-                        value={keySigText.input2}
-                        width={"70px"}
-                        onChange={handleInputChange}
-                      />
-                      <FormInput
-                        name={"input3"}
-                        value={keySigText.input3}
-                        width={"70px"}
-                        onChange={handleInputChange}
-                      />
-                      <FormInput
-                        name={"input4"}
-                        value={keySigText.input4}
-                        width={"70px"}
-                        onChange={handleInputChange}
-                      />
-                    </Stack>
-                  </form>
-                </Grid>
               </Grid>
-              <CardFooter questionNumber={2} buttonForm="keySigs" />
+              <CardFooter
+                questionNumber={2}
+                buttonForm="keySigs"
+                handleSubmit={() => {
+                  keySigFormRef.current?.requestSubmit();
+                }}
+              />
             </Box>
           </Grid>
         </Grid>
