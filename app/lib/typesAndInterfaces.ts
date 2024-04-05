@@ -147,7 +147,7 @@ export interface GlyphProps {
 }
 
 export interface InputState {
-  id: string;
+  userId: string | null | undefined;
   user: any;
   level: Level;
   keySignatures: InputData;

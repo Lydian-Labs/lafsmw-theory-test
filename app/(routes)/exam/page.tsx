@@ -2,6 +2,8 @@
 import KeySigNote from "@/app/components/ExamQuestions/1KeySigNote";
 import KeySigText from "@/app/components/ExamQuestions/2KeySigText";
 import NotateScales from "@/app/components/ExamQuestions/3NotateScales";
+import NotateTriads from "@/app/components/ExamQuestions/4NotateTriads";
+import NotateSeventhChords from "@/app/components/ExamQuestions/5Notate7thChords";
 import IdentifyChordsPage from "@/app/components/ExamQuestions/6IdentifyChords";
 
 import { InputState, MouseEvent } from "@/app/lib/typesAndInterfaces";
@@ -33,7 +35,9 @@ export default function ExamHomePage() {
     KEY_SIG_NOTE: 1,
     KEY_SIG_TEXT: 2,
     NOTATE_SCALES: 3,
-    ID_CHORDS: 4,
+    NOTATE_TRIADS: 4,
+    NOTATE_7TH_CHORDS: 5,
+    ID_CHORDS: 6,
   };
   const [viewState, setViewState] = useState(VIEW_STATES.KEY_SIG_NOTE);
 
@@ -49,7 +53,6 @@ export default function ExamHomePage() {
         } else if (res) {
           console.log(success);
           let inputRes = { ...currentUserData, ...res[0] };
-          // console.log("inputRes:", inputRes);
           setCurrentUserData(inputRes);
         }
       } catch (error) {
@@ -114,6 +117,18 @@ export default function ExamHomePage() {
       )}
       {viewState === VIEW_STATES.NOTATE_SCALES && (
         <NotateScales
+          currentUserData={currentUserData}
+          setCurrentUserData={setCurrentUserData}
+        />
+      )}
+      {viewState === VIEW_STATES.NOTATE_TRIADS && (
+        <NotateTriads
+          currentUserData={currentUserData}
+          setCurrentUserData={setCurrentUserData}
+        />
+      )}
+      {viewState === VIEW_STATES.NOTATE_7TH_CHORDS && (
+        <NotateSeventhChords
           currentUserData={currentUserData}
           setCurrentUserData={setCurrentUserData}
         />

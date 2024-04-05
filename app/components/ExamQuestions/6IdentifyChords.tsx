@@ -30,7 +30,7 @@ export default function IdentifyChordsPage({
       >
         <Stack gap={2}>
           <Typography variant="h5" marginLeft={8} marginY={2}>
-            Section 3: Identify Chords
+            Section 6: Identify Chords
           </Typography>
           <Box
             width={1000}

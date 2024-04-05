@@ -34,7 +34,7 @@ const NotateKeySignature = () => {
   );
 
   const renderer = rendererRef.current;
-  renderer?.resize(430, 200);
+  renderer?.resize(470, 200);
 
   const context = rendererRef.current?.getContext();
 
@@ -42,7 +42,7 @@ const NotateKeySignature = () => {
     setupRendererAndDrawNotesNew({
       rendererRef,
       ...staveData,
-      firstStaveWidth: 415,
+      firstStaveWidth: 450,
       setStaves: setBlankStaves,
       staves: blankStaves,
     });
