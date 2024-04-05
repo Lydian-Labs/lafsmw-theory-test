@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 
 import ProgressBar from "@/app/components/ProgressBar";
-import Staff from "@/app/components/Staff";
+import NotateKeySignature from "../NotateKeySignature";
 import { instructions } from "@/app/lib/instructions";
 import { MouseEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import { useState } from "react";
@@ -40,7 +40,7 @@ export default function KeySignaturesNote({
       <Box
         component="main"
         width={1139}
-        height={700}
+        height={637}
         bgcolor={"secondary.main"}
         borderRadius="var(--borderRadius)"
         p={2}
@@ -49,7 +49,7 @@ export default function KeySignaturesNote({
         <Grid container spacing={4} p={2}>
           <Grid item xs={4}>
             <Stack gap={2} alignItems={"center"}>
-              <Typography variant="h5" align="center">
+              <Typography variant="h6" align="center">
                 Section 1: Write Key Signatures
               </Typography>
               <ClassPreferenceSelector
@@ -107,34 +107,7 @@ export default function KeySignaturesNote({
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <Staff
-                    addDoubleBarLine={true}
-                    width={472}
-                    noTimeSignature={true}
-                    numBars={1}
-                  />
-                </Grid>
-                <Grid item>
-                  <Stack
-                    direction="row"
-                    justifyContent="center"
-                    mt={2}
-                    spacing={2}
-                  >
-                    <Button variant="contained">#</Button>
-                    <Button variant="contained">b</Button>
-                  </Stack>
-                </Grid>
-                <Grid item>
-                  <Stack
-                    direction="row"
-                    justifyContent="center"
-                    mt={2}
-                    spacing={2}
-                  >
-                    <Button variant="contained">Eraser</Button>
-                    <Button variant="contained">Clear Measure</Button>
-                  </Stack>
+                  <NotateKeySignature />
                 </Grid>
                 <Grid item>
                   <Divider sx={{ paddingY: "16px", marginBottom: "12px" }} />
