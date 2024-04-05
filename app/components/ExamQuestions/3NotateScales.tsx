@@ -1,10 +1,7 @@
 "use client";
 import {
   Box,
-  Button,
-  Card,
   Container,
-  Divider,
   Grid,
   List,
   ListItem,
@@ -13,7 +10,6 @@ import {
   Typography,
 } from "@mui/material";
 
-import ProgressBar from "@/app/components/ProgressBar";
 import { notationInstructions } from "@/app/lib/instructions";
 import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import { useState } from "react";

@@ -4,7 +4,7 @@ import KeySigText from "@/app/components/ExamQuestions/2KeySigText";
 import NotateScales from "@/app/components/ExamQuestions/3NotateScales";
 import IdentifyChordsPage from "@/app/components/ExamQuestions/6IdentifyChords";
 
-import { MouseEvent, InputState } from "@/app/lib/typesAndInterfaces";
+import { InputState, MouseEvent } from "@/app/lib/typesAndInterfaces";
 
 import { useAuthContext } from "@/firebase/authContext";
 import {
@@ -12,10 +12,10 @@ import {
   setOrUpdateStudentData,
 } from "@/firebase/firestore/model";
 
+import { initialFormInputState } from "@/app/lib/initialStates";
 import { Button, Stack } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { initialFormInputState } from "@/app/lib/initialStates";
 
 export default function ExamHomePage() {
   const { user } = useAuthContext();
@@ -26,7 +26,6 @@ export default function ExamHomePage() {
     user: userName,
     userId: userId,
   };
-  // console.log("user name and ID in ExamHomePage:", userName, userId);
 
   const router = useRouter();
 

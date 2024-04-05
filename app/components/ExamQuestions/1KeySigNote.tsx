@@ -1,9 +1,7 @@
 "use client";
 import {
   Box,
-  Button,
   Container,
-  Divider,
   Grid,
   List,
   ListItem,
@@ -12,7 +10,6 @@ import {
   Typography,
 } from "@mui/material";
 
-import ProgressBar from "@/app/components/ProgressBar";
 import NotateKeySignature from "../NotateKeySignature";
 import { notationInstructions } from "@/app/lib/instructions";
 import { MouseEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";

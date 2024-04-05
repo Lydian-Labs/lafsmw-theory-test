@@ -1,50 +1,20 @@
 "use client";
-import {
-  Box,
-  Button,
-  Container,
-  Divider,
-  Grid,
-  List,
-  ListItem,
-  ListItemText,
-  Stack,
-  Typography,
-} from "@mui/material";
-
-import ProgressBar from "@/app/components/ProgressBar";
-import { notationInstructions } from "@/app/lib/instructions";
-import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
-import { useRef, useState } from "react";
+import { InputData, UserDataProps } from "@/app/lib/typesAndInterfaces";
+import { Box, Container, Grid, Stack, Typography } from "@mui/material";
+import { useRef } from "react";
 import seventhChords from "../../lib/data/seventhChords";
-import IdentifyChords from "../IdentifyChords";
 import CardFooter from "../CardFooter";
+import IdentifyChords from "../IdentifyChords";
 
 export default function IdentifyChordsPage({
   currentUserData,
   setCurrentUserData,
 }: UserDataProps) {
-  const [chords, setChords] = useState({
-    input1: "",
-    input2: "",
-    input3: "",
-    input4: "",
-    input5: "",
-    input6: "",
-    input7: "",
-    input8: "",
-  });
-
   const chordsFormRef = useRef<HTMLFormElement | null>(null);
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    const payload = {
-      ...currentUserData,
-      chords: chords,
-    };
-    setCurrentUserData(payload);
-  };
+  function handleChords(input: InputData) {
+    setCurrentUserData({ ...currentUserData, chords: input });
+  }
 
   return (
     <Container>
@@ -85,13 +55,20 @@ export default function IdentifyChordsPage({
                 <IdentifyChords
                   chords={seventhChords}
                   numBars={7}
-                  handleChords={handleSubmit}
+                  handleChords={handleChords}
                   ref={chordsFormRef}
                   width={800}
                 />
               </Grid>
             </Grid>
-            <CardFooter width={900} height={200} questionNumber={6} />
+            <CardFooter
+              width={900}
+              height={200}
+              questionNumber={6}
+              handleSubmit={() => {
+                chordsFormRef.current?.requestSubmit();
+              }}
+            />
           </Box>
         </Stack>
       </Box>

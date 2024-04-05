@@ -1,10 +1,7 @@
 "use client";
 import {
   Box,
-  Button,
-  Card,
   Container,
-  Divider,
   Grid,
   List,
   ListItem,
@@ -14,7 +11,6 @@ import {
 } from "@mui/material";
 
 import FormInput from "@/app/components/FormInput";
-import ProgressBar from "@/app/components/ProgressBar";
 import Staff from "@/app/components/Staff";
 import { inputInstructions } from "@/app/lib/instructions";
 import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
