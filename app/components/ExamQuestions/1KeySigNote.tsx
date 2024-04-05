@@ -19,6 +19,7 @@ import { MouseEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import { useState } from "react";
 import ClassPreferenceSelector from "../ClassPreferenceSelector";
 import { Level } from "@/app/lib/typesAndInterfaces";
+import CardFooter from "../CardFooter";
 
 export default function KeySignaturesNote({
   currentUserData,
@@ -109,25 +110,8 @@ export default function KeySignaturesNote({
                 <Grid item>
                   <NotateKeySignature />
                 </Grid>
-                <Grid item>
-                  <Divider sx={{ paddingY: "16px", marginBottom: "12px" }} />
-                </Grid>
-                <Grid item>
-                  <Stack direction="row" justifyContent="center" spacing={8}>
-                    <Stack gap={2}>
-                      <Typography variant="body1">Question 1/45</Typography>
-                      <ProgressBar value={4} />
-                    </Stack>
-                    <Button
-                      variant="contained"
-                      onClick={handleSubmit}
-                      sx={{ height: "33px", marginTop: "8px" }}
-                    >
-                      {"Submit"}
-                    </Button>
-                  </Stack>
-                </Grid>
               </Grid>
+              <CardFooter questionNumber={1} handleSubmit={handleSubmit} />
             </Box>
           </Grid>
         </Grid>

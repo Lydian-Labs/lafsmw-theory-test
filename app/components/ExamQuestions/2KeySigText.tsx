@@ -2,6 +2,7 @@
 import {
   Box,
   Button,
+  Card,
   Container,
   Divider,
   Grid,
@@ -18,6 +19,7 @@ import Staff from "@/app/components/Staff";
 import { inputInstructions } from "@/app/lib/instructions";
 import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import { SetStateAction, useState } from "react";
+import CardFooter from "../CardFooter";
 
 export default function KeySignaturesText({
   currentUserData,
@@ -153,26 +155,8 @@ export default function KeySignaturesText({
                     </Stack>
                   </form>
                 </Grid>
-                <Grid item>
-                  <Divider sx={{ paddingY: "16px", marginBottom: "12px" }} />
-                </Grid>
-                <Grid item>
-                  <Stack direction="row" justifyContent="center" spacing={8}>
-                    <Stack gap={2}>
-                      <Typography variant="body1">Question 2/45</Typography>
-                      <ProgressBar value={4} />
-                    </Stack>
-                    <Button
-                      variant="contained"
-                      type="submit"
-                      form="keySigs"
-                      sx={{ height: "33px", marginTop: "8px" }}
-                    >
-                      {"Submit"}
-                    </Button>
-                  </Stack>
-                </Grid>
               </Grid>
+              <CardFooter questionNumber={2} buttonForm="keySigs" />
             </Box>
           </Grid>
         </Grid>

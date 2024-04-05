@@ -2,6 +2,8 @@
 import KeySigNote from "@/app/components/ExamQuestions/1KeySigNote";
 import KeySigText from "@/app/components/ExamQuestions/2KeySigText";
 import NotateScales from "@/app/components/ExamQuestions/3NotateScales";
+import IdentifyChordsPage from "@/app/components/ExamQuestions/6IdentifyChords";
+
 import { MouseEvent, InputState } from "@/app/lib/typesAndInterfaces";
 
 import { useAuthContext } from "@/firebase/authContext";
@@ -28,7 +30,12 @@ export default function ExamHomePage() {
 
   const router = useRouter();
 
-  const VIEW_STATES = { KEY_SIG_NOTE: 1, KEY_SIG_TEXT: 2, NOTATE_SCALES: 3 };
+  const VIEW_STATES = {
+    KEY_SIG_NOTE: 1,
+    KEY_SIG_TEXT: 2,
+    NOTATE_SCALES: 3,
+    ID_CHORDS: 4,
+  };
   const [viewState, setViewState] = useState(VIEW_STATES.KEY_SIG_NOTE);
 
   const [currentUserData, setCurrentUserData] =
@@ -62,7 +69,7 @@ export default function ExamHomePage() {
 
   const incrementViewState = () => {
     setViewState((prevState) => {
-      if (prevState === VIEW_STATES.NOTATE_SCALES) {
+      if (prevState === VIEW_STATES.ID_CHORDS) {
         return VIEW_STATES.KEY_SIG_NOTE;
       } else {
         return prevState + 1;
@@ -73,7 +80,7 @@ export default function ExamHomePage() {
   const decrementViewState = () => {
     setViewState((prevState) => {
       if (prevState === VIEW_STATES.KEY_SIG_NOTE) {
-        return VIEW_STATES.NOTATE_SCALES;
+        return VIEW_STATES.ID_CHORDS;
       } else {
         return prevState - 1;
       }
@@ -108,6 +115,12 @@ export default function ExamHomePage() {
       )}
       {viewState === VIEW_STATES.NOTATE_SCALES && (
         <NotateScales
+          currentUserData={currentUserData}
+          setCurrentUserData={setCurrentUserData}
+        />
+      )}
+      {viewState === VIEW_STATES.ID_CHORDS && (
+        <IdentifyChordsPage
           currentUserData={currentUserData}
           setCurrentUserData={setCurrentUserData}
         />

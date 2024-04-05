@@ -2,6 +2,7 @@
 import {
   Box,
   Button,
+  Card,
   Container,
   Divider,
   Grid,
@@ -17,6 +18,7 @@ import { notationInstructions } from "@/app/lib/instructions";
 import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import { useState } from "react";
 import NotateScale from "../NotateScale";
+import CardFooter from "../CardFooter";
 
 export default function NotateScales({
   currentUserData,
@@ -110,24 +112,8 @@ export default function NotateScales({
                 <Grid item>
                   <NotateScale />
                 </Grid>
-                <Grid item>
-                  <Divider sx={{ paddingY: "16px", marginBottom: "12px" }} />
-                </Grid>
-                <Grid item>
-                  <Stack direction="row" justifyContent="center" spacing={8}>
-                    <Stack gap={2}>
-                      <Typography variant="body1">Question 3/45</Typography>
-                      <ProgressBar value={4} />
-                    </Stack>
-                    <Button
-                      variant="contained"
-                      sx={{ height: "33px", marginTop: "8px" }}
-                    >
-                      {"Submit"}
-                    </Button>
-                  </Stack>
-                </Grid>
               </Grid>
+              <CardFooter questionNumber={3} />
             </Box>
           </Grid>
         </Grid>

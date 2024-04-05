@@ -10,12 +10,19 @@ import {
 import FormInput from "./FormInput";
 import Staff from "./Staff";
 
-type IdentifyChordsProps = {
+interface IdentifyChordsProps {
   numBars: number;
-  chords?: Chord[];
+  chords: { keys: string[]; duration: string }[];
   width: number;
-  handleChords: (chords: InputData) => void;
-};
+  handleChords: (e: FormEvent) => Promise<void>;
+}
+
+// type IdentifyChordsProps = {
+//   numBars: number;
+//   chords?: Chord[];
+//   width: number;
+//   handleChords: (chords: InputData) => void;
+// };
 
 export default forwardRef(function IdentifyChords(
   { numBars = 4, chords = [], width = 1650, handleChords }: IdentifyChordsProps,
