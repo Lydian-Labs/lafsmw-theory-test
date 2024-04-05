@@ -1,4 +1,3 @@
-import VexFlow from "vexflow";
 import createBlankStaves from "./createBlankStaves";
 import { RenderStavesAndNotesParams } from "./typesAndInterfaces";
 

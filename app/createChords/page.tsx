@@ -26,8 +26,6 @@ import { chordInteractionReducer } from "../lib/reducers";
 import { setupRendererAndDrawStaves } from "../lib/setUpRendererAndDrawChords";
 import {
   ChordInteractionAction,
-  NoteStringData,
-  StaveNoteData,
   StaveType,
 } from "../lib/typesAndInterfaces";
 const { Renderer, StaveNote, Formatter, Accidental } = VexFlow.Flow;
@@ -97,12 +95,8 @@ const ManageStaveChords = () => {
       keys: chordsData.keys,
       duration: chordsData.duration,
     });
-    const keyProps = newChord.getKeyProps();
-    const keysLength = newChord.getKeys().length;
+    // const keyProps = newChord.getKeyProps();
 
-    if (keysLength >= 2) {
-      newChord.addModifier(new Accidental("#"), 1);
-    }
     if (staves.length > 0 && context) {
       Formatter.FormatAndDraw(context, staves[0], [newChord]);
     }
@@ -118,7 +112,6 @@ const ManageStaveChords = () => {
     drawNotes();
   }, [chordsData]);
 
-  let updatedFoundNoteData: NoteStringData;
 
   const handleClick = (e: React.MouseEvent) => {
     const { userClickY, userClickX, highGYPosition } = getUserClickInfo(
@@ -134,25 +127,18 @@ const ManageStaveChords = () => {
       ({ yCoordinateMin, yCoordinateMax }) =>
         userClickY >= yCoordinateMin && userClickY <= yCoordinateMax
     );
-
-    if (foundNoteData)
-      updatedFoundNoteData = {
-        ...foundNoteData,
-        userClickY,
-        note: foundNoteData.note,
-      };
-    if (!updatedFoundNoteData) {
+    if (foundNoteData) {
+      console.log(chordsData);
+    }
+    if (!foundNoteData) {
       noNoteFound();
       return;
-    } else if (state.isSharpActive) {
     }
     const barIndex: number = findBarIndex(staves, userClickX);
-    let chordsDataCopy = { ...chordsData };
-    console.log(updatedFoundNoteData);
-    
+
     setChordsData((prevChordsData) => {
-      if (prevChordsData.keys.length < 4) {
-        const updatedKeys = [...prevChordsData.keys, updatedFoundNoteData.note];
+      if (prevChordsData.keys.length < 4 && foundNoteData) {
+        const updatedKeys = [...prevChordsData.keys, foundNoteData.note];
         return { ...prevChordsData, keys: updatedKeys };
       } else {
         return prevChordsData; // Return the previous state without changes

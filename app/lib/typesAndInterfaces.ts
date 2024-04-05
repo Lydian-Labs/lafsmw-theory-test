@@ -79,9 +79,13 @@ export interface UserClickInfo {
 
 export interface StaveNoteData {
   newStaveNote: StaveNoteType;
-  keys?: string[];
-  duration?: string;
-  staveNoteAbsoluteX?: number;
+  staveNoteAbsoluteX: number;
+  userClickY: number;
+}
+export interface ChordNoteData {
+  newStaveNote: StaveNoteType;
+  keys: string[];
+  duration: string;
   userClickY: number;
 }
 
