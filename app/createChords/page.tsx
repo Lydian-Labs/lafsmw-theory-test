@@ -17,7 +17,7 @@ import { INITIAL_STAVES, staveData } from "../lib/data/stavesData";
 import { findBarIndex } from "../lib/findBar";
 import generateYMinAndYMaxForAllNotes from "../lib/generateYMinAndMaxForAllNotes";
 import getUserClickInfo from "../lib/getUserClickInfo";
-import { handleNoteInteraction } from "../lib/handleNoteInteraction";
+import handleChordInteraction from "../lib/handleChordInteraction";
 import { chordInteractionInitialState } from "../lib/initialStates";
 import { ChordType } from "../lib/typesAndInterfaces";
 import { initializeRenderer } from "../lib/initializeRenderer";
@@ -30,7 +30,7 @@ import {
   StaveNoteData,
   StaveType,
 } from "../lib/typesAndInterfaces";
-const { Renderer, StaveNote, Formatter } = VexFlow.Flow;
+const { Renderer, StaveNote, Formatter, Accidental } = VexFlow.Flow;
 
 const ManageStaveChords = () => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
@@ -47,6 +47,7 @@ const ManageStaveChords = () => {
   );
   const renderer = rendererRef.current;
   const context = renderer?.getContext();
+
   const noNoteFound = () => dispatch({ type: "noNoteFound" });
 
   const tooManyBeatsInMeasure = () =>
@@ -71,7 +72,7 @@ const ManageStaveChords = () => {
       dispatch,
       renderStaves
     ),
-      setChordsData((): ChordType => {
+      setChordsData(() => {
         const newState = { keys: [], duration: "w" };
         return newState;
       });
@@ -96,6 +97,12 @@ const ManageStaveChords = () => {
       keys: chordsData.keys,
       duration: chordsData.duration,
     });
+    const keyProps = newChord.getKeyProps();
+    const keysLength = newChord.getKeys().length;
+
+    if (keysLength >= 2) {
+      newChord.addModifier(new Accidental("#"), 1);
+    }
     if (staves.length > 0 && context) {
       Formatter.FormatAndDraw(context, staves[0], [newChord]);
     }
@@ -134,39 +141,23 @@ const ManageStaveChords = () => {
         userClickY,
         note: foundNoteData.note,
       };
+    if (!updatedFoundNoteData) {
+      noNoteFound();
+      return;
+    } else if (state.isSharpActive) {
+    }
     const barIndex: number = findBarIndex(staves, userClickX);
-
-    let initialStavesCopy = [...initialStaves];
-
-    const barOfStaveNotes = initialStavesCopy[barIndex].map(
-      (noteData: StaveNoteData) => ({
-        ...noteData,
-      })
-    );
-
+    let chordsDataCopy = { ...chordsData };
+    console.log(updatedFoundNoteData);
+    
     setChordsData((prevChordsData) => {
       if (prevChordsData.keys.length < 4) {
         const updatedKeys = [...prevChordsData.keys, updatedFoundNoteData.note];
         return { ...prevChordsData, keys: updatedKeys };
       } else {
-        // Here you could also handle feedback to the user that no more notes can be added
         return prevChordsData; // Return the previous state without changes
       }
     });
-
-    handleNoteInteraction(
-      updatedFoundNoteData,
-      noNoteFound,
-      tooManyBeatsInMeasure,
-      "tooManyBeatsInMeasure",
-      "noNoteFound",
-      barOfStaveNotes,
-      initialStavesCopy,
-      state,
-      userClickX,
-      userClickY,
-      barIndex
-    );
   };
 
   return (

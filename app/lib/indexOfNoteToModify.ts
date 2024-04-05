@@ -4,8 +4,9 @@ export const indexOfNoteToModify = (
   staveData: StaveNoteData[],
   userClickX: number
 ): number => {
-  const index: number = staveData?.findIndex(
-    (note) => Math.abs(note.staveNoteAbsoluteX - userClickX) <= 10
-  );
+  const index: number = staveData?.findIndex((note) => {
+    note.staveNoteAbsoluteX &&
+      Math.abs(note.staveNoteAbsoluteX - userClickX) <= 10;
+  });
   return index;
 };

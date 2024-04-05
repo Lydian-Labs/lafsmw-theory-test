@@ -9,9 +9,9 @@ const { Accidental, StaveNote } = VexFlow.Flow;
 
 const getNoteData = (
   barOfStaveNotes: StaveNoteData[],
-  userClickX: number
+  userClick: number
 ): ModifyNoteData => {
-  const noteIndex = indexOfNote(barOfStaveNotes, userClickX);
+  const noteIndex = indexOfNote(barOfStaveNotes, userClick);
   return { barOfStaveNotes: barOfStaveNotes[noteIndex], noteIndex };
 };
 export const addAccidentalToNote = (
@@ -20,6 +20,17 @@ export const addAccidentalToNote = (
   accidental: string
 ): void => {
   const noteData = getNoteData(barOfStaveNotes, userClickX);
+  noteData.barOfStaveNotes &&
+    noteData.barOfStaveNotes.newStaveNote.addModifier(
+      new Accidental(accidental)
+    );
+};
+export const addAccidentalToNoteInChord = (
+  barOfStaveNotes: StaveNoteData[],
+  userClickY: number,
+  accidental: string
+): void => {
+  const noteData = getNoteData(barOfStaveNotes, userClickY);
   noteData.barOfStaveNotes &&
     noteData.barOfStaveNotes.newStaveNote.addModifier(
       new Accidental(accidental)
