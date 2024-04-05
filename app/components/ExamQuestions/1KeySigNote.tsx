@@ -14,7 +14,7 @@ import {
 
 import ProgressBar from "@/app/components/ProgressBar";
 import NotateKeySignature from "../NotateKeySignature";
-import { instructions } from "@/app/lib/instructions";
+import { notationInstructions } from "@/app/lib/instructions";
 import { MouseEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import { useState } from "react";
 import ClassPreferenceSelector from "../ClassPreferenceSelector";
@@ -68,7 +68,7 @@ export default function KeySignaturesNote({
                     Tutorial
                   </Typography>
                   <List>
-                    {instructions.map((value, index) => (
+                    {notationInstructions.map((value, index) => (
                       <ListItem key={index} disableGutters>
                         <ListItemText
                           primary={`${index + 1}. ${value.instructionTitle}`}

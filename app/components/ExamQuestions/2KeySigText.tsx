@@ -15,7 +15,7 @@ import {
 import FormInput from "@/app/components/FormInput";
 import ProgressBar from "@/app/components/ProgressBar";
 import Staff from "@/app/components/Staff";
-import { instructions } from "@/app/lib/instructions";
+import { inputInstructions } from "@/app/lib/instructions";
 import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import { SetStateAction, useState } from "react";
 
@@ -62,12 +62,12 @@ export default function KeySignaturesText({
         <Grid container spacing={4} p={2}>
           <Grid item xs={4}>
             <Stack gap={2} alignItems={"center"}>
-              <Typography variant="h5" align="center">
+              <Typography variant="h6" align="center">
                 Section 2: Identify Key Signatures
               </Typography>
               <Box
                 width={273}
-                height={456}
+                height={375}
                 bgcolor={"card.background"}
                 borderRadius="var(--borderRadius)"
                 boxShadow="var(--cardShadow)"
@@ -77,7 +77,7 @@ export default function KeySignaturesText({
                     Tutorial
                   </Typography>
                   <List>
-                    {instructions.map((value, index) => (
+                    {inputInstructions.map((value, index) => (
                       <ListItem key={index} disableGutters>
                         <ListItemText
                           primary={`${index + 1}. ${value.instructionTitle}`}
@@ -168,7 +168,7 @@ export default function KeySignaturesText({
                       form="keySigs"
                       sx={{ height: "33px", marginTop: "8px" }}
                     >
-                      {"Next Question >"}
+                      {"Submit"}
                     </Button>
                   </Stack>
                 </Grid>

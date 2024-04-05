@@ -2,6 +2,7 @@
 import React, { useEffect, useMemo, useReducer, useRef, useState } from "react";
 import VexFlow from "vexflow";
 import BlueButton from "../components/BlueButton";
+import RegularButton from "../components/RegularButton";
 import { buildKeySignature } from "../lib/buildKeySignature";
 import {
   clearKeySignature,
@@ -117,16 +118,16 @@ const NotateKeySignature = () => {
       <div>
         {buttonGroup.map((button) => {
           return (
-            <BlueButton
+            <RegularButton
               key={button.text}
               onClick={button.action}
               isEnabled={button.isEnabled}
             >
               {button.text}
-            </BlueButton>
+            </RegularButton>
           );
         })}
-        <BlueButton onClick={clearKey}>Clear Key Signature</BlueButton>
+        <RegularButton onClick={clearKey}>Clear Key Signature</RegularButton>
       </div>
     </>
   );

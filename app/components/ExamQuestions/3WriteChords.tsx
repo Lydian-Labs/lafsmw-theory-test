@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 
 import ProgressBar from "@/app/components/ProgressBar";
-import { instructions } from "@/app/lib/instructions";
+import { notationInstructions } from "@/app/lib/instructions";
 import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import { useState } from "react";
 
@@ -52,7 +52,7 @@ export default function WriteChords({
           <Grid item xs={4}>
             <Stack gap={2} alignItems={"center"}>
               <Typography variant="h5" align="center">
-                Section 3: Write Scales
+                Section 3: Write Chords
               </Typography>
               <Box
                 width={273}
@@ -66,7 +66,7 @@ export default function WriteChords({
                     Tutorial
                   </Typography>
                   <List>
-                    {instructions.map((value, index) => (
+                    {notationInstructions.map((value, index) => (
                       <ListItem key={index} disableGutters>
                         <ListItemText
                           primary={`${index + 1}. ${value.instructionTitle}`}
@@ -101,7 +101,7 @@ export default function WriteChords({
               >
                 <Grid item>
                   <Typography variant="h6">
-                    Write the following scales:
+                    Write the following chords:
                   </Typography>
                 </Grid>
                 <Grid item>

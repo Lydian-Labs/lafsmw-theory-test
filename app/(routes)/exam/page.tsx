@@ -117,17 +117,8 @@ export default function ExamHomePage() {
         sx={{ display: "flex", justifyContent: "space-around" }}
         p={4}
       >
-        <Button onClick={() => setViewState(VIEW_STATES.KEY_SIG_NOTE)}>
-          Section 1
-        </Button>
-        <Button onClick={() => setViewState(VIEW_STATES.KEY_SIG_TEXT)}>
-          Section 2
-        </Button>
-        <Button onClick={() => setViewState(VIEW_STATES.WRITE_SCALES)}>
-          Section 3
-        </Button>
-        <Button onClick={decrementViewState}>Back</Button>
-        <Button onClick={incrementViewState}>Forward</Button>
+        <Button onClick={decrementViewState}>{"< Previous"}</Button>
+        <Button onClick={incrementViewState}>{"Next >"}</Button>
         <Button onClick={handleFinalSubmit}>Submit to db</Button>
       </Stack>
     </div>
