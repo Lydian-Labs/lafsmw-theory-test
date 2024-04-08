@@ -1,6 +1,7 @@
 import VexFlow from "vexflow";
-import { indexOfNoteToModify as indexOfNote } from "./indexOfNoteToModify";
+import { indexOfNoteToModify as indexOfNote, indexOfNoteInChordToModify } from "./indexOfNoteToModify";
 import {
+  ChordType,
   ModifyNoteData,
   NoteStringData,
   StaveNoteData,
@@ -12,6 +13,13 @@ const getNoteData = (
   userClick: number
 ): ModifyNoteData => {
   const noteIndex = indexOfNote(barOfStaveNotes, userClick);
+  return { barOfStaveNotes: barOfStaveNotes[noteIndex], noteIndex };
+};
+const getChordNoteData = (
+  barOfStaveNotes: ChordType,
+  userClick: number
+) => {
+  const noteIndex = indexOfNoteInChordToModify(barOfStaveNotes);
   return { barOfStaveNotes: barOfStaveNotes[noteIndex], noteIndex };
 };
 export const addAccidentalToNote = (

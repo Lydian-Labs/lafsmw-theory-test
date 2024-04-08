@@ -10,6 +10,7 @@ export type InputData = {
 export type ChordType = {
   keys: string[];
   duration: string;
+  staveNotes: StaveNoteType | null;
 };
 
 export type RendererRef = RefObject<InstanceType<typeof Renderer>>;
