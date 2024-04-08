@@ -25,7 +25,11 @@ import { notesArray } from "../lib/noteArray";
 import { addAccidentalToNoteInChord } from "../lib/modifyNotes";
 import { chordInteractionReducer } from "../lib/reducers";
 import { setupRendererAndDrawStaves } from "../lib/setUpRendererAndDrawChords";
-import { ChordInteractionAction, StaveType } from "../lib/typesAndInterfaces";
+import {
+  ChordInteractionAction,
+  StaveType,
+  NoteStringData,
+} from "../lib/typesAndInterfaces";
 import { set } from "firebase/database";
 const { Renderer, StaveNote, Formatter, Accidental } = VexFlow.Flow;
 
@@ -38,6 +42,7 @@ const ManageStaveChords = () => {
     keys: [],
     duration: "w",
     staveNotes: null,
+    userClickY: 0,
   });
   const [state, dispatch] = useReducer(
     chordInteractionReducer,
@@ -45,6 +50,10 @@ const ManageStaveChords = () => {
   );
   const renderer = rendererRef.current;
   const context = renderer?.getContext();
+
+  let updatedFoundNoteData: NoteStringData;
+
+  //functions
 
   const noNoteFound = () => dispatch({ type: "noNoteFound" });
 
@@ -71,7 +80,12 @@ const ManageStaveChords = () => {
       renderStaves
     ),
       setChordsData(() => {
-        const newState = { keys: [], duration: "w", staveNotes: null };
+        const newState = {
+          keys: [],
+          duration: "w",
+          staveNotes: null,
+          userClickY: 0,
+        };
         return newState;
       });
   };
@@ -96,7 +110,9 @@ const ManageStaveChords = () => {
     if (!rendererRef.current || chordsData.keys.length === 0) {
       return;
     }
-
+    if (state.isSharpActive || state.isFlatActive) {
+      newChord.addModifier(new Accidental(state.isSharpActive ? "#" : "b"), 0);
+    }
     if (staves.length > 0 && context) {
       Formatter.FormatAndDraw(context, staves[0], [newChord]);
     }
@@ -126,21 +142,32 @@ const ManageStaveChords = () => {
       ({ yCoordinateMin, yCoordinateMax }) =>
         userClickY >= yCoordinateMin && userClickY <= yCoordinateMax
     );
-
+    const chordsDataCopy = { ...chordsData };
     if (!foundNoteData) {
       noNoteFound();
       return;
-    } else if (state.isSharpActive) {
-      addAccidentalToNoteInChord(chordsData, userClickY, state.isSharpActive ? "#" : "b")
     }
+    if (foundNoteData)
+      updatedFoundNoteData = {
+        ...foundNoteData,
+        userClickY: userClickY,
+        staveNotes: newChord,
+      };
 
     const barIndex: number = findBarIndex(staves, userClickX);
 
-    foundNoteData &&
+    updatedFoundNoteData &&
       setChordsData((prevChordsData) => {
-        if (prevChordsData.keys.length < 4 && foundNoteData) {
-          const updatedKeys = [...prevChordsData.keys, foundNoteData.note];
-          return { ...prevChordsData, keys: updatedKeys, staveNotes: newChord };
+        if (prevChordsData.keys.length < 4 && updatedFoundNoteData) {
+          const updatedKeys = [
+            ...prevChordsData.keys,
+            updatedFoundNoteData.note,
+          ];
+          return {
+            ...prevChordsData,
+            keys: updatedKeys,
+            staveNotes: updatedFoundNoteData.staveNotes,
+          };
         } else {
           return prevChordsData; // Return the previous state without changes
         }

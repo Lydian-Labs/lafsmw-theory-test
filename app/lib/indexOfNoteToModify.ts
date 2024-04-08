@@ -1,4 +1,4 @@
-import { StaveNoteData, ChordNoteData } from "./typesAndInterfaces";
+import { StaveNoteData, ChordNoteData, ChordType } from "./typesAndInterfaces";
 
 export const indexOfNoteToModify = (
   staveData: StaveNoteData[],
@@ -12,10 +12,11 @@ export const indexOfNoteToModify = (
 };
 
 export const indexOfNoteInChordToModify = (
-  chordData: ChordNoteData[]
+  chordData: ChordType,
+  targetNote: string
 ): number => {
-  const index: number = chordData?.findIndex((note) => {
-    note.userClickY <= 3;
+  const index: number = chordData.keys.findIndex((note) => {
+    note === targetNote;
   });
   return index;
 };

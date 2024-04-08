@@ -11,6 +11,7 @@ export type ChordType = {
   keys: string[];
   duration: string;
   staveNotes: StaveNoteType | null;
+  userClickY: number
 };
 
 export type RendererRef = RefObject<InstanceType<typeof Renderer>>;
@@ -95,6 +96,7 @@ export interface NoteStringData {
   yCoordinateMin: number;
   yCoordinateMax: number;
   userClickY?: number;
+  staveNotes?: StaveNoteType
 }
 export interface ModifyNoteData {
   barOfStaveNotes: StaveNoteData;

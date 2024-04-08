@@ -117,6 +117,7 @@ const ManageStaveNotes = () => {
     const barIndex: number = findBarIndex(staves, userClickX);
 
     let notesDataCopy = [...notesData];
+    
     const barOfStaveNotes = notesDataCopy[barIndex].map(
       (noteData: StaveNoteData) => ({
         ...noteData,
