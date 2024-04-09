@@ -11,6 +11,7 @@ import {
 } from "./typesAndInterfaces";
 const { Accidental, StaveNote } = VexFlow.Flow;
 
+
 const getNoteData = (
   barOfStaveNotes: StaveNoteData[],
   userClick: number

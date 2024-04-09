@@ -51,8 +51,6 @@ const ManageStaveChords = () => {
   const renderer = rendererRef.current;
   const context = renderer?.getContext();
 
-  let updatedFoundNoteData: NoteStringData;
-
   //functions
 
   const noNoteFound = () => dispatch({ type: "noNoteFound" });
@@ -60,6 +58,7 @@ const ManageStaveChords = () => {
   const tooManyBeatsInMeasure = () =>
     dispatch({ type: "tooManyBeatsInMeasure" });
 
+  //render button group
   const createChordsButtonGroup = useMemo(
     () =>
       buttonGroup<ChordInteractionAction>(
@@ -70,6 +69,7 @@ const ManageStaveChords = () => {
     [state, dispatch]
   );
 
+  //clear measures and set initialStaves and notes back to an empty stave
   const clearMeasures = () => {
     clearAllMeasures(
       setInitialStaves,
@@ -90,6 +90,7 @@ const ManageStaveChords = () => {
       });
   };
 
+  //render staves and notes function ****
   const renderStaves = useCallback(
     (): void =>
       setupRendererAndDrawStaves({
@@ -98,36 +99,34 @@ const ManageStaveChords = () => {
         setStaves,
         staves,
       }),
+
     [rendererRef, setStaves, staves]
   );
-
-  const newChord = new StaveNote({
-    keys: chordsData.keys,
-    duration: chordsData.duration,
-  });
-
   const drawNotes = () => {
     if (!rendererRef.current || chordsData.keys.length === 0) {
       return;
     }
-    if (state.isSharpActive || state.isFlatActive) {
-      newChord.addModifier(new Accidental(state.isSharpActive ? "#" : "b"), 0);
-    }
-    if (staves.length > 0 && context) {
-      Formatter.FormatAndDraw(context, staves[0], [newChord]);
+    if (staves.length > 0 && context && chordsData.staveNotes) {
+      Formatter.FormatAndDraw(context, staves[0], [chordsData.staveNotes]);
     }
   };
 
+  //useEffect to initialize renderer and initialize staves
   useEffect(() => {
     initializeRenderer(rendererRef, container);
     renderStaves();
   }, []);
 
+  //useEffect to render staves and notes every time ChordsData updates
   useEffect(() => {
     renderStaves();
     drawNotes();
   }, [chordsData]);
 
+  //inititalize updatedFoundNoteata
+  let updatedFoundNoteData: NoteStringData;
+
+  //handle click function
   const handleClick = (e: React.MouseEvent) => {
     const { userClickY, userClickX, highGYPosition } = getUserClickInfo(
       e,
@@ -135,6 +134,7 @@ const ManageStaveChords = () => {
       staves[0]
     );
 
+    //inititalize foundNoteData by generating the Y min and max for all notes. Find the userClick that is greater than or equal to the minimum Y coordinate but less that or equal to the max coordinate. Return the noteData object
     let foundNoteData = generateYMinAndYMaxForAllNotes(
       highGYPosition,
       notesArray
@@ -142,36 +142,40 @@ const ManageStaveChords = () => {
       ({ yCoordinateMin, yCoordinateMax }) =>
         userClickY >= yCoordinateMin && userClickY <= yCoordinateMax
     );
-    const chordsDataCopy = { ...chordsData };
-    if (!foundNoteData) {
-      noNoteFound();
-      return;
-    }
-    if (foundNoteData)
+
+    //update the foundNoteData with the userClickY
+    if (foundNoteData) {
       updatedFoundNoteData = {
         ...foundNoteData,
         userClickY: userClickY,
-        staveNotes: newChord,
       };
+    }
 
-    const barIndex: number = findBarIndex(staves, userClickX);
+    //handle all note modifications
+    if (!updatedFoundNoteData) {
+      noNoteFound();
+      return;
+    } else if (state.isSharpActive || state.isFlatActive) {
+      updatedFoundNoteData.staveNotes?.addModifier(
+        new Accidental(state.isSharpActive ? "#" : "b"),
+        0
+      );
+    }
+    //set the chordsData using the previous state
 
-    updatedFoundNoteData &&
-      setChordsData((prevChordsData) => {
-        if (prevChordsData.keys.length < 4 && updatedFoundNoteData) {
-          const updatedKeys = [
-            ...prevChordsData.keys,
-            updatedFoundNoteData.note,
-          ];
-          return {
-            ...prevChordsData,
-            keys: updatedKeys,
-            staveNotes: updatedFoundNoteData.staveNotes,
-          };
-        } else {
-          return prevChordsData; // Return the previous state without changes
-        }
+    setChordsData((prevState) => {
+      const updatedKays = [...prevState.keys, updatedFoundNoteData.note];
+      const newChord = new StaveNote({
+        keys: updatedKays,
+        duration: prevState.duration,
       });
+      return {
+        ...prevState,
+        keys: updatedKays,
+        staveNotes: newChord,
+        userClickY,
+      };
+    });
   };
 
   return (
