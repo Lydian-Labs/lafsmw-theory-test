@@ -103,7 +103,7 @@ export interface CheckNumBeatsInMeasureProps {
 
 export interface CheckIfNoteFoundProps {
   noNoteFound: boolean;
-  openEnterNotes: React.Dispatch<NoteInteractionAction>;
+  openEnterNotes: React.Dispatch<NoteInteractionAction | ChordInteractionAction>;
 }
 
 export interface RenderStavesAndNotesParams {

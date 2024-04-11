@@ -32,15 +32,16 @@ export const keySigReducer = (state: KeySigState, action: KeySigAction) => {
   if (action.type in newState) newState[action.type] = true;
   return newState;
 };
-export const chordInteractionReducer = (
-  state: ChordInteractionState,
-  action: ChordInteractionAction
+
+export const reducer = (
+  state: ChordInteractionState | NoteInteractionState | KeySigState,
+  action: NoteInteractionAction | KeySigAction | ChordInteractionAction
 ) => {
   const newState = Object.keys(state).reduce((acc, key) => {
     acc[key] = false;
     return acc;
-  }, {} as ChordInteractionState);
+  }, {} as typeof state);
 
-  if (action.type in newState) newState[action.type] = true;
+  if ("type" in action && action.type in newState) newState[action.type] = true;
   return newState;
 };

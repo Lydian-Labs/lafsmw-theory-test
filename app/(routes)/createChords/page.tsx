@@ -23,7 +23,7 @@ import { handleNoteInteraction } from "../../lib/handleNoteInteraction";
 import { chordInteractionInitialState } from "../../lib/initialStates";
 import { initializeRenderer } from "../../lib/initializeRenderer";
 import { notesArray } from "../../lib/noteArray";
-import { chordInteractionReducer } from "../../lib/reducers";
+import { reducer } from "../../lib/reducers";
 import { setupRendererAndDrawNotes } from "../../lib/setupRendererAndDrawNotes";
 import {
   NoteStringData,
@@ -40,10 +40,7 @@ const ManageStaveChords = () => {
   const container = useRef<HTMLDivElement | null>(null);
   const [staves, setStaves] = useState<StaveType[]>([]);
   const [notesData, setNotesData] = useState(INITIAL_STAVES);
-  const [state, dispatch] = useReducer(
-    chordInteractionReducer,
-    chordInteractionInitialState
-  );
+  const [state, dispatch] = useReducer(reducer, chordInteractionInitialState);
   const [chordsData, setChordsData] = useState<Chord>({
     keys: [],
     duration: "w",
@@ -150,7 +147,7 @@ const ManageStaveChords = () => {
         openEnterNotes={dispatch}
       />
       <CheckIfNoteFound
-        noNoteFound={state.noNoteFound}
+        noNoteFound={state.noNoteFound || false}
         openEnterNotes={dispatch}
       />
       <div className="mt-2 ml-3">
