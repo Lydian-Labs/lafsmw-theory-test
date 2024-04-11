@@ -20,10 +20,10 @@ import { findBarIndex } from "../../lib/findBar";
 import generateYMinAndYMaxForAllNotes from "../../lib/generateYMinAndMaxForAllNotes";
 import getUserClickInfo from "../../lib/getUserClickInfo";
 import { handleNoteInteraction } from "../../lib/handleNoteInteraction";
-import { noteInteractionInitialState } from "../../lib/initialStates";
+import { chordInteractionInitialState } from "../../lib/initialStates";
 import { initializeRenderer } from "../../lib/initializeRenderer";
 import { notesArray } from "../../lib/noteArray";
-import { noteInteractionReducer } from "../../lib/reducers";
+import { chordInteractionReducer } from "../../lib/reducers";
 import { setupRendererAndDrawNotes } from "../../lib/setupRendererAndDrawNotes";
 import {
   NoteStringData,
@@ -31,7 +31,7 @@ import {
   StaveType,
   Chord,
 } from "../../lib/typesAndInterfaces";
-import { modifyNotesActionTypes } from "@/app/lib/actionTypes";
+import { modifyChordsActionTypes } from "@/app/lib/actionTypes";
 
 const { Renderer } = VexFlow.Flow;
 
@@ -41,8 +41,8 @@ const ManageStaveChords = () => {
   const [staves, setStaves] = useState<StaveType[]>([]);
   const [notesData, setNotesData] = useState(INITIAL_STAVES);
   const [state, dispatch] = useReducer(
-    noteInteractionReducer,
-    noteInteractionInitialState
+    chordInteractionReducer,
+    chordInteractionInitialState
   );
   const [chordsData, setChordsData] = useState<Chord>({
     keys: [],
@@ -57,7 +57,7 @@ const ManageStaveChords = () => {
     dispatch({ type: "tooManyBeatsInMeasure" });
 
   const modifyStaveNotesButtonGroup = useMemo(
-    () => buttonGroup(dispatch, state, modifyNotesActionTypes),
+    () => buttonGroup(dispatch, state, modifyChordsActionTypes),
     [dispatch, state]
   );
 

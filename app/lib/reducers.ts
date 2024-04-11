@@ -3,6 +3,8 @@ import {
   NoteInteractionAction,
   KeySigState,
   KeySigAction,
+  ChordInteractionState,
+  ChordInteractionAction,
 } from "./typesAndInterfaces";
 
 export const noteInteractionReducer = (
@@ -26,6 +28,18 @@ export const keySigReducer = (state: KeySigState, action: KeySigAction) => {
     acc[key] = false;
     return acc;
   }, {} as KeySigState);
+
+  if (action.type in newState) newState[action.type] = true;
+  return newState;
+};
+export const chordInteractionReducer = (
+  state: ChordInteractionState,
+  action: ChordInteractionAction
+) => {
+  const newState = Object.keys(state).reduce((acc, key) => {
+    acc[key] = false;
+    return acc;
+  }, {} as ChordInteractionState);
 
   if (action.type in newState) newState[action.type] = true;
   return newState;

@@ -30,6 +30,16 @@ export type NoteInteractionState = {
   isFlatActive: boolean;
   [key: string]: boolean | undefined;
 };
+export type ChordInteractionState = {
+  isEraseNoteActive: boolean;
+  isEraseAccidentalActive: boolean;
+  isEnterNoteActive: boolean;
+  isSharpActive: boolean;
+  noNoteFound: boolean;
+  tooManyBeatsInMeasure?: boolean;
+  isFlatActive: boolean;
+  [key: string]: boolean | undefined;
+};
 export type KeySigState = {
   isAddSharpActive: boolean;
   isAddFlatActive: boolean;
@@ -40,6 +50,7 @@ export type KeySigState = {
 
 export type NoteInteractionAction = { type: keyof NoteInteractionState };
 export type KeySigAction = { type: keyof KeySigState };
+export type ChordInteractionAction = { type: keyof ChordInteractionState };
 
 export type BarMetrics = {
   barWidth: number;
