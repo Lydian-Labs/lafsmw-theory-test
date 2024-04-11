@@ -13,7 +13,7 @@ import { getUserClickInfo } from "../../lib/getUserClickInfo";
 import { keySigInitialState } from "../../lib/initialStates";
 import { initializeRenderer } from "../../lib/initializeRenderer";
 import isClickWithinStaveBounds from "../../lib/isClickWithinStaveBounds";
-import { keySigReducer } from "../../lib/reducers";
+import { reducer } from "../../lib/reducers";
 import { setupRendererAndDrawNotes } from "../../lib/setupRendererAndDrawNotes";
 import { GlyphProps } from "../../lib/typesAndInterfaces";
 import { modifyKeySigActionTypes } from "@/app/lib/actionTypes";
@@ -25,7 +25,7 @@ const CreateKeySignatures = () => {
   const container = useRef<HTMLDivElement | null>(null);
   const [blankStaves, setBlankStaves] = useState(INITIAL_STAVES);
   const [glyphs, setGlyphs] = useState<GlyphProps[]>([]);
-  const [state, dispatch] = useReducer(keySigReducer, keySigInitialState);
+  const [state, dispatch] = useReducer(reducer, keySigInitialState);
 
   const modifyKeySigButtonGroup = useMemo(
     () => buttonGroup(dispatch, state, modifyKeySigActionTypes),
