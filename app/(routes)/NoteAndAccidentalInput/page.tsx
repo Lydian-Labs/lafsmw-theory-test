@@ -23,7 +23,7 @@ import { handleNoteInteraction } from "../../lib/handleNoteInteraction";
 import { noteInteractionInitialState } from "../../lib/initialStates";
 import { initializeRenderer } from "../../lib/initializeRenderer";
 import { notesArray } from "../../lib/noteArray";
-import { noteInteractionReducer } from "../../lib/reducers";
+import { reducer } from "../../lib/reducers";
 import { setupRendererAndDrawNotes } from "../../lib/setupRendererAndDrawNotes";
 import {
   NoteStringData,
@@ -39,10 +39,7 @@ const ManageStaveNotes = () => {
   const container = useRef<HTMLDivElement | null>(null);
   const [staves, setStaves] = useState<StaveType[]>([]);
   const [notesData, setNotesData] = useState(INITIAL_STAVES);
-  const [state, dispatch] = useReducer(
-    noteInteractionReducer,
-    noteInteractionInitialState
-  );
+  const [state, dispatch] = useReducer(reducer, noteInteractionInitialState);
 
   const noNoteFound = () => dispatch({ type: "noNoteFound" });
 
@@ -143,7 +140,7 @@ const ManageStaveNotes = () => {
         openEnterNotes={dispatch}
       />
       <CheckIfNoteFound
-        noNoteFound={state.noNoteFound}
+        noNoteFound={state.noNoteFound || false}
         openEnterNotes={dispatch}
       />
       <div className="mt-2 ml-3">
