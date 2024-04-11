@@ -30,6 +30,7 @@ import {
   StaveNoteData,
   StaveType,
 } from "../../lib/typesAndInterfaces";
+import { modifyNotesActionTypes } from "@/app/lib/actionTypes";
 
 const { Renderer } = VexFlow.Flow;
 
@@ -49,7 +50,7 @@ const CreateChords = () => {
     dispatch({ type: "tooManyBeatsInMeasure" });
 
   const modifyStaveNotesButtonGroup = useMemo(
-    () => buttonGroup(dispatch, state),
+    () => buttonGroup(dispatch, state, modifyNotesActionTypes),
     [dispatch, state]
   );
 
