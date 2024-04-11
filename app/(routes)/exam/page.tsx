@@ -1,10 +1,10 @@
 "use client";
-import KeySigNote from "@/app/components/ExamQuestions/1KeySigNote";
-import KeySigText from "@/app/components/ExamQuestions/2KeySigText";
-import NotateScales from "@/app/components/ExamQuestions/3NotateScales";
-import NotateTriads from "@/app/components/ExamQuestions/4NotateTriads";
-import NotateSeventhChords from "@/app/components/ExamQuestions/5Notate7thChords";
-import IdentifyChordsPage from "@/app/components/ExamQuestions/6IdentifyChords";
+import KeySigNotate from "@/app/components/ExamQuestions/1KeySigNotate";
+import KeySigIdentify from "@/app/components/ExamQuestions/2KeySigIdentify";
+import ScalesNotate from "@/app/components/ExamQuestions/3ScalesNotate";
+import TriadsNotate from "@/app/components/ExamQuestions/4TriadsNotate";
+import SeventhChordsNotate from "@/app/components/ExamQuestions/5SeventhChordsNotate";
+import ChordsIdentify from "@/app/components/ExamQuestions/6ChordsIdentify";
 
 import { InputState, MouseEvent } from "@/app/lib/typesAndInterfaces";
 
@@ -32,14 +32,15 @@ export default function ExamHomePage() {
   const router = useRouter();
 
   const VIEW_STATES = {
-    KEY_SIG_NOTE: 1,
-    KEY_SIG_TEXT: 2,
-    NOTATE_SCALES: 3,
-    NOTATE_TRIADS: 4,
-    NOTATE_7TH_CHORDS: 5,
-    ID_CHORDS: 6,
+    KEY_SIG_NOTATE: 1,
+    KEY_SIG_IDENTIFY: 2,
+    SCALES_NOTATE: 3,
+    TRIADS_NOTATE: 4,
+    SEVENTH_CHORDS_NOTATE: 5,
+    CHORDS_IDENTIFY: 6,
   };
-  const [viewState, setViewState] = useState(VIEW_STATES.KEY_SIG_NOTE);
+
+  const [viewState, setViewState] = useState(VIEW_STATES.KEY_SIG_NOTATE);
 
   const [currentUserData, setCurrentUserData] =
     useState<InputState>(initialState);
@@ -71,8 +72,8 @@ export default function ExamHomePage() {
 
   const incrementViewState = () => {
     setViewState((prevState) => {
-      if (prevState === VIEW_STATES.ID_CHORDS) {
-        return VIEW_STATES.KEY_SIG_NOTE;
+      if (prevState === VIEW_STATES.CHORDS_IDENTIFY) {
+        return VIEW_STATES.KEY_SIG_NOTATE;
       } else {
         return prevState + 1;
       }
@@ -81,8 +82,8 @@ export default function ExamHomePage() {
 
   const decrementViewState = () => {
     setViewState((prevState) => {
-      if (prevState === VIEW_STATES.KEY_SIG_NOTE) {
-        return VIEW_STATES.ID_CHORDS;
+      if (prevState === VIEW_STATES.KEY_SIG_NOTATE) {
+        return VIEW_STATES.CHORDS_IDENTIFY;
       } else {
         return prevState - 1;
       }
@@ -103,38 +104,38 @@ export default function ExamHomePage() {
 
   return (
     <div>
-      {viewState === VIEW_STATES.KEY_SIG_NOTE && (
-        <KeySigNote
+      {viewState === VIEW_STATES.KEY_SIG_NOTATE && (
+        <KeySigNotate
           currentUserData={currentUserData}
           setCurrentUserData={setCurrentUserData}
         />
       )}
-      {viewState === VIEW_STATES.KEY_SIG_TEXT && (
-        <KeySigText
+      {viewState === VIEW_STATES.KEY_SIG_IDENTIFY && (
+        <KeySigIdentify
           currentUserData={currentUserData}
           setCurrentUserData={setCurrentUserData}
         />
       )}
-      {viewState === VIEW_STATES.NOTATE_SCALES && (
-        <NotateScales
+      {viewState === VIEW_STATES.SCALES_NOTATE && (
+        <ScalesNotate
           currentUserData={currentUserData}
           setCurrentUserData={setCurrentUserData}
         />
       )}
-      {viewState === VIEW_STATES.NOTATE_TRIADS && (
-        <NotateTriads
+      {viewState === VIEW_STATES.TRIADS_NOTATE && (
+        <TriadsNotate
           currentUserData={currentUserData}
           setCurrentUserData={setCurrentUserData}
         />
       )}
-      {viewState === VIEW_STATES.NOTATE_7TH_CHORDS && (
-        <NotateSeventhChords
+      {viewState === VIEW_STATES.SEVENTH_CHORDS_NOTATE && (
+        <SeventhChordsNotate
           currentUserData={currentUserData}
           setCurrentUserData={setCurrentUserData}
         />
       )}
-      {viewState === VIEW_STATES.ID_CHORDS && (
-        <IdentifyChordsPage
+      {viewState === VIEW_STATES.CHORDS_IDENTIFY && (
+        <ChordsIdentify
           currentUserData={currentUserData}
           setCurrentUserData={setCurrentUserData}
         />

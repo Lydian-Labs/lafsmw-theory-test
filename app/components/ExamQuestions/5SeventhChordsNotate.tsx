@@ -53,7 +53,7 @@ export default function NotateSeventhChords({
           <Grid item xs={4}>
             <Stack gap={2} alignItems={"center"}>
               <Typography variant="h6" align="center">
-                Section 5: Write 7th chords
+                Section 5: Notate 7th chords
               </Typography>
               <Box
                 width={273}
@@ -102,7 +102,7 @@ export default function NotateSeventhChords({
               >
                 <Grid item>
                   <Typography variant="h6">
-                    Write the following 7th chords:
+                    Notate the following 7th chords:
                   </Typography>
                 </Grid>
                 <Grid item>

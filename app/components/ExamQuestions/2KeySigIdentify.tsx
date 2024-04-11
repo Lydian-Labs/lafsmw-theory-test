@@ -10,33 +10,21 @@ import {
   Typography,
 } from "@mui/material";
 
-import { notationInstructions } from "@/app/lib/instructions";
-import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
-import { useState } from "react";
-import NotateScale from "../NotateScale";
+import { inputInstructions } from "@/app/lib/instructions";
+import { InputData, UserDataProps } from "@/app/lib/typesAndInterfaces";
+import { useRef } from "react";
 import CardFooter from "../CardFooter";
+import IdentifyNotation from "../IdentifyNotation";
 
-export default function NotateTriads({
+export default function KeySignaturesIdentification({
   currentUserData,
   setCurrentUserData,
 }: UserDataProps) {
-  const [chordNotation, setChordNotation] = useState({
-    input1: "",
-    input2: "",
-    input3: "",
-    input4: "",
-    input5: "",
-    input6: "",
-  });
+  const keySigFormRef = useRef<HTMLFormElement | null>(null);
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    const payload = {
-      ...currentUserData,
-      chordNotation: chordNotation,
-    };
-    setCurrentUserData(payload);
-  };
+  function handleKeySignatures(input: InputData) {
+    setCurrentUserData({ ...currentUserData, keySignatures: input });
+  }
 
   return (
     <Container>
@@ -53,11 +41,11 @@ export default function NotateTriads({
           <Grid item xs={4}>
             <Stack gap={2} alignItems={"center"}>
               <Typography variant="h6" align="center">
-                Section 4: Write Triads
+                Section 2: Identify Key Signatures
               </Typography>
               <Box
                 width={273}
-                height={456}
+                height={375}
                 bgcolor={"card.background"}
                 borderRadius="var(--borderRadius)"
                 boxShadow="var(--cardShadow)"
@@ -67,7 +55,7 @@ export default function NotateTriads({
                     Tutorial
                   </Typography>
                   <List>
-                    {notationInstructions.map((value, index) => (
+                    {inputInstructions.map((value, index) => (
                       <ListItem key={index} disableGutters>
                         <ListItemText
                           primary={`${index + 1}. ${value.instructionTitle}`}
@@ -102,14 +90,24 @@ export default function NotateTriads({
               >
                 <Grid item>
                   <Typography variant="h6">
-                    Write the following triads:
+                    Identify the following key signatures:
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <NotateScale />
+                  <IdentifyNotation
+                    handleInput={handleKeySignatures}
+                    ref={keySigFormRef}
+                    width={500}
+                  />
                 </Grid>
               </Grid>
-              <CardFooter questionNumber={4} />
+              <CardFooter
+                questionNumber={2}
+                buttonForm="keySigs"
+                handleSubmit={() => {
+                  keySigFormRef.current?.requestSubmit();
+                }}
+              />
             </Box>
           </Grid>
         </Grid>

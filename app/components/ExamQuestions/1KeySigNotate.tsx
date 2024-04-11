@@ -10,30 +10,25 @@ import {
   Typography,
 } from "@mui/material";
 
+import NotateKeySignature from "../NotateKeySignature";
 import { notationInstructions } from "@/app/lib/instructions";
-import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
+import { MouseEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import { useState } from "react";
-import NotateScale from "../NotateScale";
+import ClassPreferenceSelector from "../ClassPreferenceSelector";
+import { Level } from "@/app/lib/typesAndInterfaces";
 import CardFooter from "../CardFooter";
 
-export default function NotateScales({
+export default function KeySignaturesNotation({
   currentUserData,
   setCurrentUserData,
 }: UserDataProps) {
-  const [scales, setScales] = useState({
-    input1: "",
-    input2: "",
-    input3: "",
-    input4: "",
-    input5: "",
-    input6: "",
-  });
+  const [level, setLevel] = useState<Level>("sibelius-class");
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = async (e: MouseEvent) => {
     e.preventDefault();
     const payload = {
       ...currentUserData,
-      scales: scales,
+      level: level,
     };
     setCurrentUserData(payload);
   };
@@ -53,8 +48,12 @@ export default function NotateScales({
           <Grid item xs={4}>
             <Stack gap={2} alignItems={"center"}>
               <Typography variant="h6" align="center">
-                Section 3: Write Scales
+                Section 1: Notate Key Signatures
               </Typography>
+              <ClassPreferenceSelector
+                level={level}
+                setLevel={setLevel}
+              ></ClassPreferenceSelector>
               <Box
                 width={273}
                 height={456}
@@ -102,14 +101,14 @@ export default function NotateScales({
               >
                 <Grid item>
                   <Typography variant="h6">
-                    Write the following scale:
+                    Notate the following key signature: Db Major
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <NotateScale />
+                  <NotateKeySignature />
                 </Grid>
               </Grid>
-              <CardFooter questionNumber={3} />
+              <CardFooter questionNumber={1} handleSubmit={handleSubmit} />
             </Box>
           </Grid>
         </Grid>

@@ -10,25 +10,30 @@ import {
   Typography,
 } from "@mui/material";
 
-import NotateKeySignature from "../NotateKeySignature";
 import { notationInstructions } from "@/app/lib/instructions";
-import { MouseEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
+import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import { useState } from "react";
-import ClassPreferenceSelector from "../ClassPreferenceSelector";
-import { Level } from "@/app/lib/typesAndInterfaces";
+import NotateScale from "../NotateScale";
 import CardFooter from "../CardFooter";
 
-export default function KeySignaturesNote({
+export default function TriadsNotation({
   currentUserData,
   setCurrentUserData,
 }: UserDataProps) {
-  const [level, setLevel] = useState<Level>("sibelius-class");
+  const [chordNotation, setChordNotation] = useState({
+    input1: "",
+    input2: "",
+    input3: "",
+    input4: "",
+    input5: "",
+    input6: "",
+  });
 
-  const handleSubmit = async (e: MouseEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const payload = {
       ...currentUserData,
-      level: level,
+      chordNotation: chordNotation,
     };
     setCurrentUserData(payload);
   };
@@ -48,12 +53,8 @@ export default function KeySignaturesNote({
           <Grid item xs={4}>
             <Stack gap={2} alignItems={"center"}>
               <Typography variant="h6" align="center">
-                Section 1: Write Key Signatures
+                Section 4: Notate Triads
               </Typography>
-              <ClassPreferenceSelector
-                level={level}
-                setLevel={setLevel}
-              ></ClassPreferenceSelector>
               <Box
                 width={273}
                 height={456}
@@ -101,14 +102,14 @@ export default function KeySignaturesNote({
               >
                 <Grid item>
                   <Typography variant="h6">
-                    Add the following key signature: Db Major
+                    Notate the following triads:
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <NotateKeySignature />
+                  <NotateScale />
                 </Grid>
               </Grid>
-              <CardFooter questionNumber={1} handleSubmit={handleSubmit} />
+              <CardFooter questionNumber={4} />
             </Box>
           </Grid>
         </Grid>

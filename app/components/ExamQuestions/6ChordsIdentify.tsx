@@ -6,7 +6,7 @@ import seventhChords from "../../lib/data/seventhChords";
 import CardFooter from "../CardFooter";
 import IdentifyNotation from "../IdentifyNotation";
 
-export default function IdentifyChordsPage({
+export default function ChordsIdentification({
   currentUserData,
   setCurrentUserData,
 }: UserDataProps) {

@@ -10,21 +10,33 @@ import {
   Typography,
 } from "@mui/material";
 
-import { inputInstructions } from "@/app/lib/instructions";
-import { InputData, UserDataProps } from "@/app/lib/typesAndInterfaces";
-import { useRef } from "react";
+import { notationInstructions } from "@/app/lib/instructions";
+import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
+import { useState } from "react";
+import NotateScale from "../NotateScale";
 import CardFooter from "../CardFooter";
-import IdentifyNotation from "../IdentifyNotation";
 
-export default function KeySignaturesText({
+export default function ScalesNotation({
   currentUserData,
   setCurrentUserData,
 }: UserDataProps) {
-  const keySigFormRef = useRef<HTMLFormElement | null>(null);
+  const [scales, setScales] = useState({
+    input1: "",
+    input2: "",
+    input3: "",
+    input4: "",
+    input5: "",
+    input6: "",
+  });
 
-  function handleKeySignatures(input: InputData) {
-    setCurrentUserData({ ...currentUserData, keySignatures: input });
-  }
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    const payload = {
+      ...currentUserData,
+      scales: scales,
+    };
+    setCurrentUserData(payload);
+  };
 
   return (
     <Container>
@@ -41,11 +53,11 @@ export default function KeySignaturesText({
           <Grid item xs={4}>
             <Stack gap={2} alignItems={"center"}>
               <Typography variant="h6" align="center">
-                Section 2: Identify Key Signatures
+                Section 3: Notate Scales
               </Typography>
               <Box
                 width={273}
-                height={375}
+                height={456}
                 bgcolor={"card.background"}
                 borderRadius="var(--borderRadius)"
                 boxShadow="var(--cardShadow)"
@@ -55,7 +67,7 @@ export default function KeySignaturesText({
                     Tutorial
                   </Typography>
                   <List>
-                    {inputInstructions.map((value, index) => (
+                    {notationInstructions.map((value, index) => (
                       <ListItem key={index} disableGutters>
                         <ListItemText
                           primary={`${index + 1}. ${value.instructionTitle}`}
@@ -90,24 +102,14 @@ export default function KeySignaturesText({
               >
                 <Grid item>
                   <Typography variant="h6">
-                    Identify the following key signatures:
+                    Notate the following scale:
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <IdentifyNotation
-                    handleInput={handleKeySignatures}
-                    ref={keySigFormRef}
-                    width={500}
-                  />
+                  <NotateScale />
                 </Grid>
               </Grid>
-              <CardFooter
-                questionNumber={2}
-                buttonForm="keySigs"
-                handleSubmit={() => {
-                  keySigFormRef.current?.requestSubmit();
-                }}
-              />
+              <CardFooter questionNumber={3} />
             </Box>
           </Grid>
         </Grid>
