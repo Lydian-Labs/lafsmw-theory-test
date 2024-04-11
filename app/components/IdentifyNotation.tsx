@@ -43,7 +43,7 @@ export default forwardRef(function IdentifyNotation(
   const gridInputInline = {
     display: "grid",
     gridTemplateColumns: `${widthOfFirstBar}px repeat(${remainingBarsString}, ${widthOfRemainingBars}px)`,
-    paddingLeft: "5rem",
+    paddingLeft: "5.5rem",
   };
 
   function handleInputSubmit(e: FormEvent) {
@@ -58,7 +58,7 @@ export default forwardRef(function IdentifyNotation(
         name={key}
         type="text"
         value={textInput[key]}
-        width="70px"
+        width="50px"
         onChange={(e: ChangeEvent) =>
           setTextInput({ ...textInput, [key]: e.target.value })
         }

@@ -31,7 +31,11 @@ export default function FormInput({
         value={value}
         placeholder={placeholder}
         maxLength={maxLength}
-        style={{ width }}
+        style={{
+          width,
+          borderBottom: "1px solid",
+          backgroundColor: "transparent",
+        }}
         onChange={onChange}
         required={required}
       />
