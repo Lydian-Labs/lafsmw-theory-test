@@ -29,12 +29,13 @@ import {
   NoteStringData,
   StaveNoteData,
   StaveType,
+  Chord,
 } from "../../lib/typesAndInterfaces";
 import { modifyNotesActionTypes } from "@/app/lib/actionTypes";
 
 const { Renderer } = VexFlow.Flow;
 
-const CreateChords = () => {
+const ManageStaveChords = () => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
   const [staves, setStaves] = useState<StaveType[]>([]);
@@ -43,6 +44,12 @@ const CreateChords = () => {
     noteInteractionReducer,
     noteInteractionInitialState
   );
+  const [chordsData, setChordsData] = useState<Chord>({
+    keys: [],
+    duration: "w",
+    staveNotes: null,
+    userClickY: 0,
+  });
 
   const noNoteFound = () => dispatch({ type: "noNoteFound" });
 
@@ -164,4 +171,4 @@ const CreateChords = () => {
   );
 };
 
-export default CreateChords;
+export default ManageStaveChords;
