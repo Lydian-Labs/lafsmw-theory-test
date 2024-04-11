@@ -108,7 +108,7 @@ export default function KeySignaturesNotation({
                   <NotateKeySignature />
                 </Grid>
               </Grid>
-              <CardFooter questionNumber={1} handleSubmit={handleSubmit} />
+              <CardFooter pageNumber={1} handleSubmit={handleSubmit} />
             </Box>
           </Grid>
         </Grid>

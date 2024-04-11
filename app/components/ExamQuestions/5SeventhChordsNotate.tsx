@@ -109,7 +109,7 @@ export default function NotateSeventhChords({
                   <NotateScale />
                 </Grid>
               </Grid>
-              <CardFooter questionNumber={5} />
+              <CardFooter pageNumber={5} />
             </Box>
           </Grid>
         </Grid>

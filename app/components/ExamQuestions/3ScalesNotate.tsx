@@ -109,7 +109,7 @@ export default function ScalesNotation({
                   <NotateScale />
                 </Grid>
               </Grid>
-              <CardFooter questionNumber={3} />
+              <CardFooter pageNumber={3} />
             </Box>
           </Grid>
         </Grid>

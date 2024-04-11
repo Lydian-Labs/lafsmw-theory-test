@@ -102,7 +102,7 @@ export default function KeySignaturesIdentification({
                 </Grid>
               </Grid>
               <CardFooter
-                questionNumber={2}
+                pageNumber={2}
                 buttonForm="keySigs"
                 handleSubmit={() => {
                   keySigFormRef.current?.requestSubmit();

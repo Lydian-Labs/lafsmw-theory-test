@@ -4,7 +4,7 @@ import ProgressBar from "./ProgressBar";
 interface CardFooterProps {
   width?: number;
   height?: number;
-  questionNumber: number;
+  pageNumber: number;
   buttonType?: "submit" | "button" | "reset" | undefined;
   buttonText?: string;
   handleSubmit?: any;
@@ -14,7 +14,7 @@ interface CardFooterProps {
 export default function CardFooter({
   width = 470,
   height = 100,
-  questionNumber,
+  pageNumber,
   buttonType = "submit",
   buttonText = "Submit",
   handleSubmit,
@@ -30,8 +30,11 @@ export default function CardFooter({
         alignItems={"end"}
       >
         <Stack gap={2}>
-          <Typography variant="body1">{`Question ${questionNumber}/45`}</Typography>
-          <ProgressBar value={Number(questionNumber)} />
+          <Typography
+            variant="body2"
+            fontWeight="600"
+          >{`Page: ${pageNumber}/25`}</Typography>
+          <ProgressBar value={Number(pageNumber)} />
         </Stack>
         <Button
           variant="contained"

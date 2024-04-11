@@ -109,7 +109,7 @@ export default function TriadsNotation({
                   <NotateScale />
                 </Grid>
               </Grid>
-              <CardFooter questionNumber={4} />
+              <CardFooter pageNumber={4} />
             </Box>
           </Grid>
         </Grid>
