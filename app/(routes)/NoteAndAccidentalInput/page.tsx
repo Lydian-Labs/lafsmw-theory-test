@@ -8,14 +8,14 @@ import React, {
   useState,
 } from "react";
 import VexFlow from "vexflow";
-import BlueButton from "@/app/components/BlueButton";
-import CheckIfNoteFound from "@/app/components/CheckIfNoteFound";
-import CheckNumBeatsInMeasure from "@/app/components/CheckNumBeatsInMeasure";
-import { modifyNotesActionTypes } from "@/app/lib/actionTypes";
+import BlueButton from "../../components/BlueButton";
+import CheckIfNoteFound from "../../components/CheckIfNoteFound";
+import CheckNumBeatsInMeasure from "../../components/CheckNumBeatsInMeasure";
 import {
-  buttonGroup,
   clearAllMeasures,
+  buttonGroup,
 } from "../../lib/buttonsAndButtonGroups";
+
 import { INITIAL_STAVES, staveData } from "../../lib/data/stavesData";
 import { findBarIndex } from "../../lib/findBar";
 import generateYMinAndYMaxForAllNotes from "../../lib/generateYMinAndMaxForAllNotes";
@@ -32,6 +32,7 @@ import {
   StaveNoteData,
   StaveType,
 } from "../../lib/typesAndInterfaces";
+import { modifyNotesActionTypes } from "@/app/lib/actionTypes";
 
 const { Renderer } = VexFlow.Flow;
 
@@ -39,7 +40,7 @@ const ManageStaveNotes = () => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
   const [staves, setStaves] = useState<StaveType[]>([]);
-  const [notesAndStavesData, setNotesAndStavesData] = useState(INITIAL_STAVES);
+  const [notesData, setNotesData] = useState(INITIAL_STAVES);
   const [state, dispatch] = useReducer(
     noteInteractionReducer,
     noteInteractionInitialState
@@ -50,7 +51,6 @@ const ManageStaveNotes = () => {
   const tooManyBeatsInMeasure = () =>
     dispatch({ type: "tooManyBeatsInMeasure" });
 
-  //render button group
   const modifyStaveNotesButtonGroup = useMemo(
     () =>
       buttonGroup<NoteInteractionAction>(
@@ -60,10 +60,10 @@ const ManageStaveNotes = () => {
       ),
     [dispatch, state]
   );
-  //clear measures
+
   const clearMeasures = () =>
     clearAllMeasures(
-      setNotesAndStavesData,
+      setNotesData,
       INITIAL_STAVES,
       rendererRef,
       container,
@@ -71,41 +71,36 @@ const ManageStaveNotes = () => {
       renderStavesAndNotes
     );
 
-  //render staves and notes
   const renderStavesAndNotes = useCallback(
     (): void =>
       setupRendererAndDrawNotes({
         rendererRef,
         ...staveData,
         setStaves,
-        notesData: notesAndStavesData,
+        notesData,
         staves,
       }),
-    [rendererRef, setStaves, notesAndStavesData, staves]
+    [rendererRef, setStaves, notesData, staves]
   );
-  //useEffect to initialize renderer and initialize staves
+
   useEffect(() => {
     initializeRenderer(rendererRef, container);
     renderStavesAndNotes();
   }, []);
 
-  //useEffect to render staves and notes every time notesData updates
   useEffect(() => {
     renderStavesAndNotes();
-  }, [notesAndStavesData]);
+  }, [notesData]);
 
-  //initialize updatedNoteData to update foundNoteData
   let updatedFoundNoteData: NoteStringData;
 
-  //handleClick function
   const handleClick = (e: React.MouseEvent) => {
-    //get userClickY, userClickX, and highGPosition from getUserClickInfo
     const { userClickY, userClickX, highGYPosition } = getUserClickInfo(
       e,
       container,
       staves[0]
     );
-    //inititalize foundNoteData by generating the Y min and max for all notes. Find the userClick that is greater than or equal to the minimum Y coordinate but less that or equal to the max coordinate. Return the noteData object
+
     let foundNoteData = generateYMinAndYMaxForAllNotes(
       highGYPosition,
       notesArray
@@ -113,27 +108,23 @@ const ManageStaveNotes = () => {
       ({ yCoordinateMin, yCoordinateMax }) =>
         userClickY >= yCoordinateMin && userClickY <= yCoordinateMax
     );
-    //update the foundNoteData with the userClickY
+
     if (foundNoteData)
       updatedFoundNoteData = {
         ...foundNoteData,
         userClickY: userClickY,
       };
 
-    //find the bar the user clicked in
     const barIndex: number = findBarIndex(staves, userClickX);
 
-    //copy the notesAndStavesData useState variable
-    let notesAndStavesDataCopy = [...notesAndStavesData];
-
-    //map through each notesData object in the measure the user clicked on and return the note and stave data and add the new property of absoluteX
-    const barOfStaveNotes = notesAndStavesDataCopy[barIndex].map(
-      (noteAndStaveData: StaveNoteData) => ({
-        ...noteAndStaveData,
-        staveNoteAbsoluteX: noteAndStaveData.newStaveNote.getAbsoluteX(),
+    let notesDataCopy = [...notesData];
+    const barOfStaveNotes = notesDataCopy[barIndex].map(
+      (noteData: StaveNoteData) => ({
+        ...noteData,
+        staveNoteAbsoluteX: noteData.newStaveNote.getAbsoluteX(),
       })
     );
-    //handle all note modifications
+
     handleNoteInteraction(
       updatedFoundNoteData,
       noNoteFound,
@@ -141,14 +132,14 @@ const ManageStaveNotes = () => {
       "tooManyBeatsInMeasure",
       "noNoteFound",
       barOfStaveNotes,
-      notesAndStavesDataCopy,
+      notesDataCopy,
       state,
       userClickX,
       userClickY,
       barIndex
     );
-    //set the notes and staves data with the copy of  notesAndStavesDataCopy
-    setNotesAndStavesData(() => notesAndStavesDataCopy);
+
+    setNotesData(() => notesDataCopy);
   };
 
   return (

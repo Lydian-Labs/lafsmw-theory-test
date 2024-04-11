@@ -155,27 +155,26 @@ const ManageStaveChords = () => {
     if (!updatedFoundNoteData) {
       noNoteFound();
       return;
-    } else if (state.isSharpActive || state.isFlatActive) {
-      updatedFoundNoteData.staveNotes?.addModifier(
-        new Accidental(state.isSharpActive ? "#" : "b"),
-        0
-      );
     }
     //set the chordsData using the previous state
+    if (chordsData.keys.length >= 4) {
+      return;
+    } else {
+      setChordsData((prevState) => {
+        const updatedKays = [...prevState.keys, updatedFoundNoteData.note];
+        const newChord = new StaveNote({
+          keys: updatedKays,
+          duration: prevState.duration,
+        });
 
-    setChordsData((prevState) => {
-      const updatedKays = [...prevState.keys, updatedFoundNoteData.note];
-      const newChord = new StaveNote({
-        keys: updatedKays,
-        duration: prevState.duration,
+        return {
+          ...prevState,
+          keys: updatedKays,
+          staveNotes: newChord,
+          userClickY,
+        };
       });
-      return {
-        ...prevState,
-        keys: updatedKays,
-        staveNotes: newChord,
-        userClickY,
-      };
-    });
+    }
   };
 
   return (
