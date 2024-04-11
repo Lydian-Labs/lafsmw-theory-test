@@ -1,7 +1,13 @@
-import { Dispatch, RefObject, SetStateAction } from "react";
+import { Dispatch, ReactNode, RefObject, SetStateAction } from "react";
 import VexFlow, { IRenderContext } from "vexflow";
 const VF = VexFlow.Flow;
 const { StaveNote, Stave, Renderer, Glyph } = VF;
+
+export type FormEvent = React.FormEvent<HTMLFormElement>;
+export type MouseEvent = React.MouseEvent<HTMLButtonElement>;
+export type ChangeEvent = React.ChangeEvent<HTMLInputElement>;
+export type SelectEvent = React.ChangeEvent<HTMLSelectElement>;
+export type KeyboardEvent = React.KeyboardEvent<HTMLInputElement>;
 
 export type InputData = {
   [key: string]: string;
@@ -11,6 +17,16 @@ export type Chord = {
   keys: string[];
   duration: string;
 };
+
+export type Level =
+  | "advanced-theory"
+  | "advanced-improvisation"
+  | "intro-to-arranging"
+  | "intermediate-arranging"
+  | "advanced-arranging"
+  | "rhythm-class"
+  | "sibelius-class"
+  | "";
 
 export type RendererRef = RefObject<InstanceType<typeof Renderer>>;
 export type SetStaves = Dispatch<SetStateAction<StaveType[]>>;
@@ -128,4 +144,19 @@ export interface GlyphProps {
   xPosition: number;
   yPosition: number;
   glyph: string;
+}
+
+export interface InputState {
+  userId: string | null | undefined;
+  user: any;
+  level: Level;
+  keySignatures: InputData;
+  chords: InputData;
+  progressions: InputData;
+  blues: InputData;
+}
+
+export interface UserDataProps {
+  currentUserData: InputState;
+  setCurrentUserData: (userData: InputState) => void;
 }

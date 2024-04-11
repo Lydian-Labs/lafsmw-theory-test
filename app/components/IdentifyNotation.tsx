@@ -10,20 +10,25 @@ import {
 import FormInput from "./FormInput";
 import Staff from "./Staff";
 
-type IdentifyChordsProps = {
-  numBars: number;
+type IdentifyNotationProps = {
+  numBars?: number;
   chords?: Chord[];
   width: number;
-  handleChords: (chords: InputData) => void;
+  handleInput: (input: InputData) => void;
 };
 
-export default forwardRef(function IdentifyChords(
-  { numBars = 4, chords = [], width = 1650, handleChords }: IdentifyChordsProps,
+export default forwardRef(function IdentifyNotation(
+  {
+    numBars = 4,
+    chords = [],
+    width = 1650,
+    handleInput,
+  }: IdentifyNotationProps,
   ref: ForwardedRef<HTMLFormElement>
 ) {
   const initialChordsInputState = createInitialState(numBars);
 
-  const [chordsInput, setChordsInput] = useState<Record<string, string>>(
+  const [textInput, setTextInput] = useState<Record<string, string>>(
     initialChordsInputState
   );
 
@@ -38,24 +43,24 @@ export default forwardRef(function IdentifyChords(
   const gridInputInline = {
     display: "grid",
     gridTemplateColumns: `${widthOfFirstBar}px repeat(${remainingBarsString}, ${widthOfRemainingBars}px)`,
-    paddingLeft: "5rem",
+    paddingLeft: "5.5rem",
   };
 
-  function handleChordsSubmit(e: FormEvent) {
+  function handleInputSubmit(e: FormEvent) {
     e.preventDefault();
-    handleChords(chordsInput);
+    handleInput(textInput);
   }
 
-  const renderChordsInputs = () => {
-    return Object.keys(chordsInput).map((key) => (
+  const renderTextInputs = () => {
+    return Object.keys(textInput).map((key) => (
       <FormInput
         key={key}
         name={key}
         type="text"
-        value={chordsInput[key]}
-        width="70px"
+        value={textInput[key]}
+        width="50px"
         onChange={(e: ChangeEvent) =>
-          setChordsInput({ ...chordsInput, [key]: e.target.value })
+          setTextInput({ ...textInput, [key]: e.target.value })
         }
         required={false}
       />
@@ -64,14 +69,14 @@ export default forwardRef(function IdentifyChords(
 
   return (
     <div>
-      <form ref={ref} id="submit-form-chords" onSubmit={handleChordsSubmit}>
+      <form ref={ref} id="submit-form-chords" onSubmit={handleInputSubmit}>
         <Staff
           addDoubleBarLine={true}
           numBars={numBars}
           chords={chords}
           width={width}
         />
-        <div style={gridInputInline}>{renderChordsInputs()}</div>
+        <div style={gridInputInline}>{renderTextInputs()}</div>
       </form>
     </div>
   );

@@ -1,9 +1,10 @@
 import { signUp } from "@/firebase/authAPI";
 import { Button, Container, TextField, Typography } from "@mui/material";
-import { ChangeEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { FormEvent } from "../lib/typesAndInterfaces";
 
-const SignUpForm = () => {
+export default function SignUpForm() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -11,18 +12,10 @@ const SignUpForm = () => {
 
   const router = useRouter();
 
-  const handleSubmit = async (event: ChangeEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
-    const { result, error } = await signUp(
-      email,
-      password,
-      `${firstName} ${lastName}`
-    );
-    if (error) {
-      return console.log("signUp error:", error);
-    }
-    console.log("signUp result:", result);
-    router.push("/exam-new");
+    await signUp(email, password, `${firstName} ${lastName}`);
+    router.push("/exam");
   };
 
   return (
@@ -77,6 +70,4 @@ const SignUpForm = () => {
       </form>
     </Container>
   );
-};
-
-export default SignUpForm;
+}
