@@ -5,7 +5,7 @@ import BlueButton from "../../components/BlueButton";
 import { buildKeySignature } from "../../lib/buildKeySignature";
 import {
   clearKeySignature,
-  modifyKeySigButtonGroup,
+  buttonGroup,
 } from "../../lib/buttonsAndButtonGroups";
 import { INITIAL_STAVES, staveData } from "../../lib/data/stavesData";
 import deleteAccidentalFromKeySig from "../../lib/deleteAccidentalFromKeySig";
@@ -16,7 +16,7 @@ import isClickWithinStaveBounds from "../../lib/isClickWithinStaveBounds";
 import { keySigReducer } from "../../lib/reducers";
 import { setupRendererAndDrawNotes } from "../../lib/setupRendererAndDrawNotes";
 import { GlyphProps } from "../../lib/typesAndInterfaces";
-
+import { modifyKeySigActionTypes } from "@/app/lib/actionTypes";
 const VF = VexFlow.Flow;
 const { Renderer } = VF;
 
@@ -27,8 +27,8 @@ const CreateKeySignatures = () => {
   const [glyphs, setGlyphs] = useState<GlyphProps[]>([]);
   const [state, dispatch] = useReducer(keySigReducer, keySigInitialState);
 
-  const buttonGroup = useMemo(
-    () => modifyKeySigButtonGroup(dispatch, state),
+  const modifyKeySigButtonGroup = useMemo(
+    () => buttonGroup(dispatch, state, modifyKeySigActionTypes),
     [dispatch, state]
   );
 
@@ -107,7 +107,7 @@ const CreateKeySignatures = () => {
       <div ref={container} onClick={handleClick} />
 
       <div className="mt-2 ml-3">
-        {buttonGroup.map((button) => {
+        {modifyKeySigButtonGroup.map((button) => {
           return (
             <BlueButton
               key={button.text}
