@@ -37,16 +37,16 @@ const Navbar: FC = () => {
               <Link href="/createKeySignatures">Create Key Signature</Link>
             </li>
             <li className="p-4">
-              <Link href="/exam-original">Exam Original</Link>
+              <Link href="/exam/original">Exam Original</Link>
             </li>
             <li className="p-4">
-              <Link href="/exam-new">Exam New</Link>
+              <Link href="/exam">Exam New</Link>
             </li>
           </ul>
         </div>
       </Box>
 
-      <Box gridColumn="span 1">
+      <Box gridColumn="span 1" padding={2}>
         {user !== null ? (
           <div>
             <Button variant="text" color="primary" onClick={signOutOfAppButton}>

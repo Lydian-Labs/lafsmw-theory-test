@@ -2,12 +2,13 @@ import React from "react";
 import LinearProgress from "@mui/material/LinearProgress";
 
 export default function ProgressBar({ value }: { value: number }) {
+  const adjustedValue = Math.floor((value / 25) * 100);
   return (
     <div>
       <LinearProgress
         variant="determinate"
         color="primary"
-        value={value}
+        value={adjustedValue}
         sx={{
           backgroundColor: "progressBar.unfilled",
           height: "13px",

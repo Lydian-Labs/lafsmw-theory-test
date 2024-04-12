@@ -1,13 +1,13 @@
 interface FormInputProps {
   labelText?: string;
   name: string;
-  type: string;
+  type?: string;
   value: string;
   placeholder?: string;
   maxLength?: number;
   width?: string;
   onChange: any;
-  required: boolean;
+  required?: boolean;
 }
 
 export default function FormInput({
@@ -31,7 +31,11 @@ export default function FormInput({
         value={value}
         placeholder={placeholder}
         maxLength={maxLength}
-        style={{ width }}
+        style={{
+          width,
+          borderBottom: "1px solid",
+          backgroundColor: "transparent",
+        }}
         onChange={onChange}
         required={required}
       />

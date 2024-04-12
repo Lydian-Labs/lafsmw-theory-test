@@ -17,7 +17,7 @@ const theme = createTheme({
     card: {
       background: "#FAF5F3",
       shadow:
-        "0px 1px 3px 1px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.30)",
+        "0px 13px 28px 0px rgba(0, 0, 0, 0.10), 0px 50px 50px 0px rgba(0, 0, 0, 0.09), 0px 113px 68px 0px rgba(0, 0, 0, 0.05), 0px 201px 80px 0px rgba(0, 0, 0, 0.01), 0px 314px 88px 0px rgba(0, 0, 0, 0.00)",
     },
     progressBar: {
       filled: tokens.global.md.sys.color["filled-progress-bar-color"].value,

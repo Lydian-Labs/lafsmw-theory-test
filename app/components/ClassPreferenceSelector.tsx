@@ -1,4 +1,3 @@
-import React, { ReactNode, useState } from "react";
 import {
   FormControl,
   InputLabel,
@@ -6,61 +5,27 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
+import { Level } from "../lib/typesAndInterfaces";
 
-type Level =
-  | "advanced-theory"
-  | "advanced-improvisation"
-  | "intro-to-arranging"
-  | "intermediate-arranging"
-  | "advanced-arranging"
-  | "rhythm-class"
-  | "sibelius-class"
-  | "";
-
-type InputState = {
-  level: Level;
-  keySignatures: {};
-  chords: {};
-  progressions: {};
-  blues: {};
-};
-
-const initialFormInputState: InputState = {
-  level: "",
-  keySignatures: {},
-  chords: {},
-  progressions: {},
-  blues: {},
-};
-
-export default function ClassPreferenceSelector() {
-  const [formInput, setFormInput] = useState(initialFormInputState);
-  const [selectedValue, setSelectedValue] = useState("sibelius-class");
-
-  // const handleSubmit = async (event: ChangeEvent<HTMLFormElement>) => {
-  //   event.preventDefault();
-  //   setLoading(true);
-  //   setSelectedValue(event.target.value);
-  //   console.log("formInput:", formInput);
-  //   setLoading(false);
-  // };
-
-  const handleLevel = (event: SelectChangeEvent<string>, child: ReactNode) => {
-    setFormInput((prev) => {
-      return {
-        ...prev,
-        level: event.target.value as Level,
-      };
-    });
-  };
+export default function ClassPreferenceSelector({
+  setLevel,
+  level,
+}: {
+  setLevel: any;
+  level: any;
+}) {
+  function handleLevel(event: SelectChangeEvent) {
+    const selectedLevel = event.target.value as Level;
+    setLevel(selectedLevel);
+  }
 
   return (
-    <FormControl>
+    <FormControl size="small">
       <InputLabel id="class-preference-label">Class Preference</InputLabel>
       <Select
         labelId="class-preference-label"
         id="class-preference-select"
-        value={selectedValue}
+        value={level}
         label="Class Preference"
         onChange={handleLevel}
       >
