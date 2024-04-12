@@ -1,7 +1,8 @@
 import {
+  ChordInteractionState,
+  InputState,
   KeySigState,
   NoteInteractionState,
-  InputState,
 } from "./typesAndInterfaces";
 
 export const noteInteractionInitialState: NoteInteractionState = {
@@ -13,6 +14,15 @@ export const noteInteractionInitialState: NoteInteractionState = {
   tooManyBeatsInMeasure: false,
   isFlatActive: false,
   isChangeNoteActive: false,
+};
+export const chordInteractionInitialState: ChordInteractionState = {
+  isEraseNoteActive: false,
+  isEraseAccidentalActive: false,
+  isEnterNoteActive: true,
+  isSharpActive: false,
+  noNoteFound: false,
+  tooManyBeatsInMeasure: false,
+  isFlatActive: false,
 };
 
 export const keySigInitialState: KeySigState = {

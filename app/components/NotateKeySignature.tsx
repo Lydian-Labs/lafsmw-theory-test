@@ -3,18 +3,16 @@ import React, { useEffect, useMemo, useReducer, useRef, useState } from "react";
 import VexFlow from "vexflow";
 import RegularButton from "../components/RegularButton";
 import { buildKeySignature } from "../lib/buildKeySignature";
-import {
-  clearKeySignature,
-  modifyKeySigButtonGroup,
-} from "../lib/buttonsAndButtonGroups";
+import { buttonGroup, clearKeySignature } from "../lib/buttonsAndButtonGroups";
 import { INITIAL_STAVES, staveData } from "../lib/data/stavesData";
 import deleteAccidentalFromKeySig from "../lib/deleteAccidentalFromKeySig";
 import { getUserClickInfo } from "../lib/getUserClickInfo";
 import { keySigInitialState } from "../lib/initialStates";
 import { initializeRenderer } from "../lib/initializeRenderer";
 import isClickWithinStaveBounds from "../lib/isClickWithinStaveBounds";
-import { keySigReducer } from "../lib/reducers";
+import { reducer } from "../lib/reducer";
 
+import { modifyKeySigActionTypes } from "../lib/actionTypes";
 import { setupRendererAndDrawNotesNew } from "../lib/setupRendererAndDrawNotesNew";
 import { GlyphProps } from "../lib/typesAndInterfaces";
 
@@ -26,10 +24,10 @@ const NotateKeySignature = () => {
   const container = useRef<HTMLDivElement | null>(null);
   const [blankStaves, setBlankStaves] = useState(INITIAL_STAVES);
   const [glyphs, setGlyphs] = useState<GlyphProps[]>([]);
-  const [state, dispatch] = useReducer(keySigReducer, keySigInitialState);
+  const [state, dispatch] = useReducer(reducer, keySigInitialState);
 
-  const buttonGroup = useMemo(
-    () => modifyKeySigButtonGroup(dispatch, state),
+  const keySigButtonGroup = useMemo(
+    () => buttonGroup(dispatch, state, modifyKeySigActionTypes),
     [dispatch, state]
   );
 
@@ -116,7 +114,7 @@ const NotateKeySignature = () => {
       <div ref={container} onClick={handleClick} />
 
       <div>
-        {buttonGroup.map((button) => {
+        {keySigButtonGroup.map((button) => {
           return (
             <RegularButton
               key={button.text}

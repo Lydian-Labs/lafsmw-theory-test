@@ -2,28 +2,11 @@ import React from "react";
 import * as VexFlow from "vexflow";
 import { initializeRenderer } from "./initializeRenderer";
 import {
-  GlyphProps, KeySigAction,
-  KeySigState,
+  GlyphProps,
   NoteInteractionAction,
-  NoteInteractionState,
-  StaveNoteData
+  StaveNoteData,
 } from "./typesAndInterfaces";
 const { Renderer } = VexFlow.Flow;
-
-const modifyNotesActionTypes = {
-  isEnterNoteActive: "Enter Note",
-  isEraseNoteActive: "Erase Note",
-  isChangeNoteActive: "Change Note",
-  isSharpActive: "Add Sharp",
-  isFlatActive: "Add Flat",
-  isEraseAccidentalActive: "Erase Accidental",
-};
-
-const modifyKeySigActionTypes = {
-  isAddSharpActive: "add sharp",
-  isAddFlatActive: "add flat",
-  isRemoveAccidentalActive: "Delete Accidental",
-};
 
 export const enterNote = (dispatch: React.Dispatch<NoteInteractionAction>) => {
   dispatch({ type: "isEnterNoteActive" });
@@ -43,27 +26,16 @@ export const clearAllMeasures = (
   enterNote(dispatch);
 };
 
-export const modifyStaveNotesButtonGroup = (
-  dispatch: React.Dispatch<NoteInteractionAction>,
-  state: NoteInteractionState
+export const buttonGroup = <Action>(
+  dispatch: React.Dispatch<Action>,
+  buttonState: { [key: string]: any },
+  actionTypes: { [key: string]: any }
 ) => {
-  return Object.entries(modifyNotesActionTypes).map(([stateKey, text]) => ({
-    action: () => dispatch({ type: stateKey }),
+  return Object.entries(actionTypes).map(([stateKey, text]) => ({
+    action: () => dispatch({ type: stateKey } as Action),
     text,
     stateKey,
-    isEnabled: state[stateKey as keyof NoteInteractionState],
-  }));
-};
-
-export const modifyKeySigButtonGroup = (
-  dispatch: React.Dispatch<KeySigAction>,
-  state: KeySigState
-) => {
-  return Object.entries(modifyKeySigActionTypes).map(([stateKey, text]) => ({
-    action: () => dispatch({ type: stateKey }),
-    text,
-    stateKey,
-    isEnabled: state[stateKey as keyof KeySigState],
+    isEnabled: buttonState[stateKey],
   }));
 };
 

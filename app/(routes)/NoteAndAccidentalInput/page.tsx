@@ -1,4 +1,5 @@
 "use client";
+import { modifyNotesActionTypes } from "@/app/lib/actionTypes";
 import React, {
   useCallback,
   useEffect,
@@ -12,8 +13,8 @@ import BlueButton from "../../components/BlueButton";
 import CheckIfNoteFound from "../../components/CheckIfNoteFound";
 import CheckNumBeatsInMeasure from "../../components/CheckNumBeatsInMeasure";
 import {
+  buttonGroup,
   clearAllMeasures,
-  modifyStaveNotesButtonGroup,
 } from "../../lib/buttonsAndButtonGroups";
 import { INITIAL_STAVES, staveData } from "../../lib/data/stavesData";
 import { findBarIndex } from "../../lib/findBar";
@@ -23,7 +24,7 @@ import { handleNoteInteraction } from "../../lib/handleNoteInteraction";
 import { noteInteractionInitialState } from "../../lib/initialStates";
 import { initializeRenderer } from "../../lib/initializeRenderer";
 import { notesArray } from "../../lib/noteArray";
-import { noteInteractionReducer } from "../../lib/reducers";
+import { reducer } from "../../lib/reducer";
 import { setupRendererAndDrawNotes } from "../../lib/setupRendererAndDrawNotes";
 import {
   NoteStringData,
@@ -38,18 +39,15 @@ const ManageStaveNotes = () => {
   const container = useRef<HTMLDivElement | null>(null);
   const [staves, setStaves] = useState<StaveType[]>([]);
   const [notesData, setNotesData] = useState(INITIAL_STAVES);
-  const [state, dispatch] = useReducer(
-    noteInteractionReducer,
-    noteInteractionInitialState
-  );
+  const [state, dispatch] = useReducer(reducer, noteInteractionInitialState);
 
   const noNoteFound = () => dispatch({ type: "noNoteFound" });
 
   const tooManyBeatsInMeasure = () =>
     dispatch({ type: "tooManyBeatsInMeasure" });
 
-  const buttonGroup = useMemo(
-    () => modifyStaveNotesButtonGroup(dispatch, state),
+  const modifyStaveNotesButtonGroup = useMemo(
+    () => buttonGroup(dispatch, state, modifyNotesActionTypes),
     [dispatch, state]
   );
 
@@ -142,11 +140,11 @@ const ManageStaveNotes = () => {
         openEnterNotes={dispatch}
       />
       <CheckIfNoteFound
-        noNoteFound={state.noNoteFound}
+        noNoteFound={state.noNoteFound || false}
         openEnterNotes={dispatch}
       />
       <div className="mt-2 ml-3">
-        {buttonGroup.map((button) => {
+        {modifyStaveNotesButtonGroup.map((button) => {
           return (
             <BlueButton
               key={button.text}

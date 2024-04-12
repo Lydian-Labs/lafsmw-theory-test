@@ -1,5 +1,5 @@
 "use client";
-import { Container } from "@mui/material";
+import { modifyChordsActionTypes } from "@/app/lib/actionTypes";
 import React, {
   useCallback,
   useEffect,
@@ -9,46 +9,53 @@ import React, {
   useState,
 } from "react";
 import VexFlow from "vexflow";
-import CheckIfNoteFound from "../components/CheckIfNoteFound";
-import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
-import RegularButton from "../components/RegularButton";
-import { modifyNotesActionTypes } from "../lib/actionTypes";
-import { buttonGroup, clearAllMeasures } from "../lib/buttonsAndButtonGroups";
-import { INITIAL_STAVES, staveData } from "../lib/data/stavesData";
-import { findBarIndex } from "../lib/findBar";
-import generateYMinAndYMaxForAllNotes from "../lib/generateYMinAndMaxForAllNotes";
-import getUserClickInfo from "../lib/getUserClickInfo";
-import { handleNoteInteraction } from "../lib/handleNoteInteraction";
-import { noteInteractionInitialState } from "../lib/initialStates";
-import { initializeRenderer } from "../lib/initializeRenderer";
-import { notesArray } from "../lib/noteArray";
-import { reducer } from "../lib/reducer";
-import { setupRendererAndDrawNotesNew } from "../lib/setupRendererAndDrawNotesNew";
+import BlueButton from "../../components/BlueButton";
+import CheckIfNoteFound from "../../components/CheckIfNoteFound";
+import { modifyNotesActionTypes } from "@/app/lib/actionTypes";
+import CheckNumBeatsInMeasure from "../../components/CheckNumBeatsInMeasure";
 import {
+  buttonGroup,
+  clearAllMeasures,
+} from "../../lib/buttonsAndButtonGroups";
+import { INITIAL_STAVES, staveData } from "../../lib/data/stavesData";
+import { findBarIndex } from "../../lib/findBar";
+import generateYMinAndYMaxForAllNotes from "../../lib/generateYMinAndMaxForAllNotes";
+import getUserClickInfo from "../../lib/getUserClickInfo";
+import { handleNoteInteraction } from "../../lib/handleNoteInteraction";
+import { chordInteractionInitialState } from "../../lib/initialStates";
+import { initializeRenderer } from "../../lib/initializeRenderer";
+import { notesArray } from "../../lib/noteArray";
+import { reducer } from "../../lib/reducer";
+import { setupRendererAndDrawNotes } from "../../lib/setupRendererAndDrawNotes";
+import {
+  Chord,
   NoteStringData,
   StaveNoteData,
   StaveType,
-} from "../lib/typesAndInterfaces";
+} from "../../lib/typesAndInterfaces";
 
 const { Renderer } = VexFlow.Flow;
 
-const NotateScale = () => {
+const ManageStaveChords = () => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
   const [staves, setStaves] = useState<StaveType[]>([]);
   const [notesData, setNotesData] = useState(INITIAL_STAVES);
-  const [state, dispatch] = useReducer(reducer, noteInteractionInitialState);
+  const [state, dispatch] = useReducer(reducer, chordInteractionInitialState);
+  const [chordsData, setChordsData] = useState<Chord>({
+    keys: [],
+    duration: "w",
+    staveNotes: null,
+    userClickY: 0,
+  });
 
   const noNoteFound = () => dispatch({ type: "noNoteFound" });
-
-  const renderer = rendererRef.current;
-  renderer?.resize(480, 140);
 
   const tooManyBeatsInMeasure = () =>
     dispatch({ type: "tooManyBeatsInMeasure" });
 
   const modifyStaveNotesButtonGroup = useMemo(
-    () => buttonGroup(dispatch, state, modifyNotesActionTypes),
+    () => buttonGroup(dispatch, state, modifyChordsActionTypes),
     [dispatch, state]
   );
 
@@ -64,10 +71,9 @@ const NotateScale = () => {
 
   const renderStavesAndNotes = useCallback(
     (): void =>
-      setupRendererAndDrawNotesNew({
+      setupRendererAndDrawNotes({
         rendererRef,
         ...staveData,
-        firstStaveWidth: 460,
         setStaves,
         notesData,
         staves,
@@ -145,30 +151,22 @@ const NotateScale = () => {
         noNoteFound={state.noNoteFound || false}
         openEnterNotes={dispatch}
       />
-      <Container
-        sx={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr 1fr",
-          padding: 0,
-          margin: 0,
-        }}
-        disableGutters
-      >
+      <div className="mt-2 ml-3">
         {modifyStaveNotesButtonGroup.map((button) => {
           return (
-            <RegularButton
+            <BlueButton
               key={button.text}
               onClick={button.action}
               isEnabled={button.isEnabled}
             >
               {button.text}
-            </RegularButton>
+            </BlueButton>
           );
         })}
-        <RegularButton onClick={clearMeasures}>Clear Measures</RegularButton>
-      </Container>
+        <BlueButton onClick={clearMeasures}>Clear Measures</BlueButton>
+      </div>
     </>
   );
 };
 
-export default NotateScale;
+export default ManageStaveChords;

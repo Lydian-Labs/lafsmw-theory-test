@@ -1,4 +1,4 @@
-import { Dispatch, ReactNode, RefObject, SetStateAction } from "react";
+import { Dispatch, RefObject, SetStateAction } from "react";
 import VexFlow, { IRenderContext } from "vexflow";
 const VF = VexFlow.Flow;
 const { StaveNote, Stave, Renderer, Glyph } = VF;
@@ -16,6 +16,8 @@ export type InputData = {
 export type Chord = {
   keys: string[];
   duration: string;
+  staveNotes?: StaveNoteType | null;
+  userClickY?: number;
 };
 
 export type Level =
@@ -44,6 +46,16 @@ export type NoteInteractionState = {
   isFlatActive: boolean;
   [key: string]: boolean | undefined;
 };
+export type ChordInteractionState = {
+  isEraseNoteActive: boolean;
+  isEraseAccidentalActive: boolean;
+  isEnterNoteActive: boolean;
+  isSharpActive: boolean;
+  noNoteFound: boolean;
+  tooManyBeatsInMeasure?: boolean;
+  isFlatActive: boolean;
+  [key: string]: boolean | undefined;
+};
 export type KeySigState = {
   isAddSharpActive: boolean;
   isAddFlatActive: boolean;
@@ -54,6 +66,7 @@ export type KeySigState = {
 
 export type NoteInteractionAction = { type: keyof NoteInteractionState };
 export type KeySigAction = { type: keyof KeySigState };
+export type ChordInteractionAction = { type: keyof ChordInteractionState };
 
 export type BarMetrics = {
   barWidth: number;
@@ -106,7 +119,7 @@ export interface CheckNumBeatsInMeasureProps {
 
 export interface CheckIfNoteFoundProps {
   noNoteFound: boolean;
-  openEnterNotes: React.Dispatch<NoteInteractionAction>;
+  openEnterNotes: React.Dispatch<NoteInteractionAction | ChordInteractionAction>;
 }
 
 export interface RenderStavesAndNotesParams {

@@ -7,6 +7,8 @@ import {
   deleteNote,
 } from "./modifyNotes";
 import {
+  ChordInteractionState,
+  KeySigState,
   NoteInteractionAction,
   NoteInteractionState,
   NoteStringData,
@@ -23,7 +25,7 @@ export const handleNoteInteraction = (
   noNoteFoundAction: string,
   barOfStaveNotes: StaveNoteData[],
   notesDataCopy: StaveNoteData[][],
-  state: NoteInteractionState,
+  state: NoteInteractionState | ChordInteractionState | KeySigState,
   userClickX: number,
   userClickY: number,
   barIndex: number
