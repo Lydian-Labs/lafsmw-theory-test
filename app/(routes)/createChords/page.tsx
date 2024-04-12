@@ -11,6 +11,7 @@ import React, {
 import VexFlow from "vexflow";
 import BlueButton from "../../components/BlueButton";
 import CheckIfNoteFound from "../../components/CheckIfNoteFound";
+import { modifyNotesActionTypes } from "@/app/lib/actionTypes";
 import CheckNumBeatsInMeasure from "../../components/CheckNumBeatsInMeasure";
 import {
   buttonGroup,
@@ -24,7 +25,7 @@ import { handleNoteInteraction } from "../../lib/handleNoteInteraction";
 import { chordInteractionInitialState } from "../../lib/initialStates";
 import { initializeRenderer } from "../../lib/initializeRenderer";
 import { notesArray } from "../../lib/noteArray";
-import { reducer } from "../../lib/reducers";
+import { reducer } from "../../lib/reducer";
 import { setupRendererAndDrawNotes } from "../../lib/setupRendererAndDrawNotes";
 import {
   Chord,

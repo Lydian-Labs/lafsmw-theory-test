@@ -1,4 +1,5 @@
 "use client";
+import { Container } from "@mui/material";
 import React, {
   useCallback,
   useEffect,
@@ -8,13 +9,11 @@ import React, {
   useState,
 } from "react";
 import VexFlow from "vexflow";
-import RegularButton from "../components/RegularButton";
 import CheckIfNoteFound from "../components/CheckIfNoteFound";
 import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
-import {
-  clearAllMeasures,
-  modifyStaveNotesButtonGroup,
-} from "../lib/buttonsAndButtonGroups";
+import RegularButton from "../components/RegularButton";
+import { modifyNotesActionTypes } from "../lib/actionTypes";
+import { buttonGroup, clearAllMeasures } from "../lib/buttonsAndButtonGroups";
 import { INITIAL_STAVES, staveData } from "../lib/data/stavesData";
 import { findBarIndex } from "../lib/findBar";
 import generateYMinAndYMaxForAllNotes from "../lib/generateYMinAndMaxForAllNotes";
@@ -23,15 +22,13 @@ import { handleNoteInteraction } from "../lib/handleNoteInteraction";
 import { noteInteractionInitialState } from "../lib/initialStates";
 import { initializeRenderer } from "../lib/initializeRenderer";
 import { notesArray } from "../lib/noteArray";
-import { noteInteractionReducer } from "../lib/reducers";
-
+import { reducer } from "../lib/reducer";
 import { setupRendererAndDrawNotesNew } from "../lib/setupRendererAndDrawNotesNew";
 import {
   NoteStringData,
   StaveNoteData,
   StaveType,
 } from "../lib/typesAndInterfaces";
-import { Container } from "@mui/material";
 
 const { Renderer } = VexFlow.Flow;
 
@@ -40,10 +37,7 @@ const NotateScale = () => {
   const container = useRef<HTMLDivElement | null>(null);
   const [staves, setStaves] = useState<StaveType[]>([]);
   const [notesData, setNotesData] = useState(INITIAL_STAVES);
-  const [state, dispatch] = useReducer(
-    noteInteractionReducer,
-    noteInteractionInitialState
-  );
+  const [state, dispatch] = useReducer(reducer, noteInteractionInitialState);
 
   const noNoteFound = () => dispatch({ type: "noNoteFound" });
 
@@ -53,8 +47,8 @@ const NotateScale = () => {
   const tooManyBeatsInMeasure = () =>
     dispatch({ type: "tooManyBeatsInMeasure" });
 
-  const buttonGroup = useMemo(
-    () => modifyStaveNotesButtonGroup(dispatch, state),
+  const modifyStaveNotesButtonGroup = useMemo(
+    () => buttonGroup(dispatch, state, modifyNotesActionTypes),
     [dispatch, state]
   );
 
@@ -148,7 +142,7 @@ const NotateScale = () => {
         openEnterNotes={dispatch}
       />
       <CheckIfNoteFound
-        noNoteFound={state.noNoteFound}
+        noNoteFound={state.noNoteFound || false}
         openEnterNotes={dispatch}
       />
       <Container
@@ -160,7 +154,7 @@ const NotateScale = () => {
         }}
         disableGutters
       >
-        {buttonGroup.map((button) => {
+        {modifyStaveNotesButtonGroup.map((button) => {
           return (
             <RegularButton
               key={button.text}

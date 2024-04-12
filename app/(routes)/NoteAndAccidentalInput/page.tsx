@@ -24,7 +24,7 @@ import { handleNoteInteraction } from "../../lib/handleNoteInteraction";
 import { noteInteractionInitialState } from "../../lib/initialStates";
 import { initializeRenderer } from "../../lib/initializeRenderer";
 import { notesArray } from "../../lib/noteArray";
-import { reducer } from "../../lib/reducers";
+import { reducer } from "../../lib/reducer";
 import { setupRendererAndDrawNotes } from "../../lib/setupRendererAndDrawNotes";
 import {
   NoteStringData,

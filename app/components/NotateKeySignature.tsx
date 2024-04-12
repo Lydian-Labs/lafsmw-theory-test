@@ -10,7 +10,7 @@ import { getUserClickInfo } from "../lib/getUserClickInfo";
 import { keySigInitialState } from "../lib/initialStates";
 import { initializeRenderer } from "../lib/initializeRenderer";
 import isClickWithinStaveBounds from "../lib/isClickWithinStaveBounds";
-import { reducer } from "../lib/reducers";
+import { reducer } from "../lib/reducer";
 
 import { modifyKeySigActionTypes } from "../lib/actionTypes";
 import { setupRendererAndDrawNotesNew } from "../lib/setupRendererAndDrawNotesNew";
