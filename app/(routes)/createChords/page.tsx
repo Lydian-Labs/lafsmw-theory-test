@@ -1,4 +1,5 @@
 "use client";
+import { modifyChordsActionTypes } from "@/app/lib/actionTypes";
 import React, {
   useCallback,
   useEffect,
@@ -12,8 +13,8 @@ import BlueButton from "../../components/BlueButton";
 import CheckIfNoteFound from "../../components/CheckIfNoteFound";
 import CheckNumBeatsInMeasure from "../../components/CheckNumBeatsInMeasure";
 import {
-  clearAllMeasures,
   buttonGroup,
+  clearAllMeasures,
 } from "../../lib/buttonsAndButtonGroups";
 import { INITIAL_STAVES, staveData } from "../../lib/data/stavesData";
 import { findBarIndex } from "../../lib/findBar";
@@ -26,12 +27,11 @@ import { notesArray } from "../../lib/noteArray";
 import { reducer } from "../../lib/reducers";
 import { setupRendererAndDrawNotes } from "../../lib/setupRendererAndDrawNotes";
 import {
+  Chord,
   NoteStringData,
   StaveNoteData,
   StaveType,
-  Chord,
 } from "../../lib/typesAndInterfaces";
-import { modifyChordsActionTypes } from "@/app/lib/actionTypes";
 
 const { Renderer } = VexFlow.Flow;
 

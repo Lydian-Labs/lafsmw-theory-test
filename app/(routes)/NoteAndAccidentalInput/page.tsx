@@ -1,4 +1,5 @@
 "use client";
+import { modifyNotesActionTypes } from "@/app/lib/actionTypes";
 import React, {
   useCallback,
   useEffect,
@@ -12,8 +13,8 @@ import BlueButton from "../../components/BlueButton";
 import CheckIfNoteFound from "../../components/CheckIfNoteFound";
 import CheckNumBeatsInMeasure from "../../components/CheckNumBeatsInMeasure";
 import {
-  clearAllMeasures,
   buttonGroup,
+  clearAllMeasures,
 } from "../../lib/buttonsAndButtonGroups";
 import { INITIAL_STAVES, staveData } from "../../lib/data/stavesData";
 import { findBarIndex } from "../../lib/findBar";
@@ -30,7 +31,6 @@ import {
   StaveNoteData,
   StaveType,
 } from "../../lib/typesAndInterfaces";
-import { modifyNotesActionTypes } from "@/app/lib/actionTypes";
 
 const { Renderer } = VexFlow.Flow;
 

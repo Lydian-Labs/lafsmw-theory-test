@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useReducer, useRef, useState } from "react";
 import VexFlow from "vexflow";
 import RegularButton from "../components/RegularButton";
 import { buildKeySignature } from "../lib/buildKeySignature";
-import { clearKeySignature, buttonGroup } from "../lib/buttonsAndButtonGroups";
+import { buttonGroup, clearKeySignature } from "../lib/buttonsAndButtonGroups";
 import { INITIAL_STAVES, staveData } from "../lib/data/stavesData";
 import deleteAccidentalFromKeySig from "../lib/deleteAccidentalFromKeySig";
 import { getUserClickInfo } from "../lib/getUserClickInfo";
@@ -12,9 +12,9 @@ import { initializeRenderer } from "../lib/initializeRenderer";
 import isClickWithinStaveBounds from "../lib/isClickWithinStaveBounds";
 import { reducer } from "../lib/reducers";
 
+import { modifyKeySigActionTypes } from "../lib/actionTypes";
 import { setupRendererAndDrawNotesNew } from "../lib/setupRendererAndDrawNotesNew";
 import { GlyphProps } from "../lib/typesAndInterfaces";
-import { modifyKeySigActionTypes } from "../lib/actionTypes";
 
 const VF = VexFlow.Flow;
 const { Renderer } = VF;

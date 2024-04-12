@@ -1,10 +1,10 @@
 import {
-  NoteInteractionState,
-  NoteInteractionAction,
-  KeySigState,
-  KeySigAction,
-  ChordInteractionState,
   ChordInteractionAction,
+  ChordInteractionState,
+  KeySigAction,
+  KeySigState,
+  NoteInteractionAction,
+  NoteInteractionState,
 } from "./typesAndInterfaces";
 
 export const reducer = (

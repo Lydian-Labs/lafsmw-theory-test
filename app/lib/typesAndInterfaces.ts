@@ -1,4 +1,4 @@
-import { Dispatch, ReactNode, RefObject, SetStateAction } from "react";
+import { Dispatch, RefObject, SetStateAction } from "react";
 import VexFlow, { IRenderContext } from "vexflow";
 const VF = VexFlow.Flow;
 const { StaveNote, Stave, Renderer, Glyph } = VF;

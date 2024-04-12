@@ -1,7 +1,8 @@
 import {
-  KeySigState,
-  NoteInteractionState, ChordInteractionState,
+  ChordInteractionState,
   InputState,
+  KeySigState,
+  NoteInteractionState,
 } from "./typesAndInterfaces";
 
 export const noteInteractionInitialState: NoteInteractionState = {

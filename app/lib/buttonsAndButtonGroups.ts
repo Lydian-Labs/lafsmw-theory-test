@@ -2,28 +2,11 @@ import React from "react";
 import * as VexFlow from "vexflow";
 import { initializeRenderer } from "./initializeRenderer";
 import {
-  GlyphProps, KeySigAction,
-  KeySigState,
+  GlyphProps,
   NoteInteractionAction,
-  NoteInteractionState,
-  StaveNoteData
+  StaveNoteData,
 } from "./typesAndInterfaces";
 const { Renderer } = VexFlow.Flow;
-
-const modifyNotesActionTypes = {
-  isEnterNoteActive: "Enter Note",
-  isEraseNoteActive: "Erase Note",
-  isChangeNoteActive: "Change Note",
-  isSharpActive: "Add Sharp",
-  isFlatActive: "Add Flat",
-  isEraseAccidentalActive: "Erase Accidental",
-};
-
-const modifyKeySigActionTypes = {
-  isAddSharpActive: "add sharp",
-  isAddFlatActive: "add flat",
-  isRemoveAccidentalActive: "Delete Accidental",
-};
 
 export const enterNote = (dispatch: React.Dispatch<NoteInteractionAction>) => {
   dispatch({ type: "isEnterNoteActive" });

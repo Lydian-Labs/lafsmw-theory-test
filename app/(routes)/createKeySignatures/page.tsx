@@ -1,11 +1,12 @@
 "use client";
+import { modifyKeySigActionTypes } from "@/app/lib/actionTypes";
 import React, { useEffect, useMemo, useReducer, useRef, useState } from "react";
 import VexFlow from "vexflow";
 import BlueButton from "../../components/BlueButton";
 import { buildKeySignature } from "../../lib/buildKeySignature";
 import {
-  clearKeySignature,
   buttonGroup,
+  clearKeySignature,
 } from "../../lib/buttonsAndButtonGroups";
 import { INITIAL_STAVES, staveData } from "../../lib/data/stavesData";
 import deleteAccidentalFromKeySig from "../../lib/deleteAccidentalFromKeySig";
@@ -16,7 +17,6 @@ import isClickWithinStaveBounds from "../../lib/isClickWithinStaveBounds";
 import { reducer } from "../../lib/reducers";
 import { setupRendererAndDrawNotes } from "../../lib/setupRendererAndDrawNotes";
 import { GlyphProps } from "../../lib/typesAndInterfaces";
-import { modifyKeySigActionTypes } from "@/app/lib/actionTypes";
 const VF = VexFlow.Flow;
 const { Renderer } = VF;
 
