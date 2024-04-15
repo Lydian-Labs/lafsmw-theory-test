@@ -173,4 +173,3 @@ export default ManageStaveChords;
 
 
 
-//when the user clicks,
