@@ -12,24 +12,22 @@ import VexFlow from "vexflow";
 import BlueButton from "../../components/BlueButton";
 import CheckIfNoteFound from "../../components/CheckIfNoteFound";
 import CheckNumBeatsInMeasure from "../../components/CheckNumBeatsInMeasure";
-import { buttonGroup } from "../../lib/buttonsAndButtonGroups";
+import {
+  buttonGroup,
+  clearAllMeasures,
+} from "../../lib/buttonsAndButtonGroups";
+import { handleNoteInteraction } from "@/app/lib/handleNoteInteraction";
 import { setupRendererAndDrawStaves } from "@/app/lib/setupRendererAndDrawNotes";
 import { INITIAL_STAVES, staveData } from "../../lib/data/stavesData";
 import { findBarIndex } from "../../lib/findBar";
 import generateYMinAndYMaxForAllNotes from "../../lib/generateYMinAndMaxForAllNotes";
 import getUserClickInfo from "../../lib/getUserClickInfo";
-import { handleNoteInteraction } from "../../lib/handleNoteInteraction";
 import { chordInteractionInitialState } from "../../lib/initialStates";
 import { initializeRenderer } from "../../lib/initializeRenderer";
 import { notesArray } from "../../lib/noteArray";
 import { reducer } from "@/app/lib/reducer";
 
-import {
-  Chord,
-  NoteStringData,
-  StaveNoteData,
-  StaveType,
-} from "../../lib/typesAndInterfaces";
+import { Chord, NoteStringData, StaveType } from "../../lib/typesAndInterfaces";
 
 const { Renderer, StaveNote, Formatter } = VexFlow.Flow;
 
@@ -129,29 +127,12 @@ const ManageStaveChords = () => {
 
     const barIndex: number = findBarIndex(staves, userClickX);
 
-    let notesDataCopy = [...notesData];
-    const barOfStaveNotes = notesDataCopy[barIndex].map(
-      (noteData: StaveNoteData) => ({
-        ...noteData,
-        staveNoteAbsoluteX: noteData.newStaveNote.getAbsoluteX(),
-      })
-    );
-
-    handleNoteInteraction(
-      updatedFoundNoteData,
-      noNoteFound,
-      tooManyBeatsInMeasure,
-      "tooManyBeatsInMeasure",
-      "noNoteFound",
-      barOfStaveNotes,
-      notesDataCopy,
-      state,
-      userClickX,
-      userClickY,
-      barIndex
-    );
-
-    setNotesData(() => notesDataCopy);
+    setChordsData((prevState) => {
+      if (prevState.keys.length < 4) {
+        const updatedKeys = [...prevState.keys, updatedFoundNoteData.note];
+        return { ...prevState, keys: updatedKeys };
+      } else return prevState;
+    });
   };
 
   return (
