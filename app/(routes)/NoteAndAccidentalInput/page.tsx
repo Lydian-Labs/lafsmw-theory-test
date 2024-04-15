@@ -90,7 +90,7 @@ const ManageStaveNotes = () => {
       container,
       staves[0]
     );
-
+    console.log(generateYMinAndYMaxForAllNotes(highGYPosition, notesArray));
     let foundNoteData = generateYMinAndYMaxForAllNotes(
       highGYPosition,
       notesArray
