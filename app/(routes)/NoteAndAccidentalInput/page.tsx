@@ -51,7 +51,7 @@ const ManageStaveNotes = () => {
     [dispatch, state]
   );
 
-  const clearMeasures = () =>
+  const clearMeasures = () => {
     clearAllMeasures(
       setNotesData,
       INITIAL_STAVES,
@@ -59,7 +59,7 @@ const ManageStaveNotes = () => {
       container,
       dispatch,
       renderStavesAndNotes
-    );
+    )}
 
   const renderStavesAndNotes = useCallback(
     (): void =>
@@ -90,7 +90,7 @@ const ManageStaveNotes = () => {
       container,
       staves[0]
     );
-    console.log(generateYMinAndYMaxForAllNotes(highGYPosition, notesArray));
+    //console.log(generateYMinAndYMaxForAllNotes(highGYPosition, notesArray));
     let foundNoteData = generateYMinAndYMaxForAllNotes(
       highGYPosition,
       notesArray

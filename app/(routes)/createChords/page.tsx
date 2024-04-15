@@ -11,12 +11,9 @@ import React, {
 import VexFlow from "vexflow";
 import BlueButton from "../../components/BlueButton";
 import CheckIfNoteFound from "../../components/CheckIfNoteFound";
-import { modifyNotesActionTypes } from "@/app/lib/actionTypes";
 import CheckNumBeatsInMeasure from "../../components/CheckNumBeatsInMeasure";
-import {
-  buttonGroup,
-  clearAllMeasures,
-} from "../../lib/buttonsAndButtonGroups";
+import { buttonGroup } from "../../lib/buttonsAndButtonGroups";
+import { setupRendererAndDrawStaves } from "@/app/lib/setupRendererAndDrawNotes";
 import { INITIAL_STAVES, staveData } from "../../lib/data/stavesData";
 import { findBarIndex } from "../../lib/findBar";
 import generateYMinAndYMaxForAllNotes from "../../lib/generateYMinAndMaxForAllNotes";
@@ -25,8 +22,8 @@ import { handleNoteInteraction } from "../../lib/handleNoteInteraction";
 import { chordInteractionInitialState } from "../../lib/initialStates";
 import { initializeRenderer } from "../../lib/initializeRenderer";
 import { notesArray } from "../../lib/noteArray";
-import { reducer } from "../../lib/reducer";
-import { setupRendererAndDrawNotes } from "../../lib/setupRendererAndDrawNotes";
+import { reducer } from "@/app/lib/reducer";
+
 import {
   Chord,
   NoteStringData,
@@ -34,7 +31,7 @@ import {
   StaveType,
 } from "../../lib/typesAndInterfaces";
 
-const { Renderer } = VexFlow.Flow;
+const { Renderer, StaveNote, Formatter } = VexFlow.Flow;
 
 const ManageStaveChords = () => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
@@ -51,6 +48,8 @@ const ManageStaveChords = () => {
 
   const noNoteFound = () => dispatch({ type: "noNoteFound" });
 
+  const context = rendererRef.current?.getContext();
+
   const tooManyBeatsInMeasure = () =>
     dispatch({ type: "tooManyBeatsInMeasure" });
 
@@ -59,19 +58,21 @@ const ManageStaveChords = () => {
     [dispatch, state]
   );
 
-  const clearMeasures = () =>
-    clearAllMeasures(
-      setNotesData,
-      INITIAL_STAVES,
-      rendererRef,
-      container,
-      dispatch,
-      renderStavesAndNotes
-    );
+  const clearMeasures = () => {
+    setChordsData((): Chord => {
+      const newState = {
+        keys: [],
+        duration: "w",
+        staveNotes: null,
+        userClickY: 0,
+      };
+      return newState;
+    });
+  };
 
-  const renderStavesAndNotes = useCallback(
+  const drawStaves = useCallback(
     (): void =>
-      setupRendererAndDrawNotes({
+      setupRendererAndDrawStaves({
         rendererRef,
         ...staveData,
         setStaves,
@@ -81,14 +82,27 @@ const ManageStaveChords = () => {
     [rendererRef, setStaves, notesData, staves]
   );
 
+  const drawNotes = () => {
+    if (!rendererRef.current || chordsData.keys.length === 0) {
+      return;
+    } else {
+      const newChord = new StaveNote({
+        keys: chordsData.keys,
+        duration: chordsData.duration,
+      });
+      context && Formatter.FormatAndDraw(context, staves[0], [newChord]);
+    }
+  };
+
   useEffect(() => {
     initializeRenderer(rendererRef, container);
-    renderStavesAndNotes();
+    drawStaves();
   }, []);
 
   useEffect(() => {
-    renderStavesAndNotes();
-  }, [notesData]);
+    initializeRenderer(rendererRef, container);
+    drawNotes();
+  }, [chordsData]);
 
   let updatedFoundNoteData: NoteStringData;
 
@@ -171,5 +185,6 @@ const ManageStaveChords = () => {
 
 export default ManageStaveChords;
 
+/* 
 
-
+*/
