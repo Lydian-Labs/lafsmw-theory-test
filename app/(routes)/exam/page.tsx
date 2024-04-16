@@ -5,6 +5,7 @@ import ScalesNotate from "@/app/components/ExamQuestions/3ScalesNotate";
 import TriadsNotate from "@/app/components/ExamQuestions/4TriadsNotate";
 import SeventhChordsNotate from "@/app/components/ExamQuestions/5SeventhChordsNotate";
 import ChordsIdentify from "@/app/components/ExamQuestions/6ChordsIdentify";
+import calculateAnswers from "@/app/lib/calculateAnswers";
 
 import { InputState, MouseEvent } from "@/app/lib/typesAndInterfaces";
 
@@ -18,6 +19,7 @@ import { initialFormInputState } from "@/app/lib/initialStates";
 import { Button, Stack } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import convertObjectToArray from "@/app/lib/convertObjectToArray";
 
 export default function ExamHomePage() {
   const { user } = useAuthContext();
@@ -90,6 +92,9 @@ export default function ExamHomePage() {
     });
   };
 
+  const exampleCorrectAnswers = ["A", "B", "C", "D", "E", "F"];
+  const exampleUserAnswers = convertObjectToArray(currentUserData.chords);
+
   const handleFinalSubmit = async (e: MouseEvent) => {
     e.preventDefault();
     try {
@@ -97,6 +102,7 @@ export default function ExamHomePage() {
         throw new Error("No current user found.");
       }
       await setOrUpdateStudentData(currentUserData, userName);
+      return calculateAnswers(exampleUserAnswers, exampleCorrectAnswers);
     } catch (error) {
       console.error("handleSubmit error:", error);
     }
