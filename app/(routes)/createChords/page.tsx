@@ -81,14 +81,15 @@ const ManageStaveChords = () => {
     [rendererRef, setStaves, notesData, staves]
   );
 
+  const newChord = new StaveNote({
+    keys: chordsData.keys,
+    duration: chordsData.duration,
+  });
+
   const drawNotes = () => {
     if (!rendererRef.current || chordsData.keys.length === 0) {
       return;
     } else {
-      const newChord = new StaveNote({
-        keys: chordsData.keys,
-        duration: chordsData.duration,
-      });
       context && Formatter.FormatAndDraw(context, staves[0], [newChord]);
     }
   };
@@ -130,13 +131,12 @@ const ManageStaveChords = () => {
       noNoteFound();
       return;
     }
-
-    const barIndex: number = findBarIndex(staves, userClickX);
+    //const barIndex: number = findBarIndex(staves, userClickX);
 
     setChordsData((prevState) => {
       if (prevState.keys.length < 4) {
         const updatedKeys = [...prevState.keys, updatedFoundNoteData.note];
-        return { ...prevState, keys: updatedKeys };
+        return { ...prevState, keys: updatedKeys, staveNotes: newChord };
       } else return prevState;
     });
   };
