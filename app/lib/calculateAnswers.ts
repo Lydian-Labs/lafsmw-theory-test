@@ -1,7 +1,7 @@
-export default function calculateAnswers(
+export const checkSeventhChords = (
   answers: string[],
   correctAnswers: string[]
-): number {
+): number => {
   let score = 0;
   let numAnswers = correctAnswers.length;
   answers.forEach((answer, index) => {
@@ -11,4 +11,4 @@ export default function calculateAnswers(
   });
   console.log(`score: ${score}/${numAnswers}`);
   return score;
-}
+};

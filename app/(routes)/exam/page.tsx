@@ -5,7 +5,8 @@ import ScalesNotate from "@/app/components/ExamQuestions/3ScalesNotate";
 import TriadsNotate from "@/app/components/ExamQuestions/4TriadsNotate";
 import SeventhChordsNotate from "@/app/components/ExamQuestions/5SeventhChordsNotate";
 import ChordsIdentify from "@/app/components/ExamQuestions/6ChordsIdentify";
-import calculateAnswers from "@/app/lib/calculateAnswers";
+import { checkSeventhChords } from "@/app/lib/calculateAnswers";
+import { exampleCorrectSeventhChordAnswers } from "@/app/lib/answerKey";
 
 import { InputState, MouseEvent } from "@/app/lib/typesAndInterfaces";
 
@@ -92,7 +93,6 @@ export default function ExamHomePage() {
     });
   };
 
-  const exampleCorrectAnswers = ["A", "B", "C", "D", "E", "F"];
   const exampleUserAnswers = convertObjectToArray(currentUserData.chords);
 
   const handleFinalSubmit = async (e: MouseEvent) => {
@@ -102,7 +102,10 @@ export default function ExamHomePage() {
         throw new Error("No current user found.");
       }
       await setOrUpdateStudentData(currentUserData, userName);
-      return calculateAnswers(exampleUserAnswers, exampleCorrectAnswers);
+      return checkSeventhChords(
+        exampleUserAnswers,
+        exampleCorrectSeventhChordAnswers
+      );
     } catch (error) {
       console.error("handleSubmit error:", error);
     }
