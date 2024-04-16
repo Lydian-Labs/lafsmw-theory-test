@@ -1,14 +1,16 @@
-export const checkSeventhChords = (
+export const checkAnswers = (
   answers: string[],
-  correctAnswers: string[]
-): number => {
+  correctAnswers: string[],
+  questionType: string
+): string => {
   let score = 0;
+  let result = "";
   let numAnswers = correctAnswers.length;
   answers.forEach((answer, index) => {
     if (answer === correctAnswers[index]) {
       score++;
     }
   });
-  console.log(`score: ${score}/${numAnswers}`);
-  return score;
+  result = `score: ${score}/${numAnswers} on the ${questionType} section.`;
+  return result;
 };

@@ -7,3 +7,5 @@ export const exampleCorrectSeventhChordAnswers = [
   "F",
   "G",
 ];
+
+export const exampleCorrectKeySigAnswers = ["Bb", "Eb", "Ab", "Db"];

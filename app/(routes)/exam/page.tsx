@@ -5,8 +5,11 @@ import ScalesNotate from "@/app/components/ExamQuestions/3ScalesNotate";
 import TriadsNotate from "@/app/components/ExamQuestions/4TriadsNotate";
 import SeventhChordsNotate from "@/app/components/ExamQuestions/5SeventhChordsNotate";
 import ChordsIdentify from "@/app/components/ExamQuestions/6ChordsIdentify";
-import { checkSeventhChords } from "@/app/lib/calculateAnswers";
-import { exampleCorrectSeventhChordAnswers } from "@/app/lib/answerKey";
+import {
+  exampleCorrectKeySigAnswers,
+  exampleCorrectSeventhChordAnswers,
+} from "@/app/lib/answerKey";
+import { checkAnswers } from "@/app/lib/calculateAnswers";
 
 import { InputState, MouseEvent } from "@/app/lib/typesAndInterfaces";
 
@@ -16,11 +19,11 @@ import {
   setOrUpdateStudentData,
 } from "@/firebase/firestore/model";
 
+import convertObjectToArray from "@/app/lib/convertObjectToArray";
 import { initialFormInputState } from "@/app/lib/initialStates";
 import { Button, Stack } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import convertObjectToArray from "@/app/lib/convertObjectToArray";
 
 export default function ExamHomePage() {
   const { user } = useAuthContext();
@@ -47,6 +50,8 @@ export default function ExamHomePage() {
 
   const [currentUserData, setCurrentUserData] =
     useState<InputState>(initialState);
+
+  const [userAnswers, setUserAnswers] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchSnapshot = async () => {
@@ -93,7 +98,11 @@ export default function ExamHomePage() {
     });
   };
 
-  const exampleUserAnswers = convertObjectToArray(currentUserData.chords);
+  const exampleUserChordAnswers = convertObjectToArray(currentUserData.chords);
+
+  const exampleUserKeySigAnswers = convertObjectToArray(
+    currentUserData.keySignatures
+  );
 
   const handleFinalSubmit = async (e: MouseEvent) => {
     e.preventDefault();
@@ -102,10 +111,18 @@ export default function ExamHomePage() {
         throw new Error("No current user found.");
       }
       await setOrUpdateStudentData(currentUserData, userName);
-      return checkSeventhChords(
-        exampleUserAnswers,
-        exampleCorrectSeventhChordAnswers
+      let keySigAnswers = checkAnswers(
+        exampleUserKeySigAnswers,
+        exampleCorrectKeySigAnswers,
+        "Key Signatures"
       );
+      let seventhAnswers = checkAnswers(
+        exampleUserChordAnswers,
+        exampleCorrectSeventhChordAnswers,
+        "Seventh Chords"
+      );
+      setUserAnswers([keySigAnswers, seventhAnswers]);
+      console.log("userAnswers:", userAnswers);
     } catch (error) {
       console.error("handleSubmit error:", error);
     }
