@@ -16,7 +16,7 @@ import {
   buttonGroup,
   clearAllMeasures,
 } from "../../lib/buttonsAndButtonGroups";
-import { handleNoteInteraction } from "@/app/lib/handleNoteInteraction";
+import { handleChordInteraction } from "@/app/lib/handleChordInteraction";
 import { setupRendererAndDrawStaves } from "@/app/lib/setupRendererAndDrawNotes";
 import { INITIAL_STAVES, staveData } from "../../lib/data/stavesData";
 import { findBarIndex } from "../../lib/findBar";
@@ -66,6 +66,7 @@ const ManageStaveChords = () => {
       };
       return newState;
     });
+    drawStaves();
   };
 
   const drawStaves = useCallback(
@@ -124,6 +125,11 @@ const ManageStaveChords = () => {
         ...foundNoteData,
         userClickY: userClickY,
       };
+
+    if (!updatedFoundNoteData) {
+      noNoteFound();
+      return;
+    }
 
     const barIndex: number = findBarIndex(staves, userClickX);
 
