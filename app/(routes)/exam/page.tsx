@@ -104,6 +104,20 @@ export default function ExamHomePage() {
     currentUserData.keySignatures
   );
 
+  const updateAnswers = () => {
+    let keySigAnswers = checkAnswers(
+      exampleUserKeySigAnswers,
+      exampleCorrectKeySigAnswers,
+      "Key Signatures"
+    );
+    let seventhAnswers = checkAnswers(
+      exampleUserChordAnswers,
+      exampleCorrectSeventhChordAnswers,
+      "Seventh Chords"
+    );
+    setUserAnswers([keySigAnswers, seventhAnswers]);
+  };
+
   const handleFinalSubmit = async (e: MouseEvent) => {
     e.preventDefault();
     try {
@@ -111,20 +125,21 @@ export default function ExamHomePage() {
         throw new Error("No current user found.");
       }
       await setOrUpdateStudentData(currentUserData, userName);
-      let keySigAnswers = checkAnswers(
-        exampleUserKeySigAnswers,
-        exampleCorrectKeySigAnswers,
-        "Key Signatures"
-      );
-      let seventhAnswers = checkAnswers(
-        exampleUserChordAnswers,
-        exampleCorrectSeventhChordAnswers,
-        "Seventh Chords"
-      );
-      setUserAnswers([keySigAnswers, seventhAnswers]);
-      console.log("userAnswers:", userAnswers);
+      updateAnswers();
     } catch (error) {
       console.error("handleSubmit error:", error);
+    }
+  };
+
+  const handleEndExam = async (e: MouseEvent) => {
+    e.preventDefault();
+    try {
+      if (!userName) {
+        throw new Error("No current user found.");
+      }
+      console.log("userAnswers:", userAnswers);
+    } catch (error) {
+      console.error("handleEndExam error:", error);
     }
   };
 
@@ -173,7 +188,8 @@ export default function ExamHomePage() {
       >
         <Button onClick={decrementViewState}>{"< Previous"}</Button>
         <Button onClick={incrementViewState}>{"Next >"}</Button>
-        <Button onClick={handleFinalSubmit}>Submit to db</Button>
+        <Button onClick={handleFinalSubmit}>Submit to DB</Button>
+        <Button onClick={handleEndExam}>End Exam</Button>
       </Stack>
     </div>
   );
