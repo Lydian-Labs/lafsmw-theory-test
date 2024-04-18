@@ -24,18 +24,21 @@ import getUserClickInfo from "../../lib/getUserClickInfo";
 import { chordInteractionInitialState } from "../../lib/initialStates";
 import { initializeRenderer } from "../../lib/initializeRenderer";
 import { notesArray } from "../../lib/noteArray";
-import { reducer } from "@/app/lib/reducer";
+import { chordReducer } from "@/app/lib/reducer";
 
 import { Chord, NoteStringData, StaveType } from "../../lib/typesAndInterfaces";
 import { addAccidentalToChord } from "@/app/lib/modifyNotes";
 
-const { Renderer, StaveNote, Formatter, Accidental } = VexFlow.Flow;
+const { Renderer } = VexFlow.Flow;
 
 const ManageStaveChords = () => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
   const [staves, setStaves] = useState<StaveType[]>([]);
-  const [state, dispatch] = useReducer(reducer, chordInteractionInitialState);
+  const [state, dispatch] = useReducer(
+    chordReducer,
+    chordInteractionInitialState
+  );
   const [chordsData, setChordsData] = useState<Chord>({
     keys: [],
     duration: "w",
@@ -111,30 +114,14 @@ const ManageStaveChords = () => {
         userClickY: userClickY,
       };
     let chordsDataCopy = { ...chordsData };
-    //if-else block
-    if (!updatedFoundNoteData) {
-      noNoteFound();
-      return;
-    } else if (state.isSharpActive || state.isFlatActive) {
-      addAccidentalToChord(
-        chordsDataCopy,
-        updatedFoundNoteData,
-        state.isSharpActive ? "#" : "b"
-      );
-      setChordsData(() => chordsDataCopy);
-    } else {
-      setChordsData((prevState) => {
-        if (prevState.keys.length < 4) {
-          const updatedKeys = [...prevState.keys, updatedFoundNoteData.note];
-          const newChord = new StaveNote({
-            keys: updatedKeys,
-            duration: prevState.duration,
-          });
-          return { ...prevState, keys: updatedKeys, staveNotes: newChord };
-        } else return prevState;
-      });
-    }
-    //
+    handleChordInteraction(
+      updatedFoundNoteData,
+      noNoteFound,
+      "noNoteFound",
+      chordsDataCopy,
+      state
+    );
+    setChordsData(() => chordsDataCopy);
     //const barIndex: number = findBarIndex(staves, userClickX);
   };
 

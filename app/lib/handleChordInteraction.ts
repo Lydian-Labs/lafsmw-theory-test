@@ -10,8 +10,6 @@ import {
   ChordInteractionState,
   ChordInteractionAction,
   NoteStringData,
-  StaveNoteData,
-  StaveNoteType,
   Chord,
 } from "./typesAndInterfaces";
 const { StaveNote } = VexFlow.Flow;
@@ -19,8 +17,6 @@ const { StaveNote } = VexFlow.Flow;
 export const handleChordInteraction = (
   updatedNoteData: NoteStringData,
   noteNotFound: React.Dispatch<ChordInteractionAction>,
-  checkBeatsInMeasure: React.Dispatch<ChordInteractionAction>,
-  beatsInMeasureAction: string,
   noNoteFoundAction: string,
   chord: Chord,
   state: ChordInteractionState
@@ -33,5 +29,14 @@ export const handleChordInteraction = (
       updatedNoteData,
       state.isSharpActive ? "#" : "b"
     );
+  } else {
+    if (chord.keys.length < 4) {
+      const updatedKeys = [...chord.keys, updatedNoteData.note];
+      const newChord = new StaveNote({
+        keys: updatedKeys,
+        duration: chord.duration,
+      });
+      return { ...chord, keys: updatedKeys, staveNotes: newChord };
+    } else return chord;
   }
 };
