@@ -5,6 +5,8 @@ import ScalesNotate from "@/app/components/ExamQuestions/3ScalesNotate";
 import TriadsNotate from "@/app/components/ExamQuestions/4TriadsNotate";
 import SeventhChordsNotate from "@/app/components/ExamQuestions/5SeventhChordsNotate";
 import ChordsIdentify from "@/app/components/ExamQuestions/6ChordsIdentify";
+import ProgressionsWrite from "@/app/components/ExamQuestions/7ProgressionsWrite";
+
 import {
   exampleCorrectKeySigAnswers,
   exampleCorrectSeventhChordAnswers,
@@ -44,6 +46,7 @@ export default function ExamHomePage() {
     TRIADS_NOTATE: 4,
     SEVENTH_CHORDS_NOTATE: 5,
     CHORDS_IDENTIFY: 6,
+    PROGRESSIONS_WRITE: 7,
   };
 
   const [viewState, setViewState] = useState(VIEW_STATES.KEY_SIG_NOTATE);
@@ -80,7 +83,7 @@ export default function ExamHomePage() {
 
   const incrementViewState = () => {
     setViewState((prevState) => {
-      if (prevState === VIEW_STATES.CHORDS_IDENTIFY) {
+      if (prevState === VIEW_STATES.PROGRESSIONS_WRITE) {
         return VIEW_STATES.KEY_SIG_NOTATE;
       } else {
         return prevState + 1;
@@ -91,7 +94,7 @@ export default function ExamHomePage() {
   const decrementViewState = () => {
     setViewState((prevState) => {
       if (prevState === VIEW_STATES.KEY_SIG_NOTATE) {
-        return VIEW_STATES.CHORDS_IDENTIFY;
+        return VIEW_STATES.PROGRESSIONS_WRITE;
       } else {
         return prevState - 1;
       }
@@ -177,6 +180,12 @@ export default function ExamHomePage() {
       )}
       {viewState === VIEW_STATES.CHORDS_IDENTIFY && (
         <ChordsIdentify
+          currentUserData={currentUserData}
+          setCurrentUserData={setCurrentUserData}
+        />
+      )}
+      {viewState === VIEW_STATES.PROGRESSIONS_WRITE && (
+        <ProgressionsWrite
           currentUserData={currentUserData}
           setCurrentUserData={setCurrentUserData}
         />

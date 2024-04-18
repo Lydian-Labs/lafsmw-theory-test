@@ -1,7 +1,6 @@
 import Stack from "@mui/material/Stack";
 import { ForwardedRef, forwardRef, useState } from "react";
 import createInitialState from "../lib/createInitialState";
-import gatherWidthInfo from "../lib/gatherWidthInfo";
 import {
   ChangeEvent,
   Chord,
@@ -12,36 +11,30 @@ import FormInput from "./FormInput";
 import Staff from "./Staff";
 
 type WriteProgProps = {
-  numBars: number;
+  numBars?: number;
   chords?: Chord[];
   width: number;
   handleProg: (progressions: InputData) => void;
 };
 
+const initialProgressionInputState = createInitialState(18);
+
 export default forwardRef(function WriteProgression(
-  { numBars = 4, width, handleProg }: WriteProgProps,
+  { width, handleProg }: WriteProgProps,
   ref: ForwardedRef<HTMLFormElement>
 ) {
-  const initialNumeralInputState = createInitialState(numBars);
-
   const [numeralInput, setNumeralInput] = useState<Record<string, string>>(
-    initialNumeralInputState
+    initialProgressionInputState
   );
 
-  numBars = numBars / 3;
-
-  // Gather needed width info.
-  const { widthOfFirstBar, widthOfRemainingBars } = gatherWidthInfo(
-    numBars,
-    width
-  );
-
-  const remainingBarsString = (numBars - 1).toString();
+  const chordWidth = width * 0.0415;
+  const gapWidth = chordWidth * 0.65;
+  const chordGroupSpacing = chordWidth * 0.1;
 
   const gridInputInline = {
     display: "grid",
-    gridTemplateColumns: `${widthOfFirstBar}px repeat(${remainingBarsString}, ${widthOfRemainingBars}px)`,
-    paddingLeft: "5rem",
+    gridTemplateColumns: `repeat(4, ${chordWidth.toString()}px)`,
+    gap: gapWidth.toString() + "px",
   };
 
   function handleNumeralSubmit(e: FormEvent) {
@@ -61,7 +54,7 @@ export default forwardRef(function WriteProgression(
           name={key}
           type="text"
           value={numeralInput[key]}
-          width="70px"
+          width={chordWidth.toString() + "px"}
           onChange={(e: ChangeEvent) =>
             setNumeralInput({ ...numeralInput, [key]: e.target.value })
           }
@@ -72,19 +65,37 @@ export default forwardRef(function WriteProgression(
 
   return (
     <div>
-      <form ref={ref} id="submit-form-blues" onSubmit={handleNumeralSubmit}>
+      <form
+        ref={ref}
+        id="submit-form-progression"
+        onSubmit={handleNumeralSubmit}
+      >
         <Stack direction="column">
-          <Staff numBars={4} width={width} />
-          <div style={gridInputInline}>{renderNumeralInputs(0, 4)}</div>
-          <Staff numBars={4} noTimeSignature={true} width={width} />
-          <div style={gridInputInline}>{renderNumeralInputs(4, 8)}</div>
+          <Staff numBars={6} width={width} />
+          <Stack
+            direction="row"
+            spacing={chordGroupSpacing}
+            sx={{ paddingLeft: 13, paddingRight: 6 }}
+          >
+            <div style={gridInputInline}>{renderNumeralInputs(0, 3)}</div>
+            <div style={gridInputInline}>{renderNumeralInputs(3, 6)}</div>
+            <div style={gridInputInline}>{renderNumeralInputs(6, 9)}</div>
+          </Stack>
           <Staff
-            numBars={4}
+            numBars={6}
             noTimeSignature={true}
-            addDoubleBarLine={true}
             width={width}
+            addDoubleBarLine
           />
-          <div style={gridInputInline}>{renderNumeralInputs(8, 12)}</div>
+          <Stack
+            direction="row"
+            spacing={chordGroupSpacing}
+            sx={{ paddingLeft: 13 }}
+          >
+            <div style={gridInputInline}>{renderNumeralInputs(9, 12)}</div>
+            <div style={gridInputInline}>{renderNumeralInputs(12, 15)}</div>
+            <div style={gridInputInline}>{renderNumeralInputs(15, 18)}</div>
+          </Stack>
         </Stack>
       </form>
     </div>
