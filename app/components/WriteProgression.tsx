@@ -37,6 +37,12 @@ export default forwardRef(function WriteProgression(
     gap: gapWidth.toString() + "px",
   };
 
+  const gridInputInline2 = {
+    display: "grid",
+    gridTemplateColumns: `repeat(2, ${(chordWidth * 2).toString()}px)`,
+    gap: (gapWidth * 2).toString() + "px",
+  };
+
   function handleNumeralSubmit(e: FormEvent) {
     e.preventDefault();
     handleProg(numeralInput);
@@ -71,22 +77,37 @@ export default forwardRef(function WriteProgression(
         onSubmit={handleNumeralSubmit}
       >
         <Stack direction="column">
+          <Stack
+            direction="row"
+            spacing={chordGroupSpacing}
+            marginLeft="100px"
+            gap={4}
+          >
+            <span style={gridInputInline2}>C major</span>
+            <span style={gridInputInline2}>E minor</span>
+            <span style={gridInputInline2}>Db major</span>
+          </Stack>
           <Staff numBars={6} width={width} />
           <Stack
             direction="row"
             spacing={chordGroupSpacing}
-            sx={{ paddingLeft: 13, paddingRight: 6 }}
+            sx={{ paddingLeft: 13, paddingRight: 6, marginBottom: 6 }}
           >
             <div style={gridInputInline}>{renderNumeralInputs(0, 3)}</div>
             <div style={gridInputInline}>{renderNumeralInputs(3, 6)}</div>
             <div style={gridInputInline}>{renderNumeralInputs(6, 9)}</div>
           </Stack>
-          <Staff
-            numBars={6}
-            noTimeSignature={true}
-            width={width}
-            addDoubleBarLine
-          />
+          <Stack
+            direction="row"
+            spacing={chordGroupSpacing}
+            marginLeft="100px"
+            gap={4}
+          >
+            <span style={gridInputInline2}>C# minor</span>
+            <span style={gridInputInline2}>D# major</span>
+            <span style={gridInputInline2}>Gb minor</span>
+          </Stack>
+          <Staff numBars={6} noTimeSignature width={width} addDoubleBarLine />
           <Stack
             direction="row"
             spacing={chordGroupSpacing}

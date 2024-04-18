@@ -20,7 +20,7 @@ export default function ProgressionsWrite({
       <Box
         component="main"
         width={1139}
-        height={637}
+        height={780}
         bgcolor={"secondary.main"}
         borderRadius="var(--borderRadius)"
         margin={"auto"}
@@ -33,7 +33,7 @@ export default function ProgressionsWrite({
           </Typography>
           <Box
             width={1000}
-            height={500}
+            height={630}
             bgcolor={"card.background"}
             borderRadius="var(--borderRadius)"
             margin={"auto"}
@@ -49,7 +49,7 @@ export default function ProgressionsWrite({
               spacing={2}
             >
               <Grid item>
-                <Typography variant="h6">
+                <Typography variant="h6" marginBottom={2}>
                   Write ii-V-I Progressions in the following keys:
                 </Typography>
               </Grid>
