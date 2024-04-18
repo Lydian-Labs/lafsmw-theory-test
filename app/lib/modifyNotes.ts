@@ -4,6 +4,7 @@ import {
   ModifyNoteData,
   NoteStringData,
   StaveNoteData,
+  Chord,
 } from "./typesAndInterfaces";
 const { Accidental, StaveNote } = VexFlow.Flow;
 
@@ -24,6 +25,21 @@ export const addAccidentalToNote = (
     noteData.barOfStaveNotes.newStaveNote.addModifier(
       new Accidental(accidental)
     );
+};
+export const addAccidentalToChord = (
+  chords: Chord,
+  foundNoteData: NoteStringData,
+  accidental: string
+) => {
+  const index = chords.keys.findIndex((note) => note === foundNoteData.note);
+  if (index !== -1) {
+    const newChord = new StaveNote({
+      keys: chords.keys,
+      duration: chords.duration,
+    }).addModifier(new Accidental(accidental), index);
+    chords = { ...chords, staveNotes: newChord };
+    return chords;
+  }
 };
 
 export const changeNotePosition = (

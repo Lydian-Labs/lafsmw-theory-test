@@ -53,7 +53,7 @@ export const setupRendererAndDrawNotes = (
     });
 };
 
-export const setupRendererAndDrawStaves = (
+export const drawStavesAndNotes = (
   params: RenderStavesAndNotesParams
 ): void => {
   const {
@@ -68,6 +68,8 @@ export const setupRendererAndDrawStaves = (
     clef,
     firstStaveWidth,
     keySig,
+    chordsData,
+    staves,
     setStaves,
   } = params;
   const renderer = rendererRef?.current;
@@ -88,5 +90,12 @@ export const setupRendererAndDrawStaves = (
         keySig,
       })
     );
+    if (chordsData?.keys.length === 0) {
+      return;
+    }
+    if (context && chordsData?.staveNotes) {
+      context &&
+        Formatter.FormatAndDraw(context, staves[0], [chordsData.staveNotes]);
+    }
   }
 };

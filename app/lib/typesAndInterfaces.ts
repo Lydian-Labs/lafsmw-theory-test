@@ -1,7 +1,7 @@
 import { Dispatch, RefObject, SetStateAction } from "react";
 import VexFlow, { IRenderContext } from "vexflow";
 const VF = VexFlow.Flow;
-const { StaveNote, Stave, Renderer, Glyph } = VF;
+const { StaveNote, Stave, Renderer, Glyph, Note } = VF;
 
 export type FormEvent = React.FormEvent<HTMLFormElement>;
 export type MouseEvent = React.MouseEvent<HTMLButtonElement>;
@@ -16,7 +16,7 @@ export type InputData = {
 export type Chord = {
   keys: string[];
   duration: string;
-  staveNotes?: StaveNoteType | null;
+  staveNotes?: NoteType | null;
   userClickY?: number;
 };
 
@@ -32,6 +32,7 @@ export type Level =
 
 export type RendererRef = RefObject<InstanceType<typeof Renderer>>;
 export type SetStaves = Dispatch<SetStateAction<StaveType[]>>;
+export type SetStavesForChords = Dispatch<SetStateAction<StaveType[]>>;
 export type BlankStaves = StaveType[];
 export type NoteData = StaveNoteData[][];
 
@@ -83,6 +84,7 @@ export type AccidentalStateType = {
 export type StaveType = InstanceType<typeof Stave>;
 export type GlyphType = InstanceType<typeof Glyph>;
 export type StaveNoteType = InstanceType<typeof StaveNote>;
+export type NoteType = InstanceType<typeof Note>;
 
 export interface UserClickInfo {
   rect: DOMRect | undefined;
@@ -106,7 +108,9 @@ export interface NoteStringData {
   yCoordinateMin: number;
   yCoordinateMax: number;
   userClickY?: number;
+  staveNotes?: StaveNoteData;
 }
+
 export interface ModifyNoteData {
   barOfStaveNotes: StaveNoteData;
   noteIndex: number;
@@ -119,7 +123,9 @@ export interface CheckNumBeatsInMeasureProps {
 
 export interface CheckIfNoteFoundProps {
   noNoteFound: boolean;
-  openEnterNotes: React.Dispatch<NoteInteractionAction | ChordInteractionAction>;
+  openEnterNotes: React.Dispatch<
+    NoteInteractionAction | ChordInteractionAction
+  >;
 }
 
 export interface RenderStavesAndNotesParams {
@@ -138,6 +144,7 @@ export interface RenderStavesAndNotesParams {
   regularStaveWidth?: number | null;
   setStaves: SetStaves;
   notesData?: NoteData | null;
+  chordsData?: Chord;
   staves: BlankStaves;
 }
 

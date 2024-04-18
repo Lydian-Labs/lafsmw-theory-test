@@ -90,7 +90,6 @@ const ManageStaveNotes = () => {
       container,
       staves[0]
     );
-    //console.log(generateYMinAndYMaxForAllNotes(highGYPosition, notesArray));
     let foundNoteData = generateYMinAndYMaxForAllNotes(
       highGYPosition,
       notesArray
@@ -108,6 +107,7 @@ const ManageStaveNotes = () => {
     const barIndex: number = findBarIndex(staves, userClickX);
 
     let notesDataCopy = [...notesData];
+    
     const barOfStaveNotes = notesDataCopy[barIndex].map(
       (noteData: StaveNoteData) => ({
         ...noteData,
