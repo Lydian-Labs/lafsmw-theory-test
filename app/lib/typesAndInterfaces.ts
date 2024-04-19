@@ -18,9 +18,8 @@ export type Chord = {
   duration: string;
   staveNotes?: NoteType | null;
   userClickY?: number;
-  sharpIndexArray: number[],
-  flatIndexArray: number[] | [],
-
+  sharpIndexArray: number[];
+  flatIndexArray: number[] | [];
 };
 
 export type Level =
@@ -52,11 +51,11 @@ export type NoteInteractionState = {
 };
 export type ChordInteractionState = {
   isEraseNoteActive: boolean;
-  isEraseAccidentalActive: boolean;
+  isEraseSharpActive: boolean;
+  isEraseFlatActive: boolean;
   isEnterNoteActive: boolean;
   isSharpActive: boolean;
   noNoteFound: boolean;
-  tooManyBeatsInMeasure?: boolean;
   isFlatActive: boolean;
   [key: string]: boolean | undefined;
 };

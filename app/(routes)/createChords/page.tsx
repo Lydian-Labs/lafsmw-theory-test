@@ -17,7 +17,6 @@ import { staveData } from "../../lib/data/stavesData";
 import { findBarIndex } from "../../lib/findBar";
 import generateYMinAndYMaxForAllNotes from "../../lib/generateYMinAndMaxForAllNotes";
 import getUserClickInfo from "../../lib/getUserClickInfo";
-import { handleChordInteraction } from "@/app/lib/handleChordInteraction";
 import { chordInteractionInitialState } from "../../lib/initialStates";
 import { initializeRenderer } from "../../lib/initializeRenderer";
 import { notesArray } from "../../lib/noteArray";
@@ -155,6 +154,40 @@ const ManageChords = () => {
           staveNotes: newChord,
         };
       }
+    } else if (state.isEraseSharpActive || state.isEraseFlatActive) {
+      if (state.isEraseSharpActive) {
+        const updatedSharpIndexArray = [...chordDataCopy.sharpIndexArray];
+        updatedSharpIndexArray.splice(index, 1);
+        const newChord = new StaveNote({
+          keys: chordDataCopy.keys,
+          duration: chordDataCopy.duration,
+        });
+        // redraw sharps
+        updatedSharpIndexArray.forEach((sharpIndex) => {
+          newChord.addModifier(new Accidental("#"), sharpIndex);
+        });
+        chordDataCopy = {
+          ...chordDataCopy,
+          sharpIndexArray: updatedSharpIndexArray,
+          staveNotes: newChord,
+        };
+      } else if (state.isEraseFlatActive) {
+        const updatedFlatIndexArray = [...chordDataCopy.flatIndexArray];
+        updatedFlatIndexArray.splice(index, 1);
+        const newChord = new StaveNote({
+          keys: chordDataCopy.keys,
+          duration: chordDataCopy.duration,
+        });
+        // redraw flats
+        updatedFlatIndexArray.forEach((flatIndex) => {
+          newChord.addModifier(new Accidental("b"), flatIndex);
+        });
+        chordDataCopy = {
+          ...chordDataCopy,
+          flatIndexArray: updatedFlatIndexArray,
+          staveNotes: newChord,
+        };
+      }
     } else if (state.isEraseNoteActive) {
       if (chordDataCopy.staveNotes) {
         if (index !== -1) {
@@ -164,6 +197,7 @@ const ManageChords = () => {
             keys: updatedKeys,
             duration: chordData.duration,
           });
+
           chordDataCopy = {
             ...chordDataCopy,
             keys: updatedKeys,

@@ -17,11 +17,11 @@ export const noteInteractionInitialState: NoteInteractionState = {
 };
 export const chordInteractionInitialState: ChordInteractionState = {
   isEraseNoteActive: false,
-  isEraseAccidentalActive: false,
+  isEraseSharpActive: false,
+  isEraseFlatActive: false,
   isEnterNoteActive: true,
   isSharpActive: false,
   noNoteFound: false,
-  //tooManyBeatsInMeasure: false,
   isFlatActive: false,
 };
 
