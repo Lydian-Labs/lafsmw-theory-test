@@ -27,8 +27,8 @@ export default forwardRef(function WriteProgression(
     initialProgressionInputState
   );
 
-  const chordWidth = width * 0.0415;
-  const gapWidth = chordWidth * 0.65;
+  const chordWidth = width * 0.05;
+  const gapWidth = chordWidth * 0.3;
   const chordGroupSpacing = chordWidth * 0.1;
 
   const gridInputInline = {
@@ -87,7 +87,7 @@ export default forwardRef(function WriteProgression(
             <span style={gridInputInline2}>E minor</span>
             <span style={gridInputInline2}>Db major</span>
           </Stack>
-          <Staff numBars={6} width={width} />
+          <Staff numBars={6} noTimeSignature width={width} />
           <Stack
             direction="row"
             spacing={chordGroupSpacing}

@@ -7,7 +7,6 @@ import { useRouter } from "next/navigation";
 
 export default function Home() {
   const { user } = useAuthContext();
-  console.log("user (Home page):", user);
   const router = useRouter();
   if (user) {
     router.push("/exam/key-signatures-note");

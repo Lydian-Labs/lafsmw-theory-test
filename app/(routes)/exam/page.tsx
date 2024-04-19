@@ -10,6 +10,7 @@ import ProgressionsWrite from "@/app/components/ExamQuestions/7ProgressionsWrite
 import {
   exampleCorrectKeySigAnswers,
   exampleCorrectSeventhChordAnswers,
+  exampleCorrectProgressionAnswers,
 } from "@/app/lib/answerKey";
 import { checkAnswers } from "@/app/lib/calculateAnswers";
 
@@ -101,24 +102,31 @@ export default function ExamHomePage() {
     });
   };
 
-  const exampleUserChordAnswers = convertObjectToArray(currentUserData.chords);
+  const userChordAnswers = convertObjectToArray(currentUserData.chords);
 
-  const exampleUserKeySigAnswers = convertObjectToArray(
-    currentUserData.keySignatures
+  const userKeySigAnswers = convertObjectToArray(currentUserData.keySignatures);
+
+  const userProgressionAnswers = convertObjectToArray(
+    currentUserData.progressions
   );
 
   const updateAnswers = () => {
     let keySigAnswers = checkAnswers(
-      exampleUserKeySigAnswers,
+      userKeySigAnswers,
       exampleCorrectKeySigAnswers,
       "Key Signatures"
     );
     let seventhAnswers = checkAnswers(
-      exampleUserChordAnswers,
+      userChordAnswers,
       exampleCorrectSeventhChordAnswers,
       "Seventh Chords"
     );
-    setUserAnswers([keySigAnswers, seventhAnswers]);
+    let progressionAnswers = checkAnswers(
+      userProgressionAnswers,
+      exampleCorrectProgressionAnswers,
+      "II-V-I Progressions"
+    );
+    setUserAnswers([keySigAnswers, seventhAnswers, progressionAnswers]);
   };
 
   const handleFinalSubmit = async (e: MouseEvent) => {
