@@ -56,7 +56,7 @@ const ManageChords = () => {
         duration: "w",
         staveNotes: null,
         userClickY: 0,
-        sharpIndexArray: null,
+        sharpIndexArray: [],
         flatIndexArray: [],
       };
       return newState;
