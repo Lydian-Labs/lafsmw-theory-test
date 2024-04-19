@@ -11,35 +11,28 @@ import React, {
 import VexFlow from "vexflow";
 import BlueButton from "../../components/BlueButton";
 import CheckIfNoteFound from "../../components/CheckIfNoteFound";
+import CheckNumBeatsInMeasure from "../../components/CheckNumBeatsInMeasure";
 import { buttonGroup } from "../../lib/buttonsAndButtonGroups";
-import { handleChordInteraction } from "@/app/lib/handleChordInteraction";
-import { drawStavesAndNotes } from "@/app/lib/setupRendererAndDrawNotes";
-import {
-  INITIAL_STAVES as initialStaves,
-  staveData,
-} from "../../lib/data/stavesData";
+import { staveData } from "../../lib/data/stavesData";
 import { findBarIndex } from "../../lib/findBar";
 import generateYMinAndYMaxForAllNotes from "../../lib/generateYMinAndMaxForAllNotes";
 import getUserClickInfo from "../../lib/getUserClickInfo";
+import { handleChordInteraction } from "@/app/lib/handleChordInteraction";
 import { chordInteractionInitialState } from "../../lib/initialStates";
 import { initializeRenderer } from "../../lib/initializeRenderer";
 import { notesArray } from "../../lib/noteArray";
-import { chordReducer } from "@/app/lib/reducer";
+import { reducer } from "../../lib/reducer";
+import { setupRendererAndDrawChords } from "@/app/lib/setUpRendererAndDrawChords";
+import { NoteStringData, StaveType, Chord } from "../../lib/typesAndInterfaces";
 
-import { Chord, NoteStringData, StaveType } from "../../lib/typesAndInterfaces";
-import { addAccidentalToChord } from "@/app/lib/modifyNotes";
+const { Renderer, StaveNote, Accidental } = VexFlow.Flow;
 
-const { Renderer } = VexFlow.Flow;
-
-const ManageStaveChords = () => {
+const ManageChords = () => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
   const [staves, setStaves] = useState<StaveType[]>([]);
-  const [state, dispatch] = useReducer(
-    chordReducer,
-    chordInteractionInitialState
-  );
-  const [chordsData, setChordsData] = useState<Chord>({
+  const [state, dispatch] = useReducer(reducer, chordInteractionInitialState);
+  const [chordData, setChordData] = useState<Chord>({
     keys: [],
     duration: "w",
     staveNotes: null,
@@ -47,16 +40,17 @@ const ManageStaveChords = () => {
   });
 
   const noNoteFound = () => dispatch({ type: "noNoteFound" });
-
   const context = rendererRef.current?.getContext();
+  const tooManyBeatsInMeasure = () =>
+    dispatch({ type: "tooManyBeatsInMeasure" });
 
-  const modifyStaveNotesButtonGroup = useMemo(
+  const modifyChordsButtonGroup = useMemo(
     () => buttonGroup(dispatch, state, modifyChordsActionTypes),
     [dispatch, state]
   );
 
   const clearMeasures = () => {
-    setChordsData((): Chord => {
+    setChordData((): Chord => {
       const newState = {
         keys: [],
         duration: "w",
@@ -65,31 +59,29 @@ const ManageStaveChords = () => {
       };
       return newState;
     });
-    drawStaves();
+    renderStavesAndNotes();
   };
 
-  const drawStaves = useCallback(
+  const renderStavesAndNotes = useCallback(
     (): void =>
-      drawStavesAndNotes({
+      setupRendererAndDrawChords({
         rendererRef,
         ...staveData,
         setStaves,
-        notesData: initialStaves,
-        chordsData,
+        chordData,
         staves,
       }),
-    [rendererRef, setStaves, staves, chordsData]
+    [rendererRef, setStaves, chordData, staves]
   );
 
   useEffect(() => {
     initializeRenderer(rendererRef, container);
-    drawStaves();
+    renderStavesAndNotes();
   }, []);
 
   useEffect(() => {
-    initializeRenderer(rendererRef, container);
-    drawStaves();
-  }, [chordsData]);
+    renderStavesAndNotes();
+  }, [chordData]);
 
   let updatedFoundNoteData: NoteStringData;
 
@@ -99,7 +91,6 @@ const ManageStaveChords = () => {
       container,
       staves[0]
     );
-
     let foundNoteData = generateYMinAndYMaxForAllNotes(
       highGYPosition,
       notesArray
@@ -107,33 +98,78 @@ const ManageStaveChords = () => {
       ({ yCoordinateMin, yCoordinateMax }) =>
         userClickY >= yCoordinateMin && userClickY <= yCoordinateMax
     );
+    let chordDataCopy = { ...chordData };
+    const barIndex: number = findBarIndex(staves, userClickX);
 
     if (foundNoteData)
       updatedFoundNoteData = {
         ...foundNoteData,
         userClickY: userClickY,
       };
-    let chordsDataCopy = { ...chordsData };
-    handleChordInteraction(
-      updatedFoundNoteData,
-      noNoteFound,
-      "noNoteFound",
-      chordsDataCopy,
-      state
-    );
-    setChordsData(() => chordsDataCopy);
-    //const barIndex: number = findBarIndex(staves, userClickX);
+    if (!updatedFoundNoteData) {
+      noNoteFound();
+    } else if (state.isSharpActive || state.isFlatActive) {
+      const index: number = chordData.keys.findIndex(
+        (note) => note === updatedFoundNoteData.note
+      );
+      if (index !== -1) {
+        const newChord = new StaveNote({
+          keys: chordDataCopy.keys,
+          duration: chordData.duration,
+        }).addModifier(new Accidental(state.isSharpActive ? "#" : "b"), index);
+        chordDataCopy = {
+          ...chordDataCopy,
+          staveNotes: newChord,
+        };
+      }
+    } else {
+      if (chordData.keys.length >= 4) return;
+
+      const updatedKeys = [...chordDataCopy.keys, updatedFoundNoteData.note];
+
+      const newChord = new StaveNote({
+        keys: updatedKeys,
+        duration: chordDataCopy.duration,
+      });
+
+      chordDataCopy = {
+        ...chordDataCopy,
+        keys: updatedKeys,
+        staveNotes: newChord,
+        userClickY: userClickY,
+      };
+    }
+
+    // handleChordInteraction(
+    //   updatedFoundNoteData,
+    //   noNoteFound,
+    //   //tooManyBeatsInMeasure,
+    //   //"tooManyBeatsInMeasure",
+    //   "noNoteFound",
+    //   //barOfStaveNotes,
+    //   chordDataCopy,
+    //   //state,
+    //   //userClickX,
+    //   userClickY
+    //   //barIndex
+    // );
+
+    setChordData(() => chordDataCopy);
   };
 
   return (
     <>
       <div ref={container} onClick={handleClick} />
+      <CheckNumBeatsInMeasure
+        tooManyBeatsInMeasure={state.tooManyBeatsInMeasure}
+        openEnterNotes={dispatch}
+      />
       <CheckIfNoteFound
         noNoteFound={state.noNoteFound || false}
         openEnterNotes={dispatch}
       />
       <div className="mt-2 ml-3">
-        {modifyStaveNotesButtonGroup.map((button) => {
+        {modifyChordsButtonGroup.map((button) => {
           return (
             <BlueButton
               key={button.text}
@@ -150,8 +186,4 @@ const ManageStaveChords = () => {
   );
 };
 
-export default ManageStaveChords;
-
-/* 
-
-*/
+export default ManageChords;

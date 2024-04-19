@@ -143,8 +143,25 @@ export interface RenderStavesAndNotesParams {
   firstStaveWidth: number;
   regularStaveWidth?: number | null;
   setStaves: SetStaves;
-  notesData?: NoteData | null;
-  chordsData?: Chord;
+  notesData: NoteData | null;
+  staves: BlankStaves;
+}
+export interface RenderStavesAndChordParams {
+  rendererRef: RendererRef | null;
+  font: string;
+  fontSize: number;
+  numStaves: number;
+  rendererWidth: number;
+  rendererHeight: number;
+  yPositionOfStaves: number;
+  xPositionOfStaves: number;
+  clef: string;
+  timeSig?: string;
+  keySig?: string;
+  firstStaveWidth: number;
+  regularStaveWidth?: number | null;
+  setStaves: SetStaves;
+  chordData: Chord;
   staves: BlankStaves;
 }
 

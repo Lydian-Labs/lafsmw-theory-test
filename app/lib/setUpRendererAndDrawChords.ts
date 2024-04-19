@@ -1,10 +1,10 @@
 import VexFlow from "vexflow";
-import createBlankStavesNew from "./createBlankStavesNew";
-import { RenderStavesAndNotesParams } from "./typesAndInterfaces";
+import createBlankStaves from "../lib/createBlankStaves";
+import { RenderStavesAndChordParams } from "./typesAndInterfaces";
 const { Formatter } = VexFlow.Flow;
 
-export const setupRendererAndDrawNotesNew = (
-  params: RenderStavesAndNotesParams
+export const setupRendererAndDrawChords = (
+  params: RenderStavesAndChordParams
 ): void => {
   const {
     rendererRef,
@@ -19,19 +19,17 @@ export const setupRendererAndDrawNotesNew = (
     firstStaveWidth,
     keySig,
     setStaves,
-    notesData,
-    staves: blankStaves,
+    chordData,
+    staves,
   } = params;
-
   const renderer = rendererRef?.current;
   renderer?.resize(rendererWidth, rendererHeight);
   const context = renderer && renderer.getContext();
   context?.setFont(font, fontSize);
   context?.clear();
-
   if (context && rendererRef) {
     setStaves(() =>
-      createBlankStavesNew({
+      createBlankStaves({
         numStaves,
         context,
         firstStaveWidth,
@@ -43,15 +41,9 @@ export const setupRendererAndDrawNotesNew = (
       })
     );
   }
-
-  notesData &&
-    notesData.forEach((barData, index) => {
-      if (barData) {
-        const staveNotes = barData.map(({ newStaveNote }) => newStaveNote);
-        if (staveNotes.length > 0) {
-          context &&
-            Formatter.FormatAndDraw(context, blankStaves[index], staveNotes);
-        }
-      }
-    });
+  if (!renderer || chordData.keys.length === 0) return;
+  else {
+    if (context && chordData.staveNotes)
+      Formatter.FormatAndDraw(context, staves[0], [chordData.staveNotes]);
+  }
 };
