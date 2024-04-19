@@ -163,6 +163,8 @@ export interface RenderStavesAndChordParams {
   setStaves: SetStaves;
   chordData: Chord;
   staves: BlankStaves;
+  barIndex: number;
+
 }
 
 export interface CreateBlankStavesParams {

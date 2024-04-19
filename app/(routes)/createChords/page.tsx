@@ -32,6 +32,7 @@ const ManageChords = () => {
   const container = useRef<HTMLDivElement | null>(null);
   const [staves, setStaves] = useState<StaveType[]>([]);
   const [state, dispatch] = useReducer(reducer, chordInteractionInitialState);
+  const [barIndex, setBarIndex] = useState<number>(0);
   const [chordData, setChordData] = useState<Chord>({
     keys: [],
     duration: "w",
@@ -40,9 +41,6 @@ const ManageChords = () => {
   });
 
   const noNoteFound = () => dispatch({ type: "noNoteFound" });
-  const context = rendererRef.current?.getContext();
-  const tooManyBeatsInMeasure = () =>
-    dispatch({ type: "tooManyBeatsInMeasure" });
 
   const modifyChordsButtonGroup = useMemo(
     () => buttonGroup(dispatch, state, modifyChordsActionTypes),
@@ -70,8 +68,9 @@ const ManageChords = () => {
         setStaves,
         chordData,
         staves,
+        barIndex,
       }),
-    [rendererRef, setStaves, chordData, staves]
+    [rendererRef, setStaves, chordData, staves, barIndex]
   );
 
   useEffect(() => {
@@ -99,19 +98,25 @@ const ManageChords = () => {
         userClickY >= yCoordinateMin && userClickY <= yCoordinateMax
     );
     let chordDataCopy = { ...chordData };
-    const barIndex: number = findBarIndex(staves, userClickX);
+
+    setBarIndex(() => {
+      const newNum = findBarIndex(staves, userClickX);
+      return newNum;
+    });
 
     if (foundNoteData)
       updatedFoundNoteData = {
         ...foundNoteData,
         userClickY: userClickY,
       };
+
+    const index: number = chordData.keys.findIndex(
+      (note) => note === updatedFoundNoteData.note
+    );
+
     if (!updatedFoundNoteData) {
       noNoteFound();
     } else if (state.isSharpActive || state.isFlatActive) {
-      const index: number = chordData.keys.findIndex(
-        (note) => note === updatedFoundNoteData.note
-      );
       if (index !== -1) {
         const newChord = new StaveNote({
           keys: chordDataCopy.keys,
@@ -121,6 +126,22 @@ const ManageChords = () => {
           ...chordDataCopy,
           staveNotes: newChord,
         };
+      }
+    } else if (state.isEraseNoteActive) {
+      if (chordDataCopy.staveNotes) {
+        if (index !== -1) {
+          const updatedKeys = [...chordDataCopy.keys];
+          updatedKeys.splice(index, 1);
+          const newChord = new StaveNote({
+            keys: updatedKeys,
+            duration: chordData.duration,
+          });
+          chordDataCopy = {
+            ...chordDataCopy,
+            keys: updatedKeys,
+            staveNotes: newChord,
+          };
+        }
       }
     } else {
       if (chordData.keys.length >= 4) return;
@@ -139,20 +160,6 @@ const ManageChords = () => {
         userClickY: userClickY,
       };
     }
-
-    // handleChordInteraction(
-    //   updatedFoundNoteData,
-    //   noNoteFound,
-    //   //tooManyBeatsInMeasure,
-    //   //"tooManyBeatsInMeasure",
-    //   "noNoteFound",
-    //   //barOfStaveNotes,
-    //   chordDataCopy,
-    //   //state,
-    //   //userClickX,
-    //   userClickY
-    //   //barIndex
-    // );
 
     setChordData(() => chordDataCopy);
   };

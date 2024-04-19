@@ -21,6 +21,7 @@ export const setupRendererAndDrawChords = (
     setStaves,
     chordData,
     staves,
+    barIndex,
   } = params;
   const renderer = rendererRef?.current;
   renderer?.resize(rendererWidth, rendererHeight);
@@ -44,6 +45,8 @@ export const setupRendererAndDrawChords = (
   if (!renderer || chordData.keys.length === 0) return;
   else {
     if (context && chordData.staveNotes)
-      Formatter.FormatAndDraw(context, staves[0], [chordData.staveNotes]);
+      Formatter.FormatAndDraw(context, staves[barIndex], [
+        chordData.staveNotes,
+      ]);
   }
 };
