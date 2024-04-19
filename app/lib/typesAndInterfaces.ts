@@ -18,6 +18,9 @@ export type Chord = {
   duration: string;
   staveNotes?: NoteType | null;
   userClickY?: number;
+  sharpIndexArray: number[],
+  flatIndexArray: number[] | [],
+
 };
 
 export type Level =
@@ -164,7 +167,6 @@ export interface RenderStavesAndChordParams {
   chordData: Chord;
   staves: BlankStaves;
   barIndex: number;
-
 }
 
 export interface CreateBlankStavesParams {

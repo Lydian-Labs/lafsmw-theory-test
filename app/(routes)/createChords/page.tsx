@@ -38,6 +38,8 @@ const ManageChords = () => {
     duration: "w",
     staveNotes: null,
     userClickY: 0,
+    sharpIndexArray: [],
+    flatIndexArray: [],
   });
 
   const noNoteFound = () => dispatch({ type: "noNoteFound" });
@@ -47,13 +49,15 @@ const ManageChords = () => {
     [dispatch, state]
   );
 
-  const clearMeasures = () => {
+  const eraseChord = () => {
     setChordData((): Chord => {
       const newState = {
         keys: [],
         duration: "w",
         staveNotes: null,
         userClickY: 0,
+        sharpIndexArray: null,
+        flatIndexArray: [],
       };
       return newState;
     });
@@ -122,6 +126,19 @@ const ManageChords = () => {
           keys: chordDataCopy.keys,
           duration: chordData.duration,
         }).addModifier(new Accidental(state.isSharpActive ? "#" : "b"), index);
+        if (state.isSharpActive) {
+          const newIndexArray = [...chordDataCopy.sharpIndexArray, index];
+          chordDataCopy = {
+            ...chordDataCopy,
+            sharpIndexArray: newIndexArray,
+          };
+        } else if (state.isFlatActive) {
+          const newIndexArray = [...chordDataCopy.flatIndexArray, index];
+          chordDataCopy = {
+            ...chordDataCopy,
+            flatIndexArray: newIndexArray,
+          };
+        }
         chordDataCopy = {
           ...chordDataCopy,
           staveNotes: newChord,
@@ -187,7 +204,7 @@ const ManageChords = () => {
             </BlueButton>
           );
         })}
-        <BlueButton onClick={clearMeasures}>Clear Measures</BlueButton>
+        <BlueButton onClick={eraseChord}>Erase Chord</BlueButton>
       </div>
     </>
   );
