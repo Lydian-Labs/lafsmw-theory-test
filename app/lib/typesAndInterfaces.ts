@@ -145,7 +145,7 @@ export interface RenderStavesAndNotesParams {
   firstStaveWidth: number;
   regularStaveWidth?: number | null;
   setStaves: SetStaves;
-  notesData: NoteData | null;
+  notesData?: NoteData | null;
   staves: BlankStaves;
 }
 export interface RenderStavesAndChordParams {
