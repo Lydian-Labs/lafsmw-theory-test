@@ -122,10 +122,6 @@ const ManageChords = () => {
       noNoteFound();
     } else if (state.isSharpActive || state.isFlatActive) {
       if (index !== -1) {
-        const newChord = new StaveNote({
-          keys: chordDataCopy.keys,
-          duration: chordData.duration,
-        }).addModifier(new Accidental(state.isSharpActive ? "#" : "b"), index);
         if (state.isSharpActive) {
           const newIndexArray = [...chordDataCopy.sharpIndexArray, index];
           chordDataCopy = {
@@ -139,6 +135,21 @@ const ManageChords = () => {
             flatIndexArray: newIndexArray,
           };
         }
+        const newChord = new StaveNote({
+          keys: chordDataCopy.keys,
+          duration: chordData.duration,
+        });
+
+        // Add all the sharps
+        chordDataCopy.sharpIndexArray.forEach((sharpIndex) => {
+          newChord.addModifier(new Accidental("#"), sharpIndex);
+        });
+
+        // Add all the flats
+        chordDataCopy.flatIndexArray.forEach((flatIndex) => {
+          newChord.addModifier(new Accidental("b"), flatIndex);
+        });
+
         chordDataCopy = {
           ...chordDataCopy,
           staveNotes: newChord,
