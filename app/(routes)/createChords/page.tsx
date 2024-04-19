@@ -100,6 +100,7 @@ const ManageChords = () => {
       ({ yCoordinateMin, yCoordinateMax }) =>
         userClickY >= yCoordinateMin && userClickY <= yCoordinateMax
     );
+
     let chordDataCopy = { ...chordData };
 
     setBarIndex(() => {
@@ -114,7 +115,7 @@ const ManageChords = () => {
       };
 
     const index: number = chordData.keys.findIndex(
-      (note) => note === updatedFoundNoteData.note
+      (note) => note === updatedFoundNoteData?.note
     );
 
     if (!updatedFoundNoteData) {
@@ -158,36 +159,34 @@ const ManageChords = () => {
       if (state.isEraseSharpActive) {
         const updatedSharpIndexArray = [...chordDataCopy.sharpIndexArray];
         updatedSharpIndexArray.splice(index, 1);
-        const newChord = new StaveNote({
-          keys: chordDataCopy.keys,
-          duration: chordDataCopy.duration,
-        });
-        // redraw sharps
-        updatedSharpIndexArray.forEach((sharpIndex) => {
-          newChord.addModifier(new Accidental("#"), sharpIndex);
-        });
         chordDataCopy = {
           ...chordDataCopy,
           sharpIndexArray: updatedSharpIndexArray,
-          staveNotes: newChord,
         };
       } else if (state.isEraseFlatActive) {
         const updatedFlatIndexArray = [...chordDataCopy.flatIndexArray];
         updatedFlatIndexArray.splice(index, 1);
-        const newChord = new StaveNote({
-          keys: chordDataCopy.keys,
-          duration: chordDataCopy.duration,
-        });
-        // redraw flats
-        updatedFlatIndexArray.forEach((flatIndex) => {
-          newChord.addModifier(new Accidental("b"), flatIndex);
-        });
         chordDataCopy = {
           ...chordDataCopy,
           flatIndexArray: updatedFlatIndexArray,
-          staveNotes: newChord,
         };
       }
+
+      const newChord = new StaveNote({
+        keys: chordDataCopy.keys,
+        duration: chordDataCopy.duration,
+      });
+
+      chordDataCopy.flatIndexArray.forEach((flatIndex) => {
+        newChord.addModifier(new Accidental("b"), flatIndex);
+      });
+      chordDataCopy.sharpIndexArray.forEach((sharpIndex) => {
+        newChord.addModifier(new Accidental("#"), sharpIndex);
+      });
+      chordDataCopy = {
+        ...chordDataCopy,
+        staveNotes: newChord,
+      };
     } else if (state.isEraseNoteActive) {
       if (chordDataCopy.staveNotes) {
         if (index !== -1) {
@@ -197,7 +196,12 @@ const ManageChords = () => {
             keys: updatedKeys,
             duration: chordData.duration,
           });
-
+          chordDataCopy.flatIndexArray.forEach((flatIndex) => {
+            newChord.addModifier(new Accidental("b"), flatIndex);
+          });
+          chordDataCopy.sharpIndexArray.forEach((sharpIndex) => {
+            newChord.addModifier(new Accidental("#"), sharpIndex);
+          });
           chordDataCopy = {
             ...chordDataCopy,
             keys: updatedKeys,
@@ -215,6 +219,13 @@ const ManageChords = () => {
         duration: chordDataCopy.duration,
       });
 
+      chordDataCopy.flatIndexArray.forEach((flatIndex) => {
+        newChord.addModifier(new Accidental("b"), flatIndex);
+      });
+      chordDataCopy.sharpIndexArray.forEach((sharpIndex) => {
+        newChord.addModifier(new Accidental("#"), sharpIndex);
+      });
+
       chordDataCopy = {
         ...chordDataCopy,
         keys: updatedKeys,
@@ -222,7 +233,6 @@ const ManageChords = () => {
         userClickY: userClickY,
       };
     }
-
     setChordData(() => chordDataCopy);
   };
 
