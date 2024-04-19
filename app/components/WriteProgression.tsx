@@ -1,6 +1,7 @@
 import Stack from "@mui/material/Stack";
 import { ForwardedRef, forwardRef, useState } from "react";
 import createInitialState from "../lib/createInitialState";
+import keyNames from "../lib/data/keyNamesText";
 import {
   ChangeEvent,
   Chord,
@@ -69,6 +70,17 @@ export default forwardRef(function WriteProgression(
       ));
   };
 
+  const renderKeyNames1 = (
+    start: number | undefined,
+    end: number | undefined
+  ) => {
+    return keyNames.slice(start, end).map((key) => (
+      <span key={key} style={gridInputInline2}>
+        {key}
+      </span>
+    ));
+  };
+
   return (
     <div>
       <form
@@ -83,9 +95,7 @@ export default forwardRef(function WriteProgression(
             marginLeft="100px"
             gap={4}
           >
-            <span style={gridInputInline2}>C major</span>
-            <span style={gridInputInline2}>E minor</span>
-            <span style={gridInputInline2}>Db major</span>
+            {renderKeyNames1(0, 3)}
           </Stack>
           <Staff numBars={6} noTimeSignature width={width} />
           <Stack
@@ -103,9 +113,7 @@ export default forwardRef(function WriteProgression(
             marginLeft="100px"
             gap={4}
           >
-            <span style={gridInputInline2}>C# minor</span>
-            <span style={gridInputInline2}>D# major</span>
-            <span style={gridInputInline2}>Gb minor</span>
+            {renderKeyNames1(3, 6)}
           </Stack>
           <Staff numBars={6} noTimeSignature width={width} addDoubleBarLine />
           <Stack

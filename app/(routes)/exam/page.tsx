@@ -7,12 +7,12 @@ import SeventhChordsNotate from "@/app/components/ExamQuestions/5SeventhChordsNo
 import ChordsIdentify from "@/app/components/ExamQuestions/6ChordsIdentify";
 import ProgressionsWrite from "@/app/components/ExamQuestions/7ProgressionsWrite";
 
+import { checkAnswers } from "@/app/lib/calculateAnswers";
 import {
   exampleCorrectKeySigAnswers,
-  exampleCorrectSeventhChordAnswers,
   exampleCorrectProgressionAnswers,
-} from "@/app/lib/answerKey";
-import { checkAnswers } from "@/app/lib/calculateAnswers";
+  exampleCorrectSeventhChordAnswers,
+} from "@/app/lib/data/answerKey";
 
 import { InputState, MouseEvent } from "@/app/lib/typesAndInterfaces";
 
