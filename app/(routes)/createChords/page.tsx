@@ -20,9 +20,11 @@ import getUserClickInfo from "../../lib/getUserClickInfo";
 import { chordInteractionInitialState } from "../../lib/initialStates";
 import { initializeRenderer } from "../../lib/initializeRenderer";
 import { notesArray } from "../../lib/noteArray";
-import { reducer } from "../../lib/reducer";
+import { chordReducer } from "../../lib/reducer";
 import { setupRendererAndDrawChords } from "@/app/lib/setUpRendererAndDrawChords";
 import { NoteStringData, StaveType, Chord } from "../../lib/typesAndInterfaces";
+import { handleChordInteraction } from "@/app/lib/handleChordInteraction";
+import { addAccidentalsToChord } from "@/app/lib/modifyChord";
 
 const { Renderer, StaveNote, Accidental } = VexFlow.Flow;
 
@@ -30,7 +32,10 @@ const ManageChords = () => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
   const [staves, setStaves] = useState<StaveType[]>([]);
-  const [state, dispatch] = useReducer(reducer, chordInteractionInitialState);
+  const [state, dispatch] = useReducer(
+    chordReducer,
+    chordInteractionInitialState
+  );
   const [barIndex, setBarIndex] = useState<number>(0);
   const [chordData, setChordData] = useState<Chord>({
     keys: [],
@@ -60,10 +65,10 @@ const ManageChords = () => {
       };
       return newState;
     });
-    renderStavesAndNotes();
+    renderStavesAndChords();
   };
 
-  const renderStavesAndNotes = useCallback(
+  const renderStavesAndChords = useCallback(
     (): void =>
       setupRendererAndDrawChords({
         rendererRef,
@@ -78,11 +83,11 @@ const ManageChords = () => {
 
   useEffect(() => {
     initializeRenderer(rendererRef, container);
-    renderStavesAndNotes();
+    renderStavesAndChords();
   }, []);
 
   useEffect(() => {
-    renderStavesAndNotes();
+    renderStavesAndChords();
   }, [chordData]);
 
   let updatedFoundNoteData: NoteStringData;
@@ -140,15 +145,7 @@ const ManageChords = () => {
           duration: chordData.duration,
         });
 
-        // Add all the sharps
-        chordDataCopy.sharpIndexArray.forEach((sharpIndex) => {
-          newChord.addModifier(new Accidental("#"), sharpIndex);
-        });
-
-        // Add all the flats
-        chordDataCopy.flatIndexArray.forEach((flatIndex) => {
-          newChord.addModifier(new Accidental("b"), flatIndex);
-        });
+        addAccidentalsToChord(chordDataCopy, newChord);
 
         chordDataCopy = {
           ...chordDataCopy,
@@ -177,12 +174,8 @@ const ManageChords = () => {
         duration: chordDataCopy.duration,
       });
 
-      chordDataCopy.flatIndexArray.forEach((flatIndex) => {
-        newChord.addModifier(new Accidental("b"), flatIndex);
-      });
-      chordDataCopy.sharpIndexArray.forEach((sharpIndex) => {
-        newChord.addModifier(new Accidental("#"), sharpIndex);
-      });
+      addAccidentalsToChord(chordDataCopy, newChord);
+
       chordDataCopy = {
         ...chordDataCopy,
         staveNotes: newChord,
@@ -196,12 +189,7 @@ const ManageChords = () => {
             keys: updatedKeys,
             duration: chordData.duration,
           });
-          chordDataCopy.flatIndexArray.forEach((flatIndex) => {
-            newChord.addModifier(new Accidental("b"), flatIndex);
-          });
-          chordDataCopy.sharpIndexArray.forEach((sharpIndex) => {
-            newChord.addModifier(new Accidental("#"), sharpIndex);
-          });
+          addAccidentalsToChord(chordDataCopy, newChord);
           chordDataCopy = {
             ...chordDataCopy,
             keys: updatedKeys,
@@ -219,12 +207,7 @@ const ManageChords = () => {
         duration: chordDataCopy.duration,
       });
 
-      chordDataCopy.flatIndexArray.forEach((flatIndex) => {
-        newChord.addModifier(new Accidental("b"), flatIndex);
-      });
-      chordDataCopy.sharpIndexArray.forEach((sharpIndex) => {
-        newChord.addModifier(new Accidental("#"), sharpIndex);
-      });
+      addAccidentalsToChord(chordDataCopy, newChord);
 
       chordDataCopy = {
         ...chordDataCopy,

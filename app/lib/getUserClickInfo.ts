@@ -7,7 +7,6 @@ export const getUserClickInfo = (
   stave: StaveType
 ): UserClickInfo => {
   const rect = container && container.current?.getBoundingClientRect();
-  console.log(rect)
   const userClickY = rect ? e.clientY - rect.top : 0;
   const userClickX = rect ? e.clientX - rect.left : 0;
   const topStaveYCoord = stave && stave.getYForTopText();
