@@ -1,8 +1,9 @@
 import { Chord, StaveNoteType } from "./typesAndInterfaces";
 import VexFlow from "vexflow";
-const { Accidental } = VexFlow.Flow;
+const { Accidental, StaveNote } = VexFlow.Flow;
+import { ChordInteractionState } from "./typesAndInterfaces";
 
-export const addAccidentalsToChord = (
+export const addAllAccidentalsToChord = (
   chordData: Chord,
   newChord: StaveNoteType
 ) => {

@@ -24,7 +24,7 @@ import { chordReducer } from "../../lib/reducer";
 import { setupRendererAndDrawChords } from "@/app/lib/setUpRendererAndDrawChords";
 import { NoteStringData, StaveType, Chord } from "../../lib/typesAndInterfaces";
 import { handleChordInteraction } from "@/app/lib/handleChordInteraction";
-import { addAccidentalsToChord } from "@/app/lib/modifyChord";
+import { addAllAccidentalsToChord } from "@/app/lib/modifyChord";
 
 const { Renderer, StaveNote, Accidental } = VexFlow.Flow;
 
@@ -119,33 +119,37 @@ const ManageChords = () => {
         userClickY: userClickY,
       };
 
-    const index: number = chordData.keys.findIndex(
+    const indexOfAccidental: number = chordData.keys.findIndex(
       (note) => note === updatedFoundNoteData?.note
     );
 
     if (!updatedFoundNoteData) {
       noNoteFound();
     } else if (state.isSharpActive || state.isFlatActive) {
-      if (index !== -1) {
-        if (state.isSharpActive) {
-          const newIndexArray = [...chordDataCopy.sharpIndexArray, index];
-          chordDataCopy = {
-            ...chordDataCopy,
-            sharpIndexArray: newIndexArray,
-          };
-        } else if (state.isFlatActive) {
-          const newIndexArray = [...chordDataCopy.flatIndexArray, index];
-          chordDataCopy = {
-            ...chordDataCopy,
-            flatIndexArray: newIndexArray,
-          };
+      if (indexOfAccidental !== -1) {
+        const addIndexToChordData = (
+          indexArrayName: "sharpIndexArray" | "flatIndexArray"
+        ) => {
+          const newIndexArray = [
+            ...chordDataCopy[indexArrayName],
+            indexOfAccidental,
+          ];
+          chordDataCopy = { ...chordDataCopy, [indexArrayName]: newIndexArray };
+        };
+
+        if (indexOfAccidental !== -1) {
+          if (state.isSharpActive) {
+            addIndexToChordData("sharpIndexArray");
+          } else if (state.isFlatActive) {
+            addIndexToChordData("flatIndexArray");
+          }
         }
         const newChord = new StaveNote({
           keys: chordDataCopy.keys,
           duration: chordData.duration,
         });
 
-        addAccidentalsToChord(chordDataCopy, newChord);
+        addAllAccidentalsToChord(chordDataCopy, newChord);
 
         chordDataCopy = {
           ...chordDataCopy,
@@ -155,14 +159,14 @@ const ManageChords = () => {
     } else if (state.isEraseSharpActive || state.isEraseFlatActive) {
       if (state.isEraseSharpActive) {
         const updatedSharpIndexArray = [...chordDataCopy.sharpIndexArray];
-        updatedSharpIndexArray.splice(index, 1);
+        updatedSharpIndexArray.splice(indexOfAccidental, 1);
         chordDataCopy = {
           ...chordDataCopy,
           sharpIndexArray: updatedSharpIndexArray,
         };
       } else if (state.isEraseFlatActive) {
         const updatedFlatIndexArray = [...chordDataCopy.flatIndexArray];
-        updatedFlatIndexArray.splice(index, 1);
+        updatedFlatIndexArray.splice(indexOfAccidental, 1);
         chordDataCopy = {
           ...chordDataCopy,
           flatIndexArray: updatedFlatIndexArray,
@@ -174,7 +178,7 @@ const ManageChords = () => {
         duration: chordDataCopy.duration,
       });
 
-      addAccidentalsToChord(chordDataCopy, newChord);
+      addAllAccidentalsToChord(chordDataCopy, newChord);
 
       chordDataCopy = {
         ...chordDataCopy,
@@ -182,14 +186,16 @@ const ManageChords = () => {
       };
     } else if (state.isEraseNoteActive) {
       if (chordDataCopy.staveNotes) {
-        if (index !== -1) {
+        if (indexOfAccidental !== -1) {
           const updatedKeys = [...chordDataCopy.keys];
-          updatedKeys.splice(index, 1);
+          updatedKeys.splice(indexOfAccidental, 1);
           const newChord = new StaveNote({
             keys: updatedKeys,
             duration: chordData.duration,
           });
-          addAccidentalsToChord(chordDataCopy, newChord);
+
+          addAllAccidentalsToChord(chordDataCopy, newChord);
+
           chordDataCopy = {
             ...chordDataCopy,
             keys: updatedKeys,
@@ -207,7 +213,7 @@ const ManageChords = () => {
         duration: chordDataCopy.duration,
       });
 
-      addAccidentalsToChord(chordDataCopy, newChord);
+      addAllAccidentalsToChord(chordDataCopy, newChord);
 
       chordDataCopy = {
         ...chordDataCopy,
