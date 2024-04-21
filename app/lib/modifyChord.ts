@@ -7,15 +7,15 @@ export const addAllAccidentalsToChord = (
   chordData: Chord,
   newChord: StaveNoteType
 ) => {
-  // Add all the sharps
   chordData.sharpIndexArray.forEach((sharpIndex) => {
     newChord.addModifier(new Accidental("#"), sharpIndex);
   });
 
-  // Add all the flats
   chordData.flatIndexArray.forEach((flatIndex) => {
     newChord.addModifier(new Accidental("b"), flatIndex);
   });
+
+  chordData = { ...chordData };
 };
 
 export const addIndexToChordData = (
@@ -23,8 +23,23 @@ export const addIndexToChordData = (
   indexArrayName: "sharpIndexArray" | "flatIndexArray",
   chordData: Chord
 ) => {
-  const newIndexArray = [...chordData[indexArrayName], index];
-  chordData = { ...chordData, [indexArrayName]: newIndexArray };
+  if (index !== -1) {
+    const newIndexArray = [...chordData[indexArrayName], index];
+    return { ...chordData, [indexArrayName]: newIndexArray };
+  } else return chordData;
+};
 
-  return chordData;
+export const updatedChord = (chordData: Chord) => {
+  return new StaveNote({ keys: chordData.keys, duration: chordData.duration });
+};
+
+export const eraseAccidental = (
+  index: number,
+  indexArrayName: "sharpIndexArray" | "flatIndexArray",
+  chordData: Chord
+) => {
+  if (index !== -1) {
+    const newIndexArray = [...chordData[indexArrayName]].splice(index, 1);
+    return { ...chordData, [indexArrayName]: newIndexArray };
+  } else return chordData;
 };

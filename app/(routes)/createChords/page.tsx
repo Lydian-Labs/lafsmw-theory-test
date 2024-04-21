@@ -27,6 +27,8 @@ import { handleChordInteraction } from "@/app/lib/handleChordInteraction";
 import {
   addAllAccidentalsToChord,
   addIndexToChordData,
+  updatedChord,
+  eraseAccidental,
 } from "@/app/lib/modifyChord";
 
 const { Renderer, StaveNote } = VexFlow.Flow;
@@ -129,51 +131,41 @@ const ManageChords = () => {
     if (!updatedFoundNoteData) {
       noNoteFound();
     } else if (state.isSharpActive || state.isFlatActive) {
-      if (indexOfAccidental !== -1) {
-        chordDataCopy = state.isSharpActive
-          ? addIndexToChordData(
-              indexOfAccidental,
-              "sharpIndexArray",
-              chordDataCopy
-            )
-          : addIndexToChordData(
-              indexOfAccidental,
-              "flatIndexArray",
-              chordDataCopy
-            );
-        const newChord = new StaveNote({
-          keys: chordDataCopy.keys,
-          duration: chordDataCopy.duration,
-        });
+      chordDataCopy = state.isSharpActive
+        ? addIndexToChordData(
+            indexOfAccidental,
+            "sharpIndexArray",
+            chordDataCopy
+          )
+        : addIndexToChordData(
+            indexOfAccidental,
+            "flatIndexArray",
+            chordDataCopy
+          );
+      const newChord = updatedChord(chordDataCopy);
 
-        addAllAccidentalsToChord(chordDataCopy, newChord);
+      addAllAccidentalsToChord(chordDataCopy, newChord);
 
-        chordDataCopy = {
-          ...chordDataCopy,
-          staveNotes: newChord,
-        };
-      }
+      chordDataCopy = {
+        ...chordDataCopy,
+        staveNotes: newChord,
+      };
     } else if (state.isEraseSharpActive || state.isEraseFlatActive) {
       if (state.isEraseSharpActive) {
-        const updatedSharpIndexArray = [...chordDataCopy.sharpIndexArray];
-        updatedSharpIndexArray.splice(indexOfAccidental, 1);
-        chordDataCopy = {
-          ...chordDataCopy,
-          sharpIndexArray: updatedSharpIndexArray,
-        };
+        chordDataCopy = eraseAccidental(
+          indexOfAccidental,
+          "sharpIndexArray",
+          chordDataCopy
+        );
       } else if (state.isEraseFlatActive) {
-        const updatedFlatIndexArray = [...chordDataCopy.flatIndexArray];
-        updatedFlatIndexArray.splice(indexOfAccidental, 1);
-        chordDataCopy = {
-          ...chordDataCopy,
-          flatIndexArray: updatedFlatIndexArray,
-        };
+        chordDataCopy = eraseAccidental(
+          indexOfAccidental,
+          "flatIndexArray",
+          chordDataCopy
+        );
       }
 
-      const newChord = new StaveNote({
-        keys: chordDataCopy.keys,
-        duration: chordDataCopy.duration,
-      });
+      const newChord = updatedChord(chordDataCopy);
 
       addAllAccidentalsToChord(chordDataCopy, newChord);
 
@@ -186,6 +178,7 @@ const ManageChords = () => {
         if (indexOfAccidental !== -1) {
           const updatedKeys = [...chordDataCopy.keys];
           updatedKeys.splice(indexOfAccidental, 1);
+
           const newChord = new StaveNote({
             keys: updatedKeys,
             duration: chordData.duration,
