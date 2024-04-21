@@ -24,9 +24,12 @@ import { chordReducer } from "../../lib/reducer";
 import { setupRendererAndDrawChords } from "@/app/lib/setUpRendererAndDrawChords";
 import { NoteStringData, StaveType, Chord } from "../../lib/typesAndInterfaces";
 import { handleChordInteraction } from "@/app/lib/handleChordInteraction";
-import { addAllAccidentalsToChord } from "@/app/lib/modifyChord";
+import {
+  addAllAccidentalsToChord,
+  addIndexToChordData,
+} from "@/app/lib/modifyChord";
 
-const { Renderer, StaveNote, Accidental } = VexFlow.Flow;
+const { Renderer, StaveNote } = VexFlow.Flow;
 
 const ManageChords = () => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
@@ -127,26 +130,20 @@ const ManageChords = () => {
       noNoteFound();
     } else if (state.isSharpActive || state.isFlatActive) {
       if (indexOfAccidental !== -1) {
-        const addIndexToChordData = (
-          indexArrayName: "sharpIndexArray" | "flatIndexArray"
-        ) => {
-          const newIndexArray = [
-            ...chordDataCopy[indexArrayName],
-            indexOfAccidental,
-          ];
-          chordDataCopy = { ...chordDataCopy, [indexArrayName]: newIndexArray };
-        };
-
-        if (indexOfAccidental !== -1) {
-          if (state.isSharpActive) {
-            addIndexToChordData("sharpIndexArray");
-          } else if (state.isFlatActive) {
-            addIndexToChordData("flatIndexArray");
-          }
-        }
+        chordDataCopy = state.isSharpActive
+          ? addIndexToChordData(
+              indexOfAccidental,
+              "sharpIndexArray",
+              chordDataCopy
+            )
+          : addIndexToChordData(
+              indexOfAccidental,
+              "flatIndexArray",
+              chordDataCopy
+            );
         const newChord = new StaveNote({
           keys: chordDataCopy.keys,
-          duration: chordData.duration,
+          duration: chordDataCopy.duration,
         });
 
         addAllAccidentalsToChord(chordDataCopy, newChord);

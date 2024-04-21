@@ -42,11 +42,7 @@ export const setupRendererAndDrawChords = (
       })
     );
   }
-  if (!renderer || chordData.keys.length === 0) return;
-  else {
-    if (context && chordData.staveNotes)
-      Formatter.FormatAndDraw(context, staves[barIndex], [
-        chordData.staveNotes,
-      ]);
-  }
+  if (!renderer || chordData.keys.length === 0 || !chordData.staveNotes) return;
+  context &&
+    Formatter.FormatAndDraw(context, staves[barIndex], [chordData.staveNotes]);
 };

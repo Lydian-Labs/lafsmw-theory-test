@@ -17,3 +17,14 @@ export const addAllAccidentalsToChord = (
     newChord.addModifier(new Accidental("b"), flatIndex);
   });
 };
+
+export const addIndexToChordData = (
+  index: number,
+  indexArrayName: "sharpIndexArray" | "flatIndexArray",
+  chordData: Chord
+) => {
+  const newIndexArray = [...chordData[indexArrayName], index];
+  chordData = { ...chordData, [indexArrayName]: newIndexArray };
+
+  return chordData;
+};
