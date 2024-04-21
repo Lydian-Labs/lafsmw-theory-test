@@ -29,8 +29,11 @@ export const addIndexToChordData = (
   } else return chordData;
 };
 
-export const updatedChord = (chordData: Chord) => {
-  return new StaveNote({ keys: chordData.keys, duration: chordData.duration });
+export const updatedChord = (chordData: Chord, updatedKeys?: string[]) => {
+  return new StaveNote({
+    keys: updatedKeys ? updatedKeys : chordData.keys,
+    duration: chordData.duration,
+  });
 };
 
 export const eraseAccidental = (
@@ -41,5 +44,27 @@ export const eraseAccidental = (
   if (index !== -1) {
     const newIndexArray = [...chordData[indexArrayName]].splice(index, 1);
     return { ...chordData, [indexArrayName]: newIndexArray };
+  } else return chordData;
+};
+
+export const eraseNoteFromChord = (index: number, chordData: Chord) => {
+  if (chordData.staveNotes) {
+    if (index !== -1) {
+      const updatedKeys = [...chordData.keys];
+      updatedKeys.splice(index, 1);
+
+      const newChord = new StaveNote({
+        keys: updatedKeys,
+        duration: chordData.duration,
+      });
+
+      addAllAccidentalsToChord(chordData, newChord);
+
+      return {
+        ...chordData,
+        keys: updatedKeys,
+        staveNotes: newChord,
+      };
+    } else return chordData;
   } else return chordData;
 };
