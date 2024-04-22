@@ -9,25 +9,25 @@ import { auth } from "./config";
 export async function signUp(email, password, displayName) {
   try {
     await createUserWithEmailAndPassword(auth, email, password).catch((err) =>
-      console.log("createUserWithEmailAndPassword error:", err)
+      console.error("createUserWithEmailAndPassword error:", err)
     );
     await updateProfile(auth.currentUser, { displayName: displayName }).catch(
-      (err) => console.log("updateProfile error:", err)
+      (err) => console.error("updateProfile error:", err)
     );
     console.log("Sign in successfull! CurrentUser:", auth.currentUser);
   } catch (err) {
-    console.log("signUp error:", err);
+    console.error("signUp error:", err);
   }
 }
 
 export async function signIn(email, password) {
   try {
     await signInWithEmailAndPassword(auth, email, password).catch((err) => {
-      console.log("signInWithEmailAndPassword error:", err);
+      console.error("signInWithEmailAndPassword error:", err);
     });
     console.log("Sign in successfull! CurrentUser:", auth.currentUser);
   } catch (err) {
-    console.log("signIn error:", err);
+    console.error("signIn error:", err);
   }
 }
 

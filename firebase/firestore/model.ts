@@ -15,14 +15,12 @@ import { InputState } from "@/app/lib/typesAndInterfaces";
 export async function getUserSnapshot() {
   // only need to retrieve displayName when fetching data
   const currentUser = auth.currentUser?.displayName;
-  console.log("auth.currentUser:", auth.currentUser);
   try {
     if (!currentUser) {
       throw new Error("No current user found.");
     }
     const q = query(collection(db, currentUser));
     const querySnapshot = await getDocs(q);
-    console.log("querySnapshot in getUserSnapshot:", querySnapshot);
 
     const res = querySnapshot.docs.map((doc) => ({
       id: doc.id,
@@ -80,7 +78,6 @@ export async function setOrUpdateStudentData(
   try {
     const docRef = doc(db, `${currentUser}`, `${currentUserID}`);
     const docSnap = await getDoc(docRef);
-    // console.log("docSnap.exists(): ", docSnap.exists());
 
     if (docSnap.exists()) {
       await updateStudentData(formInput, currentUser);
