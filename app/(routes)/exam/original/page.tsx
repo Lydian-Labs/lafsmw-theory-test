@@ -188,10 +188,9 @@ export default function ExamOriginal() {
         <Grid item xs={12}>
           <div>
             <h2 className="ml-4 mt-4">
-              Write a I-IV-V progression in the following keys:
+              Write a ii-V-I progression in the following keys:
             </h2>
             <WriteProgression
-              numBars={12}
               handleProg={handleProg}
               ref={progressionFormRef}
               width={width}
