@@ -3,6 +3,22 @@ import VexFlow from "vexflow";
 const { Accidental, StaveNote } = VexFlow.Flow;
 import { ChordInteractionState } from "./typesAndInterfaces";
 
+export const updatedChord = (chordData: Chord, updatedKeys?: string[]) => {
+  return new StaveNote({
+    keys: updatedKeys ? updatedKeys : chordData.keys,
+    duration: chordData.duration,
+  });
+};
+
+export const addIndexToChordData = (
+  index: number,
+  indexArrayName: "sharpIndexArray" | "flatIndexArray",
+  chordData: Chord
+) => {
+  const newIndexArray = [...chordData[indexArrayName], index];
+  return { ...chordData, [indexArrayName]: newIndexArray };
+};
+
 export const addAllAccidentalsToChord = (
   chordData: Chord,
   newChord: StaveNoteType
@@ -14,26 +30,16 @@ export const addAllAccidentalsToChord = (
   chordData.flatIndexArray.forEach((flatIndex) => {
     newChord.addModifier(new Accidental("b"), flatIndex);
   });
-
-  chordData = { ...chordData };
+  return newChord;
 };
 
-export const addIndexToChordData = (
-  index: number,
-  indexArrayName: "sharpIndexArray" | "flatIndexArray",
-  chordData: Chord
+export const redrawUpdatedChord = (
+  chordData: Chord,
+  updatedKeys?: string[]
 ) => {
-  if (index !== -1) {
-    const newIndexArray = [...chordData[indexArrayName], index];
-    return { ...chordData, [indexArrayName]: newIndexArray };
-  } else return chordData;
-};
-
-export const updatedChord = (chordData: Chord, updatedKeys?: string[]) => {
-  return new StaveNote({
-    keys: updatedKeys ? updatedKeys : chordData.keys,
-    duration: chordData.duration,
-  });
+  const newChord = updatedChord(chordData, updatedKeys || chordData.keys);
+  addAllAccidentalsToChord(chordData, newChord);
+  return { ...chordData, staveNotes: newChord };
 };
 
 export const eraseAccidental = (
@@ -41,9 +47,12 @@ export const eraseAccidental = (
   indexArrayName: "sharpIndexArray" | "flatIndexArray",
   chordData: Chord
 ) => {
-  if (index !== -1) {
-    const newIndexArray = [...chordData[indexArrayName]].splice(index, 1);
-    return { ...chordData, [indexArrayName]: newIndexArray };
+  if (index === -1) return;
+  if (chordData[indexArrayName].length > 0) {
+    const updatedIndexArray = [...chordData[indexArrayName]];
+    updatedIndexArray.splice(index, 1);
+
+    return { ...chordData, [indexArrayName]: updatedIndexArray };
   } else return chordData;
 };
 
@@ -53,10 +62,7 @@ export const eraseNoteFromChord = (index: number, chordData: Chord) => {
       const updatedKeys = [...chordData.keys];
       updatedKeys.splice(index, 1);
 
-      const newChord = new StaveNote({
-        keys: updatedKeys,
-        duration: chordData.duration,
-      });
+      const newChord = updatedChord(chordData, updatedKeys);
 
       addAllAccidentalsToChord(chordData, newChord);
 

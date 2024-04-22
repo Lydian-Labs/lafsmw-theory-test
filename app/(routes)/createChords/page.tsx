@@ -20,27 +20,17 @@ import getUserClickInfo from "../../lib/getUserClickInfo";
 import { chordInteractionInitialState } from "../../lib/initialStates";
 import { initializeRenderer } from "../../lib/initializeRenderer";
 import { notesArray } from "../../lib/noteArray";
-import { chordReducer } from "../../lib/reducer";
+import { reducer } from "../../lib/reducer";
 import { setupRendererAndDrawChords } from "@/app/lib/setUpRendererAndDrawChords";
 import { NoteStringData, StaveType, Chord } from "../../lib/typesAndInterfaces";
-import { handleChordInteraction } from "@/app/lib/handleChordInteraction";
-import {
-  addAllAccidentalsToChord,
-  addIndexToChordData,
-  updatedChord,
-  eraseAccidental,
-} from "@/app/lib/modifyChord";
 
-const { Renderer, StaveNote } = VexFlow.Flow;
+const { Renderer, StaveNote, Accidental } = VexFlow.Flow;
 
 const ManageChords = () => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
   const [staves, setStaves] = useState<StaveType[]>([]);
-  const [state, dispatch] = useReducer(
-    chordReducer,
-    chordInteractionInitialState
-  );
+  const [state, dispatch] = useReducer(reducer, chordInteractionInitialState);
   const [barIndex, setBarIndex] = useState<number>(0);
   const [chordData, setChordData] = useState<Chord>({
     keys: [],
@@ -70,10 +60,10 @@ const ManageChords = () => {
       };
       return newState;
     });
-    renderStavesAndChords();
+    renderStavesAndNotes();
   };
 
-  const renderStavesAndChords = useCallback(
+  const renderStavesAndNotes = useCallback(
     (): void =>
       setupRendererAndDrawChords({
         rendererRef,
@@ -88,11 +78,11 @@ const ManageChords = () => {
 
   useEffect(() => {
     initializeRenderer(rendererRef, container);
-    renderStavesAndChords();
+    renderStavesAndNotes();
   }, []);
 
   useEffect(() => {
-    renderStavesAndChords();
+    renderStavesAndNotes();
   }, [chordData]);
 
   let updatedFoundNoteData: NoteStringData;
@@ -124,67 +114,94 @@ const ManageChords = () => {
         userClickY: userClickY,
       };
 
-    const indexOfAccidental: number = chordData.keys.findIndex(
+    const index: number = chordData.keys.findIndex(
       (note) => note === updatedFoundNoteData?.note
     );
 
     if (!updatedFoundNoteData) {
       noNoteFound();
     } else if (state.isSharpActive || state.isFlatActive) {
-      chordDataCopy = state.isSharpActive
-        ? addIndexToChordData(
-            indexOfAccidental,
-            "sharpIndexArray",
-            chordDataCopy
-          )
-        : addIndexToChordData(
-            indexOfAccidental,
-            "flatIndexArray",
-            chordDataCopy
-          );
-      const newChord = updatedChord(chordDataCopy);
+      if (index !== -1) {
+        if (state.isSharpActive) {
+          const newIndexArray = [...chordDataCopy.sharpIndexArray, index];
+          chordDataCopy = {
+            ...chordDataCopy,
+            sharpIndexArray: newIndexArray,
+          };
+        } else if (state.isFlatActive) {
+          const newIndexArray = [...chordDataCopy.flatIndexArray, index];
+          chordDataCopy = {
+            ...chordDataCopy,
+            flatIndexArray: newIndexArray,
+          };
+        }
+        const newChord = new StaveNote({
+          keys: chordDataCopy.keys,
+          duration: chordData.duration,
+        });
 
-      addAllAccidentalsToChord(chordDataCopy, newChord);
+        // Add all the sharps
+        chordDataCopy.sharpIndexArray.forEach((sharpIndex) => {
+          newChord.addModifier(new Accidental("#"), sharpIndex);
+        });
 
-      chordDataCopy = {
-        ...chordDataCopy,
-        staveNotes: newChord,
-      };
+        // Add all the flats
+        chordDataCopy.flatIndexArray.forEach((flatIndex) => {
+          newChord.addModifier(new Accidental("b"), flatIndex);
+        });
+
+        chordDataCopy = {
+          ...chordDataCopy,
+          staveNotes: newChord,
+        };
+      }
     } else if (state.isEraseSharpActive || state.isEraseFlatActive) {
       if (state.isEraseSharpActive) {
         const updatedSharpIndexArray = [...chordDataCopy.sharpIndexArray];
-        updatedSharpIndexArray.splice(indexOfAccidental, 1);
+        updatedSharpIndexArray.splice(index, 1);
         chordDataCopy = {
           ...chordDataCopy,
           sharpIndexArray: updatedSharpIndexArray,
         };
       } else if (state.isEraseFlatActive) {
         const updatedFlatIndexArray = [...chordDataCopy.flatIndexArray];
-        updatedFlatIndexArray.splice(indexOfAccidental, 1);
+        updatedFlatIndexArray.splice(index, 1);
         chordDataCopy = {
           ...chordDataCopy,
           flatIndexArray: updatedFlatIndexArray,
         };
       }
 
-      const newChord = updatedChord(chordDataCopy);
+      const newChord = new StaveNote({
+        keys: chordDataCopy.keys,
+        duration: chordDataCopy.duration,
+      });
 
-      addAllAccidentalsToChord(chordDataCopy, newChord);
-
+      chordDataCopy.flatIndexArray.forEach((flatIndex) => {
+        newChord.addModifier(new Accidental("b"), flatIndex);
+      });
+      chordDataCopy.sharpIndexArray.forEach((sharpIndex) => {
+        newChord.addModifier(new Accidental("#"), sharpIndex);
+      });
       chordDataCopy = {
         ...chordDataCopy,
         staveNotes: newChord,
       };
     } else if (state.isEraseNoteActive) {
       if (chordDataCopy.staveNotes) {
-        if (indexOfAccidental !== -1) {
+        if (index !== -1) {
           const updatedKeys = [...chordDataCopy.keys];
-          updatedKeys.splice(indexOfAccidental, 1);
-
-          const newChord = updatedChord(chordDataCopy, updatedKeys);
-
-          addAllAccidentalsToChord(chordDataCopy, newChord);
-
+          updatedKeys.splice(index, 1);
+          const newChord = new StaveNote({
+            keys: updatedKeys,
+            duration: chordData.duration,
+          });
+          chordDataCopy.flatIndexArray.forEach((flatIndex) => {
+            newChord.addModifier(new Accidental("b"), flatIndex);
+          });
+          chordDataCopy.sharpIndexArray.forEach((sharpIndex) => {
+            newChord.addModifier(new Accidental("#"), sharpIndex);
+          });
           chordDataCopy = {
             ...chordDataCopy,
             keys: updatedKeys,
@@ -197,9 +214,17 @@ const ManageChords = () => {
 
       const updatedKeys = [...chordDataCopy.keys, updatedFoundNoteData.note];
 
-      const newChord = updatedChord(chordDataCopy, updatedKeys);
+      const newChord = new StaveNote({
+        keys: updatedKeys,
+        duration: chordDataCopy.duration,
+      });
 
-      addAllAccidentalsToChord(chordDataCopy, newChord);
+      chordDataCopy.flatIndexArray.forEach((flatIndex) => {
+        newChord.addModifier(new Accidental("b"), flatIndex);
+      });
+      chordDataCopy.sharpIndexArray.forEach((sharpIndex) => {
+        newChord.addModifier(new Accidental("#"), sharpIndex);
+      });
 
       chordDataCopy = {
         ...chordDataCopy,
