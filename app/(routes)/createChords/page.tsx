@@ -30,6 +30,7 @@ import {
   updatedChord,
   eraseAccidental,
   redrawUpdatedChord,
+  eraseNoteFromChord,
 } from "@/app/lib/modifyChord";
 
 const { Renderer, StaveNote } = VexFlow.Flow;
@@ -144,58 +145,19 @@ const ManageChords = () => {
               "flatIndexArray",
               chordDataCopy
             );
-        const newChord = updatedChord(chordDataCopy);
-
-        addAllAccidentalsToChord(chordDataCopy, newChord);
-
-        chordDataCopy = {
-          ...chordDataCopy,
-          staveNotes: newChord,
-        };
+        chordDataCopy = redrawUpdatedChord(chordDataCopy);
       }
-    } else if (state.isEraseSharpActive || state.isEraseFlatActive) {
+    } else if (state.isEraseFlatActive || state.isEraseSharpActive) {
       if (foundNoteIndex !== -1) {
-        if (state.isEraseSharpActive) {
-          const updatedSharpIndexArray = [...chordDataCopy.sharpIndexArray];
-          updatedSharpIndexArray.splice(foundNoteIndex, 1);
-          chordDataCopy = {
-            ...chordDataCopy,
-            sharpIndexArray: updatedSharpIndexArray,
-          };
-        } else if (state.isEraseFlatActive) {
-          const updatedFlatIndexArray = [...chordDataCopy.flatIndexArray];
-          updatedFlatIndexArray.splice(foundNoteIndex, 1);
-          chordDataCopy = {
-            ...chordDataCopy,
-            flatIndexArray: updatedFlatIndexArray,
-          };
-        }
-
-        const newChord = updatedChord(chordDataCopy);
-
-        addAllAccidentalsToChord(chordDataCopy, newChord);
-
-        chordDataCopy = {
-          ...chordDataCopy,
-          staveNotes: newChord,
-        };
+        chordDataCopy = state.isEraseSharpActive
+          ? eraseAccidental(foundNoteIndex, "sharpIndexArray", chordDataCopy)
+          : eraseAccidental(foundNoteIndex, "flatIndexArray", chordDataCopy);
+        chordDataCopy = redrawUpdatedChord(chordDataCopy);
       }
     } else if (state.isEraseNoteActive) {
-      if (chordDataCopy.staveNotes) {
-        if (foundNoteIndex !== -1) {
-          const updatedKeys = [...chordDataCopy.keys];
-          updatedKeys.splice(foundNoteIndex, 1);
-
-          const newChord = updatedChord(chordDataCopy, updatedKeys);
-
-          addAllAccidentalsToChord(chordDataCopy, newChord);
-
-          chordDataCopy = {
-            ...chordDataCopy,
-            keys: updatedKeys,
-            staveNotes: newChord,
-          };
-        }
+      if (foundNoteIndex !== -1) {
+        chordDataCopy = eraseNoteFromChord(foundNoteIndex, chordDataCopy);
+        chordDataCopy = redrawUpdatedChord(chordDataCopy);
       }
     } else {
       if (chordData.keys.length >= 4) return;

@@ -23,14 +23,17 @@ export const addAllAccidentalsToChord = (
   chordData: Chord,
   newChord: StaveNoteType
 ) => {
-  chordData.sharpIndexArray.forEach((sharpIndex) => {
-    newChord.addModifier(new Accidental("#"), sharpIndex);
-  });
+  if (chordData.sharpIndexArray.length > 0) {
+    chordData.sharpIndexArray.forEach((sharpIndex) => {
+      newChord.addModifier(new Accidental("#"), sharpIndex);
+    });
+  }
 
-  chordData.flatIndexArray.forEach((flatIndex) => {
-    newChord.addModifier(new Accidental("b"), flatIndex);
-  });
-  return newChord;
+  if (chordData.flatIndexArray.length > 0) {
+    chordData.flatIndexArray.forEach((flatIndex) => {
+      newChord.addModifier(new Accidental("b"), flatIndex);
+    });
+  }
 };
 
 export const redrawUpdatedChord = (
@@ -47,30 +50,42 @@ export const eraseAccidental = (
   indexArrayName: "sharpIndexArray" | "flatIndexArray",
   chordData: Chord
 ) => {
-  if (index === -1) return;
   if (chordData[indexArrayName].length > 0) {
     const updatedIndexArray = [...chordData[indexArrayName]];
-    updatedIndexArray.splice(index, 1);
+
+    const accidentalIndex = updatedIndexArray.findIndex(
+      (indexOfNote) => indexOfNote === index
+    );
+    updatedIndexArray.splice(accidentalIndex, 1);
 
     return { ...chordData, [indexArrayName]: updatedIndexArray };
   } else return chordData;
 };
 
 export const eraseNoteFromChord = (index: number, chordData: Chord) => {
-  if (chordData.staveNotes) {
-    if (index !== -1) {
-      const updatedKeys = [...chordData.keys];
-      updatedKeys.splice(index, 1);
+  if (chordData.keys.length > 0) {
+    const updatedKeys = [...chordData.keys];
+    updatedKeys.splice(index, 1);
 
-      const newChord = updatedChord(chordData, updatedKeys);
-
-      addAllAccidentalsToChord(chordData, newChord);
-
-      return {
-        ...chordData,
-        keys: updatedKeys,
-        staveNotes: newChord,
-      };
-    } else return chordData;
+    const updatedSharpIndexArray = [...chordData.sharpIndexArray];
+    const updatedFlatIndexArray = [...chordData.flatIndexArray];
+    if (chordData.sharpIndexArray.length > 0) {
+      const accidentalIndex = updatedSharpIndexArray.findIndex(
+        (sharpIndex) => sharpIndex === index
+      );
+      updatedSharpIndexArray.splice(accidentalIndex, 1);
+    }
+    if (chordData.flatIndexArray.length > 0) {
+      const accidentalIndex = updatedFlatIndexArray.findIndex(
+        (flatIndex) => flatIndex === index
+      );
+      updatedFlatIndexArray.splice(accidentalIndex, 1);
+    }
+    return {
+      ...chordData,
+      keys: updatedKeys,
+      sharpIndexArray: updatedSharpIndexArray,
+      flatIndexArray: updatedFlatIndexArray,
+    };
   } else return chordData;
 };
