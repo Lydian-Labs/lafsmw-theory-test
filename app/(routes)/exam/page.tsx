@@ -1,11 +1,11 @@
 "use client";
-import KeySigNotate from "@/app/components/ExamQuestions/1KeySigNotate";
-import KeySigIdentify from "@/app/components/ExamQuestions/2KeySigIdentify";
-import ScalesNotate from "@/app/components/ExamQuestions/3ScalesNotate";
-import TriadsNotate from "@/app/components/ExamQuestions/4TriadsNotate";
-import SeventhChordsNotate from "@/app/components/ExamQuestions/5SeventhChordsNotate";
-import ChordsIdentify from "@/app/components/ExamQuestions/6ChordsIdentify";
-import ProgressionsWrite from "@/app/components/ExamQuestions/7ProgressionsWrite";
+import KeySigNotate from "@/app/components/ExamPages/1_KeySigNotate";
+import KeySigIdentify from "@/app/components/ExamPages/2_KeySigIdentify";
+import ScalesNotate from "@/app/components/ExamPages/3_ScalesNotate";
+import TriadsNotate from "@/app/components/ExamPages/4_TriadsNotate";
+import SeventhChordsNotate from "@/app/components/ExamPages/5_SeventhChordsNotate";
+import ChordsIdentify from "@/app/components/ExamPages/6_ChordsIdentify";
+import ProgressionsWrite from "@/app/components/ExamPages/7_WriteProgressions";
 
 import { checkAnswers } from "@/app/lib/calculateAnswers";
 import {

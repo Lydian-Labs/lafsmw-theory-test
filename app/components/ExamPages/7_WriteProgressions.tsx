@@ -5,7 +5,7 @@ import { useRef } from "react";
 import CardFooter from "../CardFooter";
 import WriteProgression from "../WriteProgression";
 
-export default function ProgressionsWrite({
+export default function WriteProgressions({
   currentUserData,
   setCurrentUserData,
 }: UserDataProps) {
@@ -50,7 +50,7 @@ export default function ProgressionsWrite({
             >
               <Grid item>
                 <Typography variant="h6" marginBottom={2}>
-                  Write ii-V-I Progressions in the following keys:
+                  Write II-V-I Progressions in the following keys:
                 </Typography>
               </Grid>
               <Grid item>
@@ -64,7 +64,7 @@ export default function ProgressionsWrite({
             <CardFooter
               width={900}
               height={100}
-              pageNumber={6}
+              pageNumber={7}
               handleSubmit={() => {
                 progressionsWriteFormRef.current?.requestSubmit();
               }}
