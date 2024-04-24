@@ -69,17 +69,20 @@ export const eraseNoteFromChord = (index: number, chordData: Chord) => {
 
     const updatedSharpIndexArray = [...chordData.sharpIndexArray];
     const updatedFlatIndexArray = [...chordData.flatIndexArray];
+
     if (chordData.sharpIndexArray.length > 0) {
       const accidentalIndex = updatedSharpIndexArray.findIndex(
         (sharpIndex) => sharpIndex === index
       );
-      updatedSharpIndexArray.splice(accidentalIndex, 1);
+      if (accidentalIndex !== -1)
+        updatedSharpIndexArray.splice(accidentalIndex, 1);
     }
     if (chordData.flatIndexArray.length > 0) {
       const accidentalIndex = updatedFlatIndexArray.findIndex(
         (flatIndex) => flatIndex === index
       );
-      updatedFlatIndexArray.splice(accidentalIndex, 1);
+      if (accidentalIndex !== -1)
+        updatedFlatIndexArray.splice(accidentalIndex, 1);
     }
     return {
       ...chordData,
