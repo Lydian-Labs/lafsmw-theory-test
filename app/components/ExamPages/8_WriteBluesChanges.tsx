@@ -21,7 +21,7 @@ export default function WriteBluesChanges({
       <Box
         component="main"
         width={1250}
-        height={800}
+        height={850}
         bgcolor={"secondary.main"}
         borderRadius="var(--borderRadius)"
         p={2}
@@ -33,7 +33,7 @@ export default function WriteBluesChanges({
           </Typography>
           <Box
             width={1100}
-            height={680}
+            height={720}
             bgcolor={"card.background"}
             borderRadius="var(--borderRadius)"
             margin={"auto"}
@@ -49,7 +49,7 @@ export default function WriteBluesChanges({
               spacing={2}
             >
               <Grid item>
-                <Typography variant="subtitle1" marginBottom={2}>
+                <Typography variant="subtitle1">
                   Write the changes to a Bb blues using ii-V7-I in the last 4
                   measures (extra credit for hip reharms in the first 8
                   measures):
@@ -62,6 +62,11 @@ export default function WriteBluesChanges({
                   width={950}
                 />
               </Grid>
+
+              <Typography marginTop={4} align="left">
+                *Note: this is a creative exercise. You do not have to fill out
+                a chord for every beat.
+              </Typography>
             </Grid>
             <CardFooter
               width={900}

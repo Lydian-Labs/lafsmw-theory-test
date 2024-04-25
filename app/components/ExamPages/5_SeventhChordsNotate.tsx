@@ -21,7 +21,7 @@ export default function NotateSeventhChords({
   setCurrentUserData,
   nextViewState,
 }: UserDataProps) {
-  const [chordNotation, setChordNotation] = useState({
+  const [seventhChordNotation, setseventhChordNotation] = useState({
     input1: "",
     input2: "",
     input3: "",
@@ -34,7 +34,7 @@ export default function NotateSeventhChords({
     e.preventDefault();
     const payload = {
       ...currentUserData,
-      chordNotation: chordNotation,
+      seventhChordNotation: seventhChordNotation,
     };
     setCurrentUserData(payload);
     nextViewState();
@@ -111,7 +111,7 @@ export default function NotateSeventhChords({
                   <NotateScale />
                 </Grid>
               </Grid>
-              <CardFooter pageNumber={5} />
+              <CardFooter pageNumber={5} handleSubmit={handleSubmit} />
             </Box>
           </Grid>
         </Grid>

@@ -33,7 +33,7 @@ export default function CardFooter({
           <Typography
             variant="body2"
             fontWeight="600"
-          >{`Page: ${pageNumber}/25`}</Typography>
+          >{`Page: ${pageNumber}/8`}</Typography>
           <ProgressBar value={Number(pageNumber)} />
         </Stack>
         <Button

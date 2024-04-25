@@ -172,7 +172,7 @@ export default function ExamHomePage() {
           viewState !== VIEW_STATES.SUBMIT_AND_EXIT && (
             <Box>
               <Button onClick={decrementViewState}>
-                <Typography>{"< Previous"}</Typography>
+                <Typography variant="h4">{"<"}</Typography>
               </Button>
             </Box>
           )}
@@ -250,13 +250,13 @@ export default function ExamHomePage() {
             </Stack>
           </main>
         )}
-        {viewState !== VIEW_STATES.SUBMIT_AND_EXIT && (
+        {/* {viewState !== VIEW_STATES.SUBMIT_AND_EXIT && (
           <Box>
             <Button onClick={incrementViewState}>
-              <Typography>{"Next >"}</Typography>
+              <Typography variant="h4">{">"}</Typography>
             </Button>
           </Box>
-        )}
+        )} */}
       </Stack>
     </Box>
   );

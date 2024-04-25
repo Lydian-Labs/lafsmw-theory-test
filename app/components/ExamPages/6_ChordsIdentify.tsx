@@ -29,7 +29,7 @@ export default function ChordsIdentification({
         boxShadow={"0px 4px 4px rgba(0, 0, 0, 0.25)"}
       >
         <Stack gap={2}>
-          <Typography variant="h5" marginLeft={8} marginY={2}>
+          <Typography variant="h6" marginLeft={8} marginY={2}>
             Section 6: Identify Chords
           </Typography>
           <Box

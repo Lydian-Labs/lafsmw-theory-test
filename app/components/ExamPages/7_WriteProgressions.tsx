@@ -28,7 +28,7 @@ export default function WriteProgressions({
         boxShadow={"0px 4px 4px rgba(0, 0, 0, 0.25)"}
       >
         <Stack gap={2}>
-          <Typography variant="h5" marginLeft={8} marginY={1}>
+          <Typography variant="h6" marginLeft={8} marginY={1}>
             Section 7: Write Progressions
           </Typography>
           <Box

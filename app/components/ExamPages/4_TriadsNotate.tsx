@@ -21,7 +21,7 @@ export default function TriadsNotation({
   setCurrentUserData,
   nextViewState,
 }: UserDataProps) {
-  const [chordNotation, setChordNotation] = useState({
+  const [triadNotation, setTriadNotation] = useState({
     input1: "",
     input2: "",
     input3: "",
@@ -34,7 +34,7 @@ export default function TriadsNotation({
     e.preventDefault();
     const payload = {
       ...currentUserData,
-      chordNotation: chordNotation,
+      triadNotation: triadNotation,
     };
     setCurrentUserData(payload);
     nextViewState();
@@ -111,7 +111,7 @@ export default function TriadsNotation({
                   <NotateScale />
                 </Grid>
               </Grid>
-              <CardFooter pageNumber={4} />
+              <CardFooter pageNumber={4} handleSubmit={handleSubmit} />
             </Box>
           </Grid>
         </Grid>
