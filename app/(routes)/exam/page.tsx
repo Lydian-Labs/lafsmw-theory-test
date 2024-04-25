@@ -151,6 +151,7 @@ export default function ExamHomePage() {
         throw new Error("No current user found.");
       }
       console.log("userAnswers:", userAnswers);
+      return router.push("/sign-out");
     } catch (error) {
       console.error("handleEndExam error:", error);
     }
@@ -170,7 +171,9 @@ export default function ExamHomePage() {
         {viewState !== VIEW_STATES.KEY_SIG_NOTATE &&
           viewState !== VIEW_STATES.SUBMIT_AND_EXIT && (
             <Box>
-              <Button onClick={decrementViewState}>{"< Previous"}</Button>
+              <Button onClick={decrementViewState}>
+                <Typography>{"< Previous"}</Typography>
+              </Button>
             </Box>
           )}
         {viewState === VIEW_STATES.KEY_SIG_NOTATE && (
@@ -230,23 +233,25 @@ export default function ExamHomePage() {
           />
         )}
         {viewState === VIEW_STATES.SUBMIT_AND_EXIT && (
-          <Container>
-            <Typography variant="h4" marginLeft={8}>
+          <main className="flex min-h-[500px] flex-col items-center justify-center mt-12 gap-20">
+            <Typography variant="h3" marginLeft={8}>
               Congratulations! You have completed the exam.
             </Typography>
-            <Stack
-              direction={"row"}
-              sx={{ display: "flex", justifyContent: "space-around" }}
-              p={4}
-            >
-              <Button onClick={handleFinalSubmit}>Submit Final Answers</Button>
-              <Button onClick={handleEndExam}>Send Results to Kyle</Button>
+            <Stack direction={"column"} gap={4} p={4}>
+              <Button onClick={handleFinalSubmit}>
+                <Typography>Submit Final Answers</Typography>
+              </Button>
+              <Button onClick={handleEndExam}>
+                <Typography>Send Results to Kyle</Typography>
+              </Button>
             </Stack>
-          </Container>
+          </main>
         )}
         {viewState !== VIEW_STATES.SUBMIT_AND_EXIT && (
           <Box>
-            <Button onClick={incrementViewState}>{"Next >"}</Button>
+            <Button onClick={incrementViewState}>
+              <Typography>{"Next >"}</Typography>
+            </Button>
           </Box>
         )}
       </Stack>
