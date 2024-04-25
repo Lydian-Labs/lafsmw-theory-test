@@ -5,15 +5,17 @@ import ScalesNotate from "@/app/components/ExamPages/3_ScalesNotate";
 import TriadsNotate from "@/app/components/ExamPages/4_TriadsNotate";
 import SeventhChordsNotate from "@/app/components/ExamPages/5_SeventhChordsNotate";
 import ChordsIdentify from "@/app/components/ExamPages/6_ChordsIdentify";
-import ProgressionsWrite from "@/app/components/ExamPages/7_WriteProgressions";
+import WriteProgressions from "@/app/components/ExamPages/7_WriteProgressions";
+import WriteBluesChanges from "@/app/components/ExamPages/8_WriteBluesChanges";
 
 import { checkAnswers } from "@/app/lib/calculateAnswers";
+import convertObjectToArray from "@/app/lib/convertObjectToArray";
 import {
   exampleCorrectKeySigAnswers,
   exampleCorrectProgressionAnswers,
   exampleCorrectSeventhChordAnswers,
 } from "@/app/lib/data/answerKey";
-
+import { initialFormInputState } from "@/app/lib/initialStates";
 import { InputState, MouseEvent } from "@/app/lib/typesAndInterfaces";
 
 import { useAuthContext } from "@/firebase/authContext";
@@ -22,9 +24,7 @@ import {
   setOrUpdateStudentData,
 } from "@/firebase/firestore/model";
 
-import convertObjectToArray from "@/app/lib/convertObjectToArray";
-import { initialFormInputState } from "@/app/lib/initialStates";
-import { Button, Stack } from "@mui/material";
+import { Box, Button, Stack, Container, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -47,7 +47,9 @@ export default function ExamHomePage() {
     TRIADS_NOTATE: 4,
     SEVENTH_CHORDS_NOTATE: 5,
     CHORDS_IDENTIFY: 6,
-    PROGRESSIONS_WRITE: 7,
+    WRITE_PROGRESSIONS: 7,
+    WRITE_BLUES_CHANGES: 8,
+    SUBMIT_AND_EXIT: 9,
   };
 
   const [viewState, setViewState] = useState(VIEW_STATES.KEY_SIG_NOTATE);
@@ -84,7 +86,7 @@ export default function ExamHomePage() {
 
   const incrementViewState = () => {
     setViewState((prevState) => {
-      if (prevState === VIEW_STATES.PROGRESSIONS_WRITE) {
+      if (prevState === VIEW_STATES.SUBMIT_AND_EXIT) {
         return VIEW_STATES.KEY_SIG_NOTATE;
       } else {
         return prevState + 1;
@@ -95,7 +97,7 @@ export default function ExamHomePage() {
   const decrementViewState = () => {
     setViewState((prevState) => {
       if (prevState === VIEW_STATES.KEY_SIG_NOTATE) {
-        return VIEW_STATES.PROGRESSIONS_WRITE;
+        return VIEW_STATES.SUBMIT_AND_EXIT;
       } else {
         return prevState - 1;
       }
@@ -155,59 +157,99 @@ export default function ExamHomePage() {
   };
 
   return (
-    <div>
-      {viewState === VIEW_STATES.KEY_SIG_NOTATE && (
-        <KeySigNotate
-          currentUserData={currentUserData}
-          setCurrentUserData={setCurrentUserData}
-        />
-      )}
-      {viewState === VIEW_STATES.KEY_SIG_IDENTIFY && (
-        <KeySigIdentify
-          currentUserData={currentUserData}
-          setCurrentUserData={setCurrentUserData}
-        />
-      )}
-      {viewState === VIEW_STATES.SCALES_NOTATE && (
-        <ScalesNotate
-          currentUserData={currentUserData}
-          setCurrentUserData={setCurrentUserData}
-        />
-      )}
-      {viewState === VIEW_STATES.TRIADS_NOTATE && (
-        <TriadsNotate
-          currentUserData={currentUserData}
-          setCurrentUserData={setCurrentUserData}
-        />
-      )}
-      {viewState === VIEW_STATES.SEVENTH_CHORDS_NOTATE && (
-        <SeventhChordsNotate
-          currentUserData={currentUserData}
-          setCurrentUserData={setCurrentUserData}
-        />
-      )}
-      {viewState === VIEW_STATES.CHORDS_IDENTIFY && (
-        <ChordsIdentify
-          currentUserData={currentUserData}
-          setCurrentUserData={setCurrentUserData}
-        />
-      )}
-      {viewState === VIEW_STATES.PROGRESSIONS_WRITE && (
-        <ProgressionsWrite
-          currentUserData={currentUserData}
-          setCurrentUserData={setCurrentUserData}
-        />
-      )}
+    <Box>
       <Stack
         direction={"row"}
-        sx={{ display: "flex", justifyContent: "space-around" }}
+        sx={{
+          display: "flex",
+          justifyContent: "space-around",
+          alignItems: "center",
+        }}
         p={4}
       >
-        <Button onClick={decrementViewState}>{"< Previous"}</Button>
-        <Button onClick={incrementViewState}>{"Next >"}</Button>
-        <Button onClick={handleFinalSubmit}>Submit to DB</Button>
-        <Button onClick={handleEndExam}>End Exam</Button>
+        {viewState !== VIEW_STATES.KEY_SIG_NOTATE &&
+          viewState !== VIEW_STATES.SUBMIT_AND_EXIT && (
+            <Box>
+              <Button onClick={decrementViewState}>{"< Previous"}</Button>
+            </Box>
+          )}
+        {viewState === VIEW_STATES.KEY_SIG_NOTATE && (
+          <KeySigNotate
+            currentUserData={currentUserData}
+            setCurrentUserData={setCurrentUserData}
+            nextViewState={incrementViewState}
+          />
+        )}
+        {viewState === VIEW_STATES.KEY_SIG_IDENTIFY && (
+          <KeySigIdentify
+            currentUserData={currentUserData}
+            setCurrentUserData={setCurrentUserData}
+            nextViewState={incrementViewState}
+          />
+        )}
+        {viewState === VIEW_STATES.SCALES_NOTATE && (
+          <ScalesNotate
+            currentUserData={currentUserData}
+            setCurrentUserData={setCurrentUserData}
+            nextViewState={incrementViewState}
+          />
+        )}
+        {viewState === VIEW_STATES.TRIADS_NOTATE && (
+          <TriadsNotate
+            currentUserData={currentUserData}
+            setCurrentUserData={setCurrentUserData}
+            nextViewState={incrementViewState}
+          />
+        )}
+        {viewState === VIEW_STATES.SEVENTH_CHORDS_NOTATE && (
+          <SeventhChordsNotate
+            currentUserData={currentUserData}
+            setCurrentUserData={setCurrentUserData}
+            nextViewState={incrementViewState}
+          />
+        )}
+        {viewState === VIEW_STATES.CHORDS_IDENTIFY && (
+          <ChordsIdentify
+            currentUserData={currentUserData}
+            setCurrentUserData={setCurrentUserData}
+            nextViewState={incrementViewState}
+          />
+        )}
+        {viewState === VIEW_STATES.WRITE_PROGRESSIONS && (
+          <WriteProgressions
+            currentUserData={currentUserData}
+            setCurrentUserData={setCurrentUserData}
+            nextViewState={incrementViewState}
+          />
+        )}
+        {viewState === VIEW_STATES.WRITE_BLUES_CHANGES && (
+          <WriteBluesChanges
+            currentUserData={currentUserData}
+            setCurrentUserData={setCurrentUserData}
+            nextViewState={incrementViewState}
+          />
+        )}
+        {viewState === VIEW_STATES.SUBMIT_AND_EXIT && (
+          <Container>
+            <Typography variant="h4" marginLeft={8}>
+              Congratulations! You have completed the exam.
+            </Typography>
+            <Stack
+              direction={"row"}
+              sx={{ display: "flex", justifyContent: "space-around" }}
+              p={4}
+            >
+              <Button onClick={handleFinalSubmit}>Submit Final Answers</Button>
+              <Button onClick={handleEndExam}>Send Results to Kyle</Button>
+            </Stack>
+          </Container>
+        )}
+        {viewState !== VIEW_STATES.SUBMIT_AND_EXIT && (
+          <Box>
+            <Button onClick={incrementViewState}>{"Next >"}</Button>
+          </Box>
+        )}
       </Stack>
-    </div>
+    </Box>
   );
 }

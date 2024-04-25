@@ -19,6 +19,7 @@ import IdentifyNotation from "../IdentifyNotation";
 export default function KeySignaturesIdentification({
   currentUserData,
   setCurrentUserData,
+  nextViewState,
 }: UserDataProps) {
   const keySigFormRef = useRef<HTMLFormElement | null>(null);
 
@@ -106,6 +107,7 @@ export default function KeySignaturesIdentification({
                 buttonForm="keySigs"
                 handleSubmit={() => {
                   keySigFormRef.current?.requestSubmit();
+                  nextViewState();
                 }}
               />
             </Box>

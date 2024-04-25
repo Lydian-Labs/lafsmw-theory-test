@@ -19,6 +19,7 @@ import CardFooter from "../CardFooter";
 export default function NotateSeventhChords({
   currentUserData,
   setCurrentUserData,
+  nextViewState,
 }: UserDataProps) {
   const [chordNotation, setChordNotation] = useState({
     input1: "",
@@ -36,6 +37,7 @@ export default function NotateSeventhChords({
       chordNotation: chordNotation,
     };
     setCurrentUserData(payload);
+    nextViewState();
   };
 
   return (

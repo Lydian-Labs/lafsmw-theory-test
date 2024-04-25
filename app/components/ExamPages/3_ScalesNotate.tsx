@@ -19,6 +19,7 @@ import CardFooter from "../CardFooter";
 export default function ScalesNotation({
   currentUserData,
   setCurrentUserData,
+  nextViewState,
 }: UserDataProps) {
   const [scales, setScales] = useState({
     input1: "",
@@ -36,6 +37,7 @@ export default function ScalesNotation({
       scales: scales,
     };
     setCurrentUserData(payload);
+    nextViewState();
   };
 
   return (

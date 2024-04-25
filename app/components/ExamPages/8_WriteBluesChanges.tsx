@@ -1,40 +1,39 @@
 "use client";
 import { InputData, UserDataProps } from "@/app/lib/typesAndInterfaces";
-import { Box, Container, Grid, Stack, Typography } from "@mui/material";
+import { Box, Grid, Stack, Typography } from "@mui/material";
 import { useRef } from "react";
-import seventhChords from "../../lib/data/seventhChords";
 import CardFooter from "../CardFooter";
-import IdentifyNotation from "../IdentifyNotation";
+import WriteBlues from "../WriteBlues";
 
-export default function ChordsIdentification({
+export default function WriteBluesChanges({
   currentUserData,
   setCurrentUserData,
   nextViewState,
 }: UserDataProps) {
-  const chordsFormRef = useRef<HTMLFormElement | null>(null);
+  const writeBluesFormRef = useRef<HTMLFormElement | null>(null);
 
-  function handleChords(input: InputData) {
-    setCurrentUserData({ ...currentUserData, chords: input });
+  function handleBlues(input: InputData) {
+    setCurrentUserData({ ...currentUserData, blues: input });
   }
 
   return (
-    <Container>
+    <Box sx={{ display: "flex", justifyContent: "center" }}>
       <Box
         component="main"
-        width={1139}
-        height={637}
+        width={1250}
+        height={800}
         bgcolor={"secondary.main"}
         borderRadius="var(--borderRadius)"
         p={2}
         boxShadow={"0px 4px 4px rgba(0, 0, 0, 0.25)"}
       >
         <Stack gap={2}>
-          <Typography variant="h5" marginLeft={8} marginY={2}>
-            Section 6: Identify Chords
+          <Typography variant="h6" marginLeft={8}>
+            Section 8: Write Blues Chord Changes
           </Typography>
           <Box
-            width={1000}
-            height={480}
+            width={1100}
+            height={680}
             bgcolor={"card.background"}
             borderRadius="var(--borderRadius)"
             margin={"auto"}
@@ -46,36 +45,36 @@ export default function ChordsIdentification({
               direction="column"
               alignItems={"center"}
               marginY={"auto"}
-              p={4}
+              p={3}
               spacing={2}
             >
               <Grid item>
-                <Typography variant="h6">
-                  Identify the following 7th chords:
+                <Typography variant="subtitle1" marginBottom={2}>
+                  Write the changes to a Bb blues using ii-V7-I in the last 4
+                  measures (extra credit for hip reharms in the first 8
+                  measures):
                 </Typography>
               </Grid>
               <Grid item>
-                <IdentifyNotation
-                  chords={seventhChords}
-                  numBars={7}
-                  handleInput={handleChords}
-                  ref={chordsFormRef}
+                <WriteBlues
+                  handleBlues={handleBlues}
+                  ref={writeBluesFormRef}
                   width={950}
                 />
               </Grid>
             </Grid>
             <CardFooter
               width={900}
-              height={200}
-              pageNumber={6}
+              height={100}
+              pageNumber={8}
               handleSubmit={() => {
-                chordsFormRef.current?.requestSubmit();
+                writeBluesFormRef.current?.requestSubmit();
                 nextViewState();
               }}
             />
           </Box>
         </Stack>
       </Box>
-    </Container>
+    </Box>
   );
 }

@@ -8,8 +8,9 @@ import WriteProgression from "../WriteProgression";
 export default function WriteProgressions({
   currentUserData,
   setCurrentUserData,
+  nextViewState,
 }: UserDataProps) {
-  const progressionsWriteFormRef = useRef<HTMLFormElement | null>(null);
+  const writeProgressionsFormRef = useRef<HTMLFormElement | null>(null);
 
   function handleProgressions(input: InputData) {
     setCurrentUserData({ ...currentUserData, progressions: input });
@@ -23,7 +24,6 @@ export default function WriteProgressions({
         height={780}
         bgcolor={"secondary.main"}
         borderRadius="var(--borderRadius)"
-        margin={"auto"}
         p={2}
         boxShadow={"0px 4px 4px rgba(0, 0, 0, 0.25)"}
       >
@@ -56,7 +56,7 @@ export default function WriteProgressions({
               <Grid item>
                 <WriteProgression
                   handleProg={handleProgressions}
-                  ref={progressionsWriteFormRef}
+                  ref={writeProgressionsFormRef}
                   width={950}
                 />
               </Grid>
@@ -66,7 +66,8 @@ export default function WriteProgressions({
               height={100}
               pageNumber={7}
               handleSubmit={() => {
-                progressionsWriteFormRef.current?.requestSubmit();
+                writeProgressionsFormRef.current?.requestSubmit();
+                nextViewState();
               }}
             />
           </Box>

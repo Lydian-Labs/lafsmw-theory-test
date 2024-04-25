@@ -19,6 +19,7 @@ import CardFooter from "../CardFooter";
 export default function TriadsNotation({
   currentUserData,
   setCurrentUserData,
+  nextViewState,
 }: UserDataProps) {
   const [chordNotation, setChordNotation] = useState({
     input1: "",
@@ -36,6 +37,7 @@ export default function TriadsNotation({
       chordNotation: chordNotation,
     };
     setCurrentUserData(payload);
+    nextViewState();
   };
 
   return (

@@ -21,6 +21,7 @@ import CardFooter from "../CardFooter";
 export default function KeySignaturesNotation({
   currentUserData,
   setCurrentUserData,
+  nextViewState,
 }: UserDataProps) {
   const [level, setLevel] = useState<Level>("sibelius-class");
 
@@ -31,6 +32,7 @@ export default function KeySignaturesNotation({
       level: level,
     };
     setCurrentUserData(payload);
+    nextViewState();
   };
 
   return (
