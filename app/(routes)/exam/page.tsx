@@ -1,5 +1,9 @@
 "use client";
-import KeySigNotate from "@/app/components/ExamPages/1_KeySigNotate";
+import KeySigNotate1 from "@/app/components/ExamPages/1-1_KeySigNotate";
+import KeySigNotate2 from "@/app/components/ExamPages/1-2_KeySigNotate";
+import KeySigNotate3 from "@/app/components/ExamPages/1-3_KeySigNotate";
+import KeySigNotate4 from "@/app/components/ExamPages/1-4_KeySigNotate";
+
 import KeySigIdentify from "@/app/components/ExamPages/2_KeySigIdentify";
 import ScalesNotate from "@/app/components/ExamPages/3_ScalesNotate";
 import TriadsNotate from "@/app/components/ExamPages/4_TriadsNotate";
@@ -41,18 +45,21 @@ export default function ExamHomePage() {
   const router = useRouter();
 
   const VIEW_STATES = {
-    KEY_SIG_NOTATE: 1,
-    KEY_SIG_IDENTIFY: 2,
-    SCALES_NOTATE: 3,
-    TRIADS_NOTATE: 4,
-    SEVENTH_CHORDS_NOTATE: 5,
-    CHORDS_IDENTIFY: 6,
-    WRITE_PROGRESSIONS: 7,
-    WRITE_BLUES_CHANGES: 8,
-    SUBMIT_AND_EXIT: 9,
+    KEY_SIG_NOTATE1: 1,
+    KEY_SIG_NOTATE2: 2,
+    KEY_SIG_NOTATE3: 3,
+    KEY_SIG_NOTATE4: 4,
+    KEY_SIG_IDENTIFY: 5,
+    SCALES_NOTATE: 6,
+    TRIADS_NOTATE: 7,
+    SEVENTH_CHORDS_NOTATE: 8,
+    CHORDS_IDENTIFY: 9,
+    WRITE_PROGRESSIONS: 10,
+    WRITE_BLUES_CHANGES: 11,
+    SUBMIT_AND_EXIT: 12,
   };
 
-  const [viewState, setViewState] = useState(VIEW_STATES.KEY_SIG_NOTATE);
+  const [viewState, setViewState] = useState(VIEW_STATES.KEY_SIG_NOTATE1);
 
   const [currentUserData, setCurrentUserData] =
     useState<InputState>(initialState);
@@ -87,7 +94,7 @@ export default function ExamHomePage() {
   const incrementViewState = () => {
     setViewState((prevState) => {
       if (prevState === VIEW_STATES.SUBMIT_AND_EXIT) {
-        return VIEW_STATES.KEY_SIG_NOTATE;
+        return VIEW_STATES.KEY_SIG_NOTATE1;
       } else {
         return prevState + 1;
       }
@@ -96,7 +103,7 @@ export default function ExamHomePage() {
 
   const decrementViewState = () => {
     setViewState((prevState) => {
-      if (prevState === VIEW_STATES.KEY_SIG_NOTATE) {
+      if (prevState === VIEW_STATES.KEY_SIG_NOTATE1) {
         return VIEW_STATES.SUBMIT_AND_EXIT;
       } else {
         return prevState - 1;
@@ -168,7 +175,7 @@ export default function ExamHomePage() {
         }}
         p={4}
       >
-        {viewState !== VIEW_STATES.KEY_SIG_NOTATE &&
+        {viewState !== VIEW_STATES.KEY_SIG_NOTATE1 &&
           viewState !== VIEW_STATES.SUBMIT_AND_EXIT && (
             <Box>
               <Button onClick={decrementViewState}>
@@ -176,8 +183,29 @@ export default function ExamHomePage() {
               </Button>
             </Box>
           )}
-        {viewState === VIEW_STATES.KEY_SIG_NOTATE && (
-          <KeySigNotate
+        {viewState === VIEW_STATES.KEY_SIG_NOTATE1 && (
+          <KeySigNotate1
+            currentUserData={currentUserData}
+            setCurrentUserData={setCurrentUserData}
+            nextViewState={incrementViewState}
+          />
+        )}
+        {viewState === VIEW_STATES.KEY_SIG_NOTATE2 && (
+          <KeySigNotate2
+            currentUserData={currentUserData}
+            setCurrentUserData={setCurrentUserData}
+            nextViewState={incrementViewState}
+          />
+        )}
+        {viewState === VIEW_STATES.KEY_SIG_NOTATE3 && (
+          <KeySigNotate3
+            currentUserData={currentUserData}
+            setCurrentUserData={setCurrentUserData}
+            nextViewState={incrementViewState}
+          />
+        )}
+        {viewState === VIEW_STATES.KEY_SIG_NOTATE4 && (
+          <KeySigNotate4
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}

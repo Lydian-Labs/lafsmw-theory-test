@@ -166,6 +166,7 @@ export interface InputState {
   user: any;
   level: Level;
   keySignatures: InputData;
+  keySignaturesNotation: any;
   chords: InputData;
   progressions: InputData;
   blues: InputData;
