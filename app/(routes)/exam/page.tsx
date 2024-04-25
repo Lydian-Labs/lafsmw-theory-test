@@ -244,6 +244,9 @@ export default function ExamHomePage() {
               <Button onClick={handleEndExam}>
                 <Typography>Send Results to Kyle</Typography>
               </Button>
+              <Button onClick={incrementViewState}>
+                <Typography>Back to page 1</Typography>
+              </Button>
             </Stack>
           </main>
         )}
