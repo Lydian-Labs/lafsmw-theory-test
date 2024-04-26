@@ -97,7 +97,7 @@ export default forwardRef(function WriteProgression(
           >
             {renderKeyNames1(0, 3)}
           </Stack>
-          <Staff numBars={6} noTimeSignature width={width} />
+          <Staff numBars={6} width={width} />
           <Stack
             direction="row"
             spacing={chordGroupSpacing}

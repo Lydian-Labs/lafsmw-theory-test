@@ -11,7 +11,6 @@ export default function ChordNames({
 }: ChordNamesProps) {
   const numBars = chordNames.length;
 
-  // Gather needed width info.
   const { widthOfFirstBar, widthOfRemainingBars } = gatherWidthInfo(
     numBars,
     width

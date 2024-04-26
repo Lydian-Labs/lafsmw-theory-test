@@ -7,6 +7,7 @@ type StaffProps = {
   clef?: string;
   timeSignature?: string;
   noTimeSignature?: boolean;
+  evenbars?: boolean;
   width?: number;
   height?: number;
   addDoubleBarLine?: boolean;
@@ -18,6 +19,7 @@ export default function Staff({
   clef = "treble",
   timeSignature = "4/4",
   noTimeSignature = false,
+  evenbars = false,
   width = 1650,
   height = 110,
   addDoubleBarLine = false,
@@ -29,7 +31,7 @@ export default function Staff({
 
   // Gather needed width info - slightly different calculations than other components.
   const fullWidth = width * 0.97;
-  const widthOfFirstBar = width / numBars + 50;
+  let widthOfFirstBar = !evenbars ? width / numBars + 50 : width / numBars;
   const widthOfRemainingBars =
     (fullWidth - 34 - widthOfFirstBar) / (numBars - 1);
 
@@ -78,6 +80,25 @@ export default function Staff({
           i === 0 ? widthOfFirstBar : widthOfRemainingBars,
           spaceAboveStaff
         );
+        // let stave;
+
+        // if (evenbars) {
+        //   stave = new Stave(
+        //     i === 0 ? 17 : widthOfRemainingBars * i + 17,
+        //     40,
+        //     widthOfRemainingBars,
+        //     spaceAboveStaff
+        //   );
+        // } else {
+        //   stave = new Stave(
+        //     i === 0
+        //       ? 17
+        //       : widthOfFirstBar + (i - 1) * widthOfRemainingBars + 17,
+        //     40,
+        //     i === 0 ? widthOfFirstBar : widthOfRemainingBars,
+        //     spaceAboveStaff
+        //   );
+        // }
         if (i === 0) {
           noTimeSignature
             ? stave.addClef(clef)
@@ -125,6 +146,7 @@ export default function Staff({
     widthOfRemainingBars,
     timeSignature,
     width,
+    evenbars,
   ]);
 
   return <div ref={containerRef} />;

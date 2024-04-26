@@ -96,9 +96,10 @@ export default function KeySignaturesIdentification({
                 </Grid>
                 <Grid item>
                   <IdentifyNotation
+                    evenbars
                     handleInput={handleKeySignatures}
                     ref={keySigFormRef}
-                    width={500}
+                    width={520}
                   />
                 </Grid>
               </Grid>
