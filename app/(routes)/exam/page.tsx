@@ -5,7 +5,13 @@ import KeySigNotate3 from "@/app/components/ExamPages/1-3_KeySigNotate";
 import KeySigNotate4 from "@/app/components/ExamPages/1-4_KeySigNotate";
 
 import KeySigIdentify from "@/app/components/ExamPages/2_KeySigIdentify";
-import ScalesNotate from "@/app/components/ExamPages/3_ScalesNotate";
+import ScalesNotate1 from "@/app/components/ExamPages/3-1_ScalesNotate";
+import ScalesNotate2 from "@/app/components/ExamPages/3-2_ScalesNotate";
+import ScalesNotate3 from "@/app/components/ExamPages/3-3_ScalesNotate";
+import ScalesNotate4 from "@/app/components/ExamPages/3-4_ScalesNotate";
+import ScalesNotate5 from "@/app/components/ExamPages/3-5_ScalesNotate";
+import ScalesNotate6 from "@/app/components/ExamPages/3-6_ScalesNotate";
+
 import TriadsNotate from "@/app/components/ExamPages/4_TriadsNotate";
 import SeventhChordsNotate from "@/app/components/ExamPages/5_SeventhChordsNotate";
 import ChordsIdentify from "@/app/components/ExamPages/6_ChordsIdentify";
@@ -50,13 +56,18 @@ export default function ExamHomePage() {
     KEY_SIG_NOTATE3: 3,
     KEY_SIG_NOTATE4: 4,
     KEY_SIG_IDENTIFY: 5,
-    SCALES_NOTATE: 6,
-    TRIADS_NOTATE: 7,
-    SEVENTH_CHORDS_NOTATE: 8,
-    CHORDS_IDENTIFY: 9,
-    WRITE_PROGRESSIONS: 10,
-    WRITE_BLUES_CHANGES: 11,
-    SUBMIT_AND_EXIT: 12,
+    SCALES_NOTATE1: 6,
+    SCALES_NOTATE2: 7,
+    SCALES_NOTATE3: 8,
+    SCALES_NOTATE4: 9,
+    SCALES_NOTATE5: 10,
+    SCALES_NOTATE6: 11,
+    TRIADS_NOTATE: 12,
+    SEVENTH_CHORDS_NOTATE: 13,
+    CHORDS_IDENTIFY: 14,
+    WRITE_PROGRESSIONS: 15,
+    WRITE_BLUES_CHANGES: 16,
+    SUBMIT_AND_EXIT: 17,
   };
 
   const [viewState, setViewState] = useState(VIEW_STATES.KEY_SIG_NOTATE1);
@@ -218,8 +229,43 @@ export default function ExamHomePage() {
             nextViewState={incrementViewState}
           />
         )}
-        {viewState === VIEW_STATES.SCALES_NOTATE && (
-          <ScalesNotate
+        {viewState === VIEW_STATES.SCALES_NOTATE1 && (
+          <ScalesNotate1
+            currentUserData={currentUserData}
+            setCurrentUserData={setCurrentUserData}
+            nextViewState={incrementViewState}
+          />
+        )}
+        {viewState === VIEW_STATES.SCALES_NOTATE2 && (
+          <ScalesNotate2
+            currentUserData={currentUserData}
+            setCurrentUserData={setCurrentUserData}
+            nextViewState={incrementViewState}
+          />
+        )}
+        {viewState === VIEW_STATES.SCALES_NOTATE3 && (
+          <ScalesNotate3
+            currentUserData={currentUserData}
+            setCurrentUserData={setCurrentUserData}
+            nextViewState={incrementViewState}
+          />
+        )}
+        {viewState === VIEW_STATES.SCALES_NOTATE4 && (
+          <ScalesNotate4
+            currentUserData={currentUserData}
+            setCurrentUserData={setCurrentUserData}
+            nextViewState={incrementViewState}
+          />
+        )}
+        {viewState === VIEW_STATES.SCALES_NOTATE5 && (
+          <ScalesNotate5
+            currentUserData={currentUserData}
+            setCurrentUserData={setCurrentUserData}
+            nextViewState={incrementViewState}
+          />
+        )}
+        {viewState === VIEW_STATES.SCALES_NOTATE6 && (
+          <ScalesNotate6
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
@@ -278,13 +324,13 @@ export default function ExamHomePage() {
             </Stack>
           </main>
         )}
-        {/* {viewState !== VIEW_STATES.SUBMIT_AND_EXIT && (
+        {viewState !== VIEW_STATES.SUBMIT_AND_EXIT && (
           <Box>
             <Button onClick={incrementViewState}>
               <Typography variant="h4">{">"}</Typography>
             </Button>
           </Box>
-        )} */}
+        )}
       </Stack>
     </Box>
   );

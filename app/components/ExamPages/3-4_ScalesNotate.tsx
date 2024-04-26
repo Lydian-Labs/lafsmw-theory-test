@@ -16,7 +16,7 @@ import { useState } from "react";
 import NotateScale from "../NotateScale";
 import CardFooter from "../CardFooter";
 
-export default function ScalesNotation({
+export default function ScalesNotation3({
   currentUserData,
   setCurrentUserData,
   nextViewState,
@@ -104,14 +104,14 @@ export default function ScalesNotation({
               >
                 <Grid item>
                   <Typography variant="h6">
-                    Notate the following scale:
+                    Write the following scale: F# Dorian
                   </Typography>
                 </Grid>
                 <Grid item>
                   <NotateScale />
                 </Grid>
               </Grid>
-              <CardFooter pageNumber={3} handleSubmit={handleSubmit} />
+              <CardFooter pageNumber={9} handleSubmit={handleSubmit} />
             </Box>
           </Grid>
         </Grid>

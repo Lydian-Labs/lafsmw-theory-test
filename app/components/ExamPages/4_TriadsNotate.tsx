@@ -111,7 +111,7 @@ export default function TriadsNotation({
                   <NotateScale />
                 </Grid>
               </Grid>
-              <CardFooter pageNumber={4} handleSubmit={handleSubmit} />
+              <CardFooter pageNumber={12} handleSubmit={handleSubmit} />
             </Box>
           </Grid>
         </Grid>

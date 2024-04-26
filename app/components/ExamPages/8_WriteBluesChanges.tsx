@@ -71,7 +71,7 @@ export default function WriteBluesChanges({
             <CardFooter
               width={900}
               height={100}
-              pageNumber={8}
+              pageNumber={16}
               handleSubmit={() => {
                 writeBluesFormRef.current?.requestSubmit();
                 nextViewState();

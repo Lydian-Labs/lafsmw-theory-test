@@ -111,7 +111,7 @@ export default function NotateSeventhChords({
                   <NotateScale />
                 </Grid>
               </Grid>
-              <CardFooter pageNumber={5} handleSubmit={handleSubmit} />
+              <CardFooter pageNumber={13} handleSubmit={handleSubmit} />
             </Box>
           </Grid>
         </Grid>

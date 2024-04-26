@@ -64,7 +64,7 @@ export default function WriteProgressions({
             <CardFooter
               width={900}
               height={100}
-              pageNumber={7}
+              pageNumber={15}
               handleSubmit={() => {
                 writeProgressionsFormRef.current?.requestSubmit();
                 nextViewState();
