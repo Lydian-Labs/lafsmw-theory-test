@@ -1,11 +1,11 @@
 "use client";
 import { Box, Container, Grid, Stack, Typography } from "@mui/material";
 
+import seventhChordsText from "@/app/lib/data/seventhChordsText";
 import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import { useState } from "react";
-import NotateScale from "../NotateScale";
 import CardFooter from "../CardFooter";
-import seventhChordsText from "@/app/lib/data/seventhChordsText";
+import NotateScale from "../NotateScale";
 
 export default function NotateSeventhChords({
   currentUserData,

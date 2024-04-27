@@ -1,7 +1,7 @@
 "use client";
-import { useRouter } from "next/navigation";
 import { signOutOfApp } from "@/firebase/authAPI";
-import { Button, Stack, Typography, Box } from "@mui/material";
+import { Button, Typography } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 export default function SignOutPage() {
   const router = useRouter();

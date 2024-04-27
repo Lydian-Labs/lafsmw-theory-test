@@ -1,8 +1,8 @@
 "use client";
+import { useAuthContext } from "@/firebase/authContext";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
-import { useAuthContext } from "@/firebase/authContext";
 import { useRouter } from "next/navigation";
 
 export default function Home() {

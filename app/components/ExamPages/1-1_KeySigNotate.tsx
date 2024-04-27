@@ -10,13 +10,12 @@ import {
   Typography,
 } from "@mui/material";
 
-import NotateKeySignature from "../NotateKeySignature";
 import { notationInstructions } from "@/app/lib/instructions";
-import { MouseEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
+import { Level, MouseEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import { useState } from "react";
-import ClassPreferenceSelector from "../ClassPreferenceSelector";
-import { Level } from "@/app/lib/typesAndInterfaces";
 import CardFooter from "../CardFooter";
+import ClassPreferenceSelector from "../ClassPreferenceSelector";
+import NotateKeySignature from "../NotateKeySignature";
 
 export default function KeySignaturesNotation({
   currentUserData,

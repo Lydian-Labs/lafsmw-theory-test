@@ -80,25 +80,7 @@ export default function Staff({
           i === 0 ? widthOfFirstBar : widthOfRemainingBars,
           spaceAboveStaff
         );
-        // let stave;
 
-        // if (evenbars) {
-        //   stave = new Stave(
-        //     i === 0 ? 17 : widthOfRemainingBars * i + 17,
-        //     40,
-        //     widthOfRemainingBars,
-        //     spaceAboveStaff
-        //   );
-        // } else {
-        //   stave = new Stave(
-        //     i === 0
-        //       ? 17
-        //       : widthOfFirstBar + (i - 1) * widthOfRemainingBars + 17,
-        //     40,
-        //     i === 0 ? widthOfFirstBar : widthOfRemainingBars,
-        //     spaceAboveStaff
-        //   );
-        // }
         if (i === 0) {
           noTimeSignature
             ? stave.addClef(clef)

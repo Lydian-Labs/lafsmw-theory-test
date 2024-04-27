@@ -3,7 +3,6 @@ import KeySigNotate1 from "@/app/components/ExamPages/1-1_KeySigNotate";
 import KeySigNotate2 from "@/app/components/ExamPages/1-2_KeySigNotate";
 import KeySigNotate3 from "@/app/components/ExamPages/1-3_KeySigNotate";
 import KeySigNotate4 from "@/app/components/ExamPages/1-4_KeySigNotate";
-
 import KeySigIdentify from "@/app/components/ExamPages/2_KeySigIdentify";
 import ScalesNotate1 from "@/app/components/ExamPages/3-1_ScalesNotate";
 import ScalesNotate2 from "@/app/components/ExamPages/3-2_ScalesNotate";
@@ -34,7 +33,7 @@ import {
   setOrUpdateStudentData,
 } from "@/firebase/firestore/model";
 
-import { Box, Button, Stack, Container, Typography } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 

@@ -10,11 +10,11 @@ import {
   Typography,
 } from "@mui/material";
 
-import NotateKeySignature from "../NotateKeySignature";
 import { notationInstructions } from "@/app/lib/instructions";
 import { UserDataProps } from "@/app/lib/typesAndInterfaces";
-import CardFooter from "../CardFooter";
 import { useState } from "react";
+import CardFooter from "../CardFooter";
+import NotateKeySignature from "../NotateKeySignature";
 
 export default function KeySignaturesNotation({
   currentUserData,

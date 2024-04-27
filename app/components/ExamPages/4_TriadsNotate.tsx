@@ -1,21 +1,11 @@
 "use client";
-import {
-  Box,
-  Container,
-  Grid,
-  List,
-  ListItem,
-  ListItemText,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Box, Container, Grid, Stack, Typography } from "@mui/material";
 
-import { notationInstructions } from "@/app/lib/instructions";
+import triadsText from "@/app/lib/data/triadsText";
 import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import { useState } from "react";
-import NotateScale from "../NotateScale";
 import CardFooter from "../CardFooter";
-import triadsText from "@/app/lib/data/triadsText";
+import NotateScale from "../NotateScale";
 
 export default function TriadsNotation({
   currentUserData,

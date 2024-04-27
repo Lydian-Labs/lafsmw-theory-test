@@ -13,8 +13,8 @@ import {
 import { notationInstructions } from "@/app/lib/instructions";
 import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import { useState } from "react";
-import NotateScale from "../NotateScale";
 import CardFooter from "../CardFooter";
+import NotateScale from "../NotateScale";
 
 export default function ScalesNotation3({
   currentUserData,
