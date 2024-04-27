@@ -25,15 +25,12 @@ import { setupRendererAndDrawChords } from "@/app/lib/setUpRendererAndDrawChords
 import { NoteStringData, StaveType, Chord } from "../../lib/typesAndInterfaces";
 import { handleChordInteraction } from "@/app/lib/handleChordInteraction";
 import {
-  addAllAccidentalsToChord,
-  addIndexToChordData,
   updatedChord,
-  eraseAccidental,
-  redrawUpdatedChord,
-  eraseNoteFromChord2,
-} from "@/app/lib/modifyChord";
+  updateKeysAndAddAccidentals,
+  addAllNotesAndAccidentals,
+} from "@/app/lib/modifyChords2";
 
-const { Renderer, StaveNote } = VexFlow.Flow;
+const { Renderer, StaveNote, Accidental } = VexFlow.Flow;
 
 const ManageChords = () => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
@@ -49,8 +46,7 @@ const ManageChords = () => {
     duration: "w",
     staveNotes: null,
     userClickY: 0,
-    sharpIndexArray: [],
-    flatIndexArray: [],
+    accidentals: [{ key: [], accidental: null }],
   });
 
   const noNoteFound = () => dispatch({ type: "noNoteFound" });
@@ -67,8 +63,7 @@ const ManageChords = () => {
         duration: "w",
         staveNotes: null,
         userClickY: 0,
-        sharpIndexArray: [],
-        flatIndexArray: [],
+        accidentals: [{ key: [], accidental: null }],
       };
       return newState;
     });
@@ -123,8 +118,7 @@ const ManageChords = () => {
     if (foundNoteData)
       updatedFoundNoteData = {
         ...foundNoteData,
-        userClickY: userClickY,
-        accidental: ""
+        accidental: null,
       };
 
     const foundNoteIndex: number = chordData.keys.findIndex(
@@ -135,46 +129,25 @@ const ManageChords = () => {
       noNoteFound();
     } else if (state.isSharpActive || state.isFlatActive) {
       if (foundNoteIndex !== -1) {
-        chordDataCopy = state.isSharpActive
-          ? addIndexToChordData(
-              foundNoteIndex,
-              "sharpIndexArray",
-              chordDataCopy
-            )
-          : addIndexToChordData(
-              foundNoteIndex,
-              "flatIndexArray",
-              chordDataCopy
-            );
-        chordDataCopy = redrawUpdatedChord(chordDataCopy);
+        chordDataCopy = updateKeysAndAddAccidentals(
+          chordDataCopy,
+          foundNoteIndex,
+          state
+        );
       }
     } else if (state.isEraseFlatActive || state.isEraseSharpActive) {
       if (foundNoteIndex !== -1) {
-        chordDataCopy = state.isEraseSharpActive
-          ? eraseAccidental(foundNoteIndex, "sharpIndexArray", chordDataCopy)
-          : eraseAccidental(foundNoteIndex, "flatIndexArray", chordDataCopy);
-        chordDataCopy = redrawUpdatedChord(chordDataCopy);
       }
     } else if (state.isEraseNoteActive) {
       if (foundNoteIndex !== -1) {
-        chordDataCopy = eraseNoteFromChord2(foundNoteIndex, chordDataCopy);
-        chordDataCopy = redrawUpdatedChord(chordDataCopy);
       }
     } else {
       if (chordData.keys.length >= 4) return;
 
-      const updatedKeys = [...chordDataCopy.keys, updatedFoundNoteData.note];
-
-      const newChord = updatedChord(chordDataCopy, updatedKeys);
-
-      addAllAccidentalsToChord(chordDataCopy, newChord);
-
-      chordDataCopy = {
-        ...chordDataCopy,
-        keys: updatedKeys,
-        staveNotes: newChord,
-        userClickY: userClickY,
-      };
+      chordDataCopy = addAllNotesAndAccidentals(
+        chordDataCopy,
+        updatedFoundNoteData
+      );
     }
     setChordData(() => chordDataCopy);
   };

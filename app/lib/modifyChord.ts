@@ -56,39 +56,41 @@ export const eraseAccidental = (
     const accidentalIndex = updatedIndexArray.findIndex(
       (indexOfNote) => indexOfNote === index
     );
-    updatedIndexArray.splice(accidentalIndex, 1);
+    if (accidentalIndex !== -1) updatedIndexArray.splice(accidentalIndex, 1);
 
     return { ...chordData, [indexArrayName]: updatedIndexArray };
   } else return chordData;
 };
 
-export const eraseNoteFromChord = (index: number, chordData: Chord) => {
-  if (chordData.keys.length > 0) {
-    const updatedKeys = [...chordData.keys];
+export const eraseNoteFromChord2 = (index: number, chordData: Chord) => {
+  const { keys, sharpIndexArray, flatIndexArray } = chordData;
+
+  if (index !== -1) {
+    // Remove the note from the keys
+    const updatedKeys = [...keys];
     updatedKeys.splice(index, 1);
 
-    const updatedSharpIndexArray = [...chordData.sharpIndexArray];
-    const updatedFlatIndexArray = [...chordData.flatIndexArray];
+    // Adjust the sharp and flat index arrays
+    // This map operation adjusts indices that come after the removed index
+    const adjustIndex = (idx: number) => (idx > index ? idx - 1 : idx);
 
-    if (chordData.sharpIndexArray.length > 0) {
-      const accidentalIndex = updatedSharpIndexArray.findIndex(
-        (sharpIndex) => sharpIndex === index
-      );
-      if (accidentalIndex !== -1)
-        updatedSharpIndexArray.splice(accidentalIndex, 1);
-    }
-    if (chordData.flatIndexArray.length > 0) {
-      const accidentalIndex = updatedFlatIndexArray.findIndex(
-        (flatIndex) => flatIndex === index
-      );
-      if (accidentalIndex !== -1)
-        updatedFlatIndexArray.splice(accidentalIndex, 1);
-    }
+    // This filter operation ensures that the removed index is no longer part of the arrays
+    const filterIndex = (idx: number) => idx !== index;
+
+    const updatedSharpIndexArray = sharpIndexArray
+      .map(adjustIndex)
+      .filter(filterIndex);
+
+    const updatedFlatIndexArray = flatIndexArray
+      .map(adjustIndex)
+      .filter(filterIndex);
+
     return {
       ...chordData,
       keys: updatedKeys,
       sharpIndexArray: updatedSharpIndexArray,
       flatIndexArray: updatedFlatIndexArray,
     };
-  } else return chordData;
+  }
+  return chordData;
 };

@@ -18,8 +18,9 @@ export type Chord = {
   duration: string;
   staveNotes?: NoteType | null;
   userClickY?: number;
-  sharpIndexArray: number[];
-  flatIndexArray: number[] | [];
+  sharpIndexArray?: number[];
+  flatIndexArray?: number[] | [];
+  accidentals: { key: string[]; accidental: null | string }[];
 };
 
 export type Level =
@@ -111,6 +112,7 @@ export interface NoteStringData {
   yCoordinateMax: number;
   userClickY?: number;
   staveNotes?: StaveNoteData;
+  accidental?: null | string;
 }
 
 export interface ModifyNoteData {
