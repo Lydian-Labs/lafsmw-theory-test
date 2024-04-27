@@ -15,6 +15,7 @@ import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import { useState } from "react";
 import NotateScale from "../NotateScale";
 import CardFooter from "../CardFooter";
+import triadsText from "@/app/lib/data/triadsText";
 
 export default function TriadsNotation({
   currentUserData,
@@ -29,6 +30,17 @@ export default function TriadsNotation({
     input5: "",
     input6: "",
   });
+
+  const renderChordNames = (
+    start: number | undefined,
+    end: number | undefined
+  ) => {
+    return triadsText.slice(start, end).map((chord) => (
+      <Box key={chord}>
+        <Typography>{chord}</Typography>
+      </Box>
+    ));
+  };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -45,76 +57,54 @@ export default function TriadsNotation({
       <Box
         component="main"
         width={1139}
-        height={637}
+        height={700}
         bgcolor={"secondary.main"}
         borderRadius="var(--borderRadius)"
         p={2}
         boxShadow={"0px 4px 4px rgba(0, 0, 0, 0.25)"}
       >
-        <Grid container spacing={4} p={2}>
-          <Grid item xs={4}>
-            <Stack gap={2} alignItems={"center"}>
-              <Typography variant="h6" align="center">
-                Section 4: Notate Triads
-              </Typography>
-              <Box
-                width={273}
-                height={456}
-                bgcolor={"card.background"}
-                borderRadius="var(--borderRadius)"
-                boxShadow="var(--cardShadow)"
-              >
-                <Stack mx={3} p={1}>
-                  <Typography variant="h6" align="center">
-                    Tutorial
-                  </Typography>
-                  <List>
-                    {notationInstructions.map((value, index) => (
-                      <ListItem key={index} disableGutters>
-                        <ListItemText
-                          primary={`${index + 1}. ${value.instructionTitle}`}
-                          secondary={value.instructionText}
-                          primaryTypographyProps={{ fontSize: "11px" }}
-                          secondaryTypographyProps={{ fontSize: "11px" }}
-                        />
-                      </ListItem>
-                    ))}
-                  </List>
-                </Stack>
-              </Box>
-            </Stack>
-          </Grid>
-          <Grid item xs={8} margin={"auto"}>
-            <Box
-              width={569}
-              height={540}
-              bgcolor={"card.background"}
-              borderRadius="var(--borderRadius)"
-              margin={"auto"}
-              boxShadow="var(--cardShadow)"
+        <Stack gap={2}>
+          <Typography variant="h6" marginLeft={8}>
+            Section 4: Notate Triads
+          </Typography>
+          <Box
+            width={1000}
+            height={590}
+            bgcolor={"card.background"}
+            borderRadius="var(--borderRadius)"
+            margin={"auto"}
+            boxShadow="var(--cardShadow)"
+          >
+            <Grid
+              container
+              columns={1}
+              direction="column"
+              alignItems={"center"}
+              marginY={"auto"}
+              p={4}
+              spacing={2}
             >
-              <Grid
-                container
-                columns={1}
-                direction="column"
-                alignItems={"center"}
-                marginY={"auto"}
-                p={4}
-                spacing={2}
-              >
-                <Grid item>
-                  <Typography variant="h6">
-                    Notate the following triads:
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  <NotateScale />
-                </Grid>
+              <Grid item>
+                <Typography variant="h6">
+                  Notate the following triads:
+                </Typography>
               </Grid>
-              <CardFooter pageNumber={12} handleSubmit={handleSubmit} />
-            </Box>
-          </Grid>
-        </Grid>
+              <Grid item>
+                <Stack direction="row" gap={8}>
+                  {renderChordNames(0, 6)}
+                </Stack>
+              </Grid>
+              <Grid item>
+                <NotateScale />
+              </Grid>
+            </Grid>
+            <CardFooter
+              pageNumber={12}
+              width={900}
+              handleSubmit={handleSubmit}
+            />
+          </Box>
+        </Stack>
       </Box>
     </Container>
   );

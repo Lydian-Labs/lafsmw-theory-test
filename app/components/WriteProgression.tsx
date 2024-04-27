@@ -70,7 +70,7 @@ export default forwardRef(function WriteProgression(
       ));
   };
 
-  const renderKeyNames1 = (
+  const renderKeyNames = (
     start: number | undefined,
     end: number | undefined
   ) => {
@@ -95,7 +95,7 @@ export default forwardRef(function WriteProgression(
             marginLeft="100px"
             gap={4}
           >
-            {renderKeyNames1(0, 3)}
+            {renderKeyNames(0, 3)}
           </Stack>
           <Staff numBars={6} width={width} />
           <Stack
@@ -113,7 +113,7 @@ export default forwardRef(function WriteProgression(
             marginLeft="100px"
             gap={4}
           >
-            {renderKeyNames1(3, 6)}
+            {renderKeyNames(3, 6)}
           </Stack>
           <Staff numBars={6} noTimeSignature width={width} addDoubleBarLine />
           <Stack
