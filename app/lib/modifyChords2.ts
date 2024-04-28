@@ -67,7 +67,7 @@ export const eraseAccidentalFromNotesAndCoordinates = (
   return updatedNotesAndCoordinates;
 };
 
-export const updateKeysAndAddAccidentals = (
+export const addAccidentalToChordDataKeys = (
   state: ChordInteractionState,
   chordData: Chord,
   foundNoteIndex: number
@@ -94,7 +94,7 @@ export const updateKeysAndAddAccidentals = (
   return chordData;
 };
 
-export const addAllNotesAndAccidentals = (
+export const addNewNoteToChord = (
   chordData: Chord,
   foundNoteData: NoteStringData
 ) => {
@@ -116,7 +116,7 @@ export const addAllNotesAndAccidentals = (
   return chordData;
 };
 
-export const redrawChordAfterRemovingAccidental = (chordData: Chord) => {
+export const redrawChord = (chordData: Chord) => {
   const newChord = updatedChord(chordData);
   chordData.keys.forEach((key, index) => {
     if (key.includes("#")) {
@@ -131,4 +131,18 @@ export const redrawChordAfterRemovingAccidental = (chordData: Chord) => {
     staveNotes: newChord,
   };
   return chordData;
+};
+
+export const eraseNoteInChord = (chordData: Chord, foundNoteIndex: number) => {
+  if (chordData.keys[foundNoteIndex]) {
+    chordData.keys.splice(foundNoteIndex, 1);
+    const newChord = updatedChord(chordData);
+    chordData = {
+      ...chordData,
+      staveNotes: newChord,
+    };
+    return chordData;
+  }
+  return chordData;
+  //erase accidental from notesAndCoordinatesArray
 };

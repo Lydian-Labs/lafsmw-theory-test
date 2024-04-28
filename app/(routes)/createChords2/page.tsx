@@ -25,12 +25,13 @@ import { setupRendererAndDrawChords } from "@/app/lib/setUpRendererAndDrawChords
 import { NoteStringData, StaveType, Chord } from "../../lib/typesAndInterfaces";
 import { handleChordInteraction } from "@/app/lib/handleChordInteraction";
 import {
-  updateKeysAndAddAccidentals,
+  addAccidentalToChordDataKeys,
   eraseAccidentalFromChordData,
   eraseAccidentalFromNotesAndCoordinates,
-  addAllNotesAndAccidentals,
+  addNewNoteToChord,
   addAccidentalToNotesAndCoordinates,
-  redrawChordAfterRemovingAccidental,
+  redrawChord,
+  eraseNoteInChord,
 } from "@/app/lib/modifyChords2";
 
 const { Renderer } = VexFlow.Flow;
@@ -140,7 +141,7 @@ const ManageChords = () => {
         notesAndCoordinatesCopy
       );
       if (foundNoteIndex !== -1) {
-        chordDataCopy = updateKeysAndAddAccidentals(
+        chordDataCopy = addAccidentalToChordDataKeys(
           state,
           chordDataCopy,
           foundNoteIndex
@@ -157,14 +158,20 @@ const ManageChords = () => {
           foundNoteIndex
         );
       }
-      chordDataCopy = redrawChordAfterRemovingAccidental(chordDataCopy);
+      chordDataCopy = redrawChord(chordDataCopy);
     } else if (state.isEraseNoteActive) {
       if (foundNoteIndex !== -1) {
+        chordDataCopy = eraseNoteInChord(chordDataCopy, foundNoteIndex);
+        notesAndCoordinatesCopy = eraseAccidentalFromNotesAndCoordinates(
+          notesAndCoordinates,
+          foundNoteData
+        );
+        chordDataCopy = redrawChord(chordDataCopy);
       }
     } else {
       if (chordData.keys.length >= 4) return;
 
-      chordDataCopy = addAllNotesAndAccidentals(chordDataCopy, foundNoteData);
+      chordDataCopy = addNewNoteToChord(chordDataCopy, foundNoteData);
     }
     setNotesAndCoordinates(() => notesAndCoordinatesCopy);
     setChordData(() => chordDataCopy);
