@@ -59,10 +59,6 @@ export type ChordInteractionState = {
   [key: string]: boolean | undefined;
 };
 
-export interface ActiveNote {
-  note: string;
-  index?: number;
-}
 export type KeySigState = {
   isAddSharpActive: boolean;
   isAddFlatActive: boolean;

@@ -26,9 +26,11 @@ import { NoteStringData, StaveType, Chord } from "../../lib/typesAndInterfaces";
 import { handleChordInteraction } from "@/app/lib/handleChordInteraction";
 import {
   updateKeysAndAddAccidentals,
-  eraseAccidental,
+  eraseAccidentalFromChordData,
+  eraseAccidentalFromNotesAndCoordinates,
   addAllNotesAndAccidentals,
   addAccidentalToNotesAndCoordinates,
+  redrawChordAfterRemovingAccidental,
 } from "@/app/lib/modifyChords2";
 
 const { Renderer } = VexFlow.Flow;
@@ -42,7 +44,6 @@ const ManageChords = () => {
     chordInteractionInitialState
   );
   const [barIndex, setBarIndex] = useState<number>(0);
-  //const [highGPosition, setHighGPosition] = useState<number>(0);
   const [chordData, setChordData] = useState<Chord>({
     keys: [],
     duration: "w",
@@ -121,7 +122,6 @@ const ManageChords = () => {
     let chordDataCopy = { ...chordData };
     let notesAndCoordinatesCopy = [...notesAndCoordinates];
 
-    console.log(notesAndCoordinatesCopy);
     setBarIndex(() => {
       const newNum = findBarIndex(staves, userClickX);
       return newNum;
@@ -147,8 +147,17 @@ const ManageChords = () => {
         );
       }
     } else if (state.isEraseAccidentalActive) {
+      notesAndCoordinatesCopy = eraseAccidentalFromNotesAndCoordinates(
+        notesAndCoordinatesCopy,
+        foundNoteData
+      );
       if (foundNoteIndex !== -1) {
+        chordDataCopy = eraseAccidentalFromChordData(
+          chordDataCopy,
+          foundNoteIndex
+        );
       }
+      chordDataCopy = redrawChordAfterRemovingAccidental(chordDataCopy);
     } else if (state.isEraseNoteActive) {
       if (foundNoteIndex !== -1) {
       }
