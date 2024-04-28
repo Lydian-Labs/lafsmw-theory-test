@@ -31,7 +31,7 @@ const Navbar: FC = () => {
               </Link>
             </li>
             <li className="p-4">
-              <Link href="/createChords2">Create Chords</Link>
+              <Link href="/createChords">Create Chords</Link>
             </li>
             <li className="p-4">
               <Link href="/createKeySignatures">Create Key Signature</Link>
