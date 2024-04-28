@@ -1,7 +1,7 @@
 import { Chord, NoteStringData, StaveNoteType } from "./typesAndInterfaces";
 import VexFlow from "vexflow";
 const { Accidental, StaveNote } = VexFlow.Flow;
-import { ChordInteractionState } from "./typesAndInterfaces";
+import { ChordInteractionState, ActiveNote } from "./typesAndInterfaces";
 
 export const updatedChord = (chordData: Chord, updatedKeys?: string[]) => {
   return new StaveNote({
@@ -10,13 +10,37 @@ export const updatedChord = (chordData: Chord, updatedKeys?: string[]) => {
   });
 };
 
-export const updateKeysAndAddAccidentals = (
-  chordData: Chord,
-  foundNoteIndex: number,
-  state: ChordInteractionState
+const splitNote = (accidental: string, foundNote: string) => {
+  const note = foundNote.split("/")[0];
+  const octave = foundNote.split("/")[1];
+  return `${note}${accidental}/${octave}`;
+};
+
+export const addAccidentalToNotesAndCoordinates = (
+  state: ChordInteractionState,
+  foundNoteData: NoteStringData,
+  notesAndCoordinates: NoteStringData[]
 ) => {
   const accidental = state.isSharpActive ? "#" : "b";
-  chordData.keys[foundNoteIndex] = chordData.keys[foundNoteIndex] + accidental; // Directly modify the key at the found index
+  foundNoteData.note = splitNote(accidental, foundNoteData.note);
+  const updatedNotesAndCoordinates = notesAndCoordinates.map((noteData) =>
+    noteData === foundNoteData
+      ? { ...noteData, note: foundNoteData.note }
+      : noteData
+  );
+  return updatedNotesAndCoordinates;
+};
+
+export const updateKeysAndAddAccidentals = (
+  state: ChordInteractionState,
+  chordData: Chord,
+  foundNoteIndex: number
+) => {
+  const accidental = state.isSharpActive ? "#" : "b";
+  chordData.keys[foundNoteIndex] = splitNote(
+    accidental,
+    chordData.keys[foundNoteIndex]
+  );
 
   const newChord = updatedChord(chordData); // Update the chord with all keys, including the new accidental
 
@@ -59,3 +83,5 @@ export const addAllNotesAndAccidentals = (
   };
   return chordData;
 };
+
+export const eraseAccidental = () => {};

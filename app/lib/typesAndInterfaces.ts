@@ -52,14 +52,17 @@ export type NoteInteractionState = {
 };
 export type ChordInteractionState = {
   isEraseNoteActive: boolean;
-  isEraseSharpActive: boolean;
-  isEraseFlatActive: boolean;
-  isEnterNoteActive: boolean;
+  isEraseAccidentalActive: boolean;
   isSharpActive: boolean;
   noNoteFound: boolean;
   isFlatActive: boolean;
   [key: string]: boolean | undefined;
 };
+
+export interface ActiveNote {
+  note: string;
+  index?: number;
+}
 export type KeySigState = {
   isAddSharpActive: boolean;
   isAddFlatActive: boolean;

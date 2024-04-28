@@ -25,12 +25,13 @@ import { setupRendererAndDrawChords } from "@/app/lib/setUpRendererAndDrawChords
 import { NoteStringData, StaveType, Chord } from "../../lib/typesAndInterfaces";
 import { handleChordInteraction } from "@/app/lib/handleChordInteraction";
 import {
-  updatedChord,
   updateKeysAndAddAccidentals,
+  eraseAccidental,
   addAllNotesAndAccidentals,
+  addAccidentalToNotesAndCoordinates,
 } from "@/app/lib/modifyChords2";
 
-const { Renderer, StaveNote, Accidental } = VexFlow.Flow;
+const { Renderer } = VexFlow.Flow;
 
 const ManageChords = () => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
@@ -41,6 +42,7 @@ const ManageChords = () => {
     chordInteractionInitialState
   );
   const [barIndex, setBarIndex] = useState<number>(0);
+  //const [highGPosition, setHighGPosition] = useState<number>(0);
   const [chordData, setChordData] = useState<Chord>({
     keys: [],
     duration: "w",
@@ -48,6 +50,10 @@ const ManageChords = () => {
     userClickY: 0,
     accidentals: [{ key: [], accidental: null }],
   });
+
+  const [notesAndCoordinates, setNotesAndCoordinates] = useState<
+    NoteStringData[]
+  >([{ note: "", yCoordinateMax: 0, yCoordinateMin: 0 }]);
 
   const noNoteFound = () => dispatch({ type: "noNoteFound" });
 
@@ -84,6 +90,14 @@ const ManageChords = () => {
   );
 
   useEffect(() => {
+    const initialNotesAndCoordinates = generateYMinAndYMaxForAllNotes(
+      147, //need to find a way to not hard code the high G position
+      notesArray
+    );
+    setNotesAndCoordinates(initialNotesAndCoordinates);
+  }, []);
+
+  useEffect(() => {
     initializeRenderer(rendererRef, container);
     renderStavesAndChords();
   }, []);
@@ -92,50 +106,47 @@ const ManageChords = () => {
     renderStavesAndChords();
   }, [chordData]);
 
-  let updatedFoundNoteData: NoteStringData;
-
   const handleClick = (e: React.MouseEvent) => {
     const { userClickY, userClickX, highGYPosition } = getUserClickInfo(
       e,
       container,
       staves[0]
     );
-    let foundNoteData = generateYMinAndYMaxForAllNotes(
-      highGYPosition,
-      notesArray
-    ).find(
+
+    let foundNoteData = notesAndCoordinates.find(
       ({ yCoordinateMin, yCoordinateMax }) =>
         userClickY >= yCoordinateMin && userClickY <= yCoordinateMax
     );
 
     let chordDataCopy = { ...chordData };
+    let notesAndCoordinatesCopy = [...notesAndCoordinates];
 
+    console.log(notesAndCoordinatesCopy);
     setBarIndex(() => {
       const newNum = findBarIndex(staves, userClickX);
       return newNum;
     });
 
-    if (foundNoteData)
-      updatedFoundNoteData = {
-        ...foundNoteData,
-        accidental: null,
-      };
-
     const foundNoteIndex: number = chordData.keys.findIndex(
-      (note) => note === updatedFoundNoteData?.note
+      (note) => note === foundNoteData?.note
     );
 
-    if (!updatedFoundNoteData) {
+    if (!foundNoteData) {
       noNoteFound();
     } else if (state.isSharpActive || state.isFlatActive) {
+      notesAndCoordinatesCopy = addAccidentalToNotesAndCoordinates(
+        state,
+        foundNoteData,
+        notesAndCoordinatesCopy
+      );
       if (foundNoteIndex !== -1) {
         chordDataCopy = updateKeysAndAddAccidentals(
+          state,
           chordDataCopy,
-          foundNoteIndex,
-          state
+          foundNoteIndex
         );
       }
-    } else if (state.isEraseFlatActive || state.isEraseSharpActive) {
+    } else if (state.isEraseAccidentalActive) {
       if (foundNoteIndex !== -1) {
       }
     } else if (state.isEraseNoteActive) {
@@ -144,11 +155,9 @@ const ManageChords = () => {
     } else {
       if (chordData.keys.length >= 4) return;
 
-      chordDataCopy = addAllNotesAndAccidentals(
-        chordDataCopy,
-        updatedFoundNoteData
-      );
+      chordDataCopy = addAllNotesAndAccidentals(chordDataCopy, foundNoteData);
     }
+    setNotesAndCoordinates(() => notesAndCoordinatesCopy);
     setChordData(() => chordDataCopy);
   };
 

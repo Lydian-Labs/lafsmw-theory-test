@@ -17,8 +17,7 @@ export const noteInteractionInitialState: NoteInteractionState = {
 };
 export const chordInteractionInitialState: ChordInteractionState = {
   isEraseNoteActive: false,
-  isEraseSharpActive: false,
-  isEraseFlatActive: false,
+  isEraseAccidentalActive: false,
   isEnterNoteActive: true,
   isSharpActive: false,
   noNoteFound: false,

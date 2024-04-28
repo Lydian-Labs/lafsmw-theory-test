@@ -10,9 +10,8 @@ export const getUserClickInfo = (
   const userClickY = rect ? e.clientY - rect.top : 0;
   const userClickX = rect ? e.clientX - rect.left : 0;
   const topStaveYCoord = stave && stave.getYForTopText();
-  const bottomStaveYCoord = stave && stave.getYForBottomText() || undefined;
+  const bottomStaveYCoord = (stave && stave.getYForBottomText()) || undefined;
   const highGYPosition = topStaveYCoord - 33;
-
   return {
     rect,
     userClickY,

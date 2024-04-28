@@ -11,8 +11,7 @@ export const modifyChordsActionTypes = {
   isEraseNoteActive: "Erase Note",
   isSharpActive: "Add Sharp",
   isFlatActive: "Add Flat",
-  isEraseSharpActive: "Erase Sharp",
-  isEraseFlatActive: "Erase Flat",
+  isEraseAccidentalActive: "Erase Accidental",
 };
 
 export const modifyKeySigActionTypes = {
