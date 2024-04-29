@@ -1,28 +1,34 @@
-import { Chord, NoteStringData } from "./typesAndInterfaces";
 import VexFlow from "vexflow";
+import {
+  Chord,
+  ChordInteractionState,
+  NoteStringData,
+} from "./typesAndInterfaces";
 const { Accidental, StaveNote } = VexFlow.Flow;
-import { ChordInteractionState } from "./typesAndInterfaces";
 
-export const updatedChord = (chordData: Chord, updatedKeys?: string[]) => {
+export const createStaveNoteFromChordData = (
+  chordData: Chord,
+  updatedKeys?: string[]
+) => {
   return new StaveNote({
     keys: updatedKeys ? updatedKeys : chordData.keys,
     duration: chordData.duration,
   });
 };
 
-const splitNote = (accidental: string, foundNote: string) => {
+const appendAccidentalToNote = (accidental: string, foundNote: string) => {
   const note = foundNote.split("/")[0];
   const octave = foundNote.split("/")[1];
   return `${note}${accidental}/${octave}`;
 };
 
-export const addAccidentalToNotesAndCoordinates = (
+export const updateNotesWithAccidental = (
   state: ChordInteractionState,
   foundNoteData: NoteStringData,
   notesAndCoordinates: NoteStringData[]
 ) => {
   const accidental = state.isSharpActive ? "#" : "b";
-  foundNoteData.note = splitNote(accidental, foundNoteData.note);
+  foundNoteData.note = appendAccidentalToNote(accidental, foundNoteData.note);
   const updatedNotesAndCoordinates = notesAndCoordinates.map((noteData) =>
     noteData === foundNoteData
       ? { ...noteData, note: foundNoteData.note }
@@ -31,7 +37,7 @@ export const addAccidentalToNotesAndCoordinates = (
   return updatedNotesAndCoordinates;
 };
 
-export const eraseAccidental = (note: string) => {
+export const removeAccidentalFromNote = (note: string) => {
   let noteParts = note.split("/");
   if (noteParts[0].includes("#")) {
     noteParts[0] = noteParts[0].replace("#", "");
@@ -41,24 +47,24 @@ export const eraseAccidental = (note: string) => {
   return `${noteParts[0]}/${noteParts[1]}`;
 };
 
-export const eraseAccidentalFromChordData = (
+export const removeAccidentalFromChord = (
   chordData: Chord,
   foundNoteIndex: number
 ) => {
-  let note = eraseAccidental(chordData.keys[foundNoteIndex]);
+  let note = removeAccidentalFromNote(chordData.keys[foundNoteIndex]);
   chordData.keys[foundNoteIndex] = note;
-  const newChord = updatedChord(chordData);
+  const newChord = createStaveNoteFromChordData(chordData);
   return {
     ...chordData,
     staveNotes: newChord,
   };
 };
 
-export const eraseAccidentalFromNotesAndCoordinates = (
+export const eraseAccidentalFromNotes = (
   notesAndCoordinates: NoteStringData[],
   foundNoteData: NoteStringData
 ) => {
-  foundNoteData.note = eraseAccidental(foundNoteData.note);
+  foundNoteData.note = removeAccidentalFromNote(foundNoteData.note);
   const updatedNotesAndCoordinates = notesAndCoordinates.map((noteData) =>
     noteData === foundNoteData
       ? { ...noteData, note: foundNoteData.note }
@@ -67,18 +73,18 @@ export const eraseAccidentalFromNotesAndCoordinates = (
   return updatedNotesAndCoordinates;
 };
 
-export const addAccidentalToChordDataKeys = (
+export const addAccidentalToChordKeys = (
   state: ChordInteractionState,
   chordData: Chord,
   foundNoteIndex: number
 ) => {
   const accidental = state.isSharpActive ? "#" : "b";
-  chordData.keys[foundNoteIndex] = splitNote(
+  chordData.keys[foundNoteIndex] = appendAccidentalToNote(
     accidental,
     chordData.keys[foundNoteIndex]
   );
 
-  const newChord = updatedChord(chordData);
+  const newChord = createStaveNoteFromChordData(chordData);
   chordData.keys.forEach((key, index) => {
     if (key.includes("#")) {
       newChord.addModifier(new Accidental("#"), index);
@@ -99,7 +105,7 @@ export const addNewNoteToChord = (
   foundNoteData: NoteStringData
 ) => {
   const updatedKeys = [...chordData.keys, foundNoteData.note];
-  const newChord = updatedChord(chordData, updatedKeys);
+  const newChord = createStaveNoteFromChordData(chordData, updatedKeys);
   chordData.keys.forEach((key, index) => {
     if (key.includes("#")) {
       newChord.addModifier(new Accidental("#"), index);
@@ -116,8 +122,8 @@ export const addNewNoteToChord = (
   return chordData;
 };
 
-export const redrawChord = (chordData: Chord) => {
-  const newChord = updatedChord(chordData);
+export const reconstructChord = (chordData: Chord) => {
+  const newChord = createStaveNoteFromChordData(chordData);
   chordData.keys.forEach((key, index) => {
     if (key.includes("#")) {
       newChord.addModifier(new Accidental("#"), index);
@@ -133,10 +139,13 @@ export const redrawChord = (chordData: Chord) => {
   return chordData;
 };
 
-export const eraseNoteInChord = (chordData: Chord, foundNoteIndex: number) => {
+export const removeNoteFromChord = (
+  chordData: Chord,
+  foundNoteIndex: number
+) => {
   if (chordData.keys[foundNoteIndex]) {
     chordData.keys.splice(foundNoteIndex, 1);
-    const newChord = updatedChord(chordData);
+    const newChord = createStaveNoteFromChordData(chordData);
     chordData = {
       ...chordData,
       staveNotes: newChord,
@@ -144,5 +153,4 @@ export const eraseNoteInChord = (chordData: Chord, foundNoteIndex: number) => {
     return chordData;
   }
   return chordData;
-  //erase accidental from notesAndCoordinatesArray
 };

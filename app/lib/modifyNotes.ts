@@ -4,7 +4,6 @@ import {
   ModifyNoteData,
   NoteStringData,
   StaveNoteData,
-  Chord,
 } from "./typesAndInterfaces";
 const { Accidental, StaveNote } = VexFlow.Flow;
 

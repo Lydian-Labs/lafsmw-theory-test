@@ -113,6 +113,11 @@ export interface NoteStringData {
   staveNotes?: StaveNoteData;
   accidental?: null | string;
 }
+export interface FoundNoteData {
+  note: string;
+  yCoordinateMin: number;
+  yCoordinateMax: number;
+}
 
 export interface ModifyNoteData {
   barOfStaveNotes: StaveNoteData;
