@@ -162,19 +162,6 @@ export default function ExamHomePage() {
     }
   };
 
-  // const handleEndExam = async (e: MouseEvent) => {
-  //   e.preventDefault();
-  //   try {
-  //     if (!userName) {
-  //       throw new Error("No current user found.");
-  //     }
-  //     console.log("userAnswers:", userAnswers);
-  //     return router.push("/sign-out");
-  //   } catch (error) {
-  //     console.error("handleEndExam error:", error);
-  //   }
-  // };
-
   return (
     <Box>
       <Stack
@@ -319,9 +306,6 @@ export default function ExamHomePage() {
               <Button onClick={handleFinalSubmit}>
                 <Typography>Submit Final Answers</Typography>
               </Button>
-              {/* <Button onClick={handleEndExam}>
-                <Typography>Send Results to Kyle</Typography>
-              </Button> */}
               <Button onClick={incrementViewState}>
                 <Typography>Back to page 1</Typography>
               </Button>
