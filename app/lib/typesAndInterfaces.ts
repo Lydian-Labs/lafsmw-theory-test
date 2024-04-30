@@ -197,6 +197,7 @@ export interface InputState {
   user: any;
   level: Level;
   keySignatures: InputData;
+  keySignaturesNotation: any;
   chords: InputData;
   progressions: InputData;
   blues: InputData;
@@ -205,4 +206,5 @@ export interface InputState {
 export interface UserDataProps {
   currentUserData: InputState;
   setCurrentUserData: (userData: InputState) => void;
+  nextViewState: () => void;
 }

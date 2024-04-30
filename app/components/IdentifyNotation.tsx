@@ -1,6 +1,5 @@
 import { ForwardedRef, forwardRef, useState } from "react";
 import createInitialState from "../lib/createInitialState";
-import gatherWidthInfo from "../lib/gatherWidthInfo";
 import {
   ChangeEvent,
   Chord,
@@ -12,6 +11,7 @@ import Staff from "./Staff";
 
 type IdentifyNotationProps = {
   numBars?: number;
+  evenbars?: boolean;
   chords?: Chord[];
   width: number;
   handleInput: (input: InputData) => void;
@@ -20,6 +20,7 @@ type IdentifyNotationProps = {
 export default forwardRef(function IdentifyNotation(
   {
     numBars = 4,
+    evenbars = false,
     chords = [],
     width = 1650,
     handleInput,
@@ -32,18 +33,26 @@ export default forwardRef(function IdentifyNotation(
     initialChordsInputState
   );
 
-  // Gather needed width info.
-  const { widthOfFirstBar, widthOfRemainingBars } = gatherWidthInfo(
-    numBars,
-    width
-  );
+  const fullWidth = width * 0.97;
+  const reducedWidth = fullWidth - 90;
+
+  let widthOfFirstBar;
+  let widthOfRemainingBars;
+
+  if (evenbars === false) {
+    widthOfFirstBar = fullWidth / numBars;
+    widthOfRemainingBars = (fullWidth - widthOfFirstBar - 90) / (numBars - 1);
+  } else {
+    widthOfFirstBar = reducedWidth / numBars;
+    widthOfRemainingBars = widthOfFirstBar;
+  }
 
   const remainingBarsString = (numBars - 1).toString();
 
   const gridInputInline = {
     display: "grid",
     gridTemplateColumns: `${widthOfFirstBar}px repeat(${remainingBarsString}, ${widthOfRemainingBars}px)`,
-    paddingLeft: "5.5rem",
+    paddingLeft: evenbars ? "4.5rem" : "5.5rem",
   };
 
   function handleInputSubmit(e: FormEvent) {
@@ -71,10 +80,12 @@ export default forwardRef(function IdentifyNotation(
     <div>
       <form ref={ref} id="submit-form-chords" onSubmit={handleInputSubmit}>
         <Staff
+          evenbars={evenbars}
           addDoubleBarLine={true}
           numBars={numBars}
           chords={chords}
           width={width}
+          noTimeSignature
         />
         <div style={gridInputInline}>{renderTextInputs()}</div>
       </form>
