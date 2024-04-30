@@ -11,32 +11,34 @@ import {
 } from "@mui/material";
 
 import { notationInstructions } from "@/app/lib/instructions";
-import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
+import { Level, MouseEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import { useState } from "react";
-import NotateScale from "../NotateScale";
 import CardFooter from "../CardFooter";
+import ClassPreferenceSelector from "../ClassPreferenceSelector";
+import NotateKeySignature from "../NotateKeySignature";
 
-export default function TriadsNotation({
+export default function KeySignaturesNotation({
   currentUserData,
   setCurrentUserData,
+  nextViewState,
 }: UserDataProps) {
-  const [chordNotation, setChordNotation] = useState({
-    input1: "",
-    input2: "",
-    input3: "",
-    input4: "",
-    input5: "",
-    input6: "",
-  });
+  const [level, setLevel] = useState<Level>("sibelius-class");
+  const [keySignatureNotation, setKeySignatureNotation] = useState("");
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = async (e: MouseEvent) => {
     e.preventDefault();
     const payload = {
       ...currentUserData,
-      chordNotation: chordNotation,
+      level: level,
+      keySignaturesNotation: keySignatureNotation,
     };
     setCurrentUserData(payload);
+    nextViewState();
   };
+
+  function handleKeySigNotation(input: any) {
+    setKeySignatureNotation(input);
+  }
 
   return (
     <Container>
@@ -53,8 +55,12 @@ export default function TriadsNotation({
           <Grid item xs={4}>
             <Stack gap={2} alignItems={"center"}>
               <Typography variant="h6" align="center">
-                Section 4: Notate Triads
+                Section 1: Notate Key Signatures
               </Typography>
+              <ClassPreferenceSelector
+                level={level}
+                setLevel={setLevel}
+              ></ClassPreferenceSelector>
               <Box
                 width={273}
                 height={456}
@@ -102,14 +108,14 @@ export default function TriadsNotation({
               >
                 <Grid item>
                   <Typography variant="h6">
-                    Notate the following triads:
+                    Notate the following key signature: Db Major
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <NotateScale />
+                  <NotateKeySignature handleNotes={handleKeySigNotation} />
                 </Grid>
               </Grid>
-              <CardFooter pageNumber={4} />
+              <CardFooter pageNumber={1} handleSubmit={handleSubmit} />
             </Box>
           </Grid>
         </Grid>

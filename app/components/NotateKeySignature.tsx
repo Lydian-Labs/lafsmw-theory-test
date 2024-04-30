@@ -19,7 +19,7 @@ import { GlyphProps } from "../lib/typesAndInterfaces";
 const VF = VexFlow.Flow;
 const { Renderer } = VF;
 
-const NotateKeySignature = () => {
+const NotateKeySignature = ({ handleNotes }: any) => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
   const [blankStaves, setBlankStaves] = useState(INITIAL_STAVES);
@@ -107,6 +107,8 @@ const NotateKeySignature = () => {
           : "",
       },
     ]);
+
+    handleNotes(glyphs);
   };
 
   return (

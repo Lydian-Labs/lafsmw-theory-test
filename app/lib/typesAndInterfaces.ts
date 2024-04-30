@@ -119,7 +119,9 @@ export interface CheckNumBeatsInMeasureProps {
 
 export interface CheckIfNoteFoundProps {
   noNoteFound: boolean;
-  openEnterNotes: React.Dispatch<NoteInteractionAction | ChordInteractionAction>;
+  openEnterNotes: React.Dispatch<
+    NoteInteractionAction | ChordInteractionAction
+  >;
 }
 
 export interface RenderStavesAndNotesParams {
@@ -164,6 +166,7 @@ export interface InputState {
   user: any;
   level: Level;
   keySignatures: InputData;
+  keySignaturesNotation: any;
   chords: InputData;
   progressions: InputData;
   blues: InputData;
@@ -172,4 +175,5 @@ export interface InputState {
 export interface UserDataProps {
   currentUserData: InputState;
   setCurrentUserData: (userData: InputState) => void;
+  nextViewState: () => void;
 }

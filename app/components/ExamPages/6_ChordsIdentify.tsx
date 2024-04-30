@@ -9,6 +9,7 @@ import IdentifyNotation from "../IdentifyNotation";
 export default function ChordsIdentification({
   currentUserData,
   setCurrentUserData,
+  nextViewState,
 }: UserDataProps) {
   const chordsFormRef = useRef<HTMLFormElement | null>(null);
 
@@ -24,12 +25,11 @@ export default function ChordsIdentification({
         height={637}
         bgcolor={"secondary.main"}
         borderRadius="var(--borderRadius)"
-        margin={"auto"}
         p={2}
         boxShadow={"0px 4px 4px rgba(0, 0, 0, 0.25)"}
       >
         <Stack gap={2}>
-          <Typography variant="h5" marginLeft={8} marginY={2}>
+          <Typography variant="h6" marginLeft={8} marginY={2}>
             Section 6: Identify Chords
           </Typography>
           <Box
@@ -67,9 +67,10 @@ export default function ChordsIdentification({
             <CardFooter
               width={900}
               height={200}
-              pageNumber={6}
+              pageNumber={14}
               handleSubmit={() => {
                 chordsFormRef.current?.requestSubmit();
+                nextViewState();
               }}
             />
           </Box>

@@ -13,14 +13,15 @@ import {
 import { notationInstructions } from "@/app/lib/instructions";
 import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import { useState } from "react";
-import NotateScale from "../NotateScale";
 import CardFooter from "../CardFooter";
+import NotateScale from "../NotateScale";
 
-export default function NotateSeventhChords({
+export default function ScalesNotation2({
   currentUserData,
   setCurrentUserData,
+  nextViewState,
 }: UserDataProps) {
-  const [chordNotation, setChordNotation] = useState({
+  const [scales, setScales] = useState({
     input1: "",
     input2: "",
     input3: "",
@@ -33,9 +34,10 @@ export default function NotateSeventhChords({
     e.preventDefault();
     const payload = {
       ...currentUserData,
-      chordNotation: chordNotation,
+      scales: scales,
     };
     setCurrentUserData(payload);
+    nextViewState();
   };
 
   return (
@@ -53,7 +55,7 @@ export default function NotateSeventhChords({
           <Grid item xs={4}>
             <Stack gap={2} alignItems={"center"}>
               <Typography variant="h6" align="center">
-                Section 5: Notate 7th chords
+                Section 3: Notate Scales
               </Typography>
               <Box
                 width={273}
@@ -102,14 +104,14 @@ export default function NotateSeventhChords({
               >
                 <Grid item>
                   <Typography variant="h6">
-                    Notate the following 7th chords:
+                    Write the following scale: B Major
                   </Typography>
                 </Grid>
                 <Grid item>
                   <NotateScale />
                 </Grid>
               </Grid>
-              <CardFooter pageNumber={5} />
+              <CardFooter pageNumber={7} handleSubmit={handleSubmit} />
             </Box>
           </Grid>
         </Grid>

@@ -28,8 +28,8 @@ export default forwardRef(function WriteBlues(
   );
 
   const chordWidth = width * 0.0415;
-  const gapWidth = chordWidth * 0.22;
-  const chordGroupSpacing = chordWidth * 0.1;
+  const gapWidth = chordWidth * 0.2;
+  const chordGroupSpacing = chordWidth * 0.07;
 
   const gridInputInline = {
     display: "grid",

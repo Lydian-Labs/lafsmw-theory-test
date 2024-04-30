@@ -5,11 +5,12 @@ import { useRef } from "react";
 import CardFooter from "../CardFooter";
 import WriteProgression from "../WriteProgression";
 
-export default function ProgressionsWrite({
+export default function WriteProgressions({
   currentUserData,
   setCurrentUserData,
+  nextViewState,
 }: UserDataProps) {
-  const progressionsWriteFormRef = useRef<HTMLFormElement | null>(null);
+  const writeProgressionsFormRef = useRef<HTMLFormElement | null>(null);
 
   function handleProgressions(input: InputData) {
     setCurrentUserData({ ...currentUserData, progressions: input });
@@ -23,12 +24,11 @@ export default function ProgressionsWrite({
         height={780}
         bgcolor={"secondary.main"}
         borderRadius="var(--borderRadius)"
-        margin={"auto"}
         p={2}
         boxShadow={"0px 4px 4px rgba(0, 0, 0, 0.25)"}
       >
         <Stack gap={2}>
-          <Typography variant="h5" marginLeft={8} marginY={1}>
+          <Typography variant="h6" marginLeft={8} marginY={1}>
             Section 7: Write Progressions
           </Typography>
           <Box
@@ -50,13 +50,13 @@ export default function ProgressionsWrite({
             >
               <Grid item>
                 <Typography variant="h6" marginBottom={2}>
-                  Write ii-V-I Progressions in the following keys:
+                  Write II-V-I Progressions in the following keys:
                 </Typography>
               </Grid>
               <Grid item>
                 <WriteProgression
                   handleProg={handleProgressions}
-                  ref={progressionsWriteFormRef}
+                  ref={writeProgressionsFormRef}
                   width={950}
                 />
               </Grid>
@@ -64,9 +64,10 @@ export default function ProgressionsWrite({
             <CardFooter
               width={900}
               height={100}
-              pageNumber={6}
+              pageNumber={15}
               handleSubmit={() => {
-                progressionsWriteFormRef.current?.requestSubmit();
+                writeProgressionsFormRef.current?.requestSubmit();
+                nextViewState();
               }}
             />
           </Box>

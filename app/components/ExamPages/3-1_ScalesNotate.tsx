@@ -10,27 +10,34 @@ import {
   Typography,
 } from "@mui/material";
 
-import NotateKeySignature from "../NotateKeySignature";
 import { notationInstructions } from "@/app/lib/instructions";
-import { MouseEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
+import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import { useState } from "react";
-import ClassPreferenceSelector from "../ClassPreferenceSelector";
-import { Level } from "@/app/lib/typesAndInterfaces";
 import CardFooter from "../CardFooter";
+import NotateScale from "../NotateScale";
 
-export default function KeySignaturesNotation({
+export default function ScalesNotation({
   currentUserData,
   setCurrentUserData,
+  nextViewState,
 }: UserDataProps) {
-  const [level, setLevel] = useState<Level>("sibelius-class");
+  const [scales, setScales] = useState({
+    input1: "",
+    input2: "",
+    input3: "",
+    input4: "",
+    input5: "",
+    input6: "",
+  });
 
-  const handleSubmit = async (e: MouseEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const payload = {
       ...currentUserData,
-      level: level,
+      scales: scales,
     };
     setCurrentUserData(payload);
+    nextViewState();
   };
 
   return (
@@ -48,12 +55,8 @@ export default function KeySignaturesNotation({
           <Grid item xs={4}>
             <Stack gap={2} alignItems={"center"}>
               <Typography variant="h6" align="center">
-                Section 1: Notate Key Signatures
+                Section 3: Notate Scales
               </Typography>
-              <ClassPreferenceSelector
-                level={level}
-                setLevel={setLevel}
-              ></ClassPreferenceSelector>
               <Box
                 width={273}
                 height={456}
@@ -101,14 +104,14 @@ export default function KeySignaturesNotation({
               >
                 <Grid item>
                   <Typography variant="h6">
-                    Notate the following key signature: Db Major
+                    Write the following scale: Db Major
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <NotateKeySignature />
+                  <NotateScale />
                 </Grid>
               </Grid>
-              <CardFooter pageNumber={1} handleSubmit={handleSubmit} />
+              <CardFooter pageNumber={6} handleSubmit={handleSubmit} />
             </Box>
           </Grid>
         </Grid>
