@@ -11,7 +11,9 @@ export default function SignOutPage() {
   };
   return (
     <main className="flex min-h-[500px] flex-col items-center justify-center mt-12 gap-20">
-      <Typography variant="h3">Thank you!</Typography>
+      <Typography variant="h3">
+        Congratulations! You have completed the exam.
+      </Typography>
       <div>
         <Button variant="text" color="primary" onClick={signOutOfAppButton}>
           <Typography>Sign Out and Exit Exam</Typography>

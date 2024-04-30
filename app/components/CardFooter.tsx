@@ -16,7 +16,7 @@ export default function CardFooter({
   height = 100,
   pageNumber,
   buttonType = "submit",
-  buttonText = "Save and Continue",
+  buttonText = "Save and Continue >",
   handleSubmit,
   buttonForm,
 }: CardFooterProps) {

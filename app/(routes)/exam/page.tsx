@@ -156,23 +156,24 @@ export default function ExamHomePage() {
       }
       await setOrUpdateStudentData(currentUserData, userName);
       updateAnswers();
+      return router.push("/sign-out");
     } catch (error) {
       console.error("handleSubmit error:", error);
     }
   };
 
-  const handleEndExam = async (e: MouseEvent) => {
-    e.preventDefault();
-    try {
-      if (!userName) {
-        throw new Error("No current user found.");
-      }
-      console.log("userAnswers:", userAnswers);
-      return router.push("/sign-out");
-    } catch (error) {
-      console.error("handleEndExam error:", error);
-    }
-  };
+  // const handleEndExam = async (e: MouseEvent) => {
+  //   e.preventDefault();
+  //   try {
+  //     if (!userName) {
+  //       throw new Error("No current user found.");
+  //     }
+  //     console.log("userAnswers:", userAnswers);
+  //     return router.push("/sign-out");
+  //   } catch (error) {
+  //     console.error("handleEndExam error:", error);
+  //   }
+  // };
 
   return (
     <Box>
@@ -307,16 +308,20 @@ export default function ExamHomePage() {
         )}
         {viewState === VIEW_STATES.SUBMIT_AND_EXIT && (
           <main className="flex min-h-[500px] flex-col items-center justify-center mt-12 gap-20">
-            <Typography variant="h3" marginLeft={8}>
-              Congratulations! You have completed the exam.
+            <Typography variant="h3">Submit your answers</Typography>
+            <Typography variant="body1" width={550} align="center">
+              To submit your answers and exit the exam, click the button below.
+              You will not be able to return to the exam after submitting. If
+              you need to make changes, please click the button to go back to
+              page 1.
             </Typography>
             <Stack direction={"column"} gap={4} p={4}>
               <Button onClick={handleFinalSubmit}>
                 <Typography>Submit Final Answers</Typography>
               </Button>
-              <Button onClick={handleEndExam}>
+              {/* <Button onClick={handleEndExam}>
                 <Typography>Send Results to Kyle</Typography>
-              </Button>
+              </Button> */}
               <Button onClick={incrementViewState}>
                 <Typography>Back to page 1</Typography>
               </Button>
