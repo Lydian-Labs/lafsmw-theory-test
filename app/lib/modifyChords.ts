@@ -6,6 +6,12 @@ import {
 } from "./typesAndInterfaces";
 const { Accidental, StaveNote } = VexFlow.Flow;
 
+const parseNote = (note: string) => {
+  const noteBase = note.split("/")[0];
+  const octave = note.split("/")[1];
+  return { noteBase, octave };
+};
+
 export const createStaveNoteFromChordData = (
   chordData: Chord,
   updatedKeys?: string[]
@@ -16,10 +22,9 @@ export const createStaveNoteFromChordData = (
   });
 };
 
-const appendAccidentalToNote = (accidental: string, foundNote: string) => {
-  const note = foundNote.split("/")[0];
-  const octave = foundNote.split("/")[1];
-  return `${note}${accidental}/${octave}`;
+const appendAccidentalToNote = (accidental: string, note: string) => {
+  const { noteBase, octave } = parseNote(note);
+  return `${noteBase}${accidental}/${octave}`;
 };
 
 export const updateNotesWithAccidental = (
@@ -29,12 +34,11 @@ export const updateNotesWithAccidental = (
 ) => {
   const accidental = state.isSharpActive ? "#" : "b";
   foundNoteData.note = appendAccidentalToNote(accidental, foundNoteData.note);
-  const updatedNotesAndCoordinates = notesAndCoordinates.map((noteData) =>
+  return notesAndCoordinates.map((noteData) =>
     noteData === foundNoteData
       ? { ...noteData, note: foundNoteData.note }
       : noteData
   );
-  return updatedNotesAndCoordinates;
 };
 
 export const removeAccidentalFromNote = (note: string) => {
@@ -85,10 +89,14 @@ export const addAccidentalToChordKeys = (
   );
 
   const newChord = createStaveNoteFromChordData(chordData);
+
   chordData.keys.forEach((key, index) => {
-    if (key.includes("#")) {
+    let newKey = key;
+    let { noteBase } = parseNote(newKey);
+    console.log(noteBase);
+    if (noteBase.endsWith("#")) {
       newChord.addModifier(new Accidental("#"), index);
-    } else if (key.includes("b")) {
+    } else if (noteBase.endsWith("b")) {
       newChord.addModifier(new Accidental("b"), index);
     }
   });

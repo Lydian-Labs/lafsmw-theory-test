@@ -24,12 +24,12 @@ export const handleChordInteraction = (
   let updatedNotesAndCoordinates = [...notesAndCoordinates];
 
   if (state.isSharpActive || state.isFlatActive) {
-    updatedNotesAndCoordinates = updateNotesWithAccidental(
-      state,
-      foundNoteData,
-      notesAndCoordinates
-    );
     if (foundNoteIndex !== -1) {
+      updatedNotesAndCoordinates = updateNotesWithAccidental(
+        state,
+        foundNoteData,
+        notesAndCoordinates
+      );
       updatedChordData = addAccidentalToChordKeys(
         state,
         chordData,
@@ -37,14 +37,14 @@ export const handleChordInteraction = (
       );
     }
   } else if (state.isEraseAccidentalActive) {
-    notesAndCoordinates = eraseAccidentalFromNotes(
-      notesAndCoordinates,
-      foundNoteData
-    );
     if (foundNoteIndex !== -1) {
+      notesAndCoordinates = eraseAccidentalFromNotes(
+        notesAndCoordinates,
+        foundNoteData
+      );
       updatedChordData = removeAccidentalFromChord(chordData, foundNoteIndex);
+      updatedChordData = reconstructChord(chordData);
     }
-    updatedChordData = reconstructChord(chordData);
   } else if (state.isEraseNoteActive) {
     if (foundNoteIndex !== -1) {
       updatedChordData = removeNoteFromChord(chordData, foundNoteIndex);
