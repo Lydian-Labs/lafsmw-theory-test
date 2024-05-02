@@ -3,6 +3,7 @@ import {
   Chord,
   ChordInteractionState,
   NoteStringData,
+  StaveNoteType,
 } from "./typesAndInterfaces";
 const { Accidental, StaveNote } = VexFlow.Flow;
 
@@ -22,9 +23,38 @@ export const createStaveNoteFromChordData = (
   });
 };
 
+const addAccidentalsToStaveNotes = (
+  keys: string[],
+  newChord: StaveNoteType
+) => {
+  keys.forEach((key, index) => {
+    let newKey = key;
+    let { noteBase } = parseNote(newKey);
+    if (noteBase.endsWith("##")) {
+      newChord.addModifier(new Accidental("##"), index);
+    } else if (noteBase.endsWith("#")) {
+      newChord.addModifier(new Accidental("#"), index);
+    } else if (noteBase.length > 2 && noteBase.endsWith("bb")) {
+      newChord.addModifier(new Accidental("bb"), index);
+    } else if (noteBase.length > 1 && noteBase.endsWith("b")) {
+      newChord.addModifier(new Accidental("b"), index);
+    }
+  });
+};
+
 const appendAccidentalToNote = (accidental: string, note: string) => {
   const { noteBase, octave } = parseNote(note);
-  return `${noteBase}${accidental}/${octave}`;
+  if (
+    (accidental === "#" && noteBase.endsWith("b")) || // Prevent adding a sharp to a flat
+    (accidental === "b" && noteBase.endsWith("#")) // Prevent adding a flat to a sharp
+  ) {
+    console.log("Cannot add contradictory accidentals to the same note.");
+    return note; // Return the note unchanged
+  }
+  if (noteBase.length < 3) {
+    return `${noteBase}${accidental}/${octave}`;
+  }
+  return `${noteBase}/${octave}`;
 };
 
 export const updateNotesWithAccidental = (
@@ -42,13 +72,17 @@ export const updateNotesWithAccidental = (
 };
 
 export const removeAccidentalFromNote = (note: string) => {
-  let noteParts = note.split("/");
-  if (noteParts[0].includes("#")) {
-    noteParts[0] = noteParts[0].replace("#", "");
-  } else if (noteParts[0].includes("b")) {
-    noteParts[0] = noteParts[0].replace("b", "");
+  let { noteBase, octave } = parseNote(note);
+  if (noteBase.length > 2 && noteBase.endsWith("##")) {
+    noteBase = noteBase.replace("##", "");
+  } else if (noteBase.length > 2 && noteBase.endsWith("bb")) {
+    noteBase = noteBase.replace("bb", "");
+  } else if (noteBase.length > 1 && noteBase.endsWith("b")) {
+    noteBase = noteBase.replace("b", "");
+  } else if (noteBase.endsWith("#")) {
+    noteBase = noteBase.replace("#", "");
   }
-  return `${noteParts[0]}/${noteParts[1]}`;
+  return `${noteBase}/${octave}`;
 };
 
 export const removeAccidentalFromChord = (
@@ -69,12 +103,11 @@ export const eraseAccidentalFromNotes = (
   foundNoteData: NoteStringData
 ) => {
   foundNoteData.note = removeAccidentalFromNote(foundNoteData.note);
-  const updatedNotesAndCoordinates = notesAndCoordinates.map((noteData) =>
+  return notesAndCoordinates.map((noteData) =>
     noteData === foundNoteData
       ? { ...noteData, note: foundNoteData.note }
       : noteData
   );
-  return updatedNotesAndCoordinates;
 };
 
 export const addAccidentalToChordKeys = (
@@ -90,16 +123,7 @@ export const addAccidentalToChordKeys = (
 
   const newChord = createStaveNoteFromChordData(chordData);
 
-  chordData.keys.forEach((key, index) => {
-    let newKey = key;
-    let { noteBase } = parseNote(newKey);
-    console.log(noteBase);
-    if (noteBase.endsWith("#")) {
-      newChord.addModifier(new Accidental("#"), index);
-    } else if (noteBase.endsWith("b")) {
-      newChord.addModifier(new Accidental("b"), index);
-    }
-  });
+  addAccidentalsToStaveNotes(chordData.keys, newChord);
 
   chordData = {
     ...chordData,
@@ -114,31 +138,21 @@ export const addNewNoteToChord = (
 ) => {
   const updatedKeys = [...chordData.keys, foundNoteData.note];
   const newChord = createStaveNoteFromChordData(chordData, updatedKeys);
-  chordData.keys.forEach((key, index) => {
-    if (key.includes("#")) {
-      newChord.addModifier(new Accidental("#"), index);
-    } else if (key.includes("b")) {
-      newChord.addModifier(new Accidental("b"), index);
-    }
-  });
+
+  addAccidentalsToStaveNotes(updatedKeys, newChord);
 
   chordData = {
     ...chordData,
     keys: updatedKeys,
     staveNotes: newChord,
   };
+  console.log(chordData);
   return chordData;
 };
 
 export const reconstructChord = (chordData: Chord) => {
   const newChord = createStaveNoteFromChordData(chordData);
-  chordData.keys.forEach((key, index) => {
-    if (key.includes("#")) {
-      newChord.addModifier(new Accidental("#"), index);
-    } else if (key.includes("b")) {
-      newChord.addModifier(new Accidental("b"), index);
-    }
-  });
+  addAccidentalsToStaveNotes(chordData.keys, newChord);
 
   chordData = {
     ...chordData,

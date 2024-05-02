@@ -20,7 +20,6 @@ export type Chord = {
   userClickY?: number;
   sharpIndexArray?: number[];
   flatIndexArray?: number[] | [];
-  accidentals: { key: string[]; accidental: null | string }[];
 };
 
 export type Level =

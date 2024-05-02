@@ -41,12 +41,11 @@ const ManageChords = () => {
     duration: "w",
     staveNotes: null,
     userClickY: 0,
-    accidentals: [{ key: [], accidental: null }],
   });
 
   const [notesAndCoordinates, setNotesAndCoordinates] = useState<
     FoundNoteData[]
-  >([{ note: "", yCoordinateMax: 0, yCoordinateMin: 0 }]);
+  >([{ note: "", yCoordinateMin: 0, yCoordinateMax: 0 }]);
 
   const noNoteFound = () => dispatch({ type: "noNoteFound" });
 
@@ -62,10 +61,13 @@ const ManageChords = () => {
         duration: "w",
         staveNotes: null,
         userClickY: 0,
-        accidentals: [{ key: [], accidental: null }],
       };
       return newState;
     });
+    setNotesAndCoordinates(() =>
+      generateYMinAndYMaxForAllNotes(147, notesArray)
+    );
+    console.log(notesAndCoordinates, chordData.keys);
     renderStavesAndChords();
   };
 
@@ -83,11 +85,9 @@ const ManageChords = () => {
   );
 
   useEffect(() => {
-    const initialNotesAndCoordinates = generateYMinAndYMaxForAllNotes(
-      147, //need to find a way to not hard code the high G position
-      notesArray
+    setNotesAndCoordinates(() =>
+      generateYMinAndYMaxForAllNotes(147, notesArray)
     );
-    setNotesAndCoordinates(initialNotesAndCoordinates);
   }, []);
 
   useEffect(() => {
