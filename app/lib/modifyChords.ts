@@ -45,7 +45,7 @@ const addAccidentalsToStaveNotes = (
 const appendAccidentalToNote = (accidental: string, note: string) => {
   const { noteBase, octave } = parseNote(note);
   if (
-    (accidental === "#" && noteBase.endsWith("b")) || // Prevent adding a sharp to a flat
+    (accidental === "#" && noteBase.length > 1 && noteBase.endsWith("b")) || // Prevent adding a sharp to a flat
     (accidental === "b" && noteBase.endsWith("#")) // Prevent adding a flat to a sharp
   ) {
     console.log("Cannot add contradictory accidentals to the same note.");
