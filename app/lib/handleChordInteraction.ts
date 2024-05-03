@@ -1,7 +1,7 @@
 import {
   addAccidentalToChordKeys,
   addNewNoteToChord,
-  eraseAccidentalFromNote,
+  removeAccidentalFromNote,
   reconstructChord,
   removeAccidentalFromChord,
   removeNoteFromChord,
@@ -38,7 +38,7 @@ export const handleChordInteraction = (
     }
   } else if (state.isEraseAccidentalActive) {
     if (foundNoteIndex !== -1) {
-      notesAndCoordinates = eraseAccidentalFromNote(
+      notesAndCoordinates = removeAccidentalFromNote(
         notesAndCoordinates,
         foundNoteData
       );
@@ -48,7 +48,7 @@ export const handleChordInteraction = (
   } else if (state.isEraseNoteActive) {
     if (foundNoteIndex !== -1) {
       updatedChordData = removeNoteFromChord(chordData, foundNoteIndex);
-      updatedNotesAndCoordinates = eraseAccidentalFromNote(
+      updatedNotesAndCoordinates = removeAccidentalFromNote(
         notesAndCoordinates,
         foundNoteData
       );

@@ -23,21 +23,24 @@ export const createStaveNoteFromChordData = (
   });
 };
 
+const getAccidentalType = (noteBase: string) => {
+  if (noteBase.endsWith("##")) return "##";
+  if (noteBase.endsWith("bb") && noteBase.length > 2) return "bb";
+  if (noteBase.endsWith("#")) return "#";
+  if (noteBase.endsWith("b") && noteBase.length > 1) return "b";
+  return null;
+};
+
 const addAccidentalsToStaveNotes = (
   keys: string[],
   newChord: StaveNoteType
 ) => {
   keys.forEach((key, index) => {
-    let newKey = key;
-    let { noteBase } = parseNote(newKey);
-    if (noteBase.endsWith("##")) {
-      newChord.addModifier(new Accidental("##"), index);
-    } else if (noteBase.endsWith("#")) {
-      newChord.addModifier(new Accidental("#"), index);
-    } else if (noteBase.length > 2 && noteBase.endsWith("bb")) {
-      newChord.addModifier(new Accidental("bb"), index);
-    } else if (noteBase.length > 1 && noteBase.endsWith("b")) {
-      newChord.addModifier(new Accidental("b"), index);
+    const { noteBase } = parseNote(key);
+    const accidentalType = getAccidentalType(noteBase);
+
+    if (accidentalType) {
+      newChord.addModifier(new Accidental(accidentalType), index);
     }
   });
 };
@@ -45,11 +48,11 @@ const addAccidentalsToStaveNotes = (
 const appendAccidentalToNote = (accidental: string, note: string) => {
   const { noteBase, octave } = parseNote(note);
   if (
-    (accidental === "#" && noteBase.length > 1 && noteBase.endsWith("b")) || // Prevent adding a sharp to a flat
-    (accidental === "b" && noteBase.endsWith("#")) // Prevent adding a flat to a sharp
+    (accidental === "#" && noteBase.length > 1 && noteBase.endsWith("b")) ||
+    (accidental === "b" && noteBase.endsWith("#"))
   ) {
     console.log("Cannot add contradictory accidentals to the same note.");
-    return note; // Return the note unchanged
+    return note;
   }
   if (noteBase.length < 3) {
     return `${noteBase}${accidental}/${octave}`;
@@ -71,17 +74,22 @@ export const updateNoteWithAccidental = (
   );
 };
 
-export const removeAccidentalFromNote = (note: string) => {
+export const removeAccidentals = (note: string) => {
   let { noteBase, octave } = parseNote(note);
-  if (noteBase.length > 2 && noteBase.endsWith("##")) {
-    noteBase = noteBase.replace("##", "");
-  } else if (noteBase.length > 2 && noteBase.endsWith("bb")) {
-    noteBase = noteBase.replace("bb", "");
-  } else if (noteBase.length > 1 && noteBase.endsWith("b")) {
-    noteBase = noteBase.replace("b", "");
-  } else if (noteBase.endsWith("#")) {
-    noteBase = noteBase.replace("#", "");
+  if (noteBase.length > 2) {
+    if (noteBase.endsWith("##")) {
+      noteBase = noteBase.replace("##", "");
+    } else if (noteBase.endsWith("bb")) {
+      noteBase = noteBase.replace("bb", "");
+    }
+  } else if (noteBase.length > 1) {
+    if (noteBase.endsWith("b")) {
+      noteBase = noteBase.replace("b", "");
+    } else if (noteBase.endsWith("#")) {
+      noteBase = noteBase.replace("#", "");
+    }
   }
+
   return `${noteBase}/${octave}`;
 };
 
@@ -89,7 +97,7 @@ export const removeAccidentalFromChord = (
   chordData: Chord,
   foundNoteIndex: number
 ) => {
-  let note = removeAccidentalFromNote(chordData.keys[foundNoteIndex]);
+  let note = removeAccidentals(chordData.keys[foundNoteIndex]);
   chordData.keys[foundNoteIndex] = note;
   const newChord = createStaveNoteFromChordData(chordData);
   return {
@@ -98,11 +106,11 @@ export const removeAccidentalFromChord = (
   };
 };
 
-export const eraseAccidentalFromNote = (
+export const removeAccidentalFromNote = (
   notesAndCoordinates: NoteStringData[],
   foundNoteData: NoteStringData
 ) => {
-  foundNoteData.note = removeAccidentalFromNote(foundNoteData.note);
+  foundNoteData.note = removeAccidentals(foundNoteData.note);
   return notesAndCoordinates.map((noteData) =>
     noteData === foundNoteData
       ? { ...noteData, note: foundNoteData.note }

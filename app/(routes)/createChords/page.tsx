@@ -67,7 +67,6 @@ const ManageChords = () => {
     setNotesAndCoordinates(() =>
       generateYMinAndYMaxForAllNotes(147, notesArray)
     );
-    console.log(notesAndCoordinates, chordData.keys);
     renderStavesAndChords();
   };
 
@@ -127,7 +126,6 @@ const ManageChords = () => {
       noNoteFound();
       return;
     }
-
     const {
       chordData: newChordData,
       notesAndCoordinates: newNotesAndCoordinates,
