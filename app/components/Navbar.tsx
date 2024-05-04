@@ -26,8 +26,8 @@ const Navbar: FC = () => {
           </div>
           <ul className="hidden sm:text-1xl py-20 sm:py-1 sm:flex">
             <li className="p-4">
-              <Link href="/NoteAndAccidentalInput">
-                Note and Accidental Input Demo
+              <Link href="/createScales">
+                Create Scales
               </Link>
             </li>
             <li className="p-4">
