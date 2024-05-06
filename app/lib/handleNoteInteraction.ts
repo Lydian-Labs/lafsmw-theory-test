@@ -25,7 +25,7 @@ export const handleNoteInteraction = (
   noNoteFoundAction: string,
   barOfStaveNotes: StaveNoteData[],
   notesDataCopy: StaveNoteData[][],
-  state: NoteInteractionState | ChordInteractionState | KeySigState,
+  state: NoteInteractionState | KeySigState |ChordInteractionState,
   userClickX: number,
   userClickY: number,
   barIndex: number

@@ -1,7 +1,7 @@
 import { Dispatch, RefObject, SetStateAction } from "react";
 import VexFlow, { IRenderContext } from "vexflow";
 const VF = VexFlow.Flow;
-const { StaveNote, Stave, Renderer, Glyph } = VF;
+const { StaveNote, Stave, Renderer, Glyph, Note } = VF;
 
 export type FormEvent = React.FormEvent<HTMLFormElement>;
 export type MouseEvent = React.MouseEvent<HTMLButtonElement>;
@@ -16,8 +16,10 @@ export type InputData = {
 export type Chord = {
   keys: string[];
   duration: string;
-  staveNotes?: StaveNoteType | null;
+  staveNotes?: NoteType | null;
   userClickY?: number;
+  sharpIndexArray?: number[];
+  flatIndexArray?: number[] | [];
 };
 
 export type Level =
@@ -32,6 +34,7 @@ export type Level =
 
 export type RendererRef = RefObject<InstanceType<typeof Renderer>>;
 export type SetStaves = Dispatch<SetStateAction<StaveType[]>>;
+export type SetStavesForChords = Dispatch<SetStateAction<StaveType[]>>;
 export type BlankStaves = StaveType[];
 export type NoteData = StaveNoteData[][];
 
@@ -49,13 +52,12 @@ export type NoteInteractionState = {
 export type ChordInteractionState = {
   isEraseNoteActive: boolean;
   isEraseAccidentalActive: boolean;
-  isEnterNoteActive: boolean;
   isSharpActive: boolean;
   noNoteFound: boolean;
-  tooManyBeatsInMeasure?: boolean;
   isFlatActive: boolean;
   [key: string]: boolean | undefined;
 };
+
 export type KeySigState = {
   isAddSharpActive: boolean;
   isAddFlatActive: boolean;
@@ -83,6 +85,7 @@ export type AccidentalStateType = {
 export type StaveType = InstanceType<typeof Stave>;
 export type GlyphType = InstanceType<typeof Glyph>;
 export type StaveNoteType = InstanceType<typeof StaveNote>;
+export type NoteType = InstanceType<typeof Note>;
 
 export interface UserClickInfo {
   rect: DOMRect | undefined;
@@ -106,7 +109,15 @@ export interface NoteStringData {
   yCoordinateMin: number;
   yCoordinateMax: number;
   userClickY?: number;
+  staveNotes?: StaveNoteData;
+  accidental?: null | string;
 }
+export interface FoundNoteData {
+  note: string;
+  yCoordinateMin: number;
+  yCoordinateMax: number;
+}
+
 export interface ModifyNoteData {
   barOfStaveNotes: StaveNoteData;
   noteIndex: number;
@@ -141,6 +152,25 @@ export interface RenderStavesAndNotesParams {
   setStaves: SetStaves;
   notesData?: NoteData | null;
   staves: BlankStaves;
+}
+export interface RenderStavesAndChordParams {
+  rendererRef: RendererRef | null;
+  font: string;
+  fontSize: number;
+  numStaves: number;
+  rendererWidth: number;
+  rendererHeight: number;
+  yPositionOfStaves: number;
+  xPositionOfStaves: number;
+  clef: string;
+  timeSig?: string;
+  keySig?: string;
+  firstStaveWidth: number;
+  regularStaveWidth?: number | null;
+  setStaves: SetStaves;
+  chordData: Chord;
+  staves: BlankStaves;
+  barIndex: number;
 }
 
 export interface CreateBlankStavesParams {

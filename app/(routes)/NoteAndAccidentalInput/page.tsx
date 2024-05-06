@@ -51,7 +51,7 @@ const ManageStaveNotes = () => {
     [dispatch, state]
   );
 
-  const clearMeasures = () =>
+  const clearMeasures = () => {
     clearAllMeasures(
       setNotesData,
       INITIAL_STAVES,
@@ -59,7 +59,7 @@ const ManageStaveNotes = () => {
       container,
       dispatch,
       renderStavesAndNotes
-    );
+    )}
 
   const renderStavesAndNotes = useCallback(
     (): void =>
@@ -90,7 +90,6 @@ const ManageStaveNotes = () => {
       container,
       staves[0]
     );
-
     let foundNoteData = generateYMinAndYMaxForAllNotes(
       highGYPosition,
       notesArray
@@ -108,6 +107,7 @@ const ManageStaveNotes = () => {
     const barIndex: number = findBarIndex(staves, userClickX);
 
     let notesDataCopy = [...notesData];
+    
     const barOfStaveNotes = notesDataCopy[barIndex].map(
       (noteData: StaveNoteData) => ({
         ...noteData,

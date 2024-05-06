@@ -21,7 +21,6 @@ export const chordInteractionInitialState: ChordInteractionState = {
   isEnterNoteActive: true,
   isSharpActive: false,
   noNoteFound: false,
-  tooManyBeatsInMeasure: false,
   isFlatActive: false,
 };
 
