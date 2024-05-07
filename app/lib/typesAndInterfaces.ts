@@ -16,10 +16,7 @@ export type InputData = {
 export type Chord = {
   keys: string[];
   duration: string;
-  staveNotes?: NoteType | null;
-  userClickY?: number;
-  sharpIndexArray?: number[];
-  flatIndexArray?: number[] | [];
+  staveNotes: NoteType | null;
 };
 
 export type Level =
@@ -55,7 +52,7 @@ export type ChordInteractionState = {
   isSharpActive: boolean;
   noNoteFound: boolean;
   isFlatActive: boolean;
-  [key: string]: boolean | undefined;
+  [key: string]: boolean | undefined; //index signature so that the object can have properties of type boolean with any string keys
 };
 
 export type KeySigState = {
@@ -99,6 +96,7 @@ export interface UserClickInfo {
 }
 
 export interface StaveNoteData {
+  keys?: string[];
   newStaveNote: StaveNoteType;
   staveNoteAbsoluteX: number;
   userClickY: number;
@@ -150,7 +148,7 @@ export interface RenderStavesAndNotesParams {
   firstStaveWidth: number;
   regularStaveWidth?: number | null;
   setStaves: SetStaves;
-  notesData?: NoteData | null;
+  staveNotesData: NoteData | null;
   staves: BlankStaves;
 }
 export interface RenderStavesAndChordParams {

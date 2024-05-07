@@ -98,7 +98,9 @@ export const removeAccidentalFromChord = (
   foundNoteIndex: number
 ) => {
   let note = removeAccidentals(chordData.keys[foundNoteIndex]);
+  console.log("accidental to remove: ", note);
   chordData.keys[foundNoteIndex] = note;
+  console.log("accidental to remove: ", note);
   const newChord = createStaveNoteFromChordData(chordData);
   return {
     ...chordData,
@@ -139,7 +141,7 @@ export const addAccidentalToChordKeys = (
   };
 };
 
-export const addNewNoteToChord = (
+export const addNewStaveNoteToChord = (
   chordData: Chord,
   foundNoteData: NoteStringData
 ) => {

@@ -42,6 +42,7 @@ export const setupRendererAndDrawChords = (
       })
     );
   }
+
   if (!chordData.staveNotes || chordData.keys.length === 0) return;
   if (renderer && context) {
     Formatter.FormatAndDraw(context, staves[barIndex], [chordData.staveNotes]);

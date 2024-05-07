@@ -1,6 +1,6 @@
 import {
   addAccidentalToChordKeys,
-  addNewNoteToChord,
+  addNewStaveNoteToChord,
   removeAccidentalFromNote,
   reconstructChord,
   removeAccidentalFromChord,
@@ -58,7 +58,7 @@ export const handleChordInteraction = (
     if (updatedChordData.keys.length >= 4)
       return { chordData, notesAndCoordinates };
 
-    updatedChordData = addNewNoteToChord(chordData, foundNoteData);
+    updatedChordData = addNewStaveNoteToChord(chordData, foundNoteData);
   }
   return {
     chordData: updatedChordData,

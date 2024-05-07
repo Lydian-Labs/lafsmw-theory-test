@@ -2,12 +2,14 @@ import React from "react";
 import * as VexFlow from "vexflow";
 import { initializeRenderer } from "./initializeRenderer";
 import {
+  FoundNoteData,
   GlyphProps,
   NoteInteractionAction,
   StaveNoteData,
 } from "./typesAndInterfaces";
 const { Renderer } = VexFlow.Flow;
-
+import generateYMinAndYMaxForAllNotes from "./generateYMinAndMaxForAllNotes";
+import { notesArray } from "./noteArray";
 export const enterNote = (dispatch: React.Dispatch<NoteInteractionAction>) => {
   dispatch({ type: "isEnterNoteActive" });
 };
@@ -18,7 +20,7 @@ export const clearAllMeasures = (
   renderer: React.MutableRefObject<InstanceType<typeof Renderer> | null>,
   container: React.MutableRefObject<HTMLDivElement | null>,
   dispatch: React.Dispatch<NoteInteractionAction>,
-  renderStavesAndStaveNotes: () => void
+  renderStavesAndStaveNotes: () => void,
 ): void => {
   setNotes(() => initialNotes);
   initializeRenderer(renderer, container);

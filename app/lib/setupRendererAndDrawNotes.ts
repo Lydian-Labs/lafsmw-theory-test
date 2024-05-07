@@ -19,7 +19,7 @@ export const setupRendererAndDrawNotes = (
     firstStaveWidth,
     keySig,
     setStaves,
-    notesData,
+    staveNotesData,
     staves: blankStaves,
   } = params;
   const renderer = rendererRef?.current;
@@ -41,8 +41,8 @@ export const setupRendererAndDrawNotes = (
       })
     );
   }
-  notesData &&
-    notesData.forEach((barData, index) => {
+  staveNotesData &&
+    staveNotesData.forEach((barData, index) => {
       if (barData) {
         const staveNotes = barData.map(({ newStaveNote }) => newStaveNote);
         if (staveNotes.length > 0) {

@@ -8,7 +8,6 @@ import React, {
   useRef,
   useState,
 } from "react";
-import VexFlow from "vexflow";
 import BlueButton from "../../components/BlueButton";
 import CheckIfNoteFound from "../../components/CheckIfNoteFound";
 import CheckNumBeatsInMeasure from "../../components/CheckNumBeatsInMeasure";
@@ -20,33 +19,24 @@ import { INITIAL_STAVES, staveData } from "../../lib/data/stavesData";
 import { findBarIndex } from "../../lib/findBar";
 import generateYMinAndYMaxForAllNotes from "../../lib/generateYMinAndMaxForAllNotes";
 import getUserClickInfo from "../../lib/getUserClickInfo";
-import { handleNoteInteraction } from "../../lib/handleNoteInteraction2";
+import { handleNoteInteraction } from "../../lib/handleNoteInteraction";
 import { noteInteractionInitialState } from "../../lib/initialStates";
 import { initializeRenderer } from "../../lib/initializeRenderer";
 import { notesArray } from "../../lib/noteArray";
-import { scalesReducer } from "../../lib/reducer";
+import { reducer } from "../../lib/reducer";
 import { setupRendererAndDrawNotes } from "../../lib/setupRendererAndDrawNotes";
 import {
   NoteStringData,
   StaveNoteData,
   StaveType,
-  FoundNoteData,
 } from "../../lib/typesAndInterfaces";
 
-const { Renderer } = VexFlow.Flow;
-
-const ManageStaveNotes = () => {
+export const ManageStaveNotes = () => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
   const [staves, setStaves] = useState<StaveType[]>([]);
-  const [staveNotesData, setStaveNotesData] = useState<StaveNoteData[][]>([[]]);
-  const [state, dispatch] = useReducer(
-    scalesReducer,
-    noteInteractionInitialState
-  );
-  const [notesAndCoordinates, setNotesAndCoordinates] = useState<
-    FoundNoteData[]
-  >([{ note: "", yCoordinateMin: 0, yCoordinateMax: 0 }]);
+  const [notesData, setNotesData] = useState<StaveNoteData[][]>([[]]);
+  const [state, dispatch] = useReducer(reducer, noteInteractionInitialState);
 
   const noNoteFound = () => dispatch({ type: "noNoteFound" });
 
@@ -60,7 +50,7 @@ const ManageStaveNotes = () => {
 
   const clearMeasures = () => {
     clearAllMeasures(
-      setStaveNotesData,
+      setNotesData,
       INITIAL_STAVES,
       rendererRef,
       container,
@@ -75,17 +65,11 @@ const ManageStaveNotes = () => {
         rendererRef,
         ...staveData,
         setStaves,
-        staveNotesData,
+        notesData,
         staves,
       }),
-    [rendererRef, setStaves, staveNotesData, staves]
+    [rendererRef, setStaves, notesData, staves]
   );
-
-  useEffect(() => {
-    setNotesAndCoordinates(() =>
-      generateYMinAndYMaxForAllNotes(147, notesArray)
-    );
-  }, []);
 
   useEffect(() => {
     initializeRenderer(rendererRef, container);
@@ -94,17 +78,20 @@ const ManageStaveNotes = () => {
 
   useEffect(() => {
     renderStavesAndNotes();
-  }, [staveNotesData]);
+  }, [notesData]);
 
   let updatedFoundNoteData: NoteStringData;
 
   const handleClick = (e: React.MouseEvent) => {
-    const { userClickY, userClickX } = getUserClickInfo(
+    const { userClickY, userClickX, highGYPosition } = getUserClickInfo(
       e,
       container,
       staves[0]
     );
-    let foundNoteData = notesAndCoordinates.find(
+    let foundNoteData = generateYMinAndYMaxForAllNotes(
+      highGYPosition,
+      notesArray
+    ).find(
       ({ yCoordinateMin, yCoordinateMax }) =>
         userClickY >= yCoordinateMin && userClickY <= yCoordinateMax
     );
@@ -114,19 +101,34 @@ const ManageStaveNotes = () => {
         ...foundNoteData,
         userClickY: userClickY,
       };
-
     const barIndex: number = findBarIndex(staves, userClickX);
 
-    let notesDataCopy = [...staveNotesData];
-    let notesAndCoordinatesCopy = [...notesAndCoordinates];
-
+    let notesDataCopy = [...notesData];
     const barOfStaveNotes: StaveNoteData[] = notesDataCopy[barIndex].map(
       (noteData: StaveNoteData) => ({
         ...noteData,
-        staveNoteAbsoluteX: noteData.newStaveNote?.getAbsoluteX(),
+        staveNoteAbsoluteX: noteData.newStaveNote.getAbsoluteX(),
         note: noteData.newStaveNote.getKeys(),
       })
     );
+
+    const notesForDataBase = barOfStaveNotes.map((note) => {
+      return `${note?.note}`;
+    });
+
+    if (notesForDataBase.length > 0) {
+      console.log(notesForDataBase);
+    }
+
+    barOfStaveNotes.forEach((element) => {
+      const staveNote = element.newStaveNote;
+      const modifiers = staveNote.getModifiers();
+      modifiers.forEach((modifier) => {
+        if (modifier.type === "accidental") {
+          console.log(modifier.accidental.type); // This will give you the accidental code
+        }
+      });
+    });
 
     handleNoteInteraction(
       updatedFoundNoteData,
@@ -135,16 +137,13 @@ const ManageStaveNotes = () => {
       "tooManyBeatsInMeasure",
       "noNoteFound",
       barOfStaveNotes,
-      notesAndCoordinatesCopy,
-      updatedFoundNoteData,
       notesDataCopy,
       state,
       userClickX,
       userClickY,
       barIndex
     );
-    setNotesAndCoordinates(() => notesAndCoordinatesCopy);
-    setStaveNotesData(() => notesDataCopy);
+    setNotesData(() => notesDataCopy);
   };
 
   return (
@@ -175,5 +174,3 @@ const ManageStaveNotes = () => {
     </>
   );
 };
-
-export default ManageStaveNotes;

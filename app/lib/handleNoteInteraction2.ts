@@ -7,6 +7,7 @@ import {
   deleteNote,
   updateNoteWithAccidental,
   removeAccidentalFromNote,
+  addStaveNoteToScale,
 } from "./modifyNotes";
 import {
   NoteInteractionAction,
@@ -27,15 +28,12 @@ export const handleNoteInteraction = (
   barOfStaveNotes: StaveNoteData[],
   notesAndCoordinates: FoundNoteData[],
   foundNoteData: FoundNoteData,
-  notesData: StaveNoteData[][],
+  staveNotesData: StaveNoteData[][],
   state: NoteInteractionState,
   userClickX: number,
   userClickY: number,
   barIndex: number
 ) => {
-  let newNotesData = [...notesData];
-  let newNotesAndCoordinates = [...notesAndCoordinates];
-
   if (!updatedNoteData) {
     noteNotFound({ type: noNoteFoundAction });
   } else if (state.isSharpActive || state.isFlatActive) {
@@ -48,11 +46,11 @@ export const handleNoteInteraction = (
   } else if (state.isEraseNoteActive) {
     deleteNote(barOfStaveNotes, userClickX);
     removeAccidentalFromNote(notesAndCoordinates, foundNoteData);
-    notesData[barIndex] = barOfStaveNotes;
+    staveNotesData[barIndex] = barOfStaveNotes;
   } else if (state.isEraseAccidentalActive) {
     removeAccidentalFromStaveNote(barOfStaveNotes, userClickX);
     removeAccidentalFromNote(notesAndCoordinates, foundNoteData);
-    notesData[barIndex] = barOfStaveNotes;
+    staveNotesData[barIndex] = barOfStaveNotes;
   } else if (state.isChangeNoteActive) {
     changeNotePosition(
       barOfStaveNotes,
@@ -60,21 +58,16 @@ export const handleNoteInteraction = (
       updatedNoteData,
       userClickY
     );
-    notesData[barIndex] = barOfStaveNotes;
+    removeAccidentalFromNote(notesAndCoordinates, foundNoteData);
+    staveNotesData[barIndex] = barOfStaveNotes;
   } else if (barOfStaveNotes && barOfStaveNotes.length >= BEATS_IN_MEASURE) {
     checkBeatsInMeasure({ type: beatsInMeasureAction });
   } else {
-    const newStaveNote: StaveNoteType = new StaveNote({
-      keys: [updatedNoteData.note],
-      duration: "q",
-    });
-    notesData[barIndex] = [
-      ...barOfStaveNotes,
-      {
-        newStaveNote,
-        staveNoteAbsoluteX: 0,
-        userClickY,
-      },
-    ];
+    staveNotesData[barIndex] = addStaveNoteToScale(
+      updatedNoteData,
+      "q",
+      barOfStaveNotes,
+      userClickY
+    );
   }
 };

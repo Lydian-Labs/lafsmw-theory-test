@@ -40,7 +40,6 @@ const ManageChords = () => {
     keys: [],
     duration: "w",
     staveNotes: null,
-    userClickY: 0,
   });
 
   const [notesAndCoordinates, setNotesAndCoordinates] = useState<
@@ -60,7 +59,6 @@ const ManageChords = () => {
         keys: [],
         duration: "w",
         staveNotes: null,
-        userClickY: 0,
       };
       return newState;
     });
@@ -99,7 +97,7 @@ const ManageChords = () => {
   }, [chordData]);
 
   const handleClick = (e: React.MouseEvent) => {
-    const { userClickY, userClickX, highGYPosition } = getUserClickInfo(
+    const { userClickY, userClickX } = getUserClickInfo(
       e,
       container,
       staves[0]
@@ -139,6 +137,8 @@ const ManageChords = () => {
 
     setNotesAndCoordinates(() => newNotesAndCoordinates);
     setChordData(() => newChordData);
+    console.log(chordData.staveNotes);
+    console.log(chordData.keys); //final data for grading
   };
 
   return (
