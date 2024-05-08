@@ -11,6 +11,7 @@ import React, {
 import VexFlow from "vexflow";
 import BlueButton from "../../components/BlueButton";
 import CheckIfNoteFound from "../../components/CheckIfNoteFound";
+import { addNoteToKeys } from "@/app/lib/modifyNotes";
 import CheckNumBeatsInMeasure from "../../components/CheckNumBeatsInMeasure";
 import {
   buttonGroup,
@@ -31,7 +32,9 @@ import {
   StaveNoteData,
   StaveType,
   FoundNoteData,
+  Keys,
 } from "../../lib/typesAndInterfaces";
+import { addAccidentalToKeys } from "@/app/lib/modifyNotes";
 
 const { Renderer } = VexFlow.Flow;
 
@@ -40,6 +43,7 @@ const ManageStaveNotes = () => {
   const container = useRef<HTMLDivElement | null>(null);
   const [staves, setStaves] = useState<StaveType[]>([]);
   const [staveNotesData, setStaveNotesData] = useState<StaveNoteData[][]>([[]]);
+  const [keys, setKeys] = useState<Keys>([]);
   const [state, dispatch] = useReducer(
     scalesReducer,
     noteInteractionInitialState
@@ -96,6 +100,14 @@ const ManageStaveNotes = () => {
     renderStavesAndNotes();
   }, [staveNotesData]);
 
+  useEffect(() => {
+    console.log("keys in use effect: ", keys);
+  }, [keys]);
+
+  useEffect(() => {
+    console.log("notesAndCoordinates in use effect: ", notesAndCoordinates);
+  }, [notesAndCoordinates]);
+
   let updatedFoundNoteData: NoteStringData;
 
   const handleClick = (e: React.MouseEvent) => {
@@ -119,6 +131,9 @@ const ManageStaveNotes = () => {
 
     let notesDataCopy = [...staveNotesData];
     let notesAndCoordinatesCopy = [...notesAndCoordinates];
+    let keysCopy = [...keys];
+
+    //keysCopy = addNoteToKeys(keys, updatedFoundNoteData);
 
     const barOfStaveNotes: StaveNoteData[] = notesDataCopy[barIndex].map(
       (noteData: StaveNoteData) => ({
@@ -128,23 +143,29 @@ const ManageStaveNotes = () => {
       })
     );
 
-    handleNoteInteraction(
-      updatedFoundNoteData,
-      noNoteFound,
-      tooManyBeatsInMeasure,
-      "tooManyBeatsInMeasure",
-      "noNoteFound",
-      barOfStaveNotes,
-      notesAndCoordinatesCopy,
-      updatedFoundNoteData,
-      notesDataCopy,
-      state,
-      userClickX,
-      userClickY,
-      barIndex
-    );
-    setNotesAndCoordinates(() => notesAndCoordinatesCopy);
-    setStaveNotesData(() => notesDataCopy);
+    // existing code...
+
+    const { newStaveNotesData, newKeys, newNotesAndCoordinates } =
+      handleNoteInteraction(
+        updatedFoundNoteData,
+        noNoteFound,
+        tooManyBeatsInMeasure,
+        "tooManyBeatsInMeasure",
+        "noNoteFound",
+        barOfStaveNotes,
+        notesAndCoordinatesCopy,
+        keysCopy,
+        updatedFoundNoteData,
+        notesDataCopy,
+        state,
+        userClickX,
+        userClickY,
+        barIndex
+      );
+
+    setNotesAndCoordinates(() => newNotesAndCoordinates);
+    setStaveNotesData(() => newStaveNotesData);
+    setKeys(() => newKeys);
   };
 
   return (

@@ -19,6 +19,8 @@ export type Chord = {
   staveNotes: NoteType | null;
 };
 
+export type Keys = string[];
+
 export type Level =
   | "advanced-theory"
   | "advanced-improvisation"

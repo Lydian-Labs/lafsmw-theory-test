@@ -55,8 +55,24 @@ export const updateNoteWithAccidental = (
       return noteData;
     }
   });
-  console.log(newNotesAndCoordinates);
   return newNotesAndCoordinates;
+};
+
+export const addAccidentalToKeys = (
+  updatedFoundNoteData: NoteStringData,
+  keys: string[],
+  state: NoteInteractionState
+) => {
+  const accidental = state.isSharpActive ? "#" : "b";
+  let newKeys = [...keys];
+  let foundKey = newKeys.find((key) => key === updatedFoundNoteData.note);
+  foundKey = appendAccidentalToNote(accidental, updatedFoundNoteData.note);
+  console.log(foundKey);
+  newKeys.splice(
+    newKeys.findIndex((key) => key === foundKey),
+    1
+  );
+  return [...newKeys, foundKey];
 };
 
 export const addAccidentalToStaveNote = (
@@ -186,4 +202,13 @@ export const addStaveNoteToScale = (
       userClickY,
     },
   ];
+};
+
+export const addNoteToKeys = (
+  keys: string[],
+  foundNoteData: NoteStringData
+) => {
+  let newKeys = [...keys];
+  newKeys = [...newKeys, foundNoteData.note];
+  return newKeys;
 };

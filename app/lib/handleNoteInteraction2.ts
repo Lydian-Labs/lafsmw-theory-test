@@ -1,7 +1,8 @@
-import VexFlow from "vexflow";
 import { BEATS_IN_MEASURE } from "./data/stavesData";
 import {
   addAccidentalToStaveNote,
+  addAccidentalToKeys,
+  addNoteToKeys,
   changeNotePosition,
   removeAccidentalFromStaveNote,
   deleteNote,
@@ -14,10 +15,8 @@ import {
   NoteInteractionState,
   NoteStringData,
   StaveNoteData,
-  StaveNoteType,
   FoundNoteData,
 } from "./typesAndInterfaces";
-const { StaveNote } = VexFlow.Flow;
 
 export const handleNoteInteraction = (
   updatedNoteData: NoteStringData,
@@ -27,6 +26,7 @@ export const handleNoteInteraction = (
   noNoteFoundAction: string,
   barOfStaveNotes: StaveNoteData[],
   notesAndCoordinates: FoundNoteData[],
+  keys: string[],
   foundNoteData: FoundNoteData,
   staveNotesData: StaveNoteData[][],
   state: NoteInteractionState,
@@ -42,14 +42,24 @@ export const handleNoteInteraction = (
       userClickX,
       state.isSharpActive ? "#" : "b"
     );
-    updateNoteWithAccidental(state, foundNoteData, notesAndCoordinates);
+    notesAndCoordinates = updateNoteWithAccidental(
+      state,
+      foundNoteData,
+      notesAndCoordinates
+    );
   } else if (state.isEraseNoteActive) {
     deleteNote(barOfStaveNotes, userClickX);
-    removeAccidentalFromNote(notesAndCoordinates, foundNoteData);
+    notesAndCoordinates = removeAccidentalFromNote(
+      notesAndCoordinates,
+      foundNoteData
+    );
     staveNotesData[barIndex] = barOfStaveNotes;
   } else if (state.isEraseAccidentalActive) {
     removeAccidentalFromStaveNote(barOfStaveNotes, userClickX);
-    removeAccidentalFromNote(notesAndCoordinates, foundNoteData);
+    notesAndCoordinates = removeAccidentalFromNote(
+      notesAndCoordinates,
+      foundNoteData
+    );
     staveNotesData[barIndex] = barOfStaveNotes;
   } else if (state.isChangeNoteActive) {
     changeNotePosition(
@@ -58,11 +68,16 @@ export const handleNoteInteraction = (
       updatedNoteData,
       userClickY
     );
-    removeAccidentalFromNote(notesAndCoordinates, foundNoteData);
+    notesAndCoordinates = removeAccidentalFromNote(
+      notesAndCoordinates,
+      foundNoteData
+    );
     staveNotesData[barIndex] = barOfStaveNotes;
   } else if (barOfStaveNotes && barOfStaveNotes.length >= BEATS_IN_MEASURE) {
     checkBeatsInMeasure({ type: beatsInMeasureAction });
   } else {
+    keys = addNoteToKeys(keys, foundNoteData);
+
     staveNotesData[barIndex] = addStaveNoteToScale(
       updatedNoteData,
       "q",
@@ -70,4 +85,9 @@ export const handleNoteInteraction = (
       userClickY
     );
   }
+  return {
+    newStaveNotesData: staveNotesData,
+    newKeys: keys,
+    newNotesAndCoordinates: notesAndCoordinates,
+  };
 };
