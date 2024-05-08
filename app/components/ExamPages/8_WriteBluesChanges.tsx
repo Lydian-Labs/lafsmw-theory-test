@@ -1,5 +1,6 @@
 "use client";
 import { InputData, UserDataProps } from "@/app/lib/typesAndInterfaces";
+import { useAuthContext } from "@/firebase/authContext";
 import { Box, Grid, Stack, Typography } from "@mui/material";
 import { getStorage, ref, uploadBytes } from "firebase/storage";
 import html2canvas from "html2canvas";
@@ -16,6 +17,8 @@ export default function WriteBluesChanges({
   setCurrentUserData,
   nextViewState,
 }: UserDataProps) {
+  const { user } = useAuthContext();
+  const userName = user?.displayName?.split(" ").join("_");
   const writeBluesFormRef = useRef<HTMLFormElement | null>(null);
 
   function handleBlues(input: InputData) {
@@ -33,7 +36,7 @@ export default function WriteBluesChanges({
       });
       pdf.addImage(imgData, "JPEG", 0, 0, canvas.width, canvas.height);
       const pdfBlob = pdf.output("blob");
-      const storageRef = ref(storage, "write-blues-changes.pdf");
+      const storageRef = ref(storage, `${userName}-write-blues-changes.pdf`);
       uploadBytes(storageRef, pdfBlob)
         .then((snapshot) => {
           console.log("PDF uploaded successfully");
