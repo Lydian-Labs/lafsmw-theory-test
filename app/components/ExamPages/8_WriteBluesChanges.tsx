@@ -1,9 +1,18 @@
 "use client";
 import { InputData, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import { Box, Grid, Stack, Typography } from "@mui/material";
+import { getStorage, ref } from "firebase/storage";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 import { useRef } from "react";
 import CardFooter from "../CardFooter";
 import WriteBlues from "../WriteBlues";
+
+// Get a reference to the storage service, which is used to create references in your storage bucket
+const storage = getStorage();
+
+// Create a storage reference from our storage service
+const storageRef = ref(storage);
 
 export default function WriteBluesChanges({
   currentUserData,
@@ -11,6 +20,34 @@ export default function WriteBluesChanges({
   nextViewState,
 }: UserDataProps) {
   const writeBluesFormRef = useRef<HTMLFormElement | null>(null);
+
+  function savePDF() {
+    const capture = document.querySelector(".write-blues-changes");
+    html2canvas(capture as HTMLElement).then((canvas) => {
+      const imgData = canvas.toDataURL("img/png");
+      // p is portrait, px is pixels (could be mm as millimeters also), 3rd argument is paper size, could also be "a4" or "letter", but using an array for custom size
+      const doc = new jsPDF("p", "px", [1100, 720]);
+      const componentWidth = doc.internal.pageSize.getWidth();
+      const componentHeight = doc.internal.pageSize.getHeight();
+      // 0 and 0 are x and y coordinates
+      doc.addImage(imgData, "PNG", 0, 0, componentWidth, componentHeight);
+      doc.save("write-blues-changes.pdf");
+    });
+  }
+
+  // const generateAndSavePDF = () => {
+  //   const pdf = new jsPDF();
+  //   pdf.html(document.body, () => {
+  //     const pdfBlob = pdf.output('blob');
+  //     const storageRef = storage.ref();
+  //     const pdfRef = storageRef.child('exam.pdf');
+  //     pdfRef.put(pdfBlob).then(() => {
+  //       console.log('PDF uploaded successfully');
+  //     }).catch((error) => {
+  //       console.error('Error uploading PDF: ', error);
+  //     });
+  //   });
+  // };
 
   function handleBlues(input: InputData) {
     setCurrentUserData({ ...currentUserData, blues: input });
@@ -32,6 +69,7 @@ export default function WriteBluesChanges({
             Section 8: Write Blues Chord Changes
           </Typography>
           <Box
+            className="write-blues-changes"
             width={1100}
             height={720}
             bgcolor={"card.background"}
@@ -74,6 +112,7 @@ export default function WriteBluesChanges({
               pageNumber={16}
               handleSubmit={() => {
                 writeBluesFormRef.current?.requestSubmit();
+                savePDF();
                 nextViewState();
               }}
             />
