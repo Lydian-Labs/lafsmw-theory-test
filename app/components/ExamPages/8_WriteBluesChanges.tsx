@@ -27,6 +27,7 @@ export default function WriteBluesChanges({
 
   const savePDF = () => {
     const capture = document.querySelector(".write-blues-changes");
+
     html2canvas(capture as HTMLElement).then((canvas) => {
       const imgData = canvas.toDataURL("image/jpeg");
       const pdf = new jsPDF({
@@ -37,6 +38,7 @@ export default function WriteBluesChanges({
       pdf.addImage(imgData, "JPEG", 0, 0, canvas.width, canvas.height);
       const pdfBlob = pdf.output("blob");
       const storageRef = ref(storage, `${userName}-write-blues-changes.pdf`);
+
       uploadBytes(storageRef, pdfBlob)
         .then((snapshot) => {
           console.log("PDF uploaded successfully");
@@ -51,7 +53,7 @@ export default function WriteBluesChanges({
     <Box sx={{ display: "flex", justifyContent: "center" }}>
       <Box
         component="main"
-        width={1250}
+        width={1450}
         height={850}
         bgcolor={"secondary.main"}
         borderRadius="var(--borderRadius)"
@@ -64,7 +66,7 @@ export default function WriteBluesChanges({
           </Typography>
           <Box
             className="write-blues-changes"
-            width={1100}
+            width={1300}
             height={720}
             bgcolor={"card.background"}
             borderRadius="var(--borderRadius)"
@@ -91,7 +93,7 @@ export default function WriteBluesChanges({
                 <WriteBlues
                   handleBlues={handleBlues}
                   ref={writeBluesFormRef}
-                  width={950}
+                  width={1150}
                 />
               </Grid>
 
@@ -101,7 +103,7 @@ export default function WriteBluesChanges({
               </Typography>
             </Grid>
             <CardFooter
-              width={900}
+              width={1100}
               height={100}
               pageNumber={16}
               handleSubmit={() => {
