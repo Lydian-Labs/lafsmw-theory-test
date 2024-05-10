@@ -97,9 +97,12 @@ export interface UserClickInfo {
   bottomStaveYCoord?: number;
 }
 
+export type AccidentalType = "#" | "b" | "";
+
 export interface StaveNoteData {
-  keys?: string[];
-  newStaveNote: StaveNoteType;
+  staveNote: StaveNoteType;
+  keys: string[];
+  accidental?: AccidentalType;
   staveNoteAbsoluteX: number;
   userClickY: number;
 }

@@ -100,13 +100,13 @@ const ManageStaveNotes = () => {
     renderStavesAndNotes();
   }, [staveNotesData]);
 
-  useEffect(() => {
-    console.log("keys in use effect: ", keys);
-  }, [keys]);
+  // useEffect(() => {
+  //   console.log("keys in use effect: ", keys);
+  // }, [keys]);
 
-  useEffect(() => {
-    console.log("notesAndCoordinates in use effect: ", notesAndCoordinates);
-  }, [notesAndCoordinates]);
+  // useEffect(() => {
+  //   console.log("notesAndCoordinates in use effect: ", notesAndCoordinates);
+  // }, [notesAndCoordinates]);
 
   let updatedFoundNoteData: NoteStringData;
 
@@ -133,15 +133,16 @@ const ManageStaveNotes = () => {
     let notesAndCoordinatesCopy = [...notesAndCoordinates];
     let keysCopy = [...keys];
 
-    //keysCopy = addNoteToKeys(keys, updatedFoundNoteData);
-
     const barOfStaveNotes: StaveNoteData[] = notesDataCopy[barIndex].map(
       (noteData: StaveNoteData) => ({
         ...noteData,
-        staveNoteAbsoluteX: noteData.newStaveNote?.getAbsoluteX(),
-        note: noteData.newStaveNote.getKeys(),
+        staveNoteAbsoluteX: noteData.staveNote?.getAbsoluteX(),
+        keys: noteData.staveNote.getKeys(),
+        
       })
     );
+
+    console.log("barOfStaveNotes: ", barOfStaveNotes);
 
     // existing code...
 

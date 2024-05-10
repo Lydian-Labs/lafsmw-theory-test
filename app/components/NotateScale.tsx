@@ -113,7 +113,7 @@ const NotateScale = () => {
     const barOfStaveNotes = notesDataCopy[barIndex].map(
       (noteData: StaveNoteData) => ({
         ...noteData,
-        staveNoteAbsoluteX: noteData.newStaveNote.getAbsoluteX(),
+        staveNoteAbsoluteX: noteData.staveNote.getAbsoluteX(),
       })
     );
 

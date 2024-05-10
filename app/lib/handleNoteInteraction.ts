@@ -71,7 +71,7 @@ export const handleNoteInteraction = (
     notesData[barIndex] = [
       ...barOfStaveNotes,
       {
-        newStaveNote,
+        staveNote: newStaveNote,
         staveNoteAbsoluteX: 0,
         userClickY,
       },

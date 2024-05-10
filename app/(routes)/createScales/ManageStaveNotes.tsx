@@ -107,8 +107,8 @@ export const ManageStaveNotes = () => {
     const barOfStaveNotes: StaveNoteData[] = notesDataCopy[barIndex].map(
       (noteData: StaveNoteData) => ({
         ...noteData,
-        staveNoteAbsoluteX: noteData.newStaveNote.getAbsoluteX(),
-        note: noteData.newStaveNote.getKeys(),
+        staveNoteAbsoluteX: noteData.staveNote.getAbsoluteX(),
+        note: noteData.staveNote.getKeys(),
       })
     );
 
@@ -121,7 +121,7 @@ export const ManageStaveNotes = () => {
     }
 
     barOfStaveNotes.forEach((element) => {
-      const staveNote = element.newStaveNote;
+      const staveNote = element.staveNote;
       const modifiers = staveNote.getModifiers();
       modifiers.forEach((modifier) => {
         if (modifier.type === "accidental") {

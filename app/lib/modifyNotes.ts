@@ -1,6 +1,7 @@
 import VexFlow from "vexflow";
 import { indexOfNoteToModify as indexOfNote } from "./indexOfNoteToModify";
 import {
+  AccidentalType,
   ModifyNoteData,
   NoteStringData,
   StaveNoteData,
@@ -67,24 +68,11 @@ export const addAccidentalToKeys = (
   let newKeys = [...keys];
   let foundKey = newKeys.find((key) => key === updatedFoundNoteData.note);
   foundKey = appendAccidentalToNote(accidental, updatedFoundNoteData.note);
-  console.log(foundKey);
   newKeys.splice(
     newKeys.findIndex((key) => key === foundKey),
     1
   );
   return [...newKeys, foundKey];
-};
-
-export const addAccidentalToStaveNote = (
-  barOfStaveNotes: StaveNoteData[],
-  userClickX: number,
-  accidental: string
-): void => {
-  const noteData = getNoteData(barOfStaveNotes, userClickX);
-  noteData.barOfStaveNotes &&
-    noteData.barOfStaveNotes.newStaveNote.addModifier(
-      new Accidental(accidental)
-    );
 };
 
 export const changeNotePosition = (
@@ -97,12 +85,15 @@ export const changeNotePosition = (
   const staveNoteAbsoluteX = noteData.barOfStaveNotes
     ? noteData.barOfStaveNotes.staveNoteAbsoluteX
     : null;
+
   staveNoteAbsoluteX &&
     barOfStaveNotes.splice(noteData.noteIndex, 1, {
-      newStaveNote: new StaveNote({
+      staveNote: new StaveNote({
         keys: [noteStringData.note],
         duration: "q",
       }),
+      keys: [],
+      accidental: "",
       staveNoteAbsoluteX,
       userClickY,
     });
@@ -161,26 +152,38 @@ export const removeAccidentalFromStaveNote = (
 ): void => {
   const noteData = getNoteData(barOfStaveNotes, userClickX);
   if (noteData.noteIndex != null && noteData.barOfStaveNotes != null) {
-    const { newStaveNote, userClickY, staveNoteAbsoluteX } =
+    const { staveNote, userClickY, staveNoteAbsoluteX } =
       noteData.barOfStaveNotes;
-    const noteToString = newStaveNote.getKeys();
+    const noteToString = staveNote.getKeys();
     barOfStaveNotes.splice(noteData.noteIndex, 1, {
-      newStaveNote: new StaveNote({
+      staveNote: new StaveNote({
         keys: noteToString,
         duration: "q",
       }),
+      keys: staveNote.getKeys(),
+      accidental: "",
       staveNoteAbsoluteX,
       userClickY,
     });
   }
 };
 
-const getAccidentalType = (noteBase: string) => {
-  if (noteBase.endsWith("##")) return "##";
-  if (noteBase.endsWith("bb") && noteBase.length > 2) return "bb";
-  if (noteBase.endsWith("#")) return "#";
-  if (noteBase.endsWith("b") && noteBase.length > 1) return "b";
-  return null;
+export const addAccidentalToStaveNote = (
+  barOfStaveNotes: StaveNoteData[],
+  userClickX: number,
+  accidental: string
+) => {
+  const noteData = getNoteData(barOfStaveNotes, userClickX);
+  const { noteIndex } = noteData;
+
+  const newBarOfStaveNotes = barOfStaveNotes.map((noteObject, index) => {
+    if (index === noteIndex) {
+      noteObject.staveNote.addModifier(new Accidental(accidental));
+      return { ...noteObject, accidental };
+    }
+    return noteObject;
+  });
+  return newBarOfStaveNotes;
 };
 
 export const addStaveNoteToScale = (
@@ -189,15 +192,17 @@ export const addStaveNoteToScale = (
   barOfStaveNotes: StaveNoteData[],
   userClickY: number
 ) => {
-  const newStaveNote: StaveNoteType = new StaveNote({
+  const staveNote: StaveNoteType = new StaveNote({
     keys: [updatedNoteData.note],
     duration: duration,
   });
+
   return [
     ...barOfStaveNotes,
     {
       keys: [updatedNoteData.note],
-      newStaveNote,
+      accidental: "",
+      staveNote,
       staveNoteAbsoluteX: 0,
       userClickY,
     },

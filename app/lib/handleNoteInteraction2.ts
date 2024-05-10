@@ -37,7 +37,7 @@ export const handleNoteInteraction = (
   if (!updatedNoteData) {
     noteNotFound({ type: noNoteFoundAction });
   } else if (state.isSharpActive || state.isFlatActive) {
-    addAccidentalToStaveNote(
+    const updatedBarOfStaveNotes = addAccidentalToStaveNote(
       barOfStaveNotes,
       userClickX,
       state.isSharpActive ? "#" : "b"
@@ -47,6 +47,7 @@ export const handleNoteInteraction = (
       foundNoteData,
       notesAndCoordinates
     );
+    staveNotesData[barIndex] = updatedBarOfStaveNotes;
   } else if (state.isEraseNoteActive) {
     deleteNote(barOfStaveNotes, userClickX);
     notesAndCoordinates = removeAccidentalFromNote(

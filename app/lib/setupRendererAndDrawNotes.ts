@@ -44,7 +44,9 @@ export const setupRendererAndDrawNotes = (
   staveNotesData &&
     staveNotesData.forEach((barData, index) => {
       if (barData) {
-        const staveNotes = barData.map(({ newStaveNote }) => newStaveNote);
+        const staveNotes = barData.map(
+          ({ staveNote: newStaveNote }) => newStaveNote
+        );
         if (staveNotes.length > 0) {
           context &&
             Formatter.FormatAndDraw(context, blankStaves[index], staveNotes);
