@@ -56,7 +56,7 @@ export const handleNoteInteraction = (
     );
     staveNotesData[barIndex] = barOfStaveNotes;
   } else if (state.isEraseAccidentalActive) {
-    removeAccidentalFromStaveNote(barOfStaveNotes, userClickX);
+    removeAccidentalFromStaveNote(barOfStaveNotes, userClickX, foundNoteData);
     notesAndCoordinates = removeAccidentalFromNote(
       notesAndCoordinates,
       foundNoteData

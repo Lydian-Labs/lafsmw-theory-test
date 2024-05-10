@@ -122,7 +122,7 @@ export interface FoundNoteData {
 }
 
 export interface ModifyNoteData {
-  barOfStaveNotes: StaveNoteData;
+  barOfNoteObjects: StaveNoteData;
   noteIndex: number;
 }
 

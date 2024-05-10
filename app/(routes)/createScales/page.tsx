@@ -104,9 +104,13 @@ const ManageStaveNotes = () => {
   //   console.log("keys in use effect: ", keys);
   // }, [keys]);
 
-  // useEffect(() => {
-  //   console.log("notesAndCoordinates in use effect: ", notesAndCoordinates);
-  // }, [notesAndCoordinates]);
+  useEffect(() => {
+    console.log("notesAndCoordinates in use effect: ", notesAndCoordinates);
+  }, [notesAndCoordinates]);
+
+  useEffect(() => {
+    console.log("staveNotesData in use effect: ", staveNotesData);
+  }, [staveNotesData]);
 
   let updatedFoundNoteData: NoteStringData;
 
@@ -137,8 +141,6 @@ const ManageStaveNotes = () => {
       (noteData: StaveNoteData) => ({
         ...noteData,
         staveNoteAbsoluteX: noteData.staveNote?.getAbsoluteX(),
-        keys: noteData.staveNote.getKeys(),
-        
       })
     );
 
