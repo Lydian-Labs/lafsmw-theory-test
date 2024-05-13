@@ -46,7 +46,7 @@ export const setupRendererAndDrawNotes = (
       if (barOfNoteObjects) {
         const staveNotes = barOfNoteObjects
           .map(({ staveNote }) => staveNote)
-          .filter(Boolean);
+          .filter(Boolean) as VexFlow.Flow.StaveNote[];
         if (staveNotes.length > 0 && context && staves[index]) {
           Formatter.FormatAndDraw(context, staves[index], staveNotes);
         }

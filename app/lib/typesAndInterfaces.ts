@@ -107,7 +107,7 @@ export interface StaveNoteData {
 export interface ScaleData {
   keys: string[];
   duration: string;
-  staveNote: StaveNoteType;
+  staveNote: StaveNoteType | null;
   userClickY: number;
   staveNoteAbsoluteX: number;
 }

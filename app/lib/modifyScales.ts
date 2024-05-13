@@ -16,12 +16,12 @@ import {
 const { Accidental, StaveNote } = VexFlow.Flow;
 
 export const createStaveNoteFromScaleData = (
-  scaleData: ScaleData,
+  noteObject: ScaleData,
   updatedKeys?: string[]
 ) => {
   return new StaveNote({
-    keys: updatedKeys ? updatedKeys : scaleData.keys,
-    duration: scaleData.duration,
+    keys: updatedKeys ? updatedKeys : noteObject.keys,
+    duration: noteObject.duration,
   });
 };
 
@@ -85,31 +85,30 @@ export const removeAccidentalFromStaveNote = (
 };
 
 export const addNewNoteToScale = (
-  scaleData: ScaleData,
+  noteObject: ScaleData,
   foundNoteData: NotesAndCoordinatesData
 ) => {
-   
   const updatedKeys = [foundNoteData.note];
-  const newNote = createStaveNoteFromScaleData(scaleData, updatedKeys);
+  const newNote = createStaveNoteFromScaleData(noteObject, updatedKeys);
 
   addAccidentalsToStaveNotes(updatedKeys, newNote);
 
   const newNoteObject = {
-    ...scaleData,
+    ...noteObject,
     keys: updatedKeys,
     staveNote: newNote,
   };
   return newNoteObject;
 };
 
-export const reconstructScale = (scaleData: ScaleData) => {
-  const newStaveNote = createStaveNoteFromScaleData(scaleData);
-  addAccidentalsToStaveNotes(scaleData.keys, newStaveNote);
-
-  return {
-    ...scaleData,
+export const reconstructScale = (noteObject: ScaleData) => {
+  const newStaveNote = createStaveNoteFromScaleData(noteObject);
+  addAccidentalsToStaveNotes(noteObject.keys, newStaveNote);
+  const newScale = {
+    ...noteObject,
     staveNotes: newStaveNote,
   };
+  return newScale;
 };
 
 export const changeNotePosition = (

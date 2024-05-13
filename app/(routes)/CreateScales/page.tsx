@@ -36,9 +36,7 @@ const ManageScales = () => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
   const [staves, setStaves] = useState<StaveType[]>([]);
-  const [scaleDataMatrix, setScaleDataMatrix] = useState<ScaleData[][]>([
-    [initialScaleState],
-  ]);
+  const [scaleDataMatrix, setScaleDataMatrix] = useState<ScaleData[][]>([[]]);
   const [barIndex, setBarIndex] = useState<number>(0);
   const [notesAndCoordinates, setNotesAndCoordinates] = useState([
     initialNotesAndCoordsState,
@@ -61,7 +59,7 @@ const ManageScales = () => {
 
   const eraseMeasures = () => {
     setScaleDataMatrix((): ScaleData[][] => {
-      return [[initialScaleState]];
+      return [[]];
     });
     setNotesAndCoordinates(() =>
       generateYMinAndYMaxForAllNotes(147, notesArray)
@@ -114,24 +112,31 @@ const ManageScales = () => {
         userClickY: userClickY,
       };
 
+    console.log("foundNoteData: ", foundNoteData);
+
     setBarIndex(() => {
       return findBarIndex(staves, userClickX);
     });
 
+    console.log("barIndex: ", barIndex);
+    console.log("scaleDataMatrix", scaleDataMatrix[barIndex]);
     if (!foundNoteData) {
       noNoteFound();
       return;
     }
 
-    let scaleDataMatrixCopy = scaleDataMatrix.map((scaleData) => [...scaleData]);
+    let scaleDataMatrixCopy = scaleDataMatrix.map((scaleData) => [
+      ...scaleData,
+    ]);
 
     let notesAndCoordinatesCopy = [...notesAndCoordinates];
 
-    
     const barOfScaleData = scaleDataMatrixCopy[barIndex].map(
       (scaleData: ScaleData) => ({
         ...scaleData,
-        staveNoteAbsoluteX: scaleData.staveNote?.getAbsoluteX(),
+        staveNoteAbsoluteX: scaleData.staveNote
+          ? scaleData.staveNote.getAbsoluteX()
+          : 0,
       })
     );
 

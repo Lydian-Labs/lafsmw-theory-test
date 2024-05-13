@@ -52,9 +52,12 @@ export const handleScaleInteraction = (
       userClickX
     );
     updatedBarOfScaleData[noteIndex] = updatedNoteObject;
+    updatedBarOfScaleData[noteIndex] = reconstructScale(
+      updatedBarOfScaleData[noteIndex]
+    );
     updatedScaleDataMatrix[barIndex] = updatedBarOfScaleData;
+
   } else if (state.isEraseNoteActive) {
-   
     notesAndCoordinates = removeAccidentalFromNotesAndCoords(
       notesAndCoordinates,
       foundNoteData
