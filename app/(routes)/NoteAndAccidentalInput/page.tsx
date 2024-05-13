@@ -38,7 +38,7 @@ const ManageStaveNotes = () => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
   const [staves, setStaves] = useState<StaveType[]>([]);
-  const [notesData, setNotesData] = useState(INITIAL_STAVES);
+  const [scaleData, setScaleData] = useState(INITIAL_STAVES);
   const [state, dispatch] = useReducer(reducer, noteInteractionInitialState);
 
   const noNoteFound = () => dispatch({ type: "noNoteFound" });
@@ -53,7 +53,7 @@ const ManageStaveNotes = () => {
 
   const clearMeasures = () => {
     clearAllMeasures(
-      setNotesData,
+      setScaleData,
       INITIAL_STAVES,
       rendererRef,
       container,
@@ -67,10 +67,10 @@ const ManageStaveNotes = () => {
         rendererRef,
         ...staveData,
         setStaves,
-        notesData,
+        scaleDataMatrix: scaleData,
         staves,
       }),
-    [rendererRef, setStaves, notesData, staves]
+    [rendererRef, setStaves, scaleData, staves]
   );
 
   useEffect(() => {
@@ -80,7 +80,7 @@ const ManageStaveNotes = () => {
 
   useEffect(() => {
     renderStavesAndNotes();
-  }, [notesData]);
+  }, [scaleData]);
 
   let updatedFoundNoteData: NoteStringData;
 
@@ -106,7 +106,7 @@ const ManageStaveNotes = () => {
 
     const barIndex: number = findBarIndex(staves, userClickX);
 
-    let notesDataCopy = [...notesData];
+    let notesDataCopy = [...scaleData];
     
     const barOfStaveNotes = notesDataCopy[barIndex].map(
       (noteData: StaveNoteData) => ({
@@ -129,7 +129,7 @@ const ManageStaveNotes = () => {
       barIndex
     );
 
-    setNotesData(() => notesDataCopy);
+    setScaleData(() => notesDataCopy);
   };
 
   return (

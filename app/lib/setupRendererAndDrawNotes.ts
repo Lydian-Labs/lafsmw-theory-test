@@ -19,8 +19,8 @@ export const setupRendererAndDrawNotes = (
     firstStaveWidth,
     keySig,
     setStaves,
-    notesData,
-    staves: blankStaves,
+    scaleDataMatrix,
+    staves,
   } = params;
   const renderer = rendererRef?.current;
   renderer?.resize(rendererWidth, rendererHeight);
@@ -41,13 +41,14 @@ export const setupRendererAndDrawNotes = (
       })
     );
   }
-  notesData &&
-    notesData.forEach((barData, index) => {
-      if (barData) {
-        const staveNotes = barData.map(({ newStaveNote }) => newStaveNote);
-        if (staveNotes.length > 0) {
-          context &&
-            Formatter.FormatAndDraw(context, blankStaves[index], staveNotes);
+  scaleDataMatrix &&
+    scaleDataMatrix.forEach((barOfNoteObjects, index) => {
+      if (barOfNoteObjects) {
+        const staveNotes = barOfNoteObjects
+          .map(({ staveNote }) => staveNote)
+          .filter(Boolean);
+        if (staveNotes.length > 0 && context && staves[index]) {
+          Formatter.FormatAndDraw(context, staves[index], staveNotes);
         }
       }
     });

@@ -1,7 +1,5 @@
 "use client";
-import { modifyChordsActionTypes } from "@/app/lib/actionTypes";
-import { handleChordInteraction } from "@/app/lib/handleChordInteraction";
-import { setupRendererAndDrawChords } from "@/app/lib/setUpRendererAndDrawChords";
+import { modifyNotesActionTypes } from "@/app/lib/actionTypes";
 import React, {
   useCallback,
   useEffect,
@@ -11,71 +9,76 @@ import React, {
   useState,
 } from "react";
 import VexFlow from "vexflow";
-import { initialChordData } from "@/app/lib/data/initialChordData";
-import { initialNotesAndCoordsState } from "@/app/lib/data/initialNotesAndCoordinatesState";
 import BlueButton from "../../components/BlueButton";
 import CheckIfNoteFound from "../../components/CheckIfNoteFound";
 import CheckNumBeatsInMeasure from "../../components/CheckNumBeatsInMeasure";
-import { buttonGroup } from "../../lib/buttonsAndButtonGroups";
+import {
+  buttonGroup,
+  clearAllMeasures,
+} from "../../lib/buttonsAndButtonGroups";
+import { initialNotesAndCoordsState } from "@/app/lib/data/initialNotesAndCoordinatesState";
+import { initialScaleState } from "@/app/lib/data/initialScaleState";
 import { staveData } from "../../lib/data/stavesData";
 import { findBarIndex } from "../../lib/findBar";
 import generateYMinAndYMaxForAllNotes from "../../lib/generateYMinAndMaxForAllNotes";
 import getUserClickInfo from "../../lib/getUserClickInfo";
-import { chordInteractionInitialState } from "../../lib/initialStates";
+import { handleScaleInteraction } from "../../lib/handleScaleInteraction";
+import { noteInteractionInitialState } from "../../lib/initialStates";
 import { initializeRenderer } from "../../lib/initializeRenderer";
 import { notesArray } from "../../lib/noteArray";
-import { chordReducer } from "../../lib/reducer";
-import {
-  Chord,
-  NotesAndCoordinatesData,
-  StaveType,
-} from "../../lib/typesAndInterfaces";
+import { scaleReducer } from "../../lib/reducer";
+import { setupRendererAndDrawNotes } from "../../lib/setupRendererAndDrawNotes";
+import { ScaleData, StaveType } from "../../lib/typesAndInterfaces";
 
 const { Renderer } = VexFlow.Flow;
 
-const ManageChords = () => {
+const ManageScales = () => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
   const [staves, setStaves] = useState<StaveType[]>([]);
-  const [state, dispatch] = useReducer(
-    chordReducer,
-    chordInteractionInitialState
-  );
+  const [scaleDataMatrix, setScaleDataMatrix] = useState<ScaleData[][]>([
+    [initialScaleState],
+  ]);
   const [barIndex, setBarIndex] = useState<number>(0);
-  const [chordData, setChordData] = useState<Chord>(initialChordData);
+  const [notesAndCoordinates, setNotesAndCoordinates] = useState([
+    initialNotesAndCoordsState,
+  ]);
 
-  const [notesAndCoordinates, setNotesAndCoordinates] = useState<
-    NotesAndCoordinatesData[]
-  >([initialNotesAndCoordsState]);
+  const [state, dispatch] = useReducer(
+    scaleReducer,
+    noteInteractionInitialState
+  );
 
   const noNoteFound = () => dispatch({ type: "noNoteFound" });
 
-  const modifyChordsButtonGroup = useMemo(
-    () => buttonGroup(dispatch, state, modifyChordsActionTypes),
+  const tooManyBeatsInMeasure = () =>
+    dispatch({ type: "tooManyBeatsInMeasure" });
+
+  const modifyStaveNotesButtonGroup = useMemo(
+    () => buttonGroup(dispatch, state, modifyNotesActionTypes),
     [dispatch, state]
   );
 
-  const eraseChord = () => {
-    setChordData((): Chord => {
-      return initialChordData;
+  const eraseMeasures = () => {
+    setScaleDataMatrix((): ScaleData[][] => {
+      return [[initialScaleState]];
     });
     setNotesAndCoordinates(() =>
       generateYMinAndYMaxForAllNotes(147, notesArray)
     );
-    renderStavesAndChords();
+    renderStavesAndNotes();
   };
 
-  const renderStavesAndChords = useCallback(
+  const renderStavesAndNotes = useCallback(
     (): void =>
-      setupRendererAndDrawChords({
+      setupRendererAndDrawNotes({
         rendererRef,
         ...staveData,
         setStaves,
-        chordData,
+        scaleDataMatrix: scaleDataMatrix,
         staves,
-        barIndex,
       }),
-    [rendererRef, setStaves, chordData, staves, barIndex]
+    [rendererRef, setStaves, scaleDataMatrix, staves]
   );
 
   useEffect(() => {
@@ -86,12 +89,12 @@ const ManageChords = () => {
 
   useEffect(() => {
     initializeRenderer(rendererRef, container);
-    renderStavesAndChords();
+    renderStavesAndNotes();
   }, []);
 
   useEffect(() => {
-    renderStavesAndChords();
-  }, [chordData]);
+    renderStavesAndNotes();
+  }, [scaleDataMatrix]);
 
   const handleClick = (e: React.MouseEvent) => {
     const { userClickY, userClickX } = getUserClickInfo(
@@ -105,34 +108,50 @@ const ManageChords = () => {
         userClickY >= yCoordinateMin && userClickY <= yCoordinateMax
     );
 
-    let chordDataCopy = { ...chordData };
-    let notesAndCoordinatesCopy = [...notesAndCoordinates];
+    if (foundNoteData)
+      foundNoteData = {
+        ...foundNoteData,
+        userClickY: userClickY,
+      };
 
     setBarIndex(() => {
       return findBarIndex(staves, userClickX);
     });
 
-    const foundNoteIndex: number = chordData.keys.findIndex(
-      (note) => note === foundNoteData?.note
-    );
-
     if (!foundNoteData) {
       noNoteFound();
       return;
     }
-    const {
-      chordData: newChordData,
-      notesAndCoordinates: newNotesAndCoordinates,
-    } = handleChordInteraction(
-      notesAndCoordinatesCopy,
-      state,
-      foundNoteData,
-      chordDataCopy,
-      foundNoteIndex
+
+    let scaleDataMatrixCopy = scaleDataMatrix.map((scaleData) => [...scaleData]);
+
+    let notesAndCoordinatesCopy = [...notesAndCoordinates];
+
+    
+    const barOfScaleData = scaleDataMatrixCopy[barIndex].map(
+      (scaleData: ScaleData) => ({
+        ...scaleData,
+        staveNoteAbsoluteX: scaleData.staveNote?.getAbsoluteX(),
+      })
     );
 
+    const {
+      scaleDataMatrix: newScaleDataMatrix,
+      notesAndCoordinates: newNotesAndCoordinates,
+    } = handleScaleInteraction(
+      foundNoteData,
+      tooManyBeatsInMeasure,
+      notesAndCoordinatesCopy,
+      "tooManyBeatsInMeasure",
+      barOfScaleData,
+      scaleDataMatrixCopy,
+      state,
+      userClickX,
+      userClickY,
+      barIndex
+    );
     setNotesAndCoordinates(() => newNotesAndCoordinates);
-    setChordData(() => newChordData);
+    setScaleDataMatrix(() => newScaleDataMatrix);
   };
 
   return (
@@ -147,7 +166,7 @@ const ManageChords = () => {
         openEnterNotes={dispatch}
       />
       <div className="mt-2 ml-3">
-        {modifyChordsButtonGroup.map((button) => {
+        {modifyStaveNotesButtonGroup.map((button) => {
           return (
             <BlueButton
               key={button.text}
@@ -158,10 +177,10 @@ const ManageChords = () => {
             </BlueButton>
           );
         })}
-        <BlueButton onClick={eraseChord}>Erase Chord</BlueButton>
+        <BlueButton onClick={eraseMeasures}>Erase Measure</BlueButton>
       </div>
     </>
   );
 };
 
-export default ManageChords;
+export default ManageScales;

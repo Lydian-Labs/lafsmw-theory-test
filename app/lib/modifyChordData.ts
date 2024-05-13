@@ -7,7 +7,6 @@ import {
 } from "./typesAndInterfaces";
 import {
   parseNote,
-  redrawNote,
   appendAccidentalToNote,
   removeAccidentalFromNote,
 } from "./modifyAccidentals";
