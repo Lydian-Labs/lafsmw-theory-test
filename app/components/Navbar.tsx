@@ -43,7 +43,7 @@ const Navbar: FC = () => {
           </ul>
         </div>
         <Box>
-          <CountdownTimer onTimeUp={() => console.log("Time's up!")} />
+          <CountdownTimer />
         </Box>
       </Box>
 

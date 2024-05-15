@@ -35,11 +35,15 @@ import {
 
 import { Box, Button, Stack, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useTimer } from "@/app/context/TimerContext";
+import { set } from "firebase/database";
 
 export default function ExamHomePage() {
   const { user } = useAuthContext();
+  const { startTimer } = useTimer();
+  const router = useRouter();
+
   const userName = user?.displayName;
   const userId = user?.uid;
   const initialState = {
@@ -47,10 +51,6 @@ export default function ExamHomePage() {
     user: userName,
     userId: userId,
   };
-
-  const { startTimer } = useTimer();
-
-  const router = useRouter();
 
   const VIEW_STATES = {
     START_TEST: 0,
@@ -74,6 +74,7 @@ export default function ExamHomePage() {
   };
 
   const [viewState, setViewState] = useState(VIEW_STATES.START_TEST);
+  const [timesUp, setTimesUp] = useState(false);
 
   const [currentUserData, setCurrentUserData] =
     useState<InputState>(initialState);
@@ -125,8 +126,13 @@ export default function ExamHomePage() {
     });
   };
 
+  const handleTimeUp = () => {
+    setTimesUp(true);
+    setViewState(VIEW_STATES.SUBMIT_AND_EXIT);
+  };
+
   const handleStartTest = () => {
-    startTimer(1800);
+    startTimer(8, handleTimeUp);
     setViewState(VIEW_STATES.KEY_SIG_NOTATE1);
   };
 
@@ -323,7 +329,10 @@ export default function ExamHomePage() {
               <Button onClick={handleFinalSubmit}>
                 <Typography>Submit Final Answers</Typography>
               </Button>
-              <Button onClick={incrementViewState}>
+              <Button
+                onClick={incrementViewState}
+                disabled={timesUp ? true : false}
+              >
                 <Typography>Back to page 1</Typography>
               </Button>
             </Stack>

@@ -6,7 +6,7 @@ const TimerContext = createContext();
 export const TimerProvider = ({ children }) => {
   const [timeLeft, setTimeLeft] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
-  const [duration, setDuration] = useState(0);
+  const [onTimeUp, setOnTimeUp] = useState(null);
 
   useEffect(() => {
     let intervalId;
@@ -17,15 +17,16 @@ export const TimerProvider = ({ children }) => {
     } else if (timeLeft <= 0 && isRunning) {
       setIsRunning(false);
       setTimeLeft(0);
+      if (onTimeUp) onTimeUp();
     }
 
     return () => clearInterval(intervalId);
-  }, [isRunning, timeLeft]);
+  }, [isRunning, timeLeft, onTimeUp]);
 
-  const startTimer = (duration) => {
-    setDuration(duration);
+  const startTimer = (duration, callback) => {
     setTimeLeft(duration);
     setIsRunning(true);
+    setOnTimeUp(() => callback);
   };
 
   const stopTimer = () => {

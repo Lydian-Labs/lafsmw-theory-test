@@ -1,20 +1,9 @@
-import { useEffect } from "react";
 import { useTimer } from "../context/TimerContext";
 import { Box } from "@mui/system";
 import { Typography } from "@mui/material";
 
-interface CountdownTimerProps {
-  onTimeUp: () => void;
-}
-
-const CountdownTimer = ({ onTimeUp }: CountdownTimerProps) => {
-  const { timeLeft, isRunning } = useTimer();
-
-  useEffect(() => {
-    if (timeLeft === 0 && isRunning) {
-      onTimeUp();
-    }
-  }, [timeLeft, isRunning, onTimeUp]);
+const CountdownTimer = () => {
+  const { timeLeft } = useTimer();
 
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
