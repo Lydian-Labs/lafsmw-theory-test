@@ -41,16 +41,20 @@ export const handleScaleInteraction = (
       foundNoteData,
       notesAndCoordinates
     );
-
+    console.log("add accidental to note and coords", notesAndCoordinates);
     const { updatedNoteObject, noteIndex } = addAccidentalToStaveNoteAndKeys(
       state,
       barOfScaleData,
       userClickX
     );
-
     barOfScaleData[noteIndex] = updatedNoteObject;
-
     scaleDataMatrix[barIndex] = barOfScaleData;
+  } else if (state.isEraseAccidentalActive) {
+    notesAndCoordinates = removeAccidentalFromNotesAndCoords(
+      notesAndCoordinates,
+      foundNoteData
+    );
+    console.log("remove accidental to note and coords", notesAndCoordinates);
   } else {
     const newStaveNote: StaveNoteType = new StaveNote({
       keys: [foundNoteData.note],

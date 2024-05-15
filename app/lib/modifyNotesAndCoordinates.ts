@@ -61,10 +61,10 @@ export const appendAccidentalToNote = (accidental: string, note: string) => {
     console.log("Cannot add contradictory accidentals to the same note.");
     return note;
   }
-  
+
   if (noteBase.length < 3) {
     return `${noteBase}${accidental}/${octave}`;
-  } 
+  }
   if (noteBase.length > 3) {
     console.log("Cannot add more than 2 accidentals to a note.");
   }
@@ -75,10 +75,9 @@ export const removeAccidentalFromNotesAndCoords = (
   notesAndCoordinates: NotesAndCoordinatesData[],
   foundNoteData: NotesAndCoordinatesData
 ) => {
-  foundNoteData.note = removeAccidentals(foundNoteData.note);
-  return notesAndCoordinates.map((noteData) =>
-    noteData === foundNoteData
-      ? { ...noteData, note: foundNoteData.note }
-      : noteData
-  );
+  return notesAndCoordinates.map((noteData) => {
+    return noteData.note === foundNoteData.note
+      ? { ...noteData, note: removeAccidentals(foundNoteData.note) }
+      : noteData;
+  });
 };
