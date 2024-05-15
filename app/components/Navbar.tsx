@@ -37,19 +37,13 @@ const Navbar: FC = () => {
             <li className="p-4">
               <Link href="/createKeySignatures">Create Key Signature</Link>
             </li>
-            {/* <li className="p-4">
-              <Link href="/exam/original">Exam Original</Link>
-            </li> */}
             <li className="p-4">
               <Link href="/exam">Exam New</Link>
             </li>
           </ul>
         </div>
         <Box>
-          <CountdownTimer
-            duration={1800}
-            onTimeUp={() => console.log("Time's up!")}
-          />
+          <CountdownTimer onTimeUp={() => console.log("Time's up!")} />
         </Box>
       </Box>
 

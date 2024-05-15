@@ -36,6 +36,7 @@ import {
 import { Box, Button, Stack, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useTimer } from "@/app/context/TimerContext";
 
 export default function ExamHomePage() {
   const { user } = useAuthContext();
@@ -47,9 +48,12 @@ export default function ExamHomePage() {
     userId: userId,
   };
 
+  const { startTimer } = useTimer();
+
   const router = useRouter();
 
   const VIEW_STATES = {
+    START_TEST: 0,
     KEY_SIG_NOTATE1: 1,
     KEY_SIG_NOTATE2: 2,
     KEY_SIG_NOTATE3: 3,
@@ -69,7 +73,7 @@ export default function ExamHomePage() {
     SUBMIT_AND_EXIT: 17,
   };
 
-  const [viewState, setViewState] = useState(VIEW_STATES.KEY_SIG_NOTATE1);
+  const [viewState, setViewState] = useState(VIEW_STATES.START_TEST);
 
   const [currentUserData, setCurrentUserData] =
     useState<InputState>(initialState);
@@ -99,7 +103,7 @@ export default function ExamHomePage() {
     }
   }, [router, user]);
 
-  console.log("currentUserData after useEffect:", currentUserData);
+  // console.log("currentUserData after useEffect:", currentUserData);
 
   const incrementViewState = () => {
     setViewState((prevState) => {
@@ -119,6 +123,11 @@ export default function ExamHomePage() {
         return prevState - 1;
       }
     });
+  };
+
+  const handleStartTest = () => {
+    startTimer(1800);
+    setViewState(VIEW_STATES.KEY_SIG_NOTATE1);
   };
 
   const userChordAnswers = convertObjectToArray(currentUserData.chords);
@@ -174,13 +183,21 @@ export default function ExamHomePage() {
         p={4}
       >
         {viewState !== VIEW_STATES.KEY_SIG_NOTATE1 &&
-          viewState !== VIEW_STATES.SUBMIT_AND_EXIT && (
+          viewState !== VIEW_STATES.SUBMIT_AND_EXIT &&
+          viewState !== VIEW_STATES.START_TEST && (
             <Box>
               <Button onClick={decrementViewState}>
                 <Typography variant="h4">{"<"}</Typography>
               </Button>
             </Box>
           )}
+        {viewState === VIEW_STATES.START_TEST && (
+          <Box>
+            <Button onClick={handleStartTest}>
+              <Typography variant="h4">Begin Test</Typography>
+            </Button>
+          </Box>
+        )}
         {viewState === VIEW_STATES.KEY_SIG_NOTATE1 && (
           <KeySigNotate1
             currentUserData={currentUserData}
@@ -312,13 +329,14 @@ export default function ExamHomePage() {
             </Stack>
           </main>
         )}
-        {viewState !== VIEW_STATES.SUBMIT_AND_EXIT && (
-          <Box>
-            <Button onClick={incrementViewState}>
-              <Typography variant="h4">{">"}</Typography>
-            </Button>
-          </Box>
-        )}
+        {viewState !== VIEW_STATES.SUBMIT_AND_EXIT &&
+          viewState !== VIEW_STATES.START_TEST && (
+            <Box>
+              <Button onClick={incrementViewState}>
+                <Typography variant="h4">{">"}</Typography>
+              </Button>
+            </Box>
+          )}
       </Stack>
     </Box>
   );

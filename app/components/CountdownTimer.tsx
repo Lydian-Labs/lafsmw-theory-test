@@ -1,28 +1,20 @@
-// components/CountdownTimer.js
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { useTimer } from "../context/TimerContext";
 import { Box } from "@mui/system";
 import { Typography } from "@mui/material";
 
 interface CountdownTimerProps {
-  duration: number;
   onTimeUp: () => void;
 }
 
-const CountdownTimer = ({ duration, onTimeUp }: CountdownTimerProps) => {
-  const [timeLeft, setTimeLeft] = useState(duration);
+const CountdownTimer = ({ onTimeUp }: CountdownTimerProps) => {
+  const { timeLeft, isRunning } = useTimer();
 
   useEffect(() => {
-    if (timeLeft === 0) {
+    if (timeLeft === 0 && isRunning) {
       onTimeUp();
-      return;
     }
-
-    const intervalId = setInterval(() => {
-      setTimeLeft((prevTime) => prevTime - 1);
-    }, 1000);
-
-    return () => clearInterval(intervalId);
-  }, [timeLeft, onTimeUp]);
+  }, [timeLeft, isRunning, onTimeUp]);
 
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);

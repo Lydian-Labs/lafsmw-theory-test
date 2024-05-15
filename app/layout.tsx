@@ -3,9 +3,9 @@ import { ThemeProvider } from "@mui/material/styles";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Navbar from "./components/Navbar";
+import { TimerProvider } from "./context/TimerContext";
 import "./styles/globals.css";
 import theme from "./theme";
-import useLayoutState from "./lib/customHook";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,15 +19,15 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [state, setState] = useLayoutState();
-
   return (
     <html lang="en">
       <body className={inter.className}>
         <AuthContextProvider>
           <ThemeProvider theme={theme}>
-            <Navbar />
-            {children}
+            <TimerProvider>
+              <Navbar />
+              {children}
+            </TimerProvider>
           </ThemeProvider>
         </AuthContextProvider>
       </body>
