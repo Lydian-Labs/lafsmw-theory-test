@@ -132,7 +132,7 @@ export default function ExamHomePage() {
   };
 
   const handleStartTest = () => {
-    startTimer(8, handleTimeUp);
+    startTimer(20, handleTimeUp);
     setViewState(VIEW_STATES.KEY_SIG_NOTATE1);
   };
 
@@ -199,7 +199,7 @@ export default function ExamHomePage() {
           )}
         {viewState === VIEW_STATES.START_TEST && (
           <Box>
-            <Button onClick={handleStartTest}>
+            <Button variant="contained" onClick={handleStartTest}>
               <Typography variant="h4">Begin Test</Typography>
             </Button>
           </Box>
@@ -322,8 +322,8 @@ export default function ExamHomePage() {
             <Typography variant="body1" width={550} align="center">
               To submit your answers and exit the exam, click the button below.
               You will not be able to return to the exam after submitting. If
-              you need to make changes, please click the button to go back to
-              page 1.
+              you need to make changes and there is still time left, please
+              click the button to go back to page 1.
             </Typography>
             <Stack direction={"column"} gap={4} p={4}>
               <Button onClick={handleFinalSubmit}>
