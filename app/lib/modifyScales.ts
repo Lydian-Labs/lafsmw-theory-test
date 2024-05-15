@@ -21,7 +21,7 @@ export const createStaveNoteFromScaleData = (
 ) => {
   return new StaveNote({
     keys: updatedKeys ? updatedKeys : noteObject.keys,
-    duration: noteObject.duration,
+    duration: "q",
   });
 };
 
@@ -33,9 +33,12 @@ export const getNoteData = (
   return { noteDataObject: barOfScaleData[noteIndex], noteIndex };
 };
 
-const addAccidentalsToStaveNotes = (
+export const addAccidentalsToStaveNotes = (
   keys: string[],
-  newStaveNote: StaveNoteType
+  newStaveNote: StaveNoteType,
+  barOfScaleData?: ScaleData[],
+  userClickX?: number,
+  accidental?: string
 ) => {
   keys.forEach((key) => {
     const { noteBase } = parseNote(key);
@@ -47,23 +50,36 @@ const addAccidentalsToStaveNotes = (
   });
 };
 
-export const addAccidentalToScaleDataKeys = (
+export const reconstructScale = (
+  noteObject: ScaleData,
+  foundNoteData: NotesAndCoordinatesData
+) => {
+  const newStaveNote = createStaveNoteFromScaleData(noteObject);
+  addAccidentalsToStaveNotes([foundNoteData.note], newStaveNote);
+  const newScale = {
+    ...noteObject,
+    staveNote: newStaveNote,
+  };
+  return newScale;
+};
+
+export const addAccidentalToStaveNoteAndKeys = (
   state: NoteInteractionState,
   scaleData: ScaleData[],
   userClickX: number
 ) => {
-  const { noteDataObject, noteIndex } = getNoteData(scaleData, userClickX);
-
+  let { noteDataObject, noteIndex } = getNoteData(scaleData, userClickX);
   const accidental = state.isSharpActive ? "#" : "b";
-
+  noteDataObject.keys[0] = appendAccidentalToNote(
+    accidental,
+    noteDataObject.keys[0]
+  );
   const newStaveNote = createStaveNoteFromScaleData(noteDataObject);
-
   addAccidentalsToStaveNotes(noteDataObject.keys, newStaveNote);
-
   const updatedNoteObject = {
     ...noteDataObject,
-    staveNotes: newStaveNote,
-    keys: [appendAccidentalToNote(accidental, noteDataObject.keys[0])], //should this be noteIndex?
+    staveNote: newStaveNote,
+    keys: noteDataObject.keys,
   };
   return { updatedNoteObject, noteIndex };
 };
@@ -85,30 +101,24 @@ export const removeAccidentalFromStaveNote = (
 };
 
 export const addNewNoteToScale = (
-  noteObject: ScaleData,
-  foundNoteData: NotesAndCoordinatesData
+  scaleData: ScaleData[],
+  foundNoteData: NotesAndCoordinatesData,
+  userClickX: number,
+  userClickY: number
 ) => {
-  const updatedKeys = [foundNoteData.note];
-  const newNote = createStaveNoteFromScaleData(noteObject, updatedKeys);
-
-  addAccidentalsToStaveNotes(updatedKeys, newNote);
-
+  let { noteDataObject } = getNoteData(scaleData, userClickX);
+  const newNote = createStaveNoteFromScaleData(noteDataObject, [
+    foundNoteData.note,
+  ]);
+  addAccidentalsToStaveNotes(noteDataObject.keys, newNote);
   const newNoteObject = {
-    ...noteObject,
-    keys: updatedKeys,
+    keys: [foundNoteData.note],
+    duration: "q",
     staveNote: newNote,
+    staveNoteAbsoluteX: 0,
+    userClickY,
   };
   return newNoteObject;
-};
-
-export const reconstructScale = (noteObject: ScaleData) => {
-  const newStaveNote = createStaveNoteFromScaleData(noteObject);
-  addAccidentalsToStaveNotes(noteObject.keys, newStaveNote);
-  const newScale = {
-    ...noteObject,
-    staveNotes: newStaveNote,
-  };
-  return newScale;
 };
 
 export const changeNotePosition = (

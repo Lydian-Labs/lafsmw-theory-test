@@ -1,5 +1,7 @@
-import { NoteInteractionState,  NotesAndCoordinatesData } from "./typesAndInterfaces";
-
+import {
+  NoteInteractionState,
+  NotesAndCoordinatesData,
+} from "./typesAndInterfaces";
 
 export const parseNote = (note: string) => {
   const noteBase = note.split("/")[0];
@@ -7,20 +9,21 @@ export const parseNote = (note: string) => {
   return { noteBase, octave };
 };
 
-
 export const updateNotesAndCoordsWithAccidental = (
   state: NoteInteractionState,
   foundNoteData: NotesAndCoordinatesData,
   notesAndCoordinates: NotesAndCoordinatesData[]
 ) => {
-  const notesAndCoordinatesCopy = [...notesAndCoordinates];
   const accidental = state.isSharpActive ? "#" : "b";
-  foundNoteData.note = appendAccidentalToNote(accidental, foundNoteData.note);
-  return notesAndCoordinatesCopy.map((noteData) =>
-    noteData === foundNoteData
-      ? { ...noteData, note: foundNoteData.note }
+  const newNotesAndCoords = notesAndCoordinates.map((noteData) =>
+    noteData.note === foundNoteData.note
+      ? {
+          ...noteData,
+          note: appendAccidentalToNote(accidental, foundNoteData.note),
+        }
       : noteData
   );
+  return newNotesAndCoords;
 };
 
 export const removeAccidentals = (note: string) => {
@@ -58,8 +61,12 @@ export const appendAccidentalToNote = (accidental: string, note: string) => {
     console.log("Cannot add contradictory accidentals to the same note.");
     return note;
   }
+  
   if (noteBase.length < 3) {
     return `${noteBase}${accidental}/${octave}`;
+  } 
+  if (noteBase.length > 3) {
+    console.log("Cannot add more than 2 accidentals to a note.");
   }
   return `${noteBase}/${octave}`;
 };

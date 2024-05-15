@@ -36,8 +36,8 @@ const ManageScales = () => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
   const [staves, setStaves] = useState<StaveType[]>([]);
-  const [scaleDataMatrix, setScaleDataMatrix] = useState<ScaleData[][]>([[]]);
   const [barIndex, setBarIndex] = useState<number>(0);
+  const [scaleDataMatrix, setScaleDataMatrix] = useState<ScaleData[][]>([[]]);
   const [notesAndCoordinates, setNotesAndCoordinates] = useState([
     initialNotesAndCoordsState,
   ]);
@@ -73,7 +73,7 @@ const ManageScales = () => {
         rendererRef,
         ...staveData,
         setStaves,
-        scaleDataMatrix: scaleDataMatrix,
+        scaleDataMatrix,
         staves,
       }),
     [rendererRef, setStaves, scaleDataMatrix, staves]
@@ -94,6 +94,10 @@ const ManageScales = () => {
     renderStavesAndNotes();
   }, [scaleDataMatrix]);
 
+  useEffect(() => {
+    console.log("scaleDataMatrix Updated:", scaleDataMatrix);
+  }, [scaleDataMatrix]); // Listening to changes in scaleDataMatrix
+
   const handleClick = (e: React.MouseEvent) => {
     const { userClickY, userClickX } = getUserClickInfo(
       e,
@@ -112,14 +116,8 @@ const ManageScales = () => {
         userClickY: userClickY,
       };
 
-    console.log("foundNoteData: ", foundNoteData);
+    const barIndex = findBarIndex(staves, userClickX);
 
-    setBarIndex(() => {
-      return findBarIndex(staves, userClickX);
-    });
-
-    console.log("barIndex: ", barIndex);
-    console.log("scaleDataMatrix", scaleDataMatrix[barIndex]);
     if (!foundNoteData) {
       noNoteFound();
       return;
