@@ -5,6 +5,7 @@ import { Inter } from "next/font/google";
 import Navbar from "./components/Navbar";
 import "./styles/globals.css";
 import theme from "./theme";
+import useLayoutState from "./lib/customHook";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,6 +19,8 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const [state, setState] = useLayoutState();
+
   return (
     <html lang="en">
       <body className={inter.className}>
