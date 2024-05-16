@@ -36,9 +36,6 @@ export const getNoteData = (
 export const addAccidentalsToStaveNotes = (
   keys: string[],
   newStaveNote: StaveNoteType,
-  barOfScaleData?: ScaleData[],
-  userClickX?: number,
-  accidental?: string
 ) => {
   keys.forEach((key) => {
     const { noteBase } = parseNote(key);
@@ -153,5 +150,5 @@ export const removeNoteFromScale = (
   if (noteIndex != null) {
     scaleData.splice(noteIndex, 1);
   }
-  return { noteDataObject, noteIndex };
+  //return { noteDataObject, noteIndex };
 };

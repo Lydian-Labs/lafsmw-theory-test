@@ -54,7 +54,21 @@ export const handleScaleInteraction = (
       notesAndCoordinates,
       foundNoteData
     );
-    console.log("remove accidental to note and coords", notesAndCoordinates);
+    const { updatedNoteObject, noteIndex } = removeAccidentalFromStaveNote(
+      barOfScaleData,
+      userClickX
+    );
+    console.log("remove accidental from note and coords", notesAndCoordinates);
+    barOfScaleData[noteIndex] = updatedNoteObject;
+    scaleDataMatrix[barIndex] = barOfScaleData;
+  } else if (state.isEraseNoteActive) {
+    notesAndCoordinates = removeAccidentalFromNotesAndCoords(
+      notesAndCoordinates,
+      foundNoteData
+    );
+    console.log("remove accidental from note and coords", notesAndCoordinates);
+    removeNoteFromScale(barOfScaleData, userClickX);
+    scaleDataMatrix[barIndex] = barOfScaleData;
   } else {
     const newStaveNote: StaveNoteType = new StaveNote({
       keys: [foundNoteData.note],
