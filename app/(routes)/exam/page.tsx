@@ -35,9 +35,8 @@ import {
 
 import { Box, Button, Stack, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useTimer } from "@/app/context/TimerContext";
-import { set } from "firebase/database";
 
 export default function ExamHomePage() {
   const { user } = useAuthContext();
@@ -79,6 +78,7 @@ export default function ExamHomePage() {
   const [currentUserData, setCurrentUserData] =
     useState<InputState>(initialState);
 
+  // Have not decided how to handle userAnswers yet
   const [userAnswers, setUserAnswers] = useState<string[]>([]);
 
   useEffect(() => {
@@ -132,7 +132,7 @@ export default function ExamHomePage() {
   };
 
   const handleStartTest = () => {
-    startTimer(20, handleTimeUp);
+    startTimer(1800, handleTimeUp);
     setViewState(VIEW_STATES.KEY_SIG_NOTATE1);
   };
 

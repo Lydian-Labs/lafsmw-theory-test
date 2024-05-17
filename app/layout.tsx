@@ -1,13 +1,18 @@
 import AuthContextProvider from "@/firebase/authContext";
 import { ThemeProvider } from "@mui/material/styles";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Poppins } from "next/font/google";
 import Navbar from "./components/Navbar";
 import { TimerProvider } from "./context/TimerContext";
 import "./styles/globals.css";
 import theme from "./theme";
 
-const inter = Inter({ subsets: ["latin"] });
+const poppins = Poppins({
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["400", "700"],
+  style: ["normal", "italic"],
+});
 
 export const metadata: Metadata = {
   title: "LAFSMW Theory Test",
@@ -21,7 +26,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={poppins.className}>
         <AuthContextProvider>
           <ThemeProvider theme={theme}>
             <TimerProvider>
