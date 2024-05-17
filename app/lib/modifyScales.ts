@@ -35,7 +35,7 @@ export const getNoteData = (
 
 export const addAccidentalsToStaveNotes = (
   keys: string[],
-  newStaveNote: StaveNoteType,
+  newStaveNote: StaveNoteType
 ) => {
   keys.forEach((key) => {
     const { noteBase } = parseNote(key);
@@ -123,32 +123,31 @@ export const changeNotePosition = (
   userClickX: number,
   foundNoteData: NotesAndCoordinatesData,
   userClickY: number
-): ScaleData => {
+) => {
   const { noteDataObject, noteIndex } = getNoteData(scaleData, userClickX);
+  if (noteDataObject.staveNote) {
+    const staveNoteAbsoluteX = noteDataObject.staveNote.getAbsoluteX();
 
-  const staveNoteAbsoluteX = noteDataObject.staveNoteAbsoluteX;
-
-  const newStaveNote = createStaveNoteFromScaleData(noteDataObject, [
-    foundNoteData.note,
-  ]);
-  const updatedNoteObject = {
-    ...noteDataObject,
-    staveNotes: newStaveNote,
-    keys: [foundNoteData.note],
-    staveNoteAbsoluteX,
-    userClickY,
-  };
-  return updatedNoteObject;
+    scaleData.splice(noteIndex, 1, {
+      staveNote: new StaveNote({
+        keys: [foundNoteData.note],
+        duration: "q",
+      }),
+      keys: [foundNoteData.note],
+      duration: "q",
+      staveNoteAbsoluteX,
+      userClickY,
+    });
+  }
 };
 
 export const removeNoteFromScale = (
   scaleData: ScaleData[],
   userClickX: number
 ) => {
-  const { noteDataObject, noteIndex } = getNoteData(scaleData, userClickX);
+  const { noteIndex } = getNoteData(scaleData, userClickX);
   //!= checks for both null and undefined
   if (noteIndex != null) {
     scaleData.splice(noteIndex, 1);
   }
-  //return { noteDataObject, noteIndex };
 };

@@ -1,5 +1,6 @@
 import VexFlow from "vexflow";
 import { BEATS_IN_MEASURE } from "./data/stavesData";
+import { useRef, useEffect } from "react";
 import {
   changeNotePosition,
   removeAccidentalFromStaveNote,
@@ -20,10 +21,9 @@ import {
   NotesAndCoordinatesData,
   StaveNoteType,
 } from "./typesAndInterfaces";
-import { addAccidentalsToStaveNotes } from "./modifyScales";
 const { StaveNote } = VexFlow.Flow;
 
-export const handleScaleInteraction = (
+export const HandleScaleInteraction = (
   foundNoteData: NotesAndCoordinatesData,
   checkBeatsInMeasure: React.Dispatch<NoteInteractionAction>,
   notesAndCoordinates: NotesAndCoordinatesData[],
@@ -68,6 +68,9 @@ export const handleScaleInteraction = (
     );
     console.log("remove accidental from note and coords", notesAndCoordinates);
     removeNoteFromScale(barOfScaleData, userClickX);
+    scaleDataMatrix[barIndex] = barOfScaleData;
+  } else if (state.isChangeNoteActive) {
+    changeNotePosition(barOfScaleData, userClickX, foundNoteData, userClickY);
     scaleDataMatrix[barIndex] = barOfScaleData;
   } else {
     const newStaveNote: StaveNoteType = new StaveNote({

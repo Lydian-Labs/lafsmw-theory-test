@@ -12,17 +12,13 @@ import VexFlow from "vexflow";
 import BlueButton from "../../components/BlueButton";
 import CheckIfNoteFound from "../../components/CheckIfNoteFound";
 import CheckNumBeatsInMeasure from "../../components/CheckNumBeatsInMeasure";
-import {
-  buttonGroup,
-  clearAllMeasures,
-} from "../../lib/buttonsAndButtonGroups";
+import { buttonGroup } from "../../lib/buttonsAndButtonGroups";
 import { initialNotesAndCoordsState } from "@/app/lib/data/initialNotesAndCoordinatesState";
-import { initialScaleState } from "@/app/lib/data/initialScaleState";
 import { staveData } from "../../lib/data/stavesData";
 import { findBarIndex } from "../../lib/findBar";
 import generateYMinAndYMaxForAllNotes from "../../lib/generateYMinAndMaxForAllNotes";
 import getUserClickInfo from "../../lib/getUserClickInfo";
-import { handleScaleInteraction } from "../../lib/handleScaleInteraction";
+import { HandleScaleInteraction } from "../../lib/handleScaleInteraction";
 import { noteInteractionInitialState } from "../../lib/initialStates";
 import { initializeRenderer } from "../../lib/initializeRenderer";
 import { notesArray } from "../../lib/noteArray";
@@ -141,7 +137,7 @@ const ManageScales = () => {
     const {
       scaleDataMatrix: newScaleDataMatrix,
       notesAndCoordinates: newNotesAndCoordinates,
-    } = handleScaleInteraction(
+    } = HandleScaleInteraction(
       foundNoteData,
       tooManyBeatsInMeasure,
       notesAndCoordinatesCopy,
