@@ -125,7 +125,7 @@ export const changeNotePosition = (
   userClickY: number
 ) => {
   const { noteDataObject, noteIndex } = getNoteData(scaleData, userClickX);
-  if (noteDataObject.staveNote) {
+  if (noteDataObject && noteDataObject.staveNote) {
     const staveNoteAbsoluteX = noteDataObject.staveNote.getAbsoluteX();
 
     scaleData.splice(noteIndex, 1, {
