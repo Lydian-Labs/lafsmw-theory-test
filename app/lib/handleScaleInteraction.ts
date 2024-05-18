@@ -1,14 +1,9 @@
 import VexFlow from "vexflow";
-import { BEATS_IN_MEASURE } from "./data/stavesData";
-import { useRef, useEffect } from "react";
 import {
   changeNotePosition,
   removeAccidentalFromStaveNote,
   addAccidentalToStaveNoteAndKeys,
-  addNewNoteToScale,
   removeNoteFromScale,
-  reconstructScale,
-  getNoteData,
 } from "./modifyScales";
 import {
   updateNotesAndCoordsWithAccidental,
