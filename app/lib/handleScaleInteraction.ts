@@ -16,6 +16,7 @@ import {
   NotesAndCoordinatesData,
   StaveNoteType,
 } from "./typesAndInterfaces";
+import { BEATS_IN_MEASURE } from "./data/stavesData";
 const { StaveNote } = VexFlow.Flow;
 
 export const HandleScaleInteraction = (
@@ -72,6 +73,8 @@ export const HandleScaleInteraction = (
     console.log("remove accidental from note and coords", notesAndCoordinates);
     changeNotePosition(barOfScaleData, userClickX, foundNoteData, userClickY);
     scaleDataMatrix[barIndex] = barOfScaleData;
+  } else if (barOfScaleData && barOfScaleData.length >= BEATS_IN_MEASURE) {
+    checkBeatsInMeasure({ type: beatsInMeasureAction });
   } else {
     const newStaveNote: StaveNoteType = new StaveNote({
       keys: [foundNoteData.note],
