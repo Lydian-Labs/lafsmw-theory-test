@@ -5,10 +5,11 @@ const generateYMinAndYMaxForAllNotes = (
   notes: string[]
 ): NoteStringData[] => {
   return notes.map((note, index) => {
+    const originalNote = note;
     const yCoordinateMin = topNoteYCoordinate + index * 5;
     const yCoordinateMax = yCoordinateMin + 5;
 
-    return { note, yCoordinateMin, yCoordinateMax };
+    return { originalNote, note, yCoordinateMin, yCoordinateMax };
   });
 };
 

@@ -122,6 +122,7 @@ export interface NoteStringData {
 }
 export interface NotesAndCoordinatesData {
   note: string;
+  originalNote: string,
   yCoordinateMin: number;
   yCoordinateMax: number;
   userClickY?: number;

@@ -77,7 +77,7 @@ export const removeAccidentalFromNotesAndCoords = (
 ) => {
   return notesAndCoordinates.map((noteData) => {
     return noteData.note === foundNoteData.note
-      ? { ...noteData, note: removeAccidentals(foundNoteData.note) }
+      ? { ...noteData, note: noteData.originalNote }
       : noteData;
   });
 };

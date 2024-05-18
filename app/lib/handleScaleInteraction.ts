@@ -70,6 +70,11 @@ export const HandleScaleInteraction = (
     removeNoteFromScale(barOfScaleData, userClickX);
     scaleDataMatrix[barIndex] = barOfScaleData;
   } else if (state.isChangeNoteActive) {
+    notesAndCoordinates = removeAccidentalFromNotesAndCoords(
+      notesAndCoordinates,
+      foundNoteData
+    );
+    console.log("remove accidental from note and coords", notesAndCoordinates);
     changeNotePosition(barOfScaleData, userClickX, foundNoteData, userClickY);
     scaleDataMatrix[barIndex] = barOfScaleData;
   } else {

@@ -106,6 +106,8 @@ const ManageScales = () => {
         userClickY >= yCoordinateMin && userClickY <= yCoordinateMax
     );
 
+    console.log("foundNoteData with added original note", foundNoteData);
+
     if (foundNoteData)
       foundNoteData = {
         ...foundNoteData,
