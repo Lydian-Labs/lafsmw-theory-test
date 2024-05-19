@@ -1,5 +1,5 @@
 import VexFlow from "vexflow";
-import createBlankStaves from "../lib/createBlankStaves";
+import createBlankStaves from "./createBlankStaves";
 import { RenderStavesAndNotesParams } from "./typesAndInterfaces";
 const { Formatter } = VexFlow.Flow;
 

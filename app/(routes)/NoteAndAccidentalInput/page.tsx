@@ -25,7 +25,7 @@ import { noteInteractionInitialState } from "../../lib/initialStates";
 import { initializeRenderer } from "../../lib/initializeRenderer";
 import { notesArray } from "../../lib/noteArray";
 import { reducer } from "../../lib/reducer";
-import { setupRendererAndDrawNotes } from "../../lib/setupRendererAndDrawNotes";
+import { setupRendererAndDrawNotesOld } from "../../lib/setUpRendererAndDrawNotesOld";
 import {
   NoteStringData,
   StaveNoteData,
@@ -38,7 +38,7 @@ const ManageStaveNotes = () => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
   const [staves, setStaves] = useState<StaveType[]>([]);
-  const [scaleData, setScaleData] = useState(INITIAL_STAVES);
+  const [notesData, setNotesData] = useState(INITIAL_STAVES);
   const [state, dispatch] = useReducer(reducer, noteInteractionInitialState);
 
   const noNoteFound = () => dispatch({ type: "noNoteFound" });
@@ -53,7 +53,7 @@ const ManageStaveNotes = () => {
 
   const clearMeasures = () => {
     clearAllMeasures(
-      setScaleData,
+      setNotesData,
       INITIAL_STAVES,
       rendererRef,
       container,
@@ -64,14 +64,14 @@ const ManageStaveNotes = () => {
 
   const renderStavesAndNotes = useCallback(
     (): void =>
-      setupRendererAndDrawNotes({
+      setupRendererAndDrawNotesOld({
         rendererRef,
         ...staveData,
         setStaves,
-        scaleDataMatrix: scaleData,
+        notesData,
         staves,
       }),
-    [rendererRef, setStaves, scaleData, staves]
+    [rendererRef, setStaves, notesData, staves]
   );
 
   useEffect(() => {
@@ -81,7 +81,7 @@ const ManageStaveNotes = () => {
 
   useEffect(() => {
     renderStavesAndNotes();
-  }, [scaleData]);
+  }, [notesData]);
 
   let updatedFoundNoteData: NoteStringData;
 
@@ -107,7 +107,7 @@ const ManageStaveNotes = () => {
 
     const barIndex: number = findBarIndex(staves, userClickX);
 
-    let notesDataCopy = [...scaleData];
+    let notesDataCopy = [...notesData];
 
     const barOfStaveNotes = notesDataCopy[barIndex].map(
       (noteData: StaveNoteData) => ({
@@ -130,7 +130,7 @@ const ManageStaveNotes = () => {
       barIndex
     );
 
-    setScaleData(() => notesDataCopy);
+    setNotesData(() => notesDataCopy);
   };
 
   return (

@@ -33,18 +33,18 @@ export const changeNotePosition = (
   userClickY: number
 ): void => {
   const noteData = getNoteData(barOfStaveNotes, userClickX);
-  if (noteData.barOfStaveNotes && noteData.barOfStaveNotes.staveNoteAbsoluteX) {
-    const staveNoteAbsoluteX = noteData.barOfStaveNotes.staveNoteAbsoluteX;
-    staveNoteAbsoluteX &&
-      barOfStaveNotes.splice(noteData.noteIndex, 1, {
-        newStaveNote: new StaveNote({
-          keys: [noteStringData.note],
-          duration: "q",
-        }),
-        staveNoteAbsoluteX,
-        userClickY,
-      });
-  }
+  const staveNoteAbsoluteX = noteData.barOfStaveNotes
+    ? noteData.barOfStaveNotes.staveNoteAbsoluteX
+    : null;
+  staveNoteAbsoluteX &&
+    barOfStaveNotes.splice(noteData.noteIndex, 1, {
+      newStaveNote: new StaveNote({
+        keys: [noteStringData.note],
+        duration: "q",
+      }),
+      staveNoteAbsoluteX,
+      userClickY,
+    });
 };
 
 export const deleteNote = (
