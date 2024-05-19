@@ -1,5 +1,5 @@
 "use client";
-import { modifyNotesActionTypes } from "@/app/lib/actionTypes";
+import { modifyNotesActionTypes } from "../../lib/actionTypes";
 import React, {
   useCallback,
   useEffect,
@@ -13,7 +13,7 @@ import BlueButton from "../../components/BlueButton";
 import CheckIfNoteFound from "../../components/CheckIfNoteFound";
 import CheckNumBeatsInMeasure from "../../components/CheckNumBeatsInMeasure";
 import { buttonGroup } from "../../lib/buttonsAndButtonGroups";
-import { initialNotesAndCoordsState } from "@/app/lib/data/initialNotesAndCoordinatesState";
+import { initialNotesAndCoordsState } from "../../lib/data/initialNotesAndCoordinatesState";
 import { staveData } from "../../lib/data/stavesData";
 import { findBarIndex } from "../../lib/findBar";
 import generateYMinAndYMaxForAllNotes from "../../lib/generateYMinAndMaxForAllNotes";
@@ -32,7 +32,6 @@ const ManageScales = () => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
   const [staves, setStaves] = useState<StaveType[]>([]);
-  const [barIndex, setBarIndex] = useState<number>(0);
   const [scaleDataMatrix, setScaleDataMatrix] = useState<ScaleData[][]>([[]]);
   const [notesAndCoordinates, setNotesAndCoordinates] = useState([
     initialNotesAndCoordsState,

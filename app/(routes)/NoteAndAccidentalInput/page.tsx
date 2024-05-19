@@ -1,5 +1,5 @@
 "use client";
-import { modifyNotesActionTypes } from "@/app/lib/actionTypes";
+import { modifyNotesActionTypes } from "../../lib/actionTypes";
 import React, {
   useCallback,
   useEffect,
@@ -59,7 +59,8 @@ const ManageStaveNotes = () => {
       container,
       dispatch,
       renderStavesAndNotes
-    )}
+    );
+  };
 
   const renderStavesAndNotes = useCallback(
     (): void =>
@@ -107,7 +108,7 @@ const ManageStaveNotes = () => {
     const barIndex: number = findBarIndex(staves, userClickX);
 
     let notesDataCopy = [...scaleData];
-    
+
     const barOfStaveNotes = notesDataCopy[barIndex].map(
       (noteData: StaveNoteData) => ({
         ...noteData,
