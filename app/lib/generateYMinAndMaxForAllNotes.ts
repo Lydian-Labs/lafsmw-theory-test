@@ -1,5 +1,5 @@
 import { NotesAndCoordinatesData } from "./typesAndInterfaces";
-
+import { TOLERANCE } from "./data/stavesData";
 const generateYMinAndYMaxForAllNotes = (
   topNoteYCoordinate: number,
   notes: string[]

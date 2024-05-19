@@ -64,7 +64,7 @@ const appendAccidentalToNote = (accidental: string, note: string) => {
 export const updateNoteWithAccidental = (
   state: ChordInteractionState,
   foundNoteData: NoteStringData,
-  notesAndCoordinates: NoteStringData[]
+  notesAndCoordinates: NotesAndCoordinatesData[]
 ) => {
   const accidental = state.isSharpActive ? "#" : "b";
   foundNoteData.note = appendAccidentalToNote(accidental, foundNoteData.note);

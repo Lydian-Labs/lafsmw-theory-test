@@ -1,7 +1,7 @@
-import { ScaleData } from "./typesAndInterfaces";
+import { ScaleData, StaveNoteData } from "./typesAndInterfaces";
 
 export const indexOfNoteToModify = (
-  scaleData: ScaleData[],
+  scaleData: ScaleData[] | StaveNoteData[],
   userClickX: number
 ): number => {
   const index: number = scaleData?.findIndex(
