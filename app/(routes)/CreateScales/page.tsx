@@ -23,7 +23,7 @@ import { noteInteractionInitialState } from "../../lib/initialStates";
 import { initializeRenderer } from "../../lib/initializeRenderer";
 import { notesArray } from "../../lib/noteArray";
 import { scaleReducer } from "../../lib/reducer";
-import { setupRendererAndDrawNotes } from "../../lib/setupRendererAndDrawNotes";
+import { setupRendererAndDrawNotes } from "../../lib/setupRendererAndDrawNotesNewest";
 import { ScaleData, StaveType } from "../../lib/typesAndInterfaces";
 
 const { Renderer } = VexFlow.Flow;
