@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FC } from "react";
 import { useAuthContext } from "@/firebase/authContext";
+import CountdownTimer from "./CountdownTimer";
 
 const Navbar: FC = () => {
   const router = useRouter();
@@ -21,7 +22,9 @@ const Navbar: FC = () => {
         <div className="text-center sm:flex left-0 top-0 w-full z-[3] ease-in duration-300 text-black">
           <div className="flex p-4 justify-between">
             <Link href="/">
-              <h1 className="text-2xl sm:text-3xl">Vexflow Projects</h1>
+              <h1 className="text-3xl">
+                Lafayette Jazz Workshop Placement Exam
+              </h1>
             </Link>
           </div>
           <ul className="hidden sm:text-1xl py-20 sm:py-1 sm:flex">
@@ -39,14 +42,11 @@ const Navbar: FC = () => {
             <li className="p-4">
               <Link href="/createKeySignatures">Create Key Signature</Link>
             </li>
-            <li className="p-4">
-              <Link href="/exam/original">Exam Original</Link>
-            </li>
-            <li className="p-4">
-              <Link href="/exam">Exam New</Link>
-            </li>
           </ul>
         </div>
+        <Box>
+          <CountdownTimer />
+        </Box>
       </Box>
 
       <Box gridColumn="span 1" padding={2}>

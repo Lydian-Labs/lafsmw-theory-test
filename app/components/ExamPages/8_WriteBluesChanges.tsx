@@ -1,26 +1,68 @@
 "use client";
 import { InputData, UserDataProps } from "@/app/lib/typesAndInterfaces";
+import { useAuthContext } from "@/firebase/authContext";
 import { Box, Grid, Stack, Typography } from "@mui/material";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 import { useRef } from "react";
 import CardFooter from "../CardFooter";
 import WriteBlues from "../WriteBlues";
+
+// Get a reference to the storage service, which is used to create references in your storage bucket
+const storage = getStorage();
 
 export default function WriteBluesChanges({
   currentUserData,
   setCurrentUserData,
   nextViewState,
 }: UserDataProps) {
+  const { user } = useAuthContext();
+  const userName = user?.displayName?.split(" ").join("_");
   const writeBluesFormRef = useRef<HTMLFormElement | null>(null);
 
   function handleBlues(input: InputData) {
     setCurrentUserData({ ...currentUserData, blues: input });
   }
 
+  const savePDF = () => {
+    const capture = document.querySelector(".write-blues-changes");
+
+    html2canvas(capture as HTMLElement).then((canvas) => {
+      const imgData = canvas.toDataURL("image/jpeg");
+      const pdf = new jsPDF({
+        orientation: "landscape",
+        unit: "px",
+        format: [canvas.width, canvas.height],
+      });
+      pdf.addImage(imgData, "JPEG", 0, 0, canvas.width, canvas.height);
+      const pdfBlob = pdf.output("blob");
+      const storageRef = ref(storage, `${userName}-write-blues-changes.pdf`);
+
+      uploadBytes(storageRef, pdfBlob)
+        .then((snapshot) => {
+          console.log("PDF uploaded successfully");
+        })
+        .catch((error) => {
+          console.error("Error uploading PDF: ", error);
+        });
+
+      getDownloadURL(storageRef)
+        .then((url) => {
+          console.log("URL: ", url);
+          setCurrentUserData({ ...currentUserData, bluesUrl: url });
+        })
+        .catch((error) => {
+          console.error("Error getting download URL: ", error);
+        });
+    });
+  };
+
   return (
     <Box sx={{ display: "flex", justifyContent: "center" }}>
       <Box
         component="main"
-        width={1250}
+        width={1450}
         height={850}
         bgcolor={"secondary.main"}
         borderRadius="var(--borderRadius)"
@@ -32,7 +74,8 @@ export default function WriteBluesChanges({
             Section 8: Write Blues Chord Changes
           </Typography>
           <Box
-            width={1100}
+            className="write-blues-changes"
+            width={1300}
             height={720}
             bgcolor={"card.background"}
             borderRadius="var(--borderRadius)"
@@ -59,7 +102,7 @@ export default function WriteBluesChanges({
                 <WriteBlues
                   handleBlues={handleBlues}
                   ref={writeBluesFormRef}
-                  width={950}
+                  width={1150}
                 />
               </Grid>
 
@@ -69,11 +112,12 @@ export default function WriteBluesChanges({
               </Typography>
             </Grid>
             <CardFooter
-              width={900}
+              width={1100}
               height={100}
               pageNumber={16}
               handleSubmit={() => {
                 writeBluesFormRef.current?.requestSubmit();
+                savePDF();
                 nextViewState();
               }}
             />

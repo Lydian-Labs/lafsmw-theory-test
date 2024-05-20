@@ -36,7 +36,9 @@ export const initialFormInputState: InputState = {
   user: null,
   level: "",
   keySignatures: {},
+  keySignaturesNotation: null,
   chords: {},
   progressions: {},
   blues: {},
+  bluesUrl: "",
 };

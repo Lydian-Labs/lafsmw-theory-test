@@ -9,6 +9,7 @@ import {
 } from "../lib/typesAndInterfaces";
 import FormInput from "./FormInput";
 import Staff from "./Staff";
+import { overflow } from "html2canvas/dist/types/css/property-descriptors/overflow";
 
 type WriteBluesProps = {
   numBars?: number;
@@ -27,9 +28,9 @@ export default forwardRef(function WriteBlues(
     initialBluesInputState
   );
 
-  const chordWidth = width * 0.0415;
-  const gapWidth = chordWidth * 0.2;
-  const chordGroupSpacing = chordWidth * 0.07;
+  const chordWidth = width * 0.048;
+  const gapWidth = chordWidth * 0.05;
+  const chordGroupSpacing = chordWidth * 0.05;
 
   const gridInputInline = {
     display: "grid",

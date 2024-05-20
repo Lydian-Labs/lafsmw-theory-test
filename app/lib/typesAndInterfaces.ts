@@ -250,6 +250,7 @@ export interface InputState {
   chords: InputData;
   progressions: InputData;
   blues: InputData;
+  bluesUrl: string;
 }
 
 export interface UserDataProps {

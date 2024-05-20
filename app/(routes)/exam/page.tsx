@@ -36,9 +36,13 @@ import {
 import { Box, Button, Stack, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useTimer } from "@/app/context/TimerContext";
 
 export default function ExamHomePage() {
   const { user } = useAuthContext();
+  const { startTimer } = useTimer();
+  const router = useRouter();
+
   const userName = user?.displayName;
   const userId = user?.uid;
   const initialState = {
@@ -47,9 +51,8 @@ export default function ExamHomePage() {
     userId: userId,
   };
 
-  const router = useRouter();
-
   const VIEW_STATES = {
+    START_TEST: 0,
     KEY_SIG_NOTATE1: 1,
     KEY_SIG_NOTATE2: 2,
     KEY_SIG_NOTATE3: 3,
@@ -69,11 +72,13 @@ export default function ExamHomePage() {
     SUBMIT_AND_EXIT: 17,
   };
 
-  const [viewState, setViewState] = useState(VIEW_STATES.KEY_SIG_NOTATE1);
+  const [viewState, setViewState] = useState(VIEW_STATES.START_TEST);
+  const [timesUp, setTimesUp] = useState(false);
 
   const [currentUserData, setCurrentUserData] =
     useState<InputState>(initialState);
 
+  // Have not decided how to handle userAnswers yet
   const [userAnswers, setUserAnswers] = useState<string[]>([]);
 
   useEffect(() => {
@@ -99,8 +104,6 @@ export default function ExamHomePage() {
     }
   }, [router, user]);
 
-  console.log("currentUserData after useEffect:", currentUserData);
-
   const incrementViewState = () => {
     setViewState((prevState) => {
       if (prevState === VIEW_STATES.SUBMIT_AND_EXIT) {
@@ -119,6 +122,16 @@ export default function ExamHomePage() {
         return prevState - 1;
       }
     });
+  };
+
+  const handleTimeUp = () => {
+    setTimesUp(true);
+    setViewState(VIEW_STATES.SUBMIT_AND_EXIT);
+  };
+
+  const handleStartTest = () => {
+    startTimer(1800, handleTimeUp);
+    setViewState(VIEW_STATES.KEY_SIG_NOTATE1);
   };
 
   const userChordAnswers = convertObjectToArray(currentUserData.chords);
@@ -174,13 +187,21 @@ export default function ExamHomePage() {
         p={4}
       >
         {viewState !== VIEW_STATES.KEY_SIG_NOTATE1 &&
-          viewState !== VIEW_STATES.SUBMIT_AND_EXIT && (
+          viewState !== VIEW_STATES.SUBMIT_AND_EXIT &&
+          viewState !== VIEW_STATES.START_TEST && (
             <Box>
               <Button onClick={decrementViewState}>
                 <Typography variant="h4">{"<"}</Typography>
               </Button>
             </Box>
           )}
+        {viewState === VIEW_STATES.START_TEST && (
+          <Box>
+            <Button variant="contained" onClick={handleStartTest}>
+              <Typography variant="h4">Begin Test</Typography>
+            </Button>
+          </Box>
+        )}
         {viewState === VIEW_STATES.KEY_SIG_NOTATE1 && (
           <KeySigNotate1
             currentUserData={currentUserData}
@@ -299,26 +320,30 @@ export default function ExamHomePage() {
             <Typography variant="body1" width={550} align="center">
               To submit your answers and exit the exam, click the button below.
               You will not be able to return to the exam after submitting. If
-              you need to make changes, please click the button to go back to
-              page 1.
+              you need to make changes and there is still time left, please
+              click the button to go back to page 1.
             </Typography>
             <Stack direction={"column"} gap={4} p={4}>
               <Button onClick={handleFinalSubmit}>
                 <Typography>Submit Final Answers</Typography>
               </Button>
-              <Button onClick={incrementViewState}>
+              <Button
+                onClick={incrementViewState}
+                disabled={timesUp ? true : false}
+              >
                 <Typography>Back to page 1</Typography>
               </Button>
             </Stack>
           </main>
         )}
-        {viewState !== VIEW_STATES.SUBMIT_AND_EXIT && (
-          <Box>
-            <Button onClick={incrementViewState}>
-              <Typography variant="h4">{">"}</Typography>
-            </Button>
-          </Box>
-        )}
+        {viewState !== VIEW_STATES.SUBMIT_AND_EXIT &&
+          viewState !== VIEW_STATES.START_TEST && (
+            <Box>
+              <Button onClick={incrementViewState}>
+                <Typography variant="h4">{">"}</Typography>
+              </Button>
+            </Box>
+          )}
       </Stack>
     </Box>
   );
