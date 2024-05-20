@@ -104,8 +104,6 @@ export default function ExamHomePage() {
     }
   }, [router, user]);
 
-  // console.log("currentUserData after useEffect:", currentUserData);
-
   const incrementViewState = () => {
     setViewState((prevState) => {
       if (prevState === VIEW_STATES.SUBMIT_AND_EXIT) {
