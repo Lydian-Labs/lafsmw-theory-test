@@ -25,7 +25,7 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: "Poppins, sans-serif",
+    fontFamily: "inherit",
   },
   components: {
     MuiButton: {
