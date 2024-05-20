@@ -1,11 +1,7 @@
-import VexFlow from "vexflow";
-import createBlankStaves from "../lib/createBlankStaves";
-import { RenderStavesAndNotesParamsOld } from "./typesAndInterfaces";
-const { Formatter } = VexFlow.Flow;
+import createBlankStavesNew from "./createBlankStavesNew";
+import { RenderStaves } from "./typesAndInterfaces";
 
-export const setupRendererAndDrawNotesOld = (
-  params: RenderStavesAndNotesParamsOld
-): void => {
+export const setupRenderer = (params: RenderStaves): void => {
   const {
     rendererRef,
     font,
@@ -19,17 +15,17 @@ export const setupRendererAndDrawNotesOld = (
     firstStaveWidth,
     keySig,
     setStaves,
-    notesData,
-    staves: blankStaves,
   } = params;
+
   const renderer = rendererRef?.current;
   renderer?.resize(rendererWidth, rendererHeight);
   const context = renderer && renderer.getContext();
   context?.setFont(font, fontSize);
   context?.clear();
+
   if (context && rendererRef) {
     setStaves(() =>
-      createBlankStaves({
+      createBlankStavesNew({
         numStaves,
         context,
         firstStaveWidth,
@@ -41,5 +37,4 @@ export const setupRendererAndDrawNotesOld = (
       })
     );
   }
- 
 };
