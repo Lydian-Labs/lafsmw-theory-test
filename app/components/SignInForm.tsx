@@ -1,5 +1,5 @@
 import { signIn } from "@/firebase/authAPI";
-import { Button, Container, TextField, Typography } from "@mui/material";
+import { Box, Button, Container, TextField, Typography } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -51,7 +51,17 @@ export default function SignInForm() {
           Sign In
         </Button>
       </form>
-      <Link href="/forgot-password">Forgot Password?</Link>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          paddingTop: "12px",
+          transitionDuration: "0.3s",
+          ":hover": { color: "primary.main" },
+        }}
+      >
+        <Link href="/forgot-password">Forgot Password?</Link>
+      </Box>
     </Container>
   );
 }

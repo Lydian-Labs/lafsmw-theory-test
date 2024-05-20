@@ -50,12 +50,12 @@ export default function Registration() {
           </Stack>
         )}
         {isSignUp && (
-          <Stack spacing={4}>
+          <Grid xs={12} container justifyContent="center" gap={4}>
             <SignUpForm />
-            <Button variant="text" onClick={goBack}>
+            <Button variant="text" onClick={goBack} sx={{ width: "73%" }}>
               Go Back
             </Button>
-          </Stack>
+          </Grid>
         )}
         {isSignIn && (
           <Grid xs={12} container justifyContent="center" gap={4}>
