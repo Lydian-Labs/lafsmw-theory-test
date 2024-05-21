@@ -1,22 +1,22 @@
 import VexFlow from "vexflow";
+import { BEATS_IN_MEASURE } from "./data/stavesData";
 import {
+  removeAccidentalFromNotesAndCoords,
+  updateNotesAndCoordsWithAccidental,
+} from "./modifyNotesAndCoordinates";
+import {
+  addAccidentalToStaveNoteAndKeys,
   changeNotePosition,
   removeAccidentalFromStaveNote,
-  addAccidentalToStaveNoteAndKeys,
   removeNoteFromScale,
 } from "./modifyScales";
 import {
-  updateNotesAndCoordsWithAccidental,
-  removeAccidentalFromNotesAndCoords,
-} from "./modifyNotesAndCoordinates";
-import {
   NoteInteractionAction,
   NoteInteractionState,
-  ScaleData,
   NotesAndCoordinatesData,
+  ScaleData,
   StaveNoteType,
 } from "./typesAndInterfaces";
-import { BEATS_IN_MEASURE } from "./data/stavesData";
 const { StaveNote } = VexFlow.Flow;
 
 export const HandleScaleInteraction = (

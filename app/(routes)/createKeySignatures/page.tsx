@@ -15,7 +15,7 @@ import { keySigInitialState } from "../../lib/initialStates";
 import { initializeRenderer } from "../../lib/initializeRenderer";
 import isClickWithinStaveBounds from "../../lib/isClickWithinStaveBounds";
 import { reducer } from "../../lib/reducer";
-import { setupRenderer} from "../../lib/setUpRenderer";
+import { setupRenderer } from "../../lib/setUpRenderer";
 import { GlyphProps } from "../../lib/typesAndInterfaces";
 const VF = VexFlow.Flow;
 const { Renderer } = VF;
