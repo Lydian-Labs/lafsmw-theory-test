@@ -1,10 +1,10 @@
-import { StaveNoteData } from "./typesAndInterfaces";
+import { ScaleData, StaveNoteData } from "./typesAndInterfaces";
 
 export const indexOfNoteToModify = (
-  staveData: StaveNoteData[],
+  scaleData: ScaleData[] | StaveNoteData[],
   userClickX: number
 ): number => {
-  const index: number = staveData?.findIndex(
+  const index: number = scaleData?.findIndex(
     (note) => Math.abs(note.staveNoteAbsoluteX - userClickX) <= 10
   );
   return index;

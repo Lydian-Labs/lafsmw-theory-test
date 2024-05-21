@@ -4,7 +4,7 @@ import { initializeRenderer } from "./initializeRenderer";
 import {
   GlyphProps,
   NoteInteractionAction,
-  StaveNoteData,
+  ScaleData,
 } from "./typesAndInterfaces";
 const { Renderer } = VexFlow.Flow;
 
@@ -13,14 +13,14 @@ export const enterNote = (dispatch: React.Dispatch<NoteInteractionAction>) => {
 };
 
 export const clearAllMeasures = (
-  setNotes: React.Dispatch<React.SetStateAction<StaveNoteData[][]>>,
-  initialNotes: StaveNoteData[][],
+  setScale: React.Dispatch<React.SetStateAction<ScaleData[][]>>,
+  initialScale: ScaleData[][],
   renderer: React.MutableRefObject<InstanceType<typeof Renderer> | null>,
   container: React.MutableRefObject<HTMLDivElement | null>,
   dispatch: React.Dispatch<NoteInteractionAction>,
   renderStavesAndStaveNotes: () => void
 ): void => {
-  setNotes(() => initialNotes);
+  setScale(() => initialScale);
   initializeRenderer(renderer, container);
   renderStavesAndStaveNotes();
   enterNote(dispatch);

@@ -1,7 +1,7 @@
 import {
   addAccidentalToChordKeys,
   addNewNoteToChord,
-  removeAccidentalFromNote,
+  removeAccidentalFromNotesAndCoords,
   reconstructChord,
   removeAccidentalFromChord,
   removeNoteFromChord,
@@ -10,13 +10,13 @@ import {
 import {
   Chord,
   ChordInteractionState,
-  FoundNoteData,
+  NotesAndCoordinatesData,
 } from "./typesAndInterfaces";
 
 export const handleChordInteraction = (
-  notesAndCoordinates: FoundNoteData[],
+  notesAndCoordinates: NotesAndCoordinatesData[],
   state: ChordInteractionState,
-  foundNoteData: FoundNoteData,
+  foundNoteData: NotesAndCoordinatesData,
   chordData: Chord,
   foundNoteIndex: number
 ) => {
@@ -38,7 +38,7 @@ export const handleChordInteraction = (
     }
   } else if (state.isEraseAccidentalActive) {
     if (foundNoteIndex !== -1) {
-      notesAndCoordinates = removeAccidentalFromNote(
+      updatedNotesAndCoordinates = removeAccidentalFromNotesAndCoords(
         notesAndCoordinates,
         foundNoteData
       );
@@ -48,7 +48,7 @@ export const handleChordInteraction = (
   } else if (state.isEraseNoteActive) {
     if (foundNoteIndex !== -1) {
       updatedChordData = removeNoteFromChord(chordData, foundNoteIndex);
-      updatedNotesAndCoordinates = removeAccidentalFromNote(
+      updatedNotesAndCoordinates = removeAccidentalFromNotesAndCoords(
         notesAndCoordinates,
         foundNoteData
       );

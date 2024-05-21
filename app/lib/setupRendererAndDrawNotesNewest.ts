@@ -1,10 +1,10 @@
 import VexFlow from "vexflow";
-import createBlankStavesNew from "./createBlankStavesNew";
-import { RenderStavesAndNotesParamsOld } from "./typesAndInterfaces";
+import createBlankStaves from "./createBlankStaves";
+import { RenderStavesAndNotesParams } from "./typesAndInterfaces";
 const { Formatter } = VexFlow.Flow;
 
-export const setupRendererAndDrawNotesNew = (
-  params: RenderStavesAndNotesParamsOld
+export const setupRendererAndDrawNotes = (
+  params: RenderStavesAndNotesParams
 ): void => {
   const {
     rendererRef,
@@ -19,19 +19,17 @@ export const setupRendererAndDrawNotesNew = (
     firstStaveWidth,
     keySig,
     setStaves,
-    notesData,
-    staves: blankStaves,
+    scaleDataMatrix,
+    staves,
   } = params;
-
   const renderer = rendererRef?.current;
   renderer?.resize(rendererWidth, rendererHeight);
   const context = renderer && renderer.getContext();
   context?.setFont(font, fontSize);
   context?.clear();
-
   if (context && rendererRef) {
     setStaves(() =>
-      createBlankStavesNew({
+      createBlankStaves({
         numStaves,
         context,
         firstStaveWidth,
@@ -43,14 +41,14 @@ export const setupRendererAndDrawNotesNew = (
       })
     );
   }
-
-  notesData &&
-    notesData.forEach((barData, index) => {
-      if (barData) {
-        const staveNotes = barData.map(({ newStaveNote }) => newStaveNote);
-        if (staveNotes.length > 0) {
-          context &&
-            Formatter.FormatAndDraw(context, blankStaves[index], staveNotes);
+  scaleDataMatrix &&
+    scaleDataMatrix.forEach((barOfNoteObjects, index) => {
+      if (barOfNoteObjects) {
+        const staveNotes = barOfNoteObjects
+          .map(({ staveNote }) => staveNote)
+          .filter(Boolean) as VexFlow.Flow.StaveNote[];
+        if (staveNotes.length > 0 && context && staves[index]) {
+          Formatter.FormatAndDraw(context, staves[index], staveNotes);
         }
       }
     });

@@ -13,7 +13,7 @@ import isClickWithinStaveBounds from "../lib/isClickWithinStaveBounds";
 import { reducer } from "../lib/reducer";
 
 import { modifyKeySigActionTypes } from "../lib/actionTypes";
-import { setupRendererAndDrawNotesNew } from "../lib/setupRendererAndDrawNotesNew";
+import { setupRenderer} from "../lib/setUpRenderer";
 import { GlyphProps } from "../lib/typesAndInterfaces";
 
 const VF = VexFlow.Flow;
@@ -37,7 +37,7 @@ const NotateKeySignature = ({ handleNotes }: any) => {
   const context = rendererRef.current?.getContext();
 
   const renderStaves = (): void => {
-    setupRendererAndDrawNotesNew({
+    setupRenderer({
       rendererRef,
       ...staveData,
       firstStaveWidth: 450,

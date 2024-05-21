@@ -1,10 +1,10 @@
 import VexFlow from "vexflow";
 import createBlankStaves from "../lib/createBlankStaves";
-import { RenderStavesAndNotesParams } from "./typesAndInterfaces";
+import { RenderStavesAndNotesParamsOld } from "./typesAndInterfaces";
 const { Formatter } = VexFlow.Flow;
 
-export const setupRendererAndDrawNotes = (
-  params: RenderStavesAndNotesParams
+export const setupRendererAndDrawNotesOld = (
+  params: RenderStavesAndNotesParamsOld
 ): void => {
   const {
     rendererRef,
@@ -41,14 +41,5 @@ export const setupRendererAndDrawNotes = (
       })
     );
   }
-  notesData &&
-    notesData.forEach((barData, index) => {
-      if (barData) {
-        const staveNotes = barData.map(({ newStaveNote }) => newStaveNote);
-        if (staveNotes.length > 0) {
-          context &&
-            Formatter.FormatAndDraw(context, blankStaves[index], staveNotes);
-        }
-      }
-    });
+ 
 };
