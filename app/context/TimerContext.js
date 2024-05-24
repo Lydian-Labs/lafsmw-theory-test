@@ -31,6 +31,7 @@ export const TimerProvider = ({ children }) => {
 
   const stopTimer = () => {
     setIsRunning(false);
+    setTimeLeft(0);
   };
 
   return (

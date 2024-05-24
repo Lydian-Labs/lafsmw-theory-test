@@ -17,6 +17,7 @@ import ChordsIdentify from "@/app/components/ExamPages/6_ChordsIdentify";
 import WriteProgressions from "@/app/components/ExamPages/7_WriteProgressions";
 import WriteBluesChanges from "@/app/components/ExamPages/8_WriteBluesChanges";
 
+import { useTimer } from "@/app/context/TimerContext";
 import { checkAnswers } from "@/app/lib/calculateAnswers";
 import convertObjectToArray from "@/app/lib/convertObjectToArray";
 import {
@@ -26,17 +27,14 @@ import {
 } from "@/app/lib/data/answerKey";
 import { initialFormInputState } from "@/app/lib/initialStates";
 import { InputState, MouseEvent } from "@/app/lib/typesAndInterfaces";
-
 import { useAuthContext } from "@/firebase/authContext";
 import {
   getUserSnapshot,
   setOrUpdateStudentData,
 } from "@/firebase/firestore/model";
-
 import { Box, Button, Stack, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useTimer } from "@/app/context/TimerContext";
 
 export default function ExamHomePage() {
   const { user } = useAuthContext();

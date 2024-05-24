@@ -9,11 +9,16 @@ import {
 import FormInput from "./FormInput";
 import Staff from "./Staff";
 
+interface TextInput {
+  [key: string]: string;
+}
+
 type IdentifyNotationProps = {
   numBars?: number;
   evenbars?: boolean;
   chords?: Chord[];
   width: number;
+  currentData?: TextInput;
   handleInput: (input: InputData) => void;
 };
 
@@ -24,10 +29,13 @@ export default forwardRef(function IdentifyNotation(
     chords = [],
     width = 1650,
     handleInput,
+    currentData,
   }: IdentifyNotationProps,
   ref: ForwardedRef<HTMLFormElement>
 ) {
   const initialChordsInputState = createInitialState(numBars);
+
+  // console.log("currentData:", currentData);
 
   const [textInput, setTextInput] = useState<Record<string, string>>(
     initialChordsInputState
@@ -65,6 +73,7 @@ export default forwardRef(function IdentifyNotation(
       <FormInput
         key={key}
         name={key}
+        placeholder={currentData ? currentData[key] : ""}
         type="text"
         value={textInput[key]}
         width="50px"
