@@ -2,26 +2,14 @@ import Stack from "@mui/material/Stack";
 import { ForwardedRef, forwardRef, useState } from "react";
 import createInitialState from "../lib/createInitialState";
 import keyNames from "../lib/data/keyNamesText";
-import {
-  ChangeEvent,
-  Chord,
-  FormEvent,
-  InputData,
-} from "../lib/typesAndInterfaces";
+import { ChangeEvent, FormEvent, WriteProps } from "../lib/typesAndInterfaces";
 import FormInput from "./FormInput";
 import Staff from "./Staff";
-
-type WriteProgProps = {
-  numBars?: number;
-  chords?: Chord[];
-  width: number;
-  handleProg: (progressions: InputData) => void;
-};
 
 const initialProgressionInputState = createInitialState(18);
 
 export default forwardRef(function WriteProgression(
-  { width, handleProg }: WriteProgProps,
+  { width, handleInput, currentData }: WriteProps,
   ref: ForwardedRef<HTMLFormElement>
 ) {
   const [numeralInput, setNumeralInput] = useState<Record<string, string>>(
@@ -46,7 +34,7 @@ export default forwardRef(function WriteProgression(
 
   function handleNumeralSubmit(e: FormEvent) {
     e.preventDefault();
-    handleProg(numeralInput);
+    handleInput(numeralInput);
   }
 
   const renderNumeralInputs = (
@@ -59,6 +47,7 @@ export default forwardRef(function WriteProgression(
         <FormInput
           key={key}
           name={key}
+          placeholder={currentData ? currentData[key] : ""}
           type="text"
           value={numeralInput[key]}
           width={chordWidth.toString() + "px"}

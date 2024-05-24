@@ -55,7 +55,8 @@ export default function WriteProgressions({
               </Grid>
               <Grid item>
                 <WriteProgression
-                  handleProg={handleProgressions}
+                  handleInput={handleProgressions}
+                  currentData={currentUserData.progressions}
                   ref={writeProgressionsFormRef}
                   width={950}
                 />

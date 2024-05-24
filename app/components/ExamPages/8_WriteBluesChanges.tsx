@@ -100,7 +100,8 @@ export default function WriteBluesChanges({
               </Grid>
               <Grid item>
                 <WriteBlues
-                  handleBlues={handleBlues}
+                  handleInput={handleBlues}
+                  currentData={currentUserData.blues}
                   ref={writeBluesFormRef}
                   width={1150}
                 />
