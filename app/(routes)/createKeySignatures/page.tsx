@@ -15,7 +15,7 @@ import { keySigInitialState } from "../../lib/initialStates";
 import { initializeRenderer } from "../../lib/initializeRenderer";
 import isClickWithinStaveBounds from "../../lib/isClickWithinStaveBounds";
 import { reducer } from "../../lib/reducer";
-import { setupRendererAndDrawNotes } from "../../lib/setupRendererAndDrawNotes";
+import { setupRenderer } from "../../lib/setUpRenderer";
 import { GlyphProps } from "../../lib/typesAndInterfaces";
 const VF = VexFlow.Flow;
 const { Renderer } = VF;
@@ -34,7 +34,7 @@ const CreateKeySignatures = () => {
 
   const context = rendererRef.current?.getContext();
   const renderStaves = (): void => {
-    setupRendererAndDrawNotes({
+    setupRenderer({
       rendererRef,
       ...staveData,
       firstStaveWidth: 300,

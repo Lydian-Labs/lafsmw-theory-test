@@ -3,6 +3,7 @@ import {
   Chord,
   ChordInteractionState,
   NoteStringData,
+  NotesAndCoordinatesData,
   StaveNoteType,
 } from "./typesAndInterfaces";
 const { Accidental, StaveNote } = VexFlow.Flow;
@@ -63,7 +64,7 @@ const appendAccidentalToNote = (accidental: string, note: string) => {
 export const updateNoteWithAccidental = (
   state: ChordInteractionState,
   foundNoteData: NoteStringData,
-  notesAndCoordinates: NoteStringData[]
+  notesAndCoordinates: NotesAndCoordinatesData[]
 ) => {
   const accidental = state.isSharpActive ? "#" : "b";
   foundNoteData.note = appendAccidentalToNote(accidental, foundNoteData.note);
@@ -97,18 +98,18 @@ export const removeAccidentalFromChord = (
   chordData: Chord,
   foundNoteIndex: number
 ) => {
-  let note = removeAccidentals(chordData.keys[foundNoteIndex]);
-  chordData.keys[foundNoteIndex] = note;
-  const newChord = createStaveNoteFromChordData(chordData);
+  chordData.keys[foundNoteIndex] = removeAccidentals(
+    chordData.keys[foundNoteIndex]
+  );
   return {
     ...chordData,
-    staveNotes: newChord,
+    staveNotes: createStaveNoteFromChordData(chordData),
   };
 };
 
-export const removeAccidentalFromNote = (
-  notesAndCoordinates: NoteStringData[],
-  foundNoteData: NoteStringData
+export const removeAccidentalFromNotesAndCoords = (
+  notesAndCoordinates: NotesAndCoordinatesData[],
+  foundNoteData: NotesAndCoordinatesData
 ) => {
   foundNoteData.note = removeAccidentals(foundNoteData.note);
   return notesAndCoordinates.map((noteData) =>

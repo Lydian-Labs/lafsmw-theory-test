@@ -1,5 +1,5 @@
 "use client";
-import { modifyNotesActionTypes } from "@/app/lib/actionTypes";
+import { modifyNotesActionTypes } from "../../lib/actionTypes";
 import React, {
   useCallback,
   useEffect,
@@ -25,7 +25,7 @@ import { noteInteractionInitialState } from "../../lib/initialStates";
 import { initializeRenderer } from "../../lib/initializeRenderer";
 import { notesArray } from "../../lib/noteArray";
 import { reducer } from "../../lib/reducer";
-import { setupRendererAndDrawNotes } from "../../lib/setupRendererAndDrawNotes";
+import { setupRendererAndDrawNotesOld } from "../../lib/setUpRendererAndDrawNotesOld";
 import {
   NoteStringData,
   StaveNoteData,
@@ -59,11 +59,12 @@ const ManageStaveNotes = () => {
       container,
       dispatch,
       renderStavesAndNotes
-    )}
+    );
+  };
 
   const renderStavesAndNotes = useCallback(
     (): void =>
-      setupRendererAndDrawNotes({
+      setupRendererAndDrawNotesOld({
         rendererRef,
         ...staveData,
         setStaves,
@@ -107,7 +108,7 @@ const ManageStaveNotes = () => {
     const barIndex: number = findBarIndex(staves, userClickX);
 
     let notesDataCopy = [...notesData];
-    
+
     const barOfStaveNotes = notesDataCopy[barIndex].map(
       (noteData: StaveNoteData) => ({
         ...noteData,

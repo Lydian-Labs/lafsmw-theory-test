@@ -104,6 +104,14 @@ export interface StaveNoteData {
   userClickY: number;
 }
 
+export interface ScaleData {
+  keys: string[];
+  duration: string;
+  staveNote: StaveNoteType | null;
+  userClickY: number;
+  staveNoteAbsoluteX: number;
+}
+
 export interface NoteStringData {
   note: string;
   yCoordinateMin: number;
@@ -112,14 +120,20 @@ export interface NoteStringData {
   staveNotes?: StaveNoteData;
   accidental?: null | string;
 }
-export interface FoundNoteData {
+export interface NotesAndCoordinatesData {
   note: string;
+  originalNote: string,
   yCoordinateMin: number;
   yCoordinateMax: number;
+  userClickY?: number;
 }
 
 export interface ModifyNoteData {
   barOfStaveNotes: StaveNoteData;
+  noteIndex: number;
+}
+export interface ModifyScaleData {
+  noteDataObject: ScaleData;
   noteIndex: number;
 }
 
@@ -150,7 +164,43 @@ export interface RenderStavesAndNotesParams {
   firstStaveWidth: number;
   regularStaveWidth?: number | null;
   setStaves: SetStaves;
+  scaleDataMatrix?: ScaleData[][];
+  staves: BlankStaves;
+}
+
+export interface RenderStavesAndNotesParamsOld {
+  rendererRef: RendererRef | null;
+  font: string;
+  fontSize: number;
+  numStaves: number;
+  rendererWidth: number;
+  rendererHeight: number;
+  yPositionOfStaves: number;
+  xPositionOfStaves: number;
+  clef: string;
+  timeSig?: string;
+  keySig?: string;
+  firstStaveWidth: number;
+  regularStaveWidth?: number | null;
+  setStaves: SetStaves;
   notesData?: NoteData | null;
+  staves: BlankStaves;
+}
+export interface RenderStaves {
+  rendererRef: RendererRef | null;
+  font: string;
+  fontSize: number;
+  numStaves: number;
+  rendererWidth: number;
+  rendererHeight: number;
+  yPositionOfStaves: number;
+  xPositionOfStaves: number;
+  clef: string;
+  timeSig?: string;
+  keySig?: string;
+  firstStaveWidth: number;
+  regularStaveWidth?: number | null;
+  setStaves: SetStaves;
   staves: BlankStaves;
 }
 export interface RenderStavesAndChordParams {
