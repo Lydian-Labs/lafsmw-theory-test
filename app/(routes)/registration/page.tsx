@@ -5,7 +5,6 @@ import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import SignInForm from "../../components/SignInForm";
 import SignUpForm from "../../components/SignUpForm";
-import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 
 export default function Registration() {
@@ -50,7 +49,7 @@ export default function Registration() {
           </Stack>
         )}
         {isSignUp && (
-          <Grid xs={12} container justifyContent="center" gap={4}>
+          <Grid container justifyContent="center" gap={4}>
             <SignUpForm />
             <Button variant="text" onClick={goBack} sx={{ width: "73%" }}>
               Go Back
@@ -58,7 +57,7 @@ export default function Registration() {
           </Grid>
         )}
         {isSignIn && (
-          <Grid xs={12} container justifyContent="center" gap={4}>
+          <Grid container justifyContent="center" gap={4}>
             <SignInForm />
             <Button variant="text" onClick={goBack} sx={{ width: "73%" }}>
               Go Back

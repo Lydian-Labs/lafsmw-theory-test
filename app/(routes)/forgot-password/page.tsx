@@ -1,11 +1,17 @@
 "use client";
 import { Button, Container, TextField, Typography } from "@mui/material";
-import { ChangeEvent } from "react";
+import { useState, ChangeEvent } from "react";
+import { useRouter } from "next/navigation";
+import { resetPassword } from "@/firebase/authAPI";
 
 const ForgotPassword = () => {
+  const [email, setEmail] = useState("");
+  const router = useRouter();
+
   const handleSubmit = (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log("Forgot Password logic to be implemented");
+    resetPassword(email);
+    router.push("/registration");
   };
 
   return (
@@ -19,6 +25,8 @@ const ForgotPassword = () => {
           fullWidth
           label="Email Address"
           type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           required
         />
         <Button
