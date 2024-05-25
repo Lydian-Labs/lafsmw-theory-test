@@ -196,7 +196,9 @@ export default function ExamHomePage() {
         {viewState === VIEW_STATES.START_TEST && (
           <Box>
             <Button variant="contained" onClick={handleStartTest}>
-              <Typography variant="h4">Begin Test</Typography>
+              <Typography variant="h4" p={2}>
+                Begin Test
+              </Typography>
             </Button>
           </Box>
         )}

@@ -15,7 +15,7 @@ const CountdownTimer = () => {
   };
 
   return (
-    <Box className="bg-[#a0a0a0] px-4 ml-16 rounded-full text-center w-fit">
+    <Box className="bg-white px-4 ml-16 rounded-full text-center w-fit">
       <Typography variant="caption">
         Time Left: {formatTime(timeLeft)}
       </Typography>

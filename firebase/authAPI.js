@@ -25,8 +25,12 @@ export async function signIn(email, password) {
   try {
     await signInWithEmailAndPassword(auth, email, password).catch((err) => {
       console.error("signInWithEmailAndPassword error:", err);
+      alert("Invalid email or password");
     });
-    console.log("Sign in successfull! CurrentUser:", auth.currentUser);
+    console.log(
+      "Sign in successfull! CurrentUser:",
+      auth.currentUser.displayName
+    );
   } catch (err) {
     console.error("signIn error:", err);
   }
@@ -37,12 +41,11 @@ export async function signOutOfApp() {
 }
 
 export async function resetPassword(email) {
-  try {
-    await sendPasswordResetEmail(auth, email).catch((err) =>
-      console.error("sendPasswordResetEmail error:", err)
-    );
-    console.log("Password reset email sent successfully!");
-  } catch (err) {
-    console.error("resetPassword error:", err);
-  }
+  sendPasswordResetEmail(auth, email)
+    .then(() => {
+      alert(`Password reset email sent to ${email}`);
+    })
+    .catch((err) => {
+      console.error("sendPasswordResetEmail error:", err);
+    });
 }
