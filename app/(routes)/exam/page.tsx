@@ -35,6 +35,7 @@ import {
 import { Box, Button, Stack, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { sendEmail } from "@/app/lib/sendEmail";
 
 export default function ExamHomePage() {
   const { user } = useAuthContext();
@@ -166,7 +167,32 @@ export default function ExamHomePage() {
         throw new Error("No current user found.");
       }
       await setOrUpdateStudentData(currentUserData, userName);
+
       updateAnswers();
+
+      // send email with results, using API route
+      const response = await fetch("/api/email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: "brett.austin.eastman@gmail.com",
+          subject: "Your exam results",
+          text: `Hello ${userName}, here are your results: \n\n
+            Key Signatures: ${userAnswers[0]} \n
+            Seventh Chords: ${userAnswers[1]} \n
+            II-V-I Progressions: ${userAnswers[2]} \n\n
+            If you have any questions, please contact your instructor.`,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to send email");
+      }
+
+      await response.json();
+
       return router.push("/sign-out");
     } catch (error) {
       console.error("handleSubmit error:", error);
@@ -341,6 +367,9 @@ export default function ExamHomePage() {
             <Box>
               <Button onClick={incrementViewState}>
                 <Typography variant="h4">{">"}</Typography>
+              </Button>
+              <Button onClick={() => setViewState(VIEW_STATES.SUBMIT_AND_EXIT)}>
+                <Typography>Go to last</Typography>
               </Button>
             </Box>
           )}

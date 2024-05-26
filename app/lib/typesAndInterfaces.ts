@@ -270,3 +270,9 @@ export type WriteProps = {
   currentData?: TextInput;
   handleInput: (data: InputData) => void;
 };
+
+export interface EmailData {
+  email: string;
+  subject?: string;
+  text?: string;
+}
