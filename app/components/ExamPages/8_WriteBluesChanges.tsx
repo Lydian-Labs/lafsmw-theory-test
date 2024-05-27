@@ -1,5 +1,5 @@
 "use client";
-import { InputData, UserDataProps } from "@/app/lib/typesAndInterfaces";
+import { InputData, UserDataPropsAnswers } from "@/app/lib/typesAndInterfaces";
 import { useAuthContext } from "@/firebase/authContext";
 import { Box, Grid, Stack, Typography } from "@mui/material";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -16,7 +16,8 @@ export default function WriteBluesChanges({
   currentUserData,
   setCurrentUserData,
   nextViewState,
-}: UserDataProps) {
+  updateAnswers,
+}: UserDataPropsAnswers) {
   const { user } = useAuthContext();
   const userName = user?.displayName?.split(" ").join("_");
   const writeBluesFormRef = useRef<HTMLFormElement | null>(null);
@@ -119,6 +120,7 @@ export default function WriteBluesChanges({
               handleSubmit={() => {
                 writeBluesFormRef.current?.requestSubmit();
                 savePDF();
+                updateAnswers();
                 nextViewState();
               }}
             />

@@ -35,7 +35,6 @@ import {
 import { Box, Button, Stack, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { sendEmail } from "@/app/lib/sendEmail";
 
 export default function ExamHomePage() {
   const { user } = useAuthContext();
@@ -141,7 +140,7 @@ export default function ExamHomePage() {
     currentUserData.progressions
   );
 
-  const updateAnswers = () => {
+  const updateAnswers = async () => {
     let keySigAnswers = checkAnswers(
       userKeySigAnswers,
       exampleCorrectKeySigAnswers,
@@ -168,9 +167,6 @@ export default function ExamHomePage() {
       }
       await setOrUpdateStudentData(currentUserData, userName);
 
-      updateAnswers();
-
-      // send email with results, using API route
       // Send email with results using API route
       const response = await fetch("/api/email", {
         method: "POST",
@@ -196,6 +192,8 @@ export default function ExamHomePage() {
       }
 
       await response.json();
+
+      console.log("userAnswers:", userAnswers);
 
       return router.push("/sign-out");
     } catch (error) {
@@ -342,6 +340,7 @@ export default function ExamHomePage() {
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
+            updateAnswers={updateAnswers}
           />
         )}
         {viewState === VIEW_STATES.SUBMIT_AND_EXIT && (
