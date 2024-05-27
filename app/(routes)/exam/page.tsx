@@ -171,6 +171,7 @@ export default function ExamHomePage() {
       updateAnswers();
 
       // send email with results, using API route
+      // Send email with results using API route
       const response = await fetch("/api/email", {
         method: "POST",
         headers: {
@@ -180,15 +181,18 @@ export default function ExamHomePage() {
           email: "brett.austin.eastman@gmail.com",
           subject: "Your exam results",
           text: `Hello ${userName}, here are your results: \n\n
-            Key Signatures: ${userAnswers[0]} \n
-            Seventh Chords: ${userAnswers[1]} \n
-            II-V-I Progressions: ${userAnswers[2]} \n\n
-            If you have any questions, please contact your instructor.`,
+        Key Signatures: ${userAnswers[0]} \n
+        Seventh Chords: ${userAnswers[1]} \n
+        II-V-I Progressions: ${userAnswers[2]} \n\n
+        If you have any questions, please contact your instructor.`,
         }),
       });
 
       if (!response.ok) {
-        throw new Error("Failed to send email");
+        const errorData = await response.json();
+        throw new Error(
+          `Failed to send email: ${errorData.error}, Details: ${errorData.details}`
+        );
       }
 
       await response.json();
