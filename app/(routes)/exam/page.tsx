@@ -168,14 +168,14 @@ export default function ExamHomePage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: "brett.austin.eastman@gmail.com",
+          email: process.env.EMAIL_CAMP_DIRECTOR,
           subject: `Exam Results for ${userName}`,
           text: `<p>Hello Kyle,</p>
 
           <p>Here are the results for ${userName}:</p>
           <ul>
             <li>Level: ${userAnswers[0]}</li>
-            <li>Key Signatures: ${userAnswers[2]}</li>
+            <li>Key Signatures: ${userAnswers[1]}</li>
             <li>Seventh Chords: ${userAnswers[2]}</li>
             <li>II-V-I Progressions: ${userAnswers[3]}</li>
             <li>Link to blues progression pdf: ${userAnswers[4]}</li>

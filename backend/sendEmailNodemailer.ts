@@ -7,7 +7,7 @@ export const sendEmailNodemailer = async (
 ) => {
   const transporter = getTransporter();
   await transporter.sendMail({
-    from: process.env.NEXT_PUBLIC_EMAIL,
+    from: process.env.EMAIL,
     to: email,
     subject,
     html: text,
