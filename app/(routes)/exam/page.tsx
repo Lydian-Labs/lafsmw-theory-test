@@ -34,7 +34,7 @@ import {
 } from "@/firebase/firestore/model";
 import { Box, Button, Stack, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function ExamHomePage() {
   const { user } = useAuthContext();
@@ -127,45 +127,9 @@ export default function ExamHomePage() {
       keySigAnswers,
       seventhAnswers,
       progressionAnswers,
+      currentUserData.bluesUrl,
     ]);
   };
-
-  useEffect(() => {
-    console.log("userAnswers from useEffect:", userAnswers);
-  }, [userAnswers]);
-
-  // useEffect(() => {
-  //   const userChordAnswers = convertObjectToArray(currentUserData.chords);
-  //   const userKeySigAnswers = convertObjectToArray(
-  //     currentUserData.keySignatures
-  //   );
-  //   const userProgressionAnswers = convertObjectToArray(
-  //     currentUserData.progressions
-  //   );
-
-  //   let levelText = `Level: ${currentUserData.level}`;
-  //   let keySigAnswers = checkAnswers(
-  //     userKeySigAnswers,
-  //     exampleCorrectKeySigAnswers,
-  //     "Key Signatures"
-  //   );
-  //   let seventhAnswers = checkAnswers(
-  //     userChordAnswers,
-  //     exampleCorrectSeventhChordAnswers,
-  //     "Seventh Chords"
-  //   );
-  //   let progressionAnswers = checkAnswers(
-  //     userProgressionAnswers,
-  //     exampleCorrectProgressionAnswers,
-  //     "II-V-I Progressions"
-  //   );
-  //   setUserAnswers([
-  //     levelText,
-  //     keySigAnswers,
-  //     seventhAnswers,
-  //     progressionAnswers,
-  //   ]);
-  // }, [currentUserData]);
 
   const incrementViewState = () => {
     setViewState((prevState) => {
@@ -214,6 +178,7 @@ export default function ExamHomePage() {
             <li>Key Signatures: ${userAnswers[2]}</li>
             <li>Seventh Chords: ${userAnswers[2]}</li>
             <li>II-V-I Progressions: ${userAnswers[3]}</li>
+            <li>Link to blues progression pdf: ${userAnswers[4]}</li>
           </ul>
 
           <p>Thank you,<br>Team at Lydian Labs Technology.</p>`,
@@ -228,8 +193,6 @@ export default function ExamHomePage() {
       }
 
       await response.json();
-
-      console.log("response:", response);
 
       return router.push("/sign-out");
     } catch (error) {
@@ -422,8 +385,10 @@ export default function ExamHomePage() {
               <Button onClick={incrementViewState}>
                 <Typography variant="h4">{">"}</Typography>
               </Button>
-              <Button onClick={() => setViewState(VIEW_STATES.SUBMIT_AND_EXIT)}>
-                <Typography>Go to last</Typography>
+              <Button
+                onClick={() => setViewState(VIEW_STATES.WRITE_BLUES_CHANGES)}
+              >
+                <Typography>Go to Write Blues Changes</Typography>
               </Button>
             </Box>
           )}
