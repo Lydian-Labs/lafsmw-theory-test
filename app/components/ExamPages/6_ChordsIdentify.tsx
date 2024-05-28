@@ -10,6 +10,7 @@ export default function ChordsIdentification({
   currentUserData,
   setCurrentUserData,
   nextViewState,
+  updateAnswers,
 }: UserDataProps) {
   const chordsFormRef = useRef<HTMLFormElement | null>(null);
 
@@ -71,6 +72,7 @@ export default function ChordsIdentification({
               pageNumber={14}
               handleSubmit={() => {
                 chordsFormRef.current?.requestSubmit();
+                updateAnswers();
                 nextViewState();
               }}
             />

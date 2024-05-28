@@ -34,7 +34,7 @@ import {
 } from "@/firebase/firestore/model";
 import { Box, Button, Stack, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 
 export default function ExamHomePage() {
   const { user } = useAuthContext();
@@ -70,14 +70,12 @@ export default function ExamHomePage() {
     SUBMIT_AND_EXIT: 17,
   };
 
-  const [viewState, setViewState] = useState(VIEW_STATES.START_TEST);
-  const [timesUp, setTimesUp] = useState(false);
-
   const [currentUserData, setCurrentUserData] =
     useState<InputState>(initialState);
-
-  // Have not decided how to handle userAnswers yet
+  // userAnswers is set by the updateAnswers function
   const [userAnswers, setUserAnswers] = useState<string[]>([]);
+  const [viewState, setViewState] = useState(VIEW_STATES.START_TEST);
+  const [timesUp, setTimesUp] = useState(false);
 
   useEffect(() => {
     const fetchSnapshot = async () => {
@@ -102,40 +100,8 @@ export default function ExamHomePage() {
     }
   }, [router, user]);
 
-  const incrementViewState = () => {
-    setViewState((prevState) => {
-      if (prevState === VIEW_STATES.SUBMIT_AND_EXIT) {
-        return VIEW_STATES.KEY_SIG_NOTATE1;
-      } else {
-        return prevState + 1;
-      }
-    });
-  };
-
-  const decrementViewState = () => {
-    setViewState((prevState) => {
-      if (prevState === VIEW_STATES.KEY_SIG_NOTATE1) {
-        return VIEW_STATES.SUBMIT_AND_EXIT;
-      } else {
-        return prevState - 1;
-      }
-    });
-  };
-
-  const handleTimeUp = () => {
-    setTimesUp(true);
-    setViewState(VIEW_STATES.SUBMIT_AND_EXIT);
-  };
-
-  const handleStartTest = () => {
-    startTimer(1800, handleTimeUp);
-    setViewState(VIEW_STATES.KEY_SIG_NOTATE1);
-  };
-
   const userChordAnswers = convertObjectToArray(currentUserData.chords);
-
   const userKeySigAnswers = convertObjectToArray(currentUserData.keySignatures);
-
   const userProgressionAnswers = convertObjectToArray(
     currentUserData.progressions
   );
@@ -156,7 +122,71 @@ export default function ExamHomePage() {
       exampleCorrectProgressionAnswers,
       "II-V-I Progressions"
     );
-    setUserAnswers([keySigAnswers, seventhAnswers, progressionAnswers]);
+    setUserAnswers([
+      currentUserData.level,
+      keySigAnswers,
+      seventhAnswers,
+      progressionAnswers,
+    ]);
+  };
+
+  useEffect(() => {
+    console.log("userAnswers from useEffect:", userAnswers);
+  }, [userAnswers]);
+
+  // useEffect(() => {
+  //   const userChordAnswers = convertObjectToArray(currentUserData.chords);
+  //   const userKeySigAnswers = convertObjectToArray(
+  //     currentUserData.keySignatures
+  //   );
+  //   const userProgressionAnswers = convertObjectToArray(
+  //     currentUserData.progressions
+  //   );
+
+  //   let levelText = `Level: ${currentUserData.level}`;
+  //   let keySigAnswers = checkAnswers(
+  //     userKeySigAnswers,
+  //     exampleCorrectKeySigAnswers,
+  //     "Key Signatures"
+  //   );
+  //   let seventhAnswers = checkAnswers(
+  //     userChordAnswers,
+  //     exampleCorrectSeventhChordAnswers,
+  //     "Seventh Chords"
+  //   );
+  //   let progressionAnswers = checkAnswers(
+  //     userProgressionAnswers,
+  //     exampleCorrectProgressionAnswers,
+  //     "II-V-I Progressions"
+  //   );
+  //   setUserAnswers([
+  //     levelText,
+  //     keySigAnswers,
+  //     seventhAnswers,
+  //     progressionAnswers,
+  //   ]);
+  // }, [currentUserData]);
+
+  const incrementViewState = () => {
+    setViewState((prevState) => {
+      return prevState + 1;
+    });
+  };
+
+  const decrementViewState = () => {
+    setViewState((prevState) => {
+      return prevState - 1;
+    });
+  };
+
+  const handleTimeUp = () => {
+    setTimesUp(true);
+    setViewState(VIEW_STATES.SUBMIT_AND_EXIT);
+  };
+
+  const handleStartTest = () => {
+    startTimer(1800, handleTimeUp);
+    setViewState(VIEW_STATES.KEY_SIG_NOTATE1);
   };
 
   const handleFinalSubmit = async (e: MouseEvent) => {
@@ -175,12 +205,18 @@ export default function ExamHomePage() {
         },
         body: JSON.stringify({
           email: "brett.austin.eastman@gmail.com",
-          subject: "Your exam results",
-          text: `Hello ${userName}, here are your results: \n\n
-        Key Signatures: ${userAnswers[0]} \n
-        Seventh Chords: ${userAnswers[1]} \n
-        II-V-I Progressions: ${userAnswers[2]} \n\n
-        If you have any questions, please contact your instructor.`,
+          subject: `Exam Results for ${userName}`,
+          text: `<p>Hello Kyle,</p>
+
+          <p>Here are the results for ${userName}:</p>
+          <ul>
+            <li>Level: ${userAnswers[0]}</li>
+            <li>Key Signatures: ${userAnswers[2]}</li>
+            <li>Seventh Chords: ${userAnswers[2]}</li>
+            <li>II-V-I Progressions: ${userAnswers[3]}</li>
+          </ul>
+
+          <p>Thank you,<br>Team at Lydian Labs Technology.</p>`,
         }),
       });
 
@@ -193,7 +229,7 @@ export default function ExamHomePage() {
 
       await response.json();
 
-      console.log("userAnswers:", userAnswers);
+      console.log("response:", response);
 
       return router.push("/sign-out");
     } catch (error) {
@@ -235,6 +271,7 @@ export default function ExamHomePage() {
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
+            updateAnswers={updateAnswers}
           />
         )}
         {viewState === VIEW_STATES.KEY_SIG_NOTATE2 && (
@@ -242,6 +279,7 @@ export default function ExamHomePage() {
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
+            updateAnswers={updateAnswers}
           />
         )}
         {viewState === VIEW_STATES.KEY_SIG_NOTATE3 && (
@@ -249,6 +287,7 @@ export default function ExamHomePage() {
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
+            updateAnswers={updateAnswers}
           />
         )}
         {viewState === VIEW_STATES.KEY_SIG_NOTATE4 && (
@@ -256,6 +295,7 @@ export default function ExamHomePage() {
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
+            updateAnswers={updateAnswers}
           />
         )}
         {viewState === VIEW_STATES.KEY_SIG_IDENTIFY && (
@@ -263,6 +303,7 @@ export default function ExamHomePage() {
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
+            updateAnswers={updateAnswers}
           />
         )}
         {viewState === VIEW_STATES.SCALES_NOTATE1 && (
@@ -270,6 +311,7 @@ export default function ExamHomePage() {
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
+            updateAnswers={updateAnswers}
           />
         )}
         {viewState === VIEW_STATES.SCALES_NOTATE2 && (
@@ -277,6 +319,7 @@ export default function ExamHomePage() {
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
+            updateAnswers={updateAnswers}
           />
         )}
         {viewState === VIEW_STATES.SCALES_NOTATE3 && (
@@ -284,6 +327,7 @@ export default function ExamHomePage() {
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
+            updateAnswers={updateAnswers}
           />
         )}
         {viewState === VIEW_STATES.SCALES_NOTATE4 && (
@@ -291,6 +335,7 @@ export default function ExamHomePage() {
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
+            updateAnswers={updateAnswers}
           />
         )}
         {viewState === VIEW_STATES.SCALES_NOTATE5 && (
@@ -298,6 +343,7 @@ export default function ExamHomePage() {
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
+            updateAnswers={updateAnswers}
           />
         )}
         {viewState === VIEW_STATES.SCALES_NOTATE6 && (
@@ -305,6 +351,7 @@ export default function ExamHomePage() {
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
+            updateAnswers={updateAnswers}
           />
         )}
         {viewState === VIEW_STATES.TRIADS_NOTATE && (
@@ -312,6 +359,7 @@ export default function ExamHomePage() {
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
+            updateAnswers={updateAnswers}
           />
         )}
         {viewState === VIEW_STATES.SEVENTH_CHORDS_NOTATE && (
@@ -319,6 +367,7 @@ export default function ExamHomePage() {
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
+            updateAnswers={updateAnswers}
           />
         )}
         {viewState === VIEW_STATES.CHORDS_IDENTIFY && (
@@ -326,6 +375,7 @@ export default function ExamHomePage() {
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
+            updateAnswers={updateAnswers}
           />
         )}
         {viewState === VIEW_STATES.WRITE_PROGRESSIONS && (
@@ -333,6 +383,7 @@ export default function ExamHomePage() {
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
+            updateAnswers={updateAnswers}
           />
         )}
         {viewState === VIEW_STATES.WRITE_BLUES_CHANGES && (

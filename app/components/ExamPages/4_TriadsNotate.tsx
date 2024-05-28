@@ -11,6 +11,7 @@ export default function TriadsNotation({
   currentUserData,
   setCurrentUserData,
   nextViewState,
+  updateAnswers,
 }: UserDataProps) {
   const [triadNotation, setTriadNotation] = useState({
     input1: "",
@@ -39,6 +40,7 @@ export default function TriadsNotation({
       triadNotation: triadNotation,
     };
     setCurrentUserData(payload);
+    updateAnswers();
     nextViewState();
   };
 

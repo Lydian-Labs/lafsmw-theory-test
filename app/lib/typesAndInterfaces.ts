@@ -257,12 +257,6 @@ export interface UserDataProps {
   currentUserData: InputState;
   setCurrentUserData: (userData: InputState) => void;
   nextViewState: () => void;
-}
-
-export interface UserDataPropsAnswers {
-  currentUserData: InputState;
-  setCurrentUserData: (userData: InputState) => void;
-  nextViewState: () => void;
   updateAnswers: () => void;
 }
 

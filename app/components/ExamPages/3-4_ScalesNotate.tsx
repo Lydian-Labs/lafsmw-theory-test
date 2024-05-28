@@ -20,6 +20,7 @@ export default function ScalesNotation3({
   currentUserData,
   setCurrentUserData,
   nextViewState,
+  updateAnswers,
 }: UserDataProps) {
   const [scales, setScales] = useState({
     input1: "",
@@ -37,6 +38,7 @@ export default function ScalesNotation3({
       scales: scales,
     };
     setCurrentUserData(payload);
+    updateAnswers();
     nextViewState();
   };
 

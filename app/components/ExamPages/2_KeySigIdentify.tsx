@@ -20,6 +20,7 @@ export default function KeySignaturesIdentification({
   currentUserData,
   setCurrentUserData,
   nextViewState,
+  updateAnswers,
 }: UserDataProps) {
   const keySigFormRef = useRef<HTMLFormElement | null>(null);
 
@@ -109,6 +110,7 @@ export default function KeySignaturesIdentification({
                 buttonForm="keySigs"
                 handleSubmit={() => {
                   keySigFormRef.current?.requestSubmit();
+                  updateAnswers();
                   nextViewState();
                 }}
               />

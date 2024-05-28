@@ -10,6 +10,6 @@ export const sendEmailNodemailer = async (
     from: process.env.NEXT_PUBLIC_EMAIL,
     to: email,
     subject,
-    text,
+    html: text,
   });
 };

@@ -9,6 +9,7 @@ export default function WriteProgressions({
   currentUserData,
   setCurrentUserData,
   nextViewState,
+  updateAnswers,
 }: UserDataProps) {
   const writeProgressionsFormRef = useRef<HTMLFormElement | null>(null);
 
@@ -68,6 +69,7 @@ export default function WriteProgressions({
               pageNumber={15}
               handleSubmit={() => {
                 writeProgressionsFormRef.current?.requestSubmit();
+                updateAnswers();
                 nextViewState();
               }}
             />
