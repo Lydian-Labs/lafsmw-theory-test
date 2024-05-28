@@ -11,10 +11,13 @@ import { keySigInitialState } from "../lib/initialStates";
 import { initializeRenderer } from "../lib/initializeRenderer";
 import isClickWithinStaveBounds from "../lib/isClickWithinStaveBounds";
 import { reducer } from "../lib/reducer";
-
+import { keySigArray } from "../lib/keySigArray";
+import { handleKeySigInteraction } from "../lib/handleKeySigInteraction";
+import generateYMinAndYMaxForNotes from "../lib/generateYMinAndMaxForAllNotes";
 import { modifyKeySigActionTypes } from "../lib/actionTypes";
-import { setupRenderer} from "../lib/setUpRenderer";
-import { GlyphProps } from "../lib/typesAndInterfaces";
+import { setupRenderer } from "../lib/setUpRenderer";
+import { GlyphProps, NotesAndCoordinatesData } from "../lib/typesAndInterfaces";
+import { initialNotesAndCoordsState } from "../lib/data/initialNotesAndCoordinatesState";
 
 const VF = VexFlow.Flow;
 const { Renderer } = VF;
@@ -25,7 +28,10 @@ const NotateKeySignature = ({ handleNotes }: any) => {
   const [blankStaves, setBlankStaves] = useState(INITIAL_STAVES);
   const [glyphs, setGlyphs] = useState<GlyphProps[]>([]);
   const [state, dispatch] = useReducer(reducer, keySigInitialState);
-
+  const [trackKeySig, setTrackKeySig] = useState<string[]>([]);
+  const [notesAndCoordinates, setNotesAndCoordinates] = useState<
+    NotesAndCoordinatesData[]
+  >([initialNotesAndCoordsState]);
   const keySigButtonGroup = useMemo(
     () => buttonGroup(dispatch, state, modifyKeySigActionTypes),
     [dispatch, state]
@@ -48,7 +54,8 @@ const NotateKeySignature = ({ handleNotes }: any) => {
 
   const clearKey = () => {
     clearKeySignature(setGlyphs, rendererRef, container, renderStaves),
-      dispatch({ type: "" });
+      setTrackKeySig(() => []);
+    dispatch({ type: "" });
   };
 
   useEffect(() => {
@@ -63,6 +70,15 @@ const NotateKeySignature = ({ handleNotes }: any) => {
     context && buildKeySignature(glyphs, 40, context, blankStaves[0]);
   }, [glyphs]);
 
+  useEffect(() => {
+    setNotesAndCoordinates(() => generateYMinAndYMaxForNotes(40, keySigArray));
+  }, []);
+
+  useEffect(() => {
+    console.log("key sig:", trackKeySig);
+    console.log("glyphs, ", glyphs);
+  }, [trackKeySig, glyphs]);
+
   const handleClick = (e: React.MouseEvent) => {
     if (
       !state.isAddSharpActive &&
@@ -73,6 +89,13 @@ const NotateKeySignature = ({ handleNotes }: any) => {
 
     const { userClickY, userClickX, topStaveYCoord, bottomStaveYCoord } =
       getUserClickInfo(e, container, blankStaves[0]);
+
+    let foundNoteData = notesAndCoordinates.find(
+      ({ yCoordinateMin, yCoordinateMax }) =>
+        userClickY >= yCoordinateMin && userClickY <= yCoordinateMax
+    );
+
+    console.log("foundNoteData: ", foundNoteData);
 
     const { maxRightClick, minLeftClick, minTopClick, maxBottomClick } =
       isClickWithinStaveBounds(
@@ -95,6 +118,8 @@ const NotateKeySignature = ({ handleNotes }: any) => {
       return;
     }
 
+    let notesAndCoordinatesCopy = [...notesAndCoordinates];
+
     setGlyphs((prevState) => [
       ...prevState,
       {
@@ -108,7 +133,17 @@ const NotateKeySignature = ({ handleNotes }: any) => {
       },
     ]);
 
-    handleNotes(glyphs);
+    setTrackKeySig((prevState) => {
+      const newState = [...prevState];
+      const newGlyph = state.isAddSharpActive ? "#" : "b";
+      if (prevState.length > 0) {
+        return [...newState, newGlyph];
+      }
+
+      return [newGlyph];
+    });
+    console.log("notesAndCoords: ", notesAndCoordinates);
+    handleNotes("glyphs: ", glyphs);
   };
 
   return (

@@ -88,7 +88,7 @@ export default function ExamHomePage() {
         if (error) {
           console.error(message);
         } else if (res) {
-          console.log(success);
+          //console.log(success);
           let inputRes = { ...currentUserData, ...res[0] };
           setCurrentUserData(inputRes);
         }

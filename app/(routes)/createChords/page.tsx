@@ -19,7 +19,7 @@ import CheckNumBeatsInMeasure from "../../components/CheckNumBeatsInMeasure";
 import { buttonGroup } from "../../lib/buttonsAndButtonGroups";
 import { staveData } from "../../lib/data/stavesData";
 import { findBarIndex } from "../../lib/findBar";
-import generateYMinAndYMaxForAllNotes from "../../lib/generateYMinAndMaxForAllNotes";
+import generateYMinAndYMaxForNotes from "../../lib/generateYMinAndMaxForAllNotes";
 import getUserClickInfo from "../../lib/getUserClickInfo";
 import { chordInteractionInitialState } from "../../lib/initialStates";
 import { initializeRenderer } from "../../lib/initializeRenderer";
@@ -59,9 +59,7 @@ const ManageChords = () => {
     setChordData((): Chord => {
       return initialChordData;
     });
-    setNotesAndCoordinates(() =>
-      generateYMinAndYMaxForAllNotes(147, notesArray)
-    );
+    setNotesAndCoordinates(() => generateYMinAndYMaxForNotes(147, notesArray));
     renderStavesAndChords();
   };
 
@@ -79,9 +77,7 @@ const ManageChords = () => {
   );
 
   useEffect(() => {
-    setNotesAndCoordinates(() =>
-      generateYMinAndYMaxForAllNotes(147, notesArray)
-    );
+    setNotesAndCoordinates(() => generateYMinAndYMaxForNotes(147, notesArray));
   }, []);
 
   useEffect(() => {

@@ -18,7 +18,7 @@ import { initialChordData } from "../lib/data/initialChordData";
 import { initialNotesAndCoordsState } from "../lib/data/initialNotesAndCoordinatesState";
 import { staveData } from "../lib/data/stavesData";
 import { findBarIndex } from "../lib/findBar";
-import generateYMinAndYMaxForAllNotes from "../lib/generateYMinAndMaxForAllNotes";
+import generateYMinAndYMaxForNotes from "../lib/generateYMinAndMaxForAllNotes";
 import getUserClickInfo from "../lib/getUserClickInfo";
 import { handleChordInteraction } from "../lib/handleChordInteraction";
 import { chordInteractionInitialState } from "../lib/initialStates";
@@ -60,9 +60,7 @@ const NotateChord = () => {
     setChordData((): Chord => {
       return initialChordData;
     });
-    setNotesAndCoordinates(() =>
-      generateYMinAndYMaxForAllNotes(147, notesArray)
-    );
+    setNotesAndCoordinates(() => generateYMinAndYMaxForNotes(147, notesArray));
     renderStavesAndChords();
   };
 
@@ -80,9 +78,7 @@ const NotateChord = () => {
   );
 
   useEffect(() => {
-    setNotesAndCoordinates(() =>
-      generateYMinAndYMaxForAllNotes(147, notesArray)
-    );
+    setNotesAndCoordinates(() => generateYMinAndYMaxForNotes(147, notesArray));
   }, []);
 
   useEffect(() => {

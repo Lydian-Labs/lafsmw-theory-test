@@ -1,5 +1,6 @@
 import {
   NoteInteractionState,
+  KeySigState,
   NotesAndCoordinatesData,
 } from "./typesAndInterfaces";
 
@@ -9,8 +10,27 @@ export const parseNote = (note: string) => {
   return { noteBase, octave };
 };
 
+const appendAccidentalToNote = (accidental: string, note: string) => {
+  const { noteBase, octave } = parseNote(note);
+  if (
+    (accidental === "#" && noteBase.length > 1 && noteBase.endsWith("b")) ||
+    (accidental === "b" && noteBase.endsWith("#"))
+  ) {
+    console.log("Cannot add contradictory accidentals to the same note.");
+    return note;
+  }
+
+  if (noteBase.length < 3) {
+    return `${noteBase}${accidental}/${octave}`;
+  }
+  if (noteBase.length > 3) {
+    console.log("Cannot add more than 2 accidentals to a note.");
+  }
+  return `${noteBase}/${octave}`;
+};
+
 export const updateNotesAndCoordsWithAccidental = (
-  state: NoteInteractionState,
+  state: NoteInteractionState | KeySigState,
   foundNoteData: NotesAndCoordinatesData,
   notesAndCoordinates: NotesAndCoordinatesData[]
 ) => {
@@ -50,25 +70,6 @@ export const getAccidentalType = (noteBase: string) => {
   if (noteBase.endsWith("#")) return "#";
   if (noteBase.endsWith("b") && noteBase.length > 1) return "b";
   return null;
-};
-
-export const appendAccidentalToNote = (accidental: string, note: string) => {
-  const { noteBase, octave } = parseNote(note);
-  if (
-    (accidental === "#" && noteBase.length > 1 && noteBase.endsWith("b")) ||
-    (accidental === "b" && noteBase.endsWith("#"))
-  ) {
-    console.log("Cannot add contradictory accidentals to the same note.");
-    return note;
-  }
-
-  if (noteBase.length < 3) {
-    return `${noteBase}${accidental}/${octave}`;
-  }
-  if (noteBase.length > 3) {
-    console.log("Cannot add more than 2 accidentals to a note.");
-  }
-  return `${noteBase}/${octave}`;
 };
 
 export const removeAccidentalFromNotesAndCoords = (
