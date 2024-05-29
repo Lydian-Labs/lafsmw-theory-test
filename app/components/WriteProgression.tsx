@@ -1,5 +1,6 @@
+"use client";
 import Stack from "@mui/material/Stack";
-import { ForwardedRef, forwardRef, useState } from "react";
+import { ForwardedRef, forwardRef, useState, useEffect } from "react";
 import createInitialState from "../lib/createInitialState";
 import keyNames from "../lib/data/keyNamesText";
 import { ChangeEvent, FormEvent, WriteProps } from "../lib/typesAndInterfaces";
@@ -15,6 +16,12 @@ export default forwardRef(function WriteProgression(
   const [numeralInput, setNumeralInput] = useState<Record<string, string>>(
     initialProgressionInputState
   );
+
+  useEffect(() => {
+    if (currentData) {
+      setNumeralInput(currentData);
+    }
+  }, [currentData]);
 
   const chordWidth = width * 0.05;
   const gapWidth = chordWidth * 0.3;
@@ -47,9 +54,8 @@ export default forwardRef(function WriteProgression(
         <FormInput
           key={key}
           name={key}
-          placeholder={currentData ? currentData[key] : ""}
           type="text"
-          value={numeralInput[key]}
+          value={numeralInput[key] || ""}
           width={chordWidth.toString() + "px"}
           onChange={(e: ChangeEvent) =>
             setNumeralInput({ ...numeralInput, [key]: e.target.value })

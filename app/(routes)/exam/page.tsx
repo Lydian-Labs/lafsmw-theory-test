@@ -159,6 +159,8 @@ export default function ExamHomePage() {
       if (!userName) {
         throw new Error("No current user found.");
       }
+      console.log("currentUserData from handleFinalSubmit:", currentUserData);
+
       await setOrUpdateStudentData(currentUserData, userName);
 
       // Send email with results using API route

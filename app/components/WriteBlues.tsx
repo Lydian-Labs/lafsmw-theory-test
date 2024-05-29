@@ -1,5 +1,6 @@
+// "use client";
 import Stack from "@mui/material/Stack";
-import { ForwardedRef, forwardRef, useState } from "react";
+import { ForwardedRef, forwardRef, useState, useEffect } from "react";
 import createInitialState from "../lib/createInitialState";
 import { ChangeEvent, FormEvent, WriteProps } from "../lib/typesAndInterfaces";
 import FormInput from "./FormInput";
@@ -15,6 +16,12 @@ export default forwardRef(function WriteBlues(
     initialBluesInputState
   );
 
+  useEffect(() => {
+    if (currentData) {
+      setNumeralInput(currentData);
+    }
+  }, [currentData]);
+
   const chordWidth = width * 0.048;
   const gapWidth = chordWidth * 0.05;
   const chordGroupSpacing = chordWidth * 0.05;
@@ -28,6 +35,7 @@ export default forwardRef(function WriteBlues(
   function handleNumeralSubmit(e: FormEvent) {
     e.preventDefault();
     handleInput(numeralInput);
+    console.log("numeralInput from handleNumeralSubmit: ", numeralInput);
   }
 
   function renderNumeralInputs(
@@ -40,9 +48,8 @@ export default forwardRef(function WriteBlues(
         <FormInput
           key={key}
           name={key}
-          placeholder={currentData ? currentData[key] : ""}
           type="text"
-          value={numeralInput[key]}
+          value={numeralInput[key] || ""}
           width={chordWidth.toString() + "px"}
           onChange={(e: ChangeEvent) =>
             setNumeralInput({ ...numeralInput, [key]: e.target.value })

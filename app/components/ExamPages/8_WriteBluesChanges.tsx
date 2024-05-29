@@ -23,6 +23,7 @@ export default function WriteBluesChanges({
   const writeBluesFormRef = useRef<HTMLFormElement | null>(null);
 
   function handleBlues(input: InputData) {
+    console.log("input from handleBlues: ", input);
     setCurrentUserData({ ...currentUserData, blues: input });
   }
 

@@ -1,4 +1,5 @@
-import { ForwardedRef, forwardRef, useState } from "react";
+"use client";
+import { ForwardedRef, forwardRef, useState, useEffect } from "react";
 import createInitialState from "../lib/createInitialState";
 import {
   ChangeEvent,
@@ -35,11 +36,15 @@ export default forwardRef(function IdentifyNotation(
 ) {
   const initialChordsInputState = createInitialState(numBars);
 
-  // console.log("currentData:", currentData);
-
   const [textInput, setTextInput] = useState<Record<string, string>>(
     initialChordsInputState
   );
+
+  useEffect(() => {
+    if (currentData) {
+      setTextInput(currentData);
+    }
+  }, [currentData]);
 
   const fullWidth = width * 0.97;
   const reducedWidth = fullWidth - 90;
@@ -73,9 +78,8 @@ export default forwardRef(function IdentifyNotation(
       <FormInput
         key={key}
         name={key}
-        placeholder={currentData ? currentData[key] : ""}
         type="text"
-        value={textInput[key]}
+        value={textInput[key] || ""}
         width="50px"
         onChange={(e: ChangeEvent) =>
           setTextInput({ ...textInput, [key]: e.target.value })
