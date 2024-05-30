@@ -22,6 +22,8 @@ export default forwardRef(function WriteBlues(
     }
   }, [currentData]);
 
+  console.log("currentData from WriteBlues: ", currentData);
+
   const chordWidth = width * 0.048;
   const gapWidth = chordWidth * 0.05;
   const chordGroupSpacing = chordWidth * 0.05;

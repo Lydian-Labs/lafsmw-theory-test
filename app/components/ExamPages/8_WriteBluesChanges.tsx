@@ -120,7 +120,7 @@ export default function WriteBluesChanges({
               pageNumber={16}
               handleSubmit={() => {
                 writeBluesFormRef.current?.requestSubmit();
-                savePDF();
+                // savePDF();
                 updateAnswers();
                 nextViewState();
               }}
