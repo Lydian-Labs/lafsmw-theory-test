@@ -1,16 +1,11 @@
 "use client";
+import { savePDF } from "@/app/lib/savePDF";
 import { InputData, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import { useAuthContext } from "@/firebase/authContext";
 import { Box, Grid, Stack, Typography } from "@mui/material";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
 import { useRef } from "react";
 import CardFooter from "../CardFooter";
 import WriteBlues from "../WriteBlues";
-
-// Get a reference to the storage service, which is used to create references in your storage bucket
-const storage = getStorage();
 
 export default function WriteBluesChanges({
   currentUserData,
@@ -26,39 +21,6 @@ export default function WriteBluesChanges({
     console.log("input from handleBlues: ", input);
     setCurrentUserData({ ...currentUserData, blues: input });
   }
-
-  const savePDF = () => {
-    const capture = document.querySelector(".write-blues-changes");
-
-    html2canvas(capture as HTMLElement).then((canvas) => {
-      const imgData = canvas.toDataURL("image/jpeg");
-      const pdf = new jsPDF({
-        orientation: "landscape",
-        unit: "px",
-        format: [canvas.width, canvas.height],
-      });
-      pdf.addImage(imgData, "JPEG", 0, 0, canvas.width, canvas.height);
-      const pdfBlob = pdf.output("blob");
-      const storageRef = ref(storage, `${userName}-write-blues-changes.pdf`);
-
-      uploadBytes(storageRef, pdfBlob)
-        .then((snapshot) => {
-          console.log("PDF uploaded successfully");
-        })
-        .catch((error) => {
-          console.error("Error uploading PDF: ", error);
-        });
-
-      getDownloadURL(storageRef)
-        .then((url) => {
-          console.log("URL: ", url);
-          setCurrentUserData({ ...currentUserData, bluesUrl: url });
-        })
-        .catch((error) => {
-          console.error("Error getting download URL: ", error);
-        });
-    });
-  };
 
   return (
     <Box sx={{ display: "flex", justifyContent: "center" }}>
@@ -120,7 +82,7 @@ export default function WriteBluesChanges({
               pageNumber={16}
               handleSubmit={() => {
                 writeBluesFormRef.current?.requestSubmit();
-                // savePDF();
+                // savePDF(userName, setCurrentUserData, currentUserData);
                 updateAnswers();
                 nextViewState();
               }}
