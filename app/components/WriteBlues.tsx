@@ -22,7 +22,7 @@ export default forwardRef(function WriteBlues(
     }
   }, [currentData]);
 
-  console.log("currentData from WriteBlues: ", currentData);
+  // console.log("currentData from WriteBlues: ", currentData);
 
   const chordWidth = width * 0.048;
   const gapWidth = chordWidth * 0.05;
@@ -37,7 +37,7 @@ export default forwardRef(function WriteBlues(
   function handleNumeralSubmit(e: FormEvent) {
     e.preventDefault();
     handleInput(numeralInput);
-    console.log("numeralInput from handleNumeralSubmit: ", numeralInput);
+    // console.log("numeralInput from handleNumeralSubmit: ", numeralInput);
   }
 
   function renderNumeralInputs(
@@ -52,7 +52,7 @@ export default forwardRef(function WriteBlues(
           name={key}
           type="text"
           value={numeralInput[key] || ""}
-          width={(chordWidth + 4).toString() + "px"}
+          width={(chordWidth + 6).toString() + "px"}
           onChange={(e: ChangeEvent) =>
             setNumeralInput({ ...numeralInput, [key]: e.target.value })
           }

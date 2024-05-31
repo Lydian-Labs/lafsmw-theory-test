@@ -159,6 +159,7 @@ export default function ExamHomePage() {
       if (!userName) {
         throw new Error("No current user found.");
       }
+      // this data is not being saved to the database - currentUserData.blues is not being updated from the WriteBluesChanges component
       console.log("currentUserData from handleFinalSubmit:", currentUserData);
 
       await setOrUpdateStudentData(currentUserData, userName);

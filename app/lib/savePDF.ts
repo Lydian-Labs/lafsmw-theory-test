@@ -6,39 +6,45 @@ import { InputState } from "./typesAndInterfaces";
 // Get a reference to the storage service, which is used to create references in your storage bucket
 const storage = getStorage();
 
-export const savePDF = (
+export const savePDF = async (
   userName: string | undefined,
   setCurrentUserData: { (userData: InputState): void; (arg0: any): void },
   currentUserData: InputState
 ) => {
-  const capture = document.querySelector(".write-blues-changes");
+  try {
+    const capture = document.querySelector(".write-blues-changes");
+    if (!capture) throw new Error("Element not found");
 
-  html2canvas(capture as HTMLElement).then((canvas) => {
+    const canvas = await html2canvas(capture as HTMLElement);
     const imgData = canvas.toDataURL("image/jpeg");
     const pdf = new jsPDF({
       orientation: "landscape",
       unit: "px",
       format: [canvas.width, canvas.height],
     });
+
     pdf.addImage(imgData, "JPEG", 0, 0, canvas.width, canvas.height);
     const pdfBlob = pdf.output("blob");
     const storageRef = ref(storage, `${userName}-write-blues-changes.pdf`);
 
-    uploadBytes(storageRef, pdfBlob)
-      .then((snapshot) => {
-        console.log("PDF uploaded successfully");
-      })
-      .catch((error) => {
-        console.error("Error uploading PDF: ", error);
-      });
+    // awaiting Promise
+    await uploadBytes(storageRef, pdfBlob);
+    console.log("PDF uploaded successfully");
 
-    getDownloadURL(storageRef)
-      .then((url) => {
-        console.log("URL: ", url);
-        setCurrentUserData({ ...currentUserData, bluesUrl: url });
-      })
-      .catch((error) => {
-        console.error("Error getting download URL: ", error);
-      });
-  });
+    // awaiting Promise
+    const url = await getDownloadURL(storageRef);
+    console.log("URL: ", url);
+
+    console.log(
+      "currentUserData from savePDF before setCurrentUserData: ",
+      currentUserData
+    );
+    setCurrentUserData({ ...currentUserData, bluesUrl: url });
+    console.log(
+      "currentUserData from savePDF after setCurrentUserData: ",
+      currentUserData
+    );
+  } catch (error) {
+    console.error("Error in savePDF: ", error);
+  }
 };

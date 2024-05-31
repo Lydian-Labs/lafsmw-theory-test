@@ -18,8 +18,14 @@ export default function WriteBluesChanges({
   const writeBluesFormRef = useRef<HTMLFormElement | null>(null);
 
   function handleBlues(input: InputData) {
-    console.log("input from handleBlues: ", input);
+    // handleBlues is logging the data just fine here so WriteBlues is working
+    // console.log("input from handleBlues: ", input);
+    // but currentUserData is not updating?
     setCurrentUserData({ ...currentUserData, blues: input });
+    console.log(
+      "currentUserData from after set state in handleBlues: ",
+      currentUserData
+    );
   }
 
   return (
@@ -81,8 +87,8 @@ export default function WriteBluesChanges({
               height={100}
               pageNumber={16}
               handleSubmit={() => {
-                writeBluesFormRef.current?.requestSubmit();
                 savePDF(userName, setCurrentUserData, currentUserData);
+                writeBluesFormRef.current?.requestSubmit();
                 updateAnswers();
                 nextViewState();
               }}
