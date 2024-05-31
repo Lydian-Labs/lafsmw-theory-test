@@ -35,15 +35,7 @@ export const savePDF = async (
     const url = await getDownloadURL(storageRef);
     console.log("URL: ", url);
 
-    console.log(
-      "currentUserData from savePDF before setCurrentUserData: ",
-      currentUserData
-    );
     setCurrentUserData({ ...currentUserData, bluesUrl: url });
-    console.log(
-      "currentUserData from savePDF after setCurrentUserData: ",
-      currentUserData
-    );
   } catch (error) {
     console.error("Error in savePDF: ", error);
   }

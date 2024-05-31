@@ -2,7 +2,7 @@
 import { savePDF } from "@/app/lib/savePDF";
 import { InputData, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import { useAuthContext } from "@/firebase/authContext";
-import { Box, Grid, Stack, Typography } from "@mui/material";
+import { Box, Button, Grid, Stack, Typography } from "@mui/material";
 import { useRef } from "react";
 import CardFooter from "../CardFooter";
 import WriteBlues from "../WriteBlues";
@@ -19,13 +19,15 @@ export default function WriteBluesChanges({
 
   function handleBlues(input: InputData) {
     // handleBlues is logging the data just fine here so WriteBlues is working
-    // console.log("input from handleBlues: ", input);
-    // but currentUserData is not updating?
+    console.log("input from handleBlues: ", input);
+    // but currentUserData is not updating. Need to figure out why
     setCurrentUserData({ ...currentUserData, blues: input });
-    console.log(
-      "currentUserData from after set state in handleBlues: ",
-      currentUserData
-    );
+    // when you put a console.log here, it doesn't show you the updated currentUserData - js thing I don't understand
+    // so the data does move on from here when savePDF is commented out
+  }
+
+  function handlePDF() {
+    savePDF(userName, setCurrentUserData, currentUserData);
   }
 
   return (
@@ -77,17 +79,21 @@ export default function WriteBluesChanges({
                 />
               </Grid>
 
-              <Typography marginTop={4} align="left">
-                *Note: this is a creative exercise. You do not have to fill out
-                a chord for every beat.
-              </Typography>
+              <Grid item>
+                <Stack direction="row" spacing={2}>
+                  <Typography marginTop={2} align="left">
+                    {`*Note: this is a creative exercise. Only write 1-3 chords per bar. You must press "Save PDF" before moving on.`}
+                  </Typography>
+                  <Button onClick={handlePDF}>Save PDF</Button>
+                </Stack>
+              </Grid>
             </Grid>
             <CardFooter
               width={1100}
               height={100}
               pageNumber={16}
+              buttonText="Continue >"
               handleSubmit={() => {
-                savePDF(userName, setCurrentUserData, currentUserData);
                 writeBluesFormRef.current?.requestSubmit();
                 updateAnswers();
                 nextViewState();
