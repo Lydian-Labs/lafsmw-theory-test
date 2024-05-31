@@ -33,6 +33,11 @@
   --sizingButtonSizing: 40px; /* buttons below the staff have a height of 40 | horizontal padding of 24  */
 }
 
+* {
+  margin: 0;
+  padding: 0;
+}
+
 body {
   background-color: var(--colorMainBackgroundColor);
 }

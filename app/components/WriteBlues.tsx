@@ -52,7 +52,7 @@ export default forwardRef(function WriteBlues(
           name={key}
           type="text"
           value={numeralInput[key] || ""}
-          width={chordWidth.toString() + "px"}
+          width={(chordWidth + 4).toString() + "px"}
           onChange={(e: ChangeEvent) =>
             setNumeralInput({ ...numeralInput, [key]: e.target.value })
           }
