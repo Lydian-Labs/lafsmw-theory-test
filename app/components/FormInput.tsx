@@ -34,7 +34,7 @@ export default function FormInput({
         style={{
           display: "flex",
           alignContent: "center",
-          fontSize: "12px",
+          fontSize: "14px",
           height: "30px",
           margin: "0px",
           width,
