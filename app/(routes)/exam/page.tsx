@@ -20,6 +20,7 @@ import WriteBluesChanges from "@/app/components/ExamPages/8_WriteBluesChanges";
 import { useTimer } from "@/app/context/TimerContext";
 import { checkAnswers } from "@/app/lib/calculateAnswers";
 import convertObjectToArray from "@/app/lib/convertObjectToArray";
+import convertObjectToChordChart from "@/app/lib/convertObjectToChordChart";
 import {
   exampleCorrectKeySigAnswers,
   exampleCorrectProgressionAnswers,
@@ -100,13 +101,15 @@ export default function ExamHomePage() {
     }
   }, [router, user]);
 
-  const userChordAnswers = convertObjectToArray(currentUserData.chords);
-  const userKeySigAnswers = convertObjectToArray(currentUserData.keySignatures);
-  const userProgressionAnswers = convertObjectToArray(
-    currentUserData.progressions
-  );
-
   const updateAnswers = async () => {
+    const userChordAnswers = convertObjectToArray(currentUserData.chords);
+    const userKeySigAnswers = convertObjectToArray(
+      currentUserData.keySignatures
+    );
+    const userProgressionAnswers = convertObjectToArray(
+      currentUserData.progressions
+    );
+    const chordChart = convertObjectToChordChart(currentUserData.blues);
     let keySigAnswers = checkAnswers(
       userKeySigAnswers,
       exampleCorrectKeySigAnswers,
@@ -128,6 +131,7 @@ export default function ExamHomePage() {
       seventhAnswers,
       progressionAnswers,
       currentUserData.bluesUrl,
+      chordChart,
     ]);
   };
 
@@ -165,37 +169,38 @@ export default function ExamHomePage() {
       await setOrUpdateStudentData(currentUserData, userName);
 
       // Send email with results using API route
-      // const response = await fetch("/api/email", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify({
-      //     email: process.env.EMAIL_CAMP_DIRECTOR,
-      //     subject: `Exam Results for ${userName}`,
-      //     text: `<p>Hello Kyle,</p>
+      const response = await fetch("/api/email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: process.env.EMAIL_CAMP_DIRECTOR,
+          subject: `Exam Results for ${userName}`,
+          text: `<p>Hello Kyle,</p>
 
-      //     <p>Here are the results for ${userName}:</p>
-      //     <ul>
-      //       <li>Level: ${userAnswers[0]}</li>
-      //       <li>Key Signatures: ${userAnswers[1]}</li>
-      //       <li>Seventh Chords: ${userAnswers[2]}</li>
-      //       <li>II-V-I Progressions: ${userAnswers[3]}</li>
-      //       <li>Link to blues progression pdf: ${userAnswers[4]}</li>
-      //     </ul>
+          <p>Here are the results for ${userName}:</p>
+          <ul>
+            <li>Level: ${userAnswers[0]}</li>
+            <li>Key Signatures: ${userAnswers[1]}</li>
+            <li>Seventh Chords: ${userAnswers[2]}</li>
+            <li>II-V-I Progressions: ${userAnswers[3]}</li>
+            <li>Link to blues progression pdf: ${userAnswers[4]}</li>
+            <li>Blues progression chart: ${userAnswers[5]}</li>
+          </ul>
 
-      //     <p>Thank you,<br>Team at Lydian Labs Technology.</p>`,
-      //   }),
-      // });
+          <p>Thank you,<br>Team at Lydian Labs Technology.</p>`,
+        }),
+      });
 
-      // if (!response.ok) {
-      //   const errorData = await response.json();
-      //   throw new Error(
-      //     `Failed to send email: ${errorData.error}, Details: ${errorData.details}`
-      //   );
-      // }
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(
+          `Failed to send email: ${errorData.error}, Details: ${errorData.details}`
+        );
+      }
 
-      // await response.json();
+      await response.json();
 
       return router.push("/sign-out");
     } catch (error) {
