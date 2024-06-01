@@ -16,13 +16,22 @@ export default forwardRef(function WriteBlues(
     initialBluesInputState
   );
 
+  const isCurrentDataBluesFilled = (data: any) => {
+    for (let i = 0; i < 48; i++) {
+      if (data[i] !== "") {
+        return true;
+      }
+    }
+    return false;
+  };
+
   useEffect(() => {
-    if (currentData) {
+    if (currentData && !isCurrentDataBluesFilled(currentData)) {
       setNumeralInput(currentData);
     }
   }, [currentData]);
 
-  // console.log("currentData from WriteBlues: ", currentData);
+  console.log("currentData from WriteBlues: ", currentData);
 
   const chordWidth = width * 0.048;
   const gapWidth = chordWidth * 0.05;

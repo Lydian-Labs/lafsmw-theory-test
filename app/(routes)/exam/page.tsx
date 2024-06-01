@@ -168,6 +168,8 @@ export default function ExamHomePage() {
 
       await setOrUpdateStudentData(currentUserData, userName);
 
+      await updateAnswers();
+
       // Send email with results using API route
       const response = await fetch("/api/email", {
         method: "POST",
