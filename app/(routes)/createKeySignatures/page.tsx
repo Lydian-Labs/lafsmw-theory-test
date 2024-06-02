@@ -9,7 +9,7 @@ import {
   clearKeySignature,
 } from "../../lib/buttonsAndButtonGroups";
 import { INITIAL_STAVES, staveData } from "../../lib/data/stavesData";
-import deleteAccidentalFromKeySig from "../../lib/deleteAccidentalFromKeySig";
+import deleteAccidentalFromKeySig from "../../lib/modifyKeySignature";
 import { getUserClickInfo } from "../../lib/getUserClickInfo";
 import { keySigInitialState } from "../../lib/initialStates";
 import { initializeRenderer } from "../../lib/initializeRenderer";

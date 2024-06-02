@@ -10,7 +10,7 @@ export const parseNote = (note: string) => {
   return { noteBase, octave };
 };
 
-const appendAccidentalToNote = (accidental: string, note: string) => {
+export const appendAccidentalToNote = (accidental: string, note: string) => {
   const { noteBase, octave } = parseNote(note);
   if (
     (accidental === "#" && noteBase.length > 1 && noteBase.endsWith("b")) ||
@@ -41,7 +41,7 @@ export const updateNotesAndCoordsWithAccidental = (
           ...noteData,
           note: appendAccidentalToNote(accidental, foundNoteData.note),
         }
-      : noteData
+      : console.log('no match') //noteData
   );
   return newNotesAndCoords;
 };
