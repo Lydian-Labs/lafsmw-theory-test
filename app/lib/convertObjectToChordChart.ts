@@ -1,34 +1,33 @@
-export default function convertObjectToChordChart(
-  inputObject: any,
-  beatsPerBar = 4,
-  numBarsPerLine = 4
-) {
-  const totalLength = Object.keys(inputObject).length;
-  const numBars = totalLength / beatsPerBar;
-  const numLines = Math.ceil(numBars / numBarsPerLine);
+export default function convertObjectToChordChart(inputObject: any) {
+  const numBars = 12;
+  const beatsPerBar = 4;
+  const totalNumBeats = 48;
+  const numLines = 3;
+  const numBarsPerLine = numBars / numLines;
 
-  // Initialize an array with empty strings for the total length
   const outputArray = Array.from(
-    { length: totalLength },
+    { length: totalNumBeats },
     (_, i) => inputObject[i] || ""
   );
 
   let result = "";
 
-  for (let i = 0; i < numLines; i++) {
-    for (let j = 0; j < numBarsPerLine; j++) {
-      const start = i * numBarsPerLine * beatsPerBar + j * beatsPerBar;
+  for (let line = 0; line < numLines; line++) {
+    for (let bar = 0; bar < numBarsPerLine; bar++) {
+      const start = line * numBarsPerLine * beatsPerBar + bar * beatsPerBar;
       const end = start + beatsPerBar;
-      if (start < totalLength) {
+      if (start < totalNumBeats) {
         const bar = outputArray
           .slice(start, end)
-          .map((chord) => chord.padEnd(2, "-"))
+          .map((chord) => chord.padEnd(6, "-"))
           .join("");
         result += `|-${bar.padEnd(beatsPerBar * 2 - 1, "-")}`;
       }
     }
-    result += "|\n";
+    if (line < numLines - 1) {
+      result += "|\n";
+    }
   }
 
-  return result;
+  return result.slice(0, -1) + "||";
 }

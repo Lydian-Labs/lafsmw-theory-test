@@ -217,7 +217,7 @@ export default function ExamHomePage() {
       }
 
       await setOrUpdateStudentData(currentUserData, userName);
-      setViewState(VIEW_STATES.START_TEST);
+      setViewState(VIEW_STATES.KEY_SIG_NOTATE1);
     } catch (error) {
       console.error("goBackToPage1 error:", error);
     }
