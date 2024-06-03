@@ -57,6 +57,7 @@ export default function ChordsIdentification({
               <Grid item>
                 <IdentifyNotation
                   chords={seventhChords}
+                  currentData={currentUserData.chords}
                   numBars={7}
                   handleInput={handleChords}
                   ref={chordsFormRef}

@@ -1,32 +1,29 @@
+"use client";
 import Stack from "@mui/material/Stack";
-import { ForwardedRef, forwardRef, useState } from "react";
+import { ForwardedRef, forwardRef, useEffect, useState } from "react";
 import createInitialState from "../lib/createInitialState";
-import {
-  ChangeEvent,
-  Chord,
-  FormEvent,
-  InputData,
-} from "../lib/typesAndInterfaces";
+import isCurrentDataFilled from "../lib/isCurrentDataFilled";
+import { ChangeEvent, FormEvent, WriteProps } from "../lib/typesAndInterfaces";
 import FormInput from "./FormInput";
 import Staff from "./Staff";
-import { overflow } from "html2canvas/dist/types/css/property-descriptors/overflow";
-
-type WriteBluesProps = {
-  numBars?: number;
-  chords?: Chord[];
-  width: number;
-  handleBlues: (blues: InputData) => void;
-};
 
 const initialBluesInputState = createInitialState(48);
 
 export default forwardRef(function WriteBlues(
-  { width, handleBlues }: WriteBluesProps,
+  { width, handleInput, currentData }: WriteProps,
   ref: ForwardedRef<HTMLFormElement>
 ) {
   const [numeralInput, setNumeralInput] = useState<Record<string, string>>(
     initialBluesInputState
   );
+
+  useEffect(() => {
+    if (currentData && isCurrentDataFilled(currentData)) {
+      setNumeralInput(currentData);
+    } else {
+      setNumeralInput(initialBluesInputState);
+    }
+  }, [currentData]);
 
   const chordWidth = width * 0.048;
   const gapWidth = chordWidth * 0.05;
@@ -40,7 +37,7 @@ export default forwardRef(function WriteBlues(
 
   function handleNumeralSubmit(e: FormEvent) {
     e.preventDefault();
-    handleBlues(numeralInput);
+    handleInput(numeralInput);
   }
 
   function renderNumeralInputs(
@@ -54,8 +51,9 @@ export default forwardRef(function WriteBlues(
           key={key}
           name={key}
           type="text"
-          value={numeralInput[key]}
-          width={chordWidth.toString() + "px"}
+          value={numeralInput[key] || ""}
+          width={(chordWidth + 6).toString() + "px"}
+          height="50px"
           onChange={(e: ChangeEvent) =>
             setNumeralInput({ ...numeralInput, [key]: e.target.value })
           }

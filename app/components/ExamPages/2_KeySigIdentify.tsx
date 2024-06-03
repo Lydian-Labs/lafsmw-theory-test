@@ -32,7 +32,7 @@ export default function KeySignaturesIdentification({
       <Box
         component="main"
         width={1139}
-        height={637}
+        height={580}
         bgcolor={"secondary.main"}
         borderRadius="var(--borderRadius)"
         p={2}
@@ -74,7 +74,7 @@ export default function KeySignaturesIdentification({
           <Grid item xs={8} margin={"auto"}>
             <Box
               width={569}
-              height={540}
+              height={480}
               bgcolor={"card.background"}
               borderRadius="var(--borderRadius)"
               margin={"auto"}
@@ -96,6 +96,7 @@ export default function KeySignaturesIdentification({
                 </Grid>
                 <Grid item>
                   <IdentifyNotation
+                    currentData={currentUserData.keySignatures}
                     evenbars
                     handleInput={handleKeySignatures}
                     ref={keySigFormRef}
@@ -105,6 +106,7 @@ export default function KeySignaturesIdentification({
               </Grid>
               <CardFooter
                 pageNumber={5}
+                height={200}
                 buttonForm="keySigs"
                 handleSubmit={() => {
                   keySigFormRef.current?.requestSubmit();
