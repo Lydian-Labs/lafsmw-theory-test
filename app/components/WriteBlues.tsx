@@ -26,12 +26,14 @@ export default forwardRef(function WriteBlues(
   };
 
   useEffect(() => {
-    if (currentData && !isCurrentDataBluesFilled(currentData)) {
+    if (currentData && isCurrentDataBluesFilled(currentData)) {
       setNumeralInput(currentData);
+    } else {
+      setNumeralInput(initialBluesInputState);
     }
   }, [currentData]);
 
-  console.log("currentData from WriteBlues: ", currentData);
+  // console.log("currentData from WriteBlues: ", currentData);
 
   const chordWidth = width * 0.048;
   const gapWidth = chordWidth * 0.05;
@@ -46,7 +48,7 @@ export default forwardRef(function WriteBlues(
   function handleNumeralSubmit(e: FormEvent) {
     e.preventDefault();
     handleInput(numeralInput);
-    // console.log("numeralInput from handleNumeralSubmit: ", numeralInput);
+    console.log("numeralInput from handleNumeralSubmit: ", numeralInput);
   }
 
   function renderNumeralInputs(

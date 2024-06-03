@@ -11,7 +11,6 @@ export default function NotateSeventhChords({
   currentUserData,
   setCurrentUserData,
   nextViewState,
-  updateAnswers,
 }: UserDataProps) {
   const [seventhChordNotation, setseventhChordNotation] = useState({
     input1: "",
@@ -40,7 +39,6 @@ export default function NotateSeventhChords({
       seventhChordNotation: seventhChordNotation,
     };
     setCurrentUserData(payload);
-    updateAnswers();
     nextViewState();
   };
 

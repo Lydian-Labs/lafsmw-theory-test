@@ -20,7 +20,6 @@ export default function KeySignaturesNotation({
   currentUserData,
   setCurrentUserData,
   nextViewState,
-  updateAnswers,
 }: UserDataProps) {
   const [keySignatureNotation, setKeySignatureNotation] = useState("");
 
@@ -31,7 +30,6 @@ export default function KeySignaturesNotation({
       keySignaturesNotation: keySignatureNotation,
     };
     setCurrentUserData(payload);
-    updateAnswers();
     nextViewState();
   };
 

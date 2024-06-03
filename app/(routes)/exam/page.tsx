@@ -73,7 +73,6 @@ export default function ExamHomePage() {
 
   const [currentUserData, setCurrentUserData] =
     useState<InputState>(initialState);
-  // userAnswers is set by the updateAnswers function
   const [userAnswers, setUserAnswers] = useState<string[]>([]);
   const [viewState, setViewState] = useState(VIEW_STATES.START_TEST);
   const [timesUp, setTimesUp] = useState(false);
@@ -135,6 +134,10 @@ export default function ExamHomePage() {
     ]);
   };
 
+  useEffect(() => {
+    updateAnswers();
+  }, [currentUserData]);
+
   const incrementViewState = () => {
     setViewState((prevState) => {
       return prevState + 1;
@@ -163,12 +166,8 @@ export default function ExamHomePage() {
       if (!userName) {
         throw new Error("No current user found.");
       }
-      // this data is not being saved to the database - currentUserData.blues is not being updated from the WriteBluesChanges component
-      console.log("currentUserData from handleFinalSubmit:", currentUserData);
 
       await setOrUpdateStudentData(currentUserData, userName);
-
-      await updateAnswers();
 
       // Send email with results using API route
       const response = await fetch("/api/email", {
@@ -244,7 +243,6 @@ export default function ExamHomePage() {
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
-            updateAnswers={updateAnswers}
           />
         )}
         {viewState === VIEW_STATES.KEY_SIG_NOTATE2 && (
@@ -252,7 +250,6 @@ export default function ExamHomePage() {
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
-            updateAnswers={updateAnswers}
           />
         )}
         {viewState === VIEW_STATES.KEY_SIG_NOTATE3 && (
@@ -260,7 +257,6 @@ export default function ExamHomePage() {
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
-            updateAnswers={updateAnswers}
           />
         )}
         {viewState === VIEW_STATES.KEY_SIG_NOTATE4 && (
@@ -268,7 +264,6 @@ export default function ExamHomePage() {
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
-            updateAnswers={updateAnswers}
           />
         )}
         {viewState === VIEW_STATES.KEY_SIG_IDENTIFY && (
@@ -276,7 +271,6 @@ export default function ExamHomePage() {
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
-            updateAnswers={updateAnswers}
           />
         )}
         {viewState === VIEW_STATES.SCALES_NOTATE1 && (
@@ -284,7 +278,6 @@ export default function ExamHomePage() {
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
-            updateAnswers={updateAnswers}
           />
         )}
         {viewState === VIEW_STATES.SCALES_NOTATE2 && (
@@ -292,7 +285,6 @@ export default function ExamHomePage() {
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
-            updateAnswers={updateAnswers}
           />
         )}
         {viewState === VIEW_STATES.SCALES_NOTATE3 && (
@@ -300,7 +292,6 @@ export default function ExamHomePage() {
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
-            updateAnswers={updateAnswers}
           />
         )}
         {viewState === VIEW_STATES.SCALES_NOTATE4 && (
@@ -308,7 +299,6 @@ export default function ExamHomePage() {
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
-            updateAnswers={updateAnswers}
           />
         )}
         {viewState === VIEW_STATES.SCALES_NOTATE5 && (
@@ -316,7 +306,6 @@ export default function ExamHomePage() {
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
-            updateAnswers={updateAnswers}
           />
         )}
         {viewState === VIEW_STATES.SCALES_NOTATE6 && (
@@ -324,7 +313,6 @@ export default function ExamHomePage() {
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
-            updateAnswers={updateAnswers}
           />
         )}
         {viewState === VIEW_STATES.TRIADS_NOTATE && (
@@ -332,7 +320,6 @@ export default function ExamHomePage() {
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
-            updateAnswers={updateAnswers}
           />
         )}
         {viewState === VIEW_STATES.SEVENTH_CHORDS_NOTATE && (
@@ -340,7 +327,6 @@ export default function ExamHomePage() {
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
-            updateAnswers={updateAnswers}
           />
         )}
         {viewState === VIEW_STATES.CHORDS_IDENTIFY && (
@@ -348,7 +334,6 @@ export default function ExamHomePage() {
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
-            updateAnswers={updateAnswers}
           />
         )}
         {viewState === VIEW_STATES.WRITE_PROGRESSIONS && (
@@ -356,7 +341,6 @@ export default function ExamHomePage() {
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
-            updateAnswers={updateAnswers}
           />
         )}
         {viewState === VIEW_STATES.WRITE_BLUES_CHANGES && (
@@ -364,7 +348,6 @@ export default function ExamHomePage() {
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
-            updateAnswers={updateAnswers}
           />
         )}
         {viewState === VIEW_STATES.SUBMIT_AND_EXIT && (

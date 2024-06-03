@@ -11,22 +11,16 @@ export default function WriteBluesChanges({
   currentUserData,
   setCurrentUserData,
   nextViewState,
-  updateAnswers,
 }: UserDataProps) {
   const { user } = useAuthContext();
   const userName = user?.displayName?.split(" ").join("_");
   const writeBluesFormRef = useRef<HTMLFormElement | null>(null);
 
-  function handleBlues(input: InputData) {
-    // handleBlues is logging the data just fine here so WriteBlues is working
-    console.log("input from handleBlues: ", input);
-    // but currentUserData is not updating. Need to figure out why
+  function handleBluesInput(input: InputData) {
     setCurrentUserData({ ...currentUserData, blues: input });
-    // when you put a console.log here, it doesn't show you the updated currentUserData - js thing I don't understand
-    // so the data does move on from here when savePDF is commented out
   }
 
-  function handlePDF() {
+  async function handlePDF() {
     savePDF(userName, setCurrentUserData, currentUserData);
   }
 
@@ -72,7 +66,7 @@ export default function WriteBluesChanges({
               </Grid>
               <Grid item>
                 <WriteBlues
-                  handleInput={handleBlues}
+                  handleInput={handleBluesInput}
                   currentData={currentUserData.blues}
                   ref={writeBluesFormRef}
                   width={1150}
@@ -93,9 +87,9 @@ export default function WriteBluesChanges({
               height={100}
               pageNumber={16}
               buttonText="Continue >"
+              buttonForm="submit-form-blues"
               handleSubmit={() => {
                 writeBluesFormRef.current?.requestSubmit();
-                updateAnswers();
                 nextViewState();
               }}
             />
