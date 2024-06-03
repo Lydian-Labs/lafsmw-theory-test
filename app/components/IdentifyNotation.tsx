@@ -1,6 +1,7 @@
 "use client";
-import { ForwardedRef, forwardRef, useState, useEffect } from "react";
+import { ForwardedRef, forwardRef, useEffect, useState } from "react";
 import createInitialState from "../lib/createInitialState";
+import isCurrentDataFilled from "../lib/isCurrentDataFilled";
 import {
   ChangeEvent,
   Chord,
@@ -41,7 +42,9 @@ export default forwardRef(function IdentifyNotation(
   );
 
   useEffect(() => {
-    if (currentData) {
+    if (!currentData || !isCurrentDataFilled(currentData)) {
+      setTextInput(initialChordsInputState);
+    } else {
       setTextInput(currentData);
     }
   }, [currentData]);

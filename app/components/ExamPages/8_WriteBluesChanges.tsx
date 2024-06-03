@@ -29,7 +29,7 @@ export default function WriteBluesChanges({
       <Box
         component="main"
         width={1450}
-        height={850}
+        height={930}
         bgcolor={"secondary.main"}
         borderRadius="var(--borderRadius)"
         p={2}
@@ -42,7 +42,7 @@ export default function WriteBluesChanges({
           <Box
             className="write-blues-changes"
             width={1300}
-            height={720}
+            height={800}
             bgcolor={"card.background"}
             borderRadius="var(--borderRadius)"
             margin={"auto"}
@@ -84,7 +84,6 @@ export default function WriteBluesChanges({
             </Grid>
             <CardFooter
               width={1100}
-              height={100}
               pageNumber={16}
               buttonText="Continue >"
               buttonForm="submit-form-blues"

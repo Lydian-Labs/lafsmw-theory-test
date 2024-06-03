@@ -1,7 +1,8 @@
 "use client";
 import Stack from "@mui/material/Stack";
-import { ForwardedRef, forwardRef, useState, useEffect } from "react";
+import { ForwardedRef, forwardRef, useEffect, useState } from "react";
 import createInitialState from "../lib/createInitialState";
+import isCurrentDataFilled from "../lib/isCurrentDataFilled";
 import { ChangeEvent, FormEvent, WriteProps } from "../lib/typesAndInterfaces";
 import FormInput from "./FormInput";
 import Staff from "./Staff";
@@ -16,17 +17,8 @@ export default forwardRef(function WriteBlues(
     initialBluesInputState
   );
 
-  const isCurrentDataBluesFilled = (data: any) => {
-    for (let i = 0; i < 48; i++) {
-      if (data[i] !== "") {
-        return true;
-      }
-    }
-    return false;
-  };
-
   useEffect(() => {
-    if (currentData && isCurrentDataBluesFilled(currentData)) {
+    if (currentData && isCurrentDataFilled(currentData)) {
       setNumeralInput(currentData);
     } else {
       setNumeralInput(initialBluesInputState);
