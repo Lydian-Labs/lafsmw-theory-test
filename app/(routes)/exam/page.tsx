@@ -209,6 +209,20 @@ export default function ExamHomePage() {
     }
   };
 
+  const goBackToPage1 = async (e: MouseEvent) => {
+    e.preventDefault();
+    try {
+      if (!userName) {
+        throw new Error("No current user found.");
+      }
+
+      await setOrUpdateStudentData(currentUserData, userName);
+      setViewState(VIEW_STATES.START_TEST);
+    } catch (error) {
+      console.error("goBackToPage1 error:", error);
+    }
+  };
+
   return (
     <Box>
       <Stack
@@ -363,10 +377,7 @@ export default function ExamHomePage() {
               <Button onClick={handleFinalSubmit}>
                 <Typography>Submit Final Answers</Typography>
               </Button>
-              <Button
-                onClick={incrementViewState}
-                disabled={timesUp ? true : false}
-              >
+              <Button onClick={goBackToPage1} disabled={timesUp ? true : false}>
                 <Typography>Back to page 1</Typography>
               </Button>
             </Stack>
