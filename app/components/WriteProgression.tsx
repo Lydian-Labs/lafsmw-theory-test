@@ -1,32 +1,30 @@
+"use client";
 import Stack from "@mui/material/Stack";
-import { ForwardedRef, forwardRef, useState } from "react";
+import { ForwardedRef, forwardRef, useEffect, useState } from "react";
 import createInitialState from "../lib/createInitialState";
 import keyNames from "../lib/data/keyNamesText";
-import {
-  ChangeEvent,
-  Chord,
-  FormEvent,
-  InputData,
-} from "../lib/typesAndInterfaces";
+import isCurrentDataFilled from "../lib/isCurrentDataFilled";
+import { ChangeEvent, FormEvent, WriteProps } from "../lib/typesAndInterfaces";
 import FormInput from "./FormInput";
 import Staff from "./Staff";
-
-type WriteProgProps = {
-  numBars?: number;
-  chords?: Chord[];
-  width: number;
-  handleProg: (progressions: InputData) => void;
-};
 
 const initialProgressionInputState = createInitialState(18);
 
 export default forwardRef(function WriteProgression(
-  { width, handleProg }: WriteProgProps,
+  { width, handleInput, currentData }: WriteProps,
   ref: ForwardedRef<HTMLFormElement>
 ) {
   const [numeralInput, setNumeralInput] = useState<Record<string, string>>(
     initialProgressionInputState
   );
+
+  useEffect(() => {
+    if (currentData && isCurrentDataFilled(currentData)) {
+      setNumeralInput(currentData);
+    } else {
+      setNumeralInput(initialProgressionInputState);
+    }
+  }, [currentData]);
 
   const chordWidth = width * 0.05;
   const gapWidth = chordWidth * 0.3;
@@ -46,7 +44,7 @@ export default forwardRef(function WriteProgression(
 
   function handleNumeralSubmit(e: FormEvent) {
     e.preventDefault();
-    handleProg(numeralInput);
+    handleInput(numeralInput);
   }
 
   const renderNumeralInputs = (
@@ -60,7 +58,7 @@ export default forwardRef(function WriteProgression(
           key={key}
           name={key}
           type="text"
-          value={numeralInput[key]}
+          value={numeralInput[key] || ""}
           width={chordWidth.toString() + "px"}
           onChange={(e: ChangeEvent) =>
             setNumeralInput({ ...numeralInput, [key]: e.target.value })

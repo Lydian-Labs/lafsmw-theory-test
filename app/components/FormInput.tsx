@@ -6,6 +6,7 @@ interface FormInputProps {
   placeholder?: string;
   maxLength?: number;
   width?: string;
+  height?: string;
   onChange: any;
   required?: boolean;
 }
@@ -18,6 +19,7 @@ export default function FormInput({
   placeholder,
   maxLength,
   width,
+  height = "30px",
   onChange,
   required = false,
 }: FormInputProps) {
@@ -32,6 +34,9 @@ export default function FormInput({
         placeholder={placeholder}
         maxLength={maxLength}
         style={{
+          fontSize: "13px",
+          height,
+          margin: "0px",
           width,
           borderBottom: "1px solid",
           backgroundColor: "transparent",

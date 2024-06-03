@@ -3,6 +3,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
   updateProfile,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import { auth } from "./config";
 
@@ -24,8 +25,12 @@ export async function signIn(email, password) {
   try {
     await signInWithEmailAndPassword(auth, email, password).catch((err) => {
       console.error("signInWithEmailAndPassword error:", err);
+      alert("Invalid email or password");
     });
-    console.log("Sign in successfull! CurrentUser:", auth.currentUser);
+    console.log(
+      "Sign in successfull! CurrentUser:",
+      auth.currentUser.displayName
+    );
   } catch (err) {
     console.error("signIn error:", err);
   }
@@ -33,4 +38,14 @@ export async function signIn(email, password) {
 
 export async function signOutOfApp() {
   return signOut(auth);
+}
+
+export async function resetPassword(email) {
+  sendPasswordResetEmail(auth, email)
+    .then(() => {
+      alert(`Password reset email sent to ${email}`);
+    })
+    .catch((err) => {
+      console.error("sendPasswordResetEmail error:", err);
+    });
 }

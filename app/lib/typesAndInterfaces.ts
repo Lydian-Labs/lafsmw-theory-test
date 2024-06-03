@@ -241,3 +241,21 @@ export interface UserDataProps {
   setCurrentUserData: (userData: InputState) => void;
   nextViewState: () => void;
 }
+
+export interface TextInput {
+  [key: string]: string;
+}
+
+export type WriteProps = {
+  numBars?: number;
+  chords?: Chord[];
+  width: number;
+  currentData?: TextInput;
+  handleInput: (data: InputData) => void;
+};
+
+export interface EmailData {
+  email: string;
+  subject?: string;
+  text?: string;
+}

@@ -1,16 +1,11 @@
 "use client";
+import { savePDF } from "@/app/lib/savePDF";
 import { InputData, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import { useAuthContext } from "@/firebase/authContext";
-import { Box, Grid, Stack, Typography } from "@mui/material";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
+import { Box, Button, Grid, Stack, Typography } from "@mui/material";
 import { useRef } from "react";
 import CardFooter from "../CardFooter";
 import WriteBlues from "../WriteBlues";
-
-// Get a reference to the storage service, which is used to create references in your storage bucket
-const storage = getStorage();
 
 export default function WriteBluesChanges({
   currentUserData,
@@ -21,49 +16,20 @@ export default function WriteBluesChanges({
   const userName = user?.displayName?.split(" ").join("_");
   const writeBluesFormRef = useRef<HTMLFormElement | null>(null);
 
-  function handleBlues(input: InputData) {
+  function handleBluesInput(input: InputData) {
     setCurrentUserData({ ...currentUserData, blues: input });
   }
 
-  const savePDF = () => {
-    const capture = document.querySelector(".write-blues-changes");
-
-    html2canvas(capture as HTMLElement).then((canvas) => {
-      const imgData = canvas.toDataURL("image/jpeg");
-      const pdf = new jsPDF({
-        orientation: "landscape",
-        unit: "px",
-        format: [canvas.width, canvas.height],
-      });
-      pdf.addImage(imgData, "JPEG", 0, 0, canvas.width, canvas.height);
-      const pdfBlob = pdf.output("blob");
-      const storageRef = ref(storage, `${userName}-write-blues-changes.pdf`);
-
-      uploadBytes(storageRef, pdfBlob)
-        .then((snapshot) => {
-          console.log("PDF uploaded successfully");
-        })
-        .catch((error) => {
-          console.error("Error uploading PDF: ", error);
-        });
-
-      getDownloadURL(storageRef)
-        .then((url) => {
-          console.log("URL: ", url);
-          setCurrentUserData({ ...currentUserData, bluesUrl: url });
-        })
-        .catch((error) => {
-          console.error("Error getting download URL: ", error);
-        });
-    });
-  };
+  async function handlePDF() {
+    savePDF(userName, setCurrentUserData, currentUserData);
+  }
 
   return (
     <Box sx={{ display: "flex", justifyContent: "center" }}>
       <Box
         component="main"
         width={1450}
-        height={850}
+        height={930}
         bgcolor={"secondary.main"}
         borderRadius="var(--borderRadius)"
         p={2}
@@ -76,7 +42,7 @@ export default function WriteBluesChanges({
           <Box
             className="write-blues-changes"
             width={1300}
-            height={720}
+            height={800}
             bgcolor={"card.background"}
             borderRadius="var(--borderRadius)"
             margin={"auto"}
@@ -94,30 +60,35 @@ export default function WriteBluesChanges({
               <Grid item>
                 <Typography variant="subtitle1">
                   Write the changes to a Bb blues using ii-V7-I in the last 4
-                  measures (extra credit for hip reharms in the first 8
-                  measures):
+                  measures (extra credit for hip reharms):
                 </Typography>
               </Grid>
               <Grid item>
                 <WriteBlues
-                  handleBlues={handleBlues}
+                  handleInput={handleBluesInput}
+                  currentData={currentUserData.blues}
                   ref={writeBluesFormRef}
                   width={1150}
                 />
               </Grid>
 
-              <Typography marginTop={4} align="left">
-                *Note: this is a creative exercise. You do not have to fill out
-                a chord for every beat.
-              </Typography>
+              <Grid item>
+                <Stack direction="row" spacing={2}>
+                  <Typography marginTop={2} align="left">
+                    *Note: You can enter 1 to 4 chords per bar. You
+                    <b> MUST</b> press <em>Save PDF </em>before moving on.
+                  </Typography>
+                  <Button onClick={handlePDF}>Save PDF</Button>
+                </Stack>
+              </Grid>
             </Grid>
             <CardFooter
               width={1100}
-              height={100}
               pageNumber={16}
+              buttonText="Continue >"
+              buttonForm="submit-form-blues"
               handleSubmit={() => {
                 writeBluesFormRef.current?.requestSubmit();
-                savePDF();
                 nextViewState();
               }}
             />
