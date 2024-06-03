@@ -34,8 +34,6 @@ export default function FormInput({
         placeholder={placeholder}
         maxLength={maxLength}
         style={{
-          // display: "flex",
-          // alignContent: "center",
           fontSize: "13px",
           height,
           margin: "0px",

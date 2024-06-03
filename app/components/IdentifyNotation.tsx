@@ -83,7 +83,7 @@ export default forwardRef(function IdentifyNotation(
         name={key}
         type="text"
         value={textInput[key] || ""}
-        width="50px"
+        width="65px"
         onChange={(e: ChangeEvent) =>
           setTextInput({ ...textInput, [key]: e.target.value })
         }

@@ -60,8 +60,7 @@ export default function WriteBluesChanges({
               <Grid item>
                 <Typography variant="subtitle1">
                   Write the changes to a Bb blues using ii-V7-I in the last 4
-                  measures (extra credit for hip reharms in the first 8
-                  measures):
+                  measures (extra credit for hip reharms):
                 </Typography>
               </Grid>
               <Grid item>
@@ -76,7 +75,8 @@ export default function WriteBluesChanges({
               <Grid item>
                 <Stack direction="row" spacing={2}>
                   <Typography marginTop={2} align="left">
-                    {`*Note: this is a creative exercise. Only write 1-3 chords per bar. You must press "Save PDF" before moving on.`}
+                    *Note: You can enter 1 to 4 chords per bar. You
+                    <b> MUST</b> press <em>Save PDF </em>before moving on.
                   </Typography>
                   <Button onClick={handlePDF}>Save PDF</Button>
                 </Stack>
