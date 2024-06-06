@@ -74,11 +74,6 @@ const NotateKeySignature = ({ handleNotes }: any) => {
     setNotesAndCoordinates(() => generateYMinAndYMaxForNotes(40, keySigArray));
   }, []);
 
-  // useEffect(() => {
-  //   console.log("key sig:", keySig);
-  //   console.log("glyphs, ", glyphs);
-  // }, [keySig, glyphs]);
-
   const handleClick = (e: React.MouseEvent) => {
     if (
       !state.isAddSharpActive &&
@@ -89,6 +84,7 @@ const NotateKeySignature = ({ handleNotes }: any) => {
 
     const { userClickY, userClickX, topStaveYCoord, bottomStaveYCoord } =
       getUserClickInfo(e, container, blankStaves[0]);
+    console.log("userClickY", userClickY);
 
     let foundNoteData = notesAndCoordinates.find(
       ({ yCoordinateMin, yCoordinateMax }) =>
@@ -97,7 +93,7 @@ const NotateKeySignature = ({ handleNotes }: any) => {
     if (!foundNoteData) {
       return;
     } else {
-      console.log('found note data: ', foundNoteData)
+      console.log("found note data: ", foundNoteData);
     }
     const { maxRightClick, minLeftClick, minTopClick, maxBottomClick } =
       isClickWithinStaveBounds(
@@ -137,18 +133,8 @@ const NotateKeySignature = ({ handleNotes }: any) => {
     const { notesAndCoordinates: newNotesAndCoordinates } =
       handleKeySigInteraction(notesAndCoordinatesCopy, state, foundNoteData);
 
-    // setKeySig((prevState) => {
-    //   const newState = [...prevState];
-    //   const newGlyph = state.isAddSharpActive ? "#" : "b";
-    //   if (prevState.length > 0) {
-    //     return [...newState, newGlyph];
-    //   }
-
-    //   return [newGlyph];
-    // });
     setNotesAndCoordinates(() => newNotesAndCoordinates);
     console.log(notesAndCoordinates);
-    //    handleNotes("glyphs: ", glyphs);
   };
 
   return (
