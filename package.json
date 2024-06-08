@@ -13,6 +13,7 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@fontsource/poppins": "^5.0.8",
+    "@mui/icons-material": "^5.15.19",
     "@mui/material": "^5.14.17",
     "@types/vexflow": "^1.2.42",
     "firebase": "^10.9.0",
