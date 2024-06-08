@@ -76,6 +76,7 @@ export default function ExamHomePage() {
   const [userAnswers, setUserAnswers] = useState<string[]>([]);
   const [viewState, setViewState] = useState(VIEW_STATES.START_TEST);
   const [timesUp, setTimesUp] = useState(false);
+  const [isPDFReady, setIsPDFReady] = useState(false);
 
   useEffect(() => {
     const fetchSnapshot = async () => {
@@ -362,6 +363,8 @@ export default function ExamHomePage() {
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
+            isPDFReady={isPDFReady}
+            setIsPDFReady={setIsPDFReady}
           />
         )}
         {viewState === VIEW_STATES.SUBMIT_AND_EXIT && (

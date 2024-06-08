@@ -1,6 +1,6 @@
 "use client";
 import { savePDF } from "@/app/lib/savePDF";
-import { InputData, UserDataProps } from "@/app/lib/typesAndInterfaces";
+import { InputData, UserDataBluesProps } from "@/app/lib/typesAndInterfaces";
 import { useAuthContext } from "@/firebase/authContext";
 import { Box, Button, Grid, Stack, Typography } from "@mui/material";
 import { useRef } from "react";
@@ -11,7 +11,9 @@ export default function WriteBluesChanges({
   currentUserData,
   setCurrentUserData,
   nextViewState,
-}: UserDataProps) {
+  isPDFReady,
+  setIsPDFReady,
+}: UserDataBluesProps) {
   const { user } = useAuthContext();
   const userName = user?.displayName?.split(" ").join("_");
   const writeBluesFormRef = useRef<HTMLFormElement | null>(null);
@@ -21,6 +23,9 @@ export default function WriteBluesChanges({
   }
 
   async function handlePDF() {
+    if (!isPDFReady) {
+      setIsPDFReady(true);
+    }
     savePDF(userName, setCurrentUserData, currentUserData);
   }
 
@@ -88,8 +93,12 @@ export default function WriteBluesChanges({
               buttonText="Continue >"
               buttonForm="submit-form-blues"
               handleSubmit={() => {
-                writeBluesFormRef.current?.requestSubmit();
-                nextViewState();
+                if (isPDFReady) {
+                  writeBluesFormRef.current?.requestSubmit();
+                  nextViewState();
+                } else {
+                  alert("You must save the PDF before moving on.");
+                }
               }}
             />
           </Box>

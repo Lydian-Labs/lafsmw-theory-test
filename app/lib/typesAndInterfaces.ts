@@ -1,3 +1,4 @@
+import { set } from "firebase/database";
 import { Dispatch, RefObject, SetStateAction } from "react";
 import VexFlow, { IRenderContext } from "vexflow";
 const VF = VexFlow.Flow;
@@ -257,6 +258,11 @@ export interface UserDataProps {
   currentUserData: InputState;
   setCurrentUserData: (userData: InputState) => void;
   nextViewState: () => void;
+}
+
+export interface UserDataBluesProps extends UserDataProps {
+  isPDFReady: boolean;
+  setIsPDFReady: React.Dispatch<SetStateAction<boolean>>;
 }
 
 export interface TextInput {
