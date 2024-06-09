@@ -1,4 +1,6 @@
 import { NotesAndCoordinatesData } from "./typesAndInterfaces";
+
+const tolerance = 5;
 const generateYMinAndYMaxForNotes = (
   topNoteYCoordinate: number,
   notes: string[]
@@ -6,7 +8,7 @@ const generateYMinAndYMaxForNotes = (
   return notes.map((note, index) => {
     const originalNote = note;
     const yCoordinateMin = topNoteYCoordinate + index * 5;
-    const yCoordinateMax = yCoordinateMin + 5;
+    const yCoordinateMax = yCoordinateMin + tolerance;
 
     return { originalNote, note, yCoordinateMin, yCoordinateMax };
   });

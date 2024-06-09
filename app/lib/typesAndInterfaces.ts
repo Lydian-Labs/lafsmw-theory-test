@@ -93,6 +93,7 @@ export interface UserClickInfo {
   userClickY: number;
   topStaveYCoord: number;
   highGYPosition: number;
+  topKeySigPosition: number;
   spacingBetweenLines?: number | undefined;
   bottomY?: number;
   bottomStaveYCoord?: number;

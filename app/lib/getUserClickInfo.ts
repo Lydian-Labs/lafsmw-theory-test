@@ -1,7 +1,7 @@
 import React from "react";
 import { UserClickInfo, StaveType } from "../lib/typesAndInterfaces";
 
-export const getUserClickInfo = (
+const getUserClickInfo = (
   e: React.MouseEvent,
   container: React.RefObject<HTMLDivElement>,
   stave: StaveType
@@ -11,7 +11,9 @@ export const getUserClickInfo = (
   const userClickX = rect ? e.clientX - rect.left : 0;
   const topStaveYCoord = stave && stave.getYForTopText();
   const bottomStaveYCoord = (stave && stave.getYForBottomText()) || undefined;
+  //need to figure out how to NOT hard code 33
   const highGYPosition = topStaveYCoord - 33;
+  const topKeySigPosition = topStaveYCoord + 15;
   return {
     rect,
     userClickY,
@@ -19,6 +21,7 @@ export const getUserClickInfo = (
     topStaveYCoord,
     bottomStaveYCoord,
     highGYPosition,
+    topKeySigPosition,
   };
 };
 
