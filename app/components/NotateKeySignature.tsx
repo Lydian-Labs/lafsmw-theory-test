@@ -66,6 +66,7 @@ const NotateKeySignature = ({ handleNotes }: any) => {
     renderStaves();
   }, []);
 
+  //this is where the we will get the array to grade
   useEffect(() => {
     console.log("key signature: ", keySig);
   }, [keySig]);
@@ -153,12 +154,14 @@ const NotateKeySignature = ({ handleNotes }: any) => {
       const newKeySig = [...prevState];
       if (foundNoteData?.note) {
         const noteBase = parseNote(foundNoteData?.note).noteBase;
-        return [
-          ...newKeySig,
-          state.isAddSharpActive ? `${noteBase}` + "#" : `${noteBase}` + "b",
-        ];
+        const noteWithAccidental = state.isAddSharpActive
+          ? `${noteBase}` + "#"
+          : `${noteBase}` + "b";
+        if (!newKeySig.includes(noteWithAccidental)) {
+          newKeySig.push(noteWithAccidental);
+        }
       }
-      return prevState;
+      return newKeySig;
     });
 
     setNotesAndCoordinates(() => newNotesAndCoordinates);
