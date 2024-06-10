@@ -85,11 +85,17 @@ export default function ExamHomePage() {
         if (error) {
           console.error(message);
         } else if (res) {
+<<<<<<< HEAD
           console.log(success);
           setCurrentUserData((prevCurrentUserData) => ({
             ...prevCurrentUserData,
             ...res[0],
           }));
+=======
+          //console.log(success);
+          let inputRes = { ...currentUserData, ...res[0] };
+          setCurrentUserData(inputRes);
+>>>>>>> main
         }
       } catch (error) {
         console.error(error);
@@ -385,19 +391,7 @@ export default function ExamHomePage() {
             </Stack>
           </main>
         )}
-        {viewState !== VIEW_STATES.SUBMIT_AND_EXIT &&
-          viewState !== VIEW_STATES.START_TEST && (
-            <Box>
-              <Button onClick={incrementViewState}>
-                <Typography variant="h4">{">"}</Typography>
-              </Button>
-              <Button
-                onClick={() => setViewState(VIEW_STATES.WRITE_BLUES_CHANGES)}
-              >
-                <Typography>Go to Write Blues Changes</Typography>
-              </Button>
-            </Box>
-          )}
+       
       </Stack>
     </Box>
   );

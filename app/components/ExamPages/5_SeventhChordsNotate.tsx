@@ -5,7 +5,7 @@ import seventhChordsText from "@/app/lib/data/seventhChordsText";
 import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import { useState } from "react";
 import CardFooter from "../CardFooter";
-import NotateScale from "../NotateScale";
+import NotateChord from "../NotateChord";
 
 export default function NotateSeventhChords({
   currentUserData,
@@ -85,7 +85,7 @@ export default function NotateSeventhChords({
                 </Stack>
               </Grid>
               <Grid item>
-                <NotateScale />
+                <NotateChord />
               </Grid>
             </Grid>
             <CardFooter

@@ -1,5 +1,5 @@
 "use client";
-import { Container } from "@mui/material";
+import { modifyNotesActionTypes } from "../lib/actionTypes";
 import React, {
   useCallback,
   useEffect,
@@ -9,40 +9,41 @@ import React, {
   useState,
 } from "react";
 import VexFlow from "vexflow";
+import BlueButton from "../components/BlueButton";
 import CheckIfNoteFound from "../components/CheckIfNoteFound";
 import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
-import RegularButton from "../components/RegularButton";
-import { modifyNotesActionTypes } from "../lib/actionTypes";
-import { buttonGroup, clearAllMeasures } from "../lib/buttonsAndButtonGroups";
-import { INITIAL_STAVES, staveData } from "../lib/data/stavesData";
+import { buttonGroup } from "../lib/buttonsAndButtonGroups";
+import { initialNotesAndCoordsState } from "../lib/data/initialNotesAndCoordinatesState";
+import { staveData } from "../lib/data/stavesData";
 import { findBarIndex } from "../lib/findBar";
-import generateYMinAndYMaxForAllNotes from "../lib/generateYMinAndMaxForAllNotes";
+import generateYMinAndYMaxForNotes from "../lib/generateYMinAndMaxForAllNotes";
 import getUserClickInfo from "../lib/getUserClickInfo";
-import { handleNoteInteraction } from "../lib/handleNoteInteraction";
+import { HandleScaleInteraction } from "../lib/handleScaleInteraction";
 import { noteInteractionInitialState } from "../lib/initialStates";
 import { initializeRenderer } from "../lib/initializeRenderer";
 import { notesArray } from "../lib/noteArray";
-import { reducer } from "../lib/reducer";
-import { setupRendererAndDrawNotesNew } from "../lib/setupRendererAndDrawNotesNew";
-import {
-  NoteStringData,
-  StaveNoteData,
-  StaveType,
-} from "../lib/typesAndInterfaces";
+import { scaleReducer } from "../lib/reducer";
+import { setupRendererAndDrawNotes } from "../lib/setupRendererAndDrawNotes";
+import { ScaleData, StaveType } from "../lib/typesAndInterfaces";
+import Container from "@mui/material/Container";
 
 const { Renderer } = VexFlow.Flow;
 
-const NotateScale = () => {
+const NotateScale = ({ handleNotes }: any) => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
   const [staves, setStaves] = useState<StaveType[]>([]);
-  const [notesData, setNotesData] = useState(INITIAL_STAVES);
-  const [state, dispatch] = useReducer(reducer, noteInteractionInitialState);
+  const [scaleDataMatrix, setScaleDataMatrix] = useState<ScaleData[][]>([[]]);
+  const [notesAndCoordinates, setNotesAndCoordinates] = useState([
+    initialNotesAndCoordsState,
+  ]);
+
+  const [state, dispatch] = useReducer(
+    scaleReducer,
+    noteInteractionInitialState
+  );
 
   const noNoteFound = () => dispatch({ type: "noNoteFound" });
-
-  const renderer = rendererRef.current;
-  renderer?.resize(480, 140);
 
   const tooManyBeatsInMeasure = () =>
     dispatch({ type: "tooManyBeatsInMeasure" });
@@ -52,86 +53,109 @@ const NotateScale = () => {
     [dispatch, state]
   );
 
-  const clearMeasures = () =>
-    clearAllMeasures(
-      setNotesData,
-      INITIAL_STAVES,
-      rendererRef,
-      container,
-      dispatch,
-      renderStavesAndNotes
-    );
+  const eraseMeasures = () => {
+    setScaleDataMatrix((): ScaleData[][] => {
+      return [[]];
+    });
+    setNotesAndCoordinates(() => generateYMinAndYMaxForNotes(147, notesArray));
+    renderStavesAndNotes();
+  };
 
   const renderStavesAndNotes = useCallback(
     (): void =>
-      setupRendererAndDrawNotesNew({
+      setupRendererAndDrawNotes({
         rendererRef,
         ...staveData,
-        firstStaveWidth: 460,
         setStaves,
-        notesData,
+        scaleDataMatrix,
         staves,
       }),
-    [rendererRef, setStaves, notesData, staves]
+    [rendererRef, setStaves, scaleDataMatrix, staves]
+  );
+
+  //this is the array we will use for grading
+  const scaleDataForGrading = scaleDataMatrix[0].map((scaleDataMatrix) =>
+    scaleDataMatrix.keys.join(", ")
   );
 
   useEffect(() => {
     initializeRenderer(rendererRef, container);
     renderStavesAndNotes();
+    setNotesAndCoordinates(() => generateYMinAndYMaxForNotes(8, notesArray));
   }, []);
 
   useEffect(() => {
     renderStavesAndNotes();
-  }, [notesData]);
+    console.log("scale data for grading:", scaleDataForGrading);
+  }, [scaleDataMatrix]);
 
-  let updatedFoundNoteData: NoteStringData;
+  useEffect(() => {
+    console.log("scale data for grading:", scaleDataForGrading);
+  }, [scaleDataMatrix]); // Listening to changes in scaleDataMatrix
 
   const handleClick = (e: React.MouseEvent) => {
-    const { userClickY, userClickX, highGYPosition } = getUserClickInfo(
+    const { userClickY, userClickX } = getUserClickInfo(
       e,
       container,
       staves[0]
     );
+    console.log("userClickY", userClickY);
 
-    let foundNoteData = generateYMinAndYMaxForAllNotes(
-      highGYPosition,
-      notesArray
-    ).find(
+    let foundNoteData = notesAndCoordinates.find(
       ({ yCoordinateMin, yCoordinateMax }) =>
         userClickY >= yCoordinateMin && userClickY <= yCoordinateMax
     );
 
+    if (!foundNoteData) {
+      return;
+    }
+
     if (foundNoteData)
-      updatedFoundNoteData = {
+      foundNoteData = {
         ...foundNoteData,
         userClickY: userClickY,
       };
 
-    const barIndex: number = findBarIndex(staves, userClickX);
+    const barIndex = findBarIndex(staves, userClickX);
 
-    let notesDataCopy = [...notesData];
-    const barOfStaveNotes = notesDataCopy[barIndex].map(
-      (noteData: StaveNoteData) => ({
-        ...noteData,
-        staveNoteAbsoluteX: noteData.newStaveNote.getAbsoluteX(),
+    if (!foundNoteData) {
+      noNoteFound();
+      return;
+    }
+
+    let scaleDataMatrixCopy = scaleDataMatrix.map((scaleData) => [
+      ...scaleData,
+    ]);
+
+    let notesAndCoordinatesCopy = [...notesAndCoordinates];
+
+    const barOfScaleData = scaleDataMatrixCopy[barIndex].map(
+      (scaleData: ScaleData) => ({
+        ...scaleData,
+        staveNoteAbsoluteX: scaleData.staveNote
+          ? scaleData.staveNote.getAbsoluteX()
+          : 0,
       })
     );
 
-    handleNoteInteraction(
-      updatedFoundNoteData,
-      noNoteFound,
+    const {
+      scaleDataMatrix: newScaleDataMatrix,
+      notesAndCoordinates: newNotesAndCoordinates,
+    } = HandleScaleInteraction(
+      foundNoteData,
       tooManyBeatsInMeasure,
+      notesAndCoordinatesCopy,
       "tooManyBeatsInMeasure",
-      "noNoteFound",
-      barOfStaveNotes,
-      notesDataCopy,
+      barOfScaleData,
+      scaleDataMatrixCopy,
       state,
       userClickX,
       userClickY,
       barIndex
     );
-
-    setNotesData(() => notesDataCopy);
+    setNotesAndCoordinates(() => newNotesAndCoordinates);
+    setScaleDataMatrix(() => newScaleDataMatrix);
+    handleNotes(scaleDataForGrading);
   };
 
   return (
@@ -145,6 +169,7 @@ const NotateScale = () => {
         noNoteFound={state.noNoteFound || false}
         openEnterNotes={dispatch}
       />
+
       <Container
         sx={{
           display: "grid",
@@ -156,16 +181,16 @@ const NotateScale = () => {
       >
         {modifyStaveNotesButtonGroup.map((button) => {
           return (
-            <RegularButton
+            <BlueButton
               key={button.text}
               onClick={button.action}
               isEnabled={button.isEnabled}
             >
               {button.text}
-            </RegularButton>
+            </BlueButton>
           );
         })}
-        <RegularButton onClick={clearMeasures}>Clear Measures</RegularButton>
+        <BlueButton onClick={eraseMeasures}>Erase Measure</BlueButton>
       </Container>
     </>
   );
