@@ -35,7 +35,28 @@ import {
 } from "@/firebase/firestore/model";
 import { Box, Button, Stack, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+
+const VIEW_STATES = {
+  START_TEST: 0,
+  KEY_SIG_NOTATE1: 1,
+  KEY_SIG_NOTATE2: 2,
+  KEY_SIG_NOTATE3: 3,
+  KEY_SIG_NOTATE4: 4,
+  KEY_SIG_IDENTIFY: 5,
+  SCALES_NOTATE1: 6,
+  SCALES_NOTATE2: 7,
+  SCALES_NOTATE3: 8,
+  SCALES_NOTATE4: 9,
+  SCALES_NOTATE5: 10,
+  SCALES_NOTATE6: 11,
+  TRIADS_NOTATE: 12,
+  SEVENTH_CHORDS_NOTATE: 13,
+  CHORDS_IDENTIFY: 14,
+  WRITE_PROGRESSIONS: 15,
+  WRITE_BLUES_CHANGES: 16,
+  SUBMIT_AND_EXIT: 17,
+};
 
 export default function ExamHomePage() {
   const { user } = useAuthContext();
@@ -48,27 +69,6 @@ export default function ExamHomePage() {
     ...initialFormInputState,
     user: userName,
     userId: userId,
-  };
-
-  const VIEW_STATES = {
-    START_TEST: 0,
-    KEY_SIG_NOTATE1: 1,
-    KEY_SIG_NOTATE2: 2,
-    KEY_SIG_NOTATE3: 3,
-    KEY_SIG_NOTATE4: 4,
-    KEY_SIG_IDENTIFY: 5,
-    SCALES_NOTATE1: 6,
-    SCALES_NOTATE2: 7,
-    SCALES_NOTATE3: 8,
-    SCALES_NOTATE4: 9,
-    SCALES_NOTATE5: 10,
-    SCALES_NOTATE6: 11,
-    TRIADS_NOTATE: 12,
-    SEVENTH_CHORDS_NOTATE: 13,
-    CHORDS_IDENTIFY: 14,
-    WRITE_PROGRESSIONS: 15,
-    WRITE_BLUES_CHANGES: 16,
-    SUBMIT_AND_EXIT: 17,
   };
 
   const [currentUserData, setCurrentUserData] =
@@ -86,8 +86,10 @@ export default function ExamHomePage() {
           console.error(message);
         } else if (res) {
           console.log(success);
-          let inputRes = { ...currentUserData, ...res[0] };
-          setCurrentUserData(inputRes);
+          setCurrentUserData((prevCurrentUserData) => ({
+            ...prevCurrentUserData,
+            ...res[0],
+          }));
         }
       } catch (error) {
         console.error(error);
@@ -101,7 +103,7 @@ export default function ExamHomePage() {
     }
   }, [router, user]);
 
-  const updateAnswers = async () => {
+  const updateAnswers = useCallback(async () => {
     const userChordAnswers = convertObjectToArray(currentUserData.chords);
     const userKeySigAnswers = convertObjectToArray(
       currentUserData.keySignatures
@@ -133,11 +135,11 @@ export default function ExamHomePage() {
       currentUserData.bluesUrl,
       chordChart,
     ]);
-  };
+  }, [currentUserData]);
 
   useEffect(() => {
     updateAnswers();
-  }, [currentUserData]);
+  }, [updateAnswers, currentUserData]);
 
   const incrementViewState = () => {
     setViewState((prevState) => {
@@ -201,9 +203,6 @@ export default function ExamHomePage() {
           `Failed to send email: ${errorData.error}, Details: ${errorData.details}`
         );
       }
-
-      await response.json();
-
       return router.push("/sign-out");
     } catch (error) {
       console.error("handleSubmit error:", error);

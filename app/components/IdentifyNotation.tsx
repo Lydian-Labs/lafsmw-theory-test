@@ -1,5 +1,5 @@
 "use client";
-import { ForwardedRef, forwardRef, useEffect, useState } from "react";
+import { ForwardedRef, forwardRef, useEffect, useMemo, useState } from "react";
 import createInitialState from "../lib/createInitialState";
 import isCurrentDataFilled from "../lib/isCurrentDataFilled";
 import {
@@ -35,7 +35,10 @@ export default forwardRef(function IdentifyNotation(
   }: IdentifyNotationProps,
   ref: ForwardedRef<HTMLFormElement>
 ) {
-  const initialChordsInputState = createInitialState(numBars);
+  const initialChordsInputState = useMemo(
+    () => createInitialState(numBars),
+    [numBars]
+  );
 
   const [textInput, setTextInput] = useState<Record<string, string>>(
     initialChordsInputState
@@ -47,7 +50,7 @@ export default forwardRef(function IdentifyNotation(
     } else {
       setTextInput(currentData);
     }
-  }, [currentData]);
+  }, [currentData, initialChordsInputState]);
 
   const fullWidth = width * 0.97;
   const reducedWidth = fullWidth - 90;
