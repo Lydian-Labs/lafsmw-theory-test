@@ -73,10 +73,14 @@ const NotateScale = () => {
     [rendererRef, setStaves, scaleDataMatrix, staves]
   );
 
+  //this is the array we will use for grading
+  const scaleDataForGrading = scaleDataMatrix[0].map((scaleDataMatrix) =>
+    scaleDataMatrix.keys.join(", ")
+  );
+
   useEffect(() => {
     setNotesAndCoordinates(() => generateYMinAndYMaxForNotes(8, notesArray));
   }, []);
-
 
   useEffect(() => {
     initializeRenderer(rendererRef, container);
@@ -88,7 +92,7 @@ const NotateScale = () => {
   }, [scaleDataMatrix]);
 
   useEffect(() => {
-    console.log("scaleDataMatrix Updated:", scaleDataMatrix);
+    console.log("scale data for grading:", scaleDataForGrading);
   }, [scaleDataMatrix]); // Listening to changes in scaleDataMatrix
 
   const handleClick = (e: React.MouseEvent) => {
