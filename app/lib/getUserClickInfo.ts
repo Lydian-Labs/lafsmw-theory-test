@@ -13,7 +13,7 @@ const getUserClickInfo = (
   const bottomStaveYCoord = (stave && stave.getYForBottomText()) || undefined;
   //need to figure out how to NOT hard code 33
   const highGYPosition = topStaveYCoord - 33;
-  const topKeySigPosition = topStaveYCoord + 15;
+  const topKeySigPosition = topStaveYCoord + 16;
   return {
     rect,
     userClickY,
