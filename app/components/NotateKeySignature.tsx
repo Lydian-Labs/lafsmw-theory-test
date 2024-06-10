@@ -93,7 +93,6 @@ const NotateKeySignature = ({ handleNotes }: any) => {
     const {
       userClickY,
       userClickX,
-      rect,
       topStaveYCoord,
       bottomStaveYCoord,
       topKeySigPosition,
@@ -146,6 +145,7 @@ const NotateKeySignature = ({ handleNotes }: any) => {
           : "",
       },
     ]);
+    console.log(state)
     const { notesAndCoordinates: newNotesAndCoordinates } =
       handleKeySigInteraction(notesAndCoordinatesCopy, state, foundNoteData);
 
