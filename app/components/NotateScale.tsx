@@ -79,16 +79,14 @@ const NotateScale = () => {
   );
 
   useEffect(() => {
+    initializeRenderer(rendererRef, container);
+    renderStavesAndNotes();
     setNotesAndCoordinates(() => generateYMinAndYMaxForNotes(8, notesArray));
   }, []);
 
   useEffect(() => {
-    initializeRenderer(rendererRef, container);
     renderStavesAndNotes();
-  }, []);
-
-  useEffect(() => {
-    renderStavesAndNotes();
+    console.log("scale data for grading:", scaleDataForGrading);
   }, [scaleDataMatrix]);
 
   useEffect(() => {

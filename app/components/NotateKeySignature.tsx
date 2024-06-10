@@ -60,9 +60,12 @@ const NotateKeySignature = ({ handleNotes }: any) => {
     dispatch({ type: "" });
   };
 
+  //need to figure out how to NOT hard code the top note coordinate
+
   useEffect(() => {
     initializeRenderer(rendererRef, container);
     renderStaves();
+    setNotesAndCoordinates(() => generateYMinAndYMaxForNotes(44, keySigArray));
   }, []);
 
   //this is where the we will get the array to grade
@@ -76,11 +79,6 @@ const NotateKeySignature = ({ handleNotes }: any) => {
     context?.clear();
     context && buildKeySignature(glyphs, 40, context, blankStaves[0]);
   }, [glyphs]);
-
-  //need to figure out how to NOT hard code the top note coordinate
-  useEffect(() => {
-    setNotesAndCoordinates(() => generateYMinAndYMaxForNotes(44, keySigArray));
-  }, []);
 
   const handleClick = (e: React.MouseEvent) => {
     if (

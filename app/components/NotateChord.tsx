@@ -78,12 +78,9 @@ const NotateChord = () => {
   );
 
   useEffect(() => {
-    setNotesAndCoordinates(() => generateYMinAndYMaxForNotes(33, notesArray));
-  }, []);
-
-  useEffect(() => {
     initializeRenderer(rendererRef, container);
     renderStavesAndChords();
+    setNotesAndCoordinates(() => generateYMinAndYMaxForNotes(33, notesArray));
   }, []);
 
   useEffect(() => {
