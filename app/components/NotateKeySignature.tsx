@@ -79,7 +79,7 @@ const NotateKeySignature = ({ handleNotes }: any) => {
 
   //need to figure out how to NOT hard code the top note coordinate
   useEffect(() => {
-    setNotesAndCoordinates(() => generateYMinAndYMaxForNotes(55, keySigArray));
+    setNotesAndCoordinates(() => generateYMinAndYMaxForNotes(44, keySigArray));
   }, []);
 
   const handleClick = (e: React.MouseEvent) => {
@@ -145,7 +145,7 @@ const NotateKeySignature = ({ handleNotes }: any) => {
           : "",
       },
     ]);
-    console.log(state)
+    console.log(state);
     const { notesAndCoordinates: newNotesAndCoordinates } =
       handleKeySigInteraction(notesAndCoordinatesCopy, state, foundNoteData);
 
