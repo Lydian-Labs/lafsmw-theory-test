@@ -77,6 +77,7 @@ const NotateScale = () => {
     setNotesAndCoordinates(() => generateYMinAndYMaxForNotes(8, notesArray));
   }, []);
 
+
   useEffect(() => {
     initializeRenderer(rendererRef, container);
     renderStavesAndNotes();
@@ -97,10 +98,15 @@ const NotateScale = () => {
       staves[0]
     );
     console.log(userClickY);
+
     let foundNoteData = notesAndCoordinates.find(
       ({ yCoordinateMin, yCoordinateMax }) =>
         userClickY >= yCoordinateMin && userClickY <= yCoordinateMax
     );
+
+    if (!foundNoteData) {
+      return;
+    }
 
     console.log("foundNoteData with added original note", foundNoteData);
 

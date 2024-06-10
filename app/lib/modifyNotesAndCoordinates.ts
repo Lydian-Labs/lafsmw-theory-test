@@ -41,7 +41,7 @@ export const updateNotesAndCoordsWithAccidental = (
           ...noteData,
           note: appendAccidentalToNote(accidental, foundNoteData.note),
         }
-      : console.log('no match') //noteData
+      : noteData
   );
   return newNotesAndCoords;
 };
