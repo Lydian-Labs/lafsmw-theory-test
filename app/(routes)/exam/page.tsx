@@ -85,17 +85,11 @@ export default function ExamHomePage() {
         if (error) {
           console.error(message);
         } else if (res) {
-<<<<<<< HEAD
           console.log(success);
           setCurrentUserData((prevCurrentUserData) => ({
             ...prevCurrentUserData,
             ...res[0],
           }));
-=======
-          //console.log(success);
-          let inputRes = { ...currentUserData, ...res[0] };
-          setCurrentUserData(inputRes);
->>>>>>> main
         }
       } catch (error) {
         console.error(error);
@@ -391,7 +385,6 @@ export default function ExamHomePage() {
             </Stack>
           </main>
         )}
-       
       </Stack>
     </Box>
   );
