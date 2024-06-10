@@ -101,7 +101,7 @@ const NotateScale = () => {
       container,
       staves[0]
     );
-    console.log(userClickY);
+    console.log("userClickY", userClickY);
 
     let foundNoteData = notesAndCoordinates.find(
       ({ yCoordinateMin, yCoordinateMax }) =>
@@ -111,8 +111,6 @@ const NotateScale = () => {
     if (!foundNoteData) {
       return;
     }
-
-    console.log("foundNoteData with added original note", foundNoteData);
 
     if (foundNoteData)
       foundNoteData = {

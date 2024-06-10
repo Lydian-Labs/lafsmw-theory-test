@@ -1,5 +1,7 @@
 "use client";
 import { modifyChordsActionTypes } from "@/app/lib/actionTypes";
+import { initialChordData } from "@/app/lib/data/initialChordData";
+import { initialNotesAndCoordsState } from "@/app/lib/data/initialNotesAndCoordinatesState";
 import { handleChordInteraction } from "@/app/lib/handleChordInteraction";
 import { setupRendererAndDrawChords } from "@/app/lib/setUpRendererAndDrawChords";
 import React, {
@@ -11,8 +13,6 @@ import React, {
   useState,
 } from "react";
 import VexFlow from "vexflow";
-import { initialChordData } from "@/app/lib/data/initialChordData";
-import { initialNotesAndCoordsState } from "@/app/lib/data/initialNotesAndCoordinatesState";
 import BlueButton from "../../components/BlueButton";
 import CheckIfNoteFound from "../../components/CheckIfNoteFound";
 import CheckNumBeatsInMeasure from "../../components/CheckNumBeatsInMeasure";

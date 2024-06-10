@@ -9,13 +9,13 @@ import { initialNotesAndCoordsState } from "../lib/data/initialNotesAndCoordinat
 import { INITIAL_STAVES, staveData } from "../lib/data/stavesData";
 import generateYMinAndYMaxForNotes from "../lib/generateYMinAndMaxForAllNotes";
 import getUserClickInfo from "../lib/getUserClickInfo";
-import { parseNote } from "../lib/modifyNotesAndCoordinates";
 import { handleKeySigInteraction } from "../lib/handleKeySigInteraction";
 import { keySigInitialState } from "../lib/initialStates";
 import { initializeRenderer } from "../lib/initializeRenderer";
 import isClickWithinStaveBounds from "../lib/isClickWithinStaveBounds";
 import { keySigArray } from "../lib/keySigArray";
 import { deleteAccidentalFromKeySig } from "../lib/modifyKeySignature";
+import { parseNote } from "../lib/modifyNotesAndCoordinates";
 import { keySigReducer } from "../lib/reducer";
 import { setupRenderer } from "../lib/setUpRenderer";
 import { GlyphProps, NotesAndCoordinatesData } from "../lib/typesAndInterfaces";
@@ -100,8 +100,6 @@ const NotateKeySignature = ({ handleNotes }: any) => {
 
     setTopKeySigYNoteCoord(() => topKeySigPosition);
 
-    console.log("topKeySigPosition", topKeySigNoteYCoord);
-
     let foundNoteData = notesAndCoordinates.find(
       ({ yCoordinateMin, yCoordinateMax }) =>
         userClickY >= yCoordinateMin && userClickY <= yCoordinateMax
@@ -145,7 +143,6 @@ const NotateKeySignature = ({ handleNotes }: any) => {
           : "",
       },
     ]);
-    console.log(state);
     const { notesAndCoordinates: newNotesAndCoordinates } =
       handleKeySigInteraction(notesAndCoordinatesCopy, state, foundNoteData);
 
@@ -164,7 +161,6 @@ const NotateKeySignature = ({ handleNotes }: any) => {
     });
 
     setNotesAndCoordinates(() => newNotesAndCoordinates);
-    console.log("notesAndCoordinates: ", notesAndCoordinates);
   };
 
   return (

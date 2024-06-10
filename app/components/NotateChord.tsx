@@ -78,7 +78,7 @@ const NotateChord = () => {
   );
 
   useEffect(() => {
-    setNotesAndCoordinates(() => generateYMinAndYMaxForNotes(147, notesArray));
+    setNotesAndCoordinates(() => generateYMinAndYMaxForNotes(33, notesArray));
   }, []);
 
   useEffect(() => {
@@ -96,18 +96,16 @@ const NotateChord = () => {
       container,
       staves[0]
     );
-
+    console.log("userClickY: ", userClickY);
     let foundNoteData = notesAndCoordinates.find(
       ({ yCoordinateMin, yCoordinateMax }) =>
         userClickY >= yCoordinateMin && userClickY <= yCoordinateMax
     );
-
+    console.log("foundNoteData: ", foundNoteData);
     let chordDataCopy = { ...chordData };
     let notesAndCoordinatesCopy = [...notesAndCoordinates];
 
-    setBarIndex(() => {
-      return findBarIndex(staves, userClickX);
-    });
+    const barIndex = findBarIndex(staves, userClickX);
 
     const foundNoteIndex: number = chordData.keys.findIndex(
       (note) => note === foundNoteData?.note
