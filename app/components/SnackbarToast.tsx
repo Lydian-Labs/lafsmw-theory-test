@@ -2,6 +2,7 @@ import { SyntheticEvent, Dispatch, SetStateAction } from "react";
 import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import { Slide } from "@mui/material";
 
 type SimpleSnackbarProps = {
   open: boolean;
@@ -20,12 +21,12 @@ export default function SimpleSnackbar({
 
   const action = (
     <IconButton
-      size="small"
+      size="large"
       aria-label="close"
       color="inherit"
       onClick={handleClose}
     >
-      <CloseIcon fontSize="small" />
+      <CloseIcon fontSize="large" />
     </IconButton>
   );
 
@@ -34,9 +35,11 @@ export default function SimpleSnackbar({
       <Snackbar
         open={open}
         autoHideDuration={6000}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
         onClose={handleClose}
         message={message}
         action={action}
+        TransitionComponent={Slide}
       />
     </div>
   );
