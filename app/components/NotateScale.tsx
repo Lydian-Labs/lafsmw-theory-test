@@ -29,7 +29,7 @@ import Container from "@mui/material/Container";
 
 const { Renderer } = VexFlow.Flow;
 
-const NotateScale = () => {
+const NotateScale = ({ handleNotes }: any) => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
   const [staves, setStaves] = useState<StaveType[]>([]);
@@ -155,6 +155,7 @@ const NotateScale = () => {
     );
     setNotesAndCoordinates(() => newNotesAndCoordinates);
     setScaleDataMatrix(() => newScaleDataMatrix);
+    handleNotes(scaleDataForGrading);
   };
 
   return (

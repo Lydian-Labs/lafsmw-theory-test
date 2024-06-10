@@ -71,6 +71,7 @@ const NotateKeySignature = ({ handleNotes }: any) => {
   //this is where the we will get the array to grade
   useEffect(() => {
     console.log("key signature: ", keySig);
+    handleNotes(keySig);
   }, [keySig]);
 
   useEffect(() => {
