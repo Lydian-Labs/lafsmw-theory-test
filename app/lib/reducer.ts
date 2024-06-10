@@ -7,10 +7,7 @@ import {
   NoteInteractionState,
 } from "./typesAndInterfaces";
 
-export const reducer = (
-  state: ChordInteractionState | NoteInteractionState | KeySigState,
-  action: NoteInteractionAction | KeySigAction | ChordInteractionAction
-) => {
+export const keySigReducer = (state: KeySigState, action: KeySigAction) => {
   const newState = Object.keys(state).reduce((acc, key) => {
     acc[key] = false;
     return acc;

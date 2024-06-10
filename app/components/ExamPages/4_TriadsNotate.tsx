@@ -5,7 +5,7 @@ import triadsText from "@/app/lib/data/triadsText";
 import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import { useState } from "react";
 import CardFooter from "../CardFooter";
-import NotateScale from "../NotateScale";
+import NotateChord from "../NotateChord";
 
 export default function TriadsNotation({
   currentUserData,
@@ -85,7 +85,7 @@ export default function TriadsNotation({
                 </Stack>
               </Grid>
               <Grid item>
-                <NotateScale />
+                <NotateChord />
               </Grid>
             </Grid>
             <CardFooter

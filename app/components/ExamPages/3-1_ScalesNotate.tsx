@@ -21,20 +21,13 @@ export default function ScalesNotation({
   setCurrentUserData,
   nextViewState,
 }: UserDataProps) {
-  const [scales, setScales] = useState({
-    input1: "",
-    input2: "",
-    input3: "",
-    input4: "",
-    input5: "",
-    input6: "",
-  });
+  const [scales, setScales] = useState("");
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const payload = {
       ...currentUserData,
-      scales: scales,
+      scales1: scales,
     };
     setCurrentUserData(payload);
     nextViewState();
@@ -108,7 +101,7 @@ export default function ScalesNotation({
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <NotateScale />
+                  <NotateScale handleNotes={setScales} />
                 </Grid>
               </Grid>
               <CardFooter pageNumber={6} handleSubmit={handleSubmit} />

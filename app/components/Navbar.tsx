@@ -27,22 +27,6 @@ const Navbar: FC = () => {
               </h1>
             </Link>
           </div>
-          <ul className="hidden sm:text-1xl py-20 sm:py-1 sm:flex">
-            <li className="p-4">
-              <Link href="/NoteAndAccidentalInput">
-                Note and Accidental Input Demo
-              </Link>
-            </li>
-            <li className="p-4">
-              <Link href="/CreateScales">Create Scales</Link>
-            </li>
-            <li className="p-4">
-              <Link href="/createChords">Create Chords</Link>
-            </li>
-            <li className="p-4">
-              <Link href="/createKeySignatures">Create Key Signature</Link>
-            </li>
-          </ul>
         </div>
         <Box>
           <CountdownTimer />

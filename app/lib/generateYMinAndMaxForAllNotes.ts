@@ -1,16 +1,17 @@
 import { NotesAndCoordinatesData } from "./typesAndInterfaces";
-import { TOLERANCE } from "./data/stavesData";
-const generateYMinAndYMaxForAllNotes = (
+
+const tolerance = 5;
+const generateYMinAndYMaxForNotes = (
   topNoteYCoordinate: number,
   notes: string[]
 ): NotesAndCoordinatesData[] => {
   return notes.map((note, index) => {
     const originalNote = note;
     const yCoordinateMin = topNoteYCoordinate + index * 5;
-    const yCoordinateMax = yCoordinateMin + 5;
+    const yCoordinateMax = yCoordinateMin + tolerance;
 
     return { originalNote, note, yCoordinateMin, yCoordinateMax };
   });
 };
 
-export default generateYMinAndYMaxForAllNotes;
+export default generateYMinAndYMaxForNotes;

@@ -1,7 +1,5 @@
 "use client";
-import { modifyChordsActionTypes } from "@/app/lib/actionTypes";
-import { handleChordInteraction } from "@/app/lib/handleChordInteraction";
-import { setupRendererAndDrawChords } from "@/app/lib/setUpRendererAndDrawChords";
+import { Container } from "@mui/material";
 import React, {
   useCallback,
   useEffect,
@@ -11,29 +9,32 @@ import React, {
   useState,
 } from "react";
 import VexFlow from "vexflow";
-import { initialChordData } from "@/app/lib/data/initialChordData";
-import { initialNotesAndCoordsState } from "@/app/lib/data/initialNotesAndCoordinatesState";
-import BlueButton from "../../components/BlueButton";
-import CheckIfNoteFound from "../../components/CheckIfNoteFound";
-import CheckNumBeatsInMeasure from "../../components/CheckNumBeatsInMeasure";
-import { buttonGroup } from "../../lib/buttonsAndButtonGroups";
-import { staveData } from "../../lib/data/stavesData";
-import { findBarIndex } from "../../lib/findBar";
-import generateYMinAndYMaxForAllNotes from "../../lib/generateYMinAndMaxForAllNotes";
-import getUserClickInfo from "../../lib/getUserClickInfo";
-import { chordInteractionInitialState } from "../../lib/initialStates";
-import { initializeRenderer } from "../../lib/initializeRenderer";
-import { notesArray } from "../../lib/noteArray";
-import { chordReducer } from "../../lib/reducer";
+import CheckIfNoteFound from "../components/CheckIfNoteFound";
+import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
+import RegularButton from "../components/RegularButton";
+import { modifyChordsActionTypes } from "../lib/actionTypes";
+import { buttonGroup } from "../lib/buttonsAndButtonGroups";
+import { initialChordData } from "../lib/data/initialChordData";
+import { initialNotesAndCoordsState } from "../lib/data/initialNotesAndCoordinatesState";
+import { staveData } from "../lib/data/stavesData";
+import { findBarIndex } from "../lib/findBar";
+import generateYMinAndYMaxForNotes from "../lib/generateYMinAndMaxForAllNotes";
+import getUserClickInfo from "../lib/getUserClickInfo";
+import { handleChordInteraction } from "../lib/handleChordInteraction";
+import { chordInteractionInitialState } from "../lib/initialStates";
+import { initializeRenderer } from "../lib/initializeRenderer";
+import { notesArray } from "../lib/noteArray";
+import { chordReducer } from "../lib/reducer";
+import { setupRendererAndDrawChords } from "../lib/setUpRendererAndDrawChords";
 import {
   Chord,
   NotesAndCoordinatesData,
   StaveType,
-} from "../../lib/typesAndInterfaces";
+} from "../lib/typesAndInterfaces";
 
 const { Renderer } = VexFlow.Flow;
 
-const ManageChords = () => {
+const NotateChord = () => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
   const [staves, setStaves] = useState<StaveType[]>([]);
@@ -59,9 +60,7 @@ const ManageChords = () => {
     setChordData((): Chord => {
       return initialChordData;
     });
-    setNotesAndCoordinates(() =>
-      generateYMinAndYMaxForAllNotes(147, notesArray)
-    );
+    setNotesAndCoordinates(() => generateYMinAndYMaxForNotes(147, notesArray));
     renderStavesAndChords();
   };
 
@@ -79,14 +78,9 @@ const ManageChords = () => {
   );
 
   useEffect(() => {
-    setNotesAndCoordinates(() =>
-      generateYMinAndYMaxForAllNotes(147, notesArray)
-    );
-  }, []);
-
-  useEffect(() => {
     initializeRenderer(rendererRef, container);
     renderStavesAndChords();
+    setNotesAndCoordinates(() => generateYMinAndYMaxForNotes(33, notesArray));
   }, []);
 
   useEffect(() => {
@@ -99,18 +93,16 @@ const ManageChords = () => {
       container,
       staves[0]
     );
-
+    console.log("userClickY: ", userClickY);
     let foundNoteData = notesAndCoordinates.find(
       ({ yCoordinateMin, yCoordinateMax }) =>
         userClickY >= yCoordinateMin && userClickY <= yCoordinateMax
     );
-
+    console.log("foundNoteData: ", foundNoteData);
     let chordDataCopy = { ...chordData };
     let notesAndCoordinatesCopy = [...notesAndCoordinates];
 
-    setBarIndex(() => {
-      return findBarIndex(staves, userClickX);
-    });
+    const barIndex = findBarIndex(staves, userClickX);
 
     const foundNoteIndex: number = chordData.keys.findIndex(
       (note) => note === foundNoteData?.note
@@ -146,22 +138,30 @@ const ManageChords = () => {
         noNoteFound={state.noNoteFound || false}
         openEnterNotes={dispatch}
       />
-      <div className="mt-2 ml-3">
+      <Container
+        sx={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr 1fr",
+          padding: 0,
+          margin: 0,
+        }}
+        disableGutters
+      >
         {modifyChordsButtonGroup.map((button) => {
           return (
-            <BlueButton
+            <RegularButton
               key={button.text}
               onClick={button.action}
               isEnabled={button.isEnabled}
             >
               {button.text}
-            </BlueButton>
+            </RegularButton>
           );
         })}
-        <BlueButton onClick={eraseChord}>Erase Chord</BlueButton>
-      </div>
+        <RegularButton onClick={eraseChord}>Erase Chord</RegularButton>
+      </Container>
     </>
   );
 };
 
-export default ManageChords;
+export default NotateChord;

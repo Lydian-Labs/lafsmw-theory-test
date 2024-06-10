@@ -30,7 +30,7 @@ export default function KeySignaturesNotation({
     const payload = {
       ...currentUserData,
       level: level,
-      keySignaturesNotation: keySignatureNotation,
+      keySignaturesNotation1: keySignatureNotation,
     };
     setCurrentUserData(payload);
     nextViewState();

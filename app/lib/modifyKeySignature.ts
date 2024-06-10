@@ -2,7 +2,7 @@ import { GlyphProps } from "./typesAndInterfaces";
 
 const tolerance = 5;
 
-const deleteAccidentalFromKeySig = (
+export const deleteAccidentalFromKeySig = (
   glyphState: (newState: React.SetStateAction<GlyphProps[]>) => void,
   xClick: number,
   yClick: number
@@ -18,4 +18,4 @@ const deleteAccidentalFromKeySig = (
   );
 };
 
-export default deleteAccidentalFromKeySig;
+export const addAccidentalToKeySig = () => {}

@@ -93,6 +93,7 @@ export interface UserClickInfo {
   userClickY: number;
   topStaveYCoord: number;
   highGYPosition: number;
+  topKeySigPosition: number;
   spacingBetweenLines?: number | undefined;
   bottomY?: number;
   bottomStaveYCoord?: number;
@@ -165,27 +166,10 @@ export interface RenderStavesAndNotesParams {
   regularStaveWidth?: number | null;
   setStaves: SetStaves;
   scaleDataMatrix?: ScaleData[][];
-  staves: BlankStaves;
-}
-
-export interface RenderStavesAndNotesParamsOld {
-  rendererRef: RendererRef | null;
-  font: string;
-  fontSize: number;
-  numStaves: number;
-  rendererWidth: number;
-  rendererHeight: number;
-  yPositionOfStaves: number;
-  xPositionOfStaves: number;
-  clef: string;
-  timeSig?: string;
-  keySig?: string;
-  firstStaveWidth: number;
-  regularStaveWidth?: number | null;
-  setStaves: SetStaves;
   notesData?: NoteData | null;
   staves: BlankStaves;
 }
+
 export interface RenderStaves {
   rendererRef: RendererRef | null;
   font: string;
