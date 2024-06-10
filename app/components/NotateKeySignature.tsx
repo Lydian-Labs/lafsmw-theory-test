@@ -54,7 +54,6 @@ const NotateKeySignature = ({ handleNotes }: any) => {
       staves: blankStaves,
     });
   };
-
   const clearKey = () => {
     clearKeySignature(setGlyphs, rendererRef, container, renderStaves),
       setKeySig(() => []);
