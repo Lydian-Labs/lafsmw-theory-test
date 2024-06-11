@@ -22,13 +22,13 @@ export default function TriadsNotation2({
   setCurrentUserData,
   nextViewState,
 }: UserDataProps) {
-  const [triads, setTriads] = useState([]);
+  const [chords, setChords] = useState<string[]>([]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const payload = {
       ...currentUserData,
-      triads2: triads,
+      triads2: chords,
     };
     setCurrentUserData(payload);
     nextViewState();
@@ -99,7 +99,7 @@ export default function TriadsNotation2({
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <NotateChord />
+                  <NotateChord setChords={setChords} />
                 </Grid>
               </Grid>
               <CardFooter pageNumber={13} handleSubmit={handleSubmit} />

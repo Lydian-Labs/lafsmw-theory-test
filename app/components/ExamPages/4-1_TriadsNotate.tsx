@@ -34,10 +34,6 @@ export default function TriadsNotation1({
     nextViewState();
   };
 
-  const handleChords = (input: any) => {
-    setChords(input);
-  };
-
   return (
     <Container>
       <Box

@@ -33,10 +33,6 @@ export default function ScalesNotation({
     nextViewState();
   };
 
-  // const handleScaleInteraction = (scaleData: any) => {
-  //   setScales(scaleData);
-  // };
-
   return (
     <Container>
       <Box
