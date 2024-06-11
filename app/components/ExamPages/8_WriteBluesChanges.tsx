@@ -96,7 +96,7 @@ export default function WriteBluesChanges({
             </Grid>
             <CardFooter
               width={1100}
-              pageNumber={21}
+              pageNumber={26}
               buttonText="Continue >"
               buttonForm="submit-form-blues"
               handleSubmit={() => {

@@ -51,9 +51,6 @@ export default function KeySignaturesNotation({
         <Grid container spacing={4} p={2}>
           <Grid item xs={4}>
             <Stack gap={2} alignItems={"center"}>
-              <Typography variant="h6" align="center">
-                Section 1: Notate Key Signatures
-              </Typography>
               <Box
                 width={273}
                 height={456}

@@ -5,7 +5,6 @@ const seventhChordsText = [
   "D#-7",
   "D-dim-7",
   "Gb-aug-7",
-  "Eb-dim",
 ];
 
 export default seventhChordsText;

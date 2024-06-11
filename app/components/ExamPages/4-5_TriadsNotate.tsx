@@ -22,20 +22,13 @@ export default function TriadsNotation5({
   setCurrentUserData,
   nextViewState,
 }: UserDataProps) {
-  const [scales, setScales] = useState({
-    input1: "",
-    input2: "",
-    input3: "",
-    input4: "",
-    input5: "",
-    input6: "",
-  });
+  const [triads, setTriads] = useState([]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const payload = {
       ...currentUserData,
-      scales: scales,
+      triads5: triads,
     };
     setCurrentUserData(payload);
     nextViewState();

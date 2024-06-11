@@ -10,25 +10,25 @@ import {
   Typography,
 } from "@mui/material";
 
-import triadsText from "@/app/lib/data/triadsText";
+import seventhChordsText from "@/app/lib/data/seventhChordsText";
 import { notationInstructions } from "@/app/lib/instructions";
 import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import { useState } from "react";
 import CardFooter from "../CardFooter";
 import NotateChord from "../NotateChord";
 
-export default function TriadsNotation3({
+export default function NotateSeventhChords1({
   currentUserData,
   setCurrentUserData,
   nextViewState,
 }: UserDataProps) {
-  const [triads, setTriads] = useState([]);
+  const [seventhChords, setSeventhChords] = useState([]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const payload = {
       ...currentUserData,
-      triads3: triads,
+      seventhChords1: seventhChords,
     };
     setCurrentUserData(payload);
     nextViewState();
@@ -48,6 +48,9 @@ export default function TriadsNotation3({
         <Grid container spacing={4} p={2}>
           <Grid item xs={4}>
             <Stack gap={2} alignItems={"center"}>
+              <Typography variant="h6" align="center">
+                Section 5: Notate Seventh Chords
+              </Typography>
               <Box
                 width={273}
                 height={456}
@@ -95,14 +98,14 @@ export default function TriadsNotation3({
               >
                 <Grid item>
                   <Typography variant="h6">
-                    {`Write the following triad: ${triadsText[2]}`}
+                    {`Write the following seventh chord: ${seventhChordsText[0]}`}
                   </Typography>
                 </Grid>
                 <Grid item>
                   <NotateChord />
                 </Grid>
               </Grid>
-              <CardFooter pageNumber={14} handleSubmit={handleSubmit} />
+              <CardFooter pageNumber={18} handleSubmit={handleSubmit} />
             </Box>
           </Grid>
         </Grid>

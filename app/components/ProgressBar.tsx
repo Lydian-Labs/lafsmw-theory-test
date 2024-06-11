@@ -2,7 +2,7 @@ import React from "react";
 import LinearProgress from "@mui/material/LinearProgress";
 
 export default function ProgressBar({ value }: { value: number }) {
-  const adjustedValue = Math.floor((value / 21) * 100);
+  const adjustedValue = Math.floor((value / 26) * 100);
   return (
     <div>
       <LinearProgress

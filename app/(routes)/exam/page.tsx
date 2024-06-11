@@ -17,7 +17,14 @@ import TriadsNotate3 from "@/app/components/ExamPages/4-3_TriadsNotate";
 import TriadsNotate4 from "@/app/components/ExamPages/4-4_TriadsNotate";
 import TriadsNotate5 from "@/app/components/ExamPages/4-5_TriadsNotate";
 import TriadsNotate6 from "@/app/components/ExamPages/4-6_TriadsNotate";
-import SeventhChordsNotate from "@/app/components/ExamPages/5_SeventhChordsNotate";
+
+import SeventhChordsNotate1 from "@/app/components/ExamPages/5-1_SeventhChordsNotate";
+import SeventhChordsNotate2 from "@/app/components/ExamPages/5-2_SeventhChordsNotate";
+import SeventhChordsNotate3 from "@/app/components/ExamPages/5-3_SeventhChordsNotate";
+import SeventhChordsNotate4 from "@/app/components/ExamPages/5-4_SeventhChordsNotate";
+import SeventhChordsNotate5 from "@/app/components/ExamPages/5-5_SeventhChordsNotate";
+import SeventhChordsNotate6 from "@/app/components/ExamPages/5-6_SeventhChordsNotate";
+
 import ChordsIdentify from "@/app/components/ExamPages/6_ChordsIdentify";
 import WriteProgressions from "@/app/components/ExamPages/7_WriteProgressions";
 import WriteBluesChanges from "@/app/components/ExamPages/8_WriteBluesChanges";
@@ -61,11 +68,16 @@ const VIEW_STATES = {
   TRIADS_NOTATE4: 15,
   TRIADS_NOTATE5: 16,
   TRIADS_NOTATE6: 17,
-  SEVENTH_CHORDS_NOTATE: 18,
-  CHORDS_IDENTIFY: 19,
-  WRITE_PROGRESSIONS: 20,
-  WRITE_BLUES_CHANGES: 21,
-  SUBMIT_AND_EXIT: 22,
+  SEVENTH_CHORDS_NOTATE1: 18,
+  SEVENTH_CHORDS_NOTATE2: 19,
+  SEVENTH_CHORDS_NOTATE3: 20,
+  SEVENTH_CHORDS_NOTATE4: 21,
+  SEVENTH_CHORDS_NOTATE5: 22,
+  SEVENTH_CHORDS_NOTATE6: 23,
+  CHORDS_IDENTIFY: 24,
+  WRITE_PROGRESSIONS: 25,
+  WRITE_BLUES_CHANGES: 26,
+  SUBMIT_AND_EXIT: 27,
 };
 
 export default function ExamHomePage() {
@@ -381,8 +393,43 @@ export default function ExamHomePage() {
             nextViewState={incrementViewState}
           />
         )}
-        {viewState === VIEW_STATES.SEVENTH_CHORDS_NOTATE && (
-          <SeventhChordsNotate
+        {viewState === VIEW_STATES.SEVENTH_CHORDS_NOTATE1 && (
+          <SeventhChordsNotate1
+            currentUserData={currentUserData}
+            setCurrentUserData={setCurrentUserData}
+            nextViewState={incrementViewState}
+          />
+        )}
+        {viewState === VIEW_STATES.SEVENTH_CHORDS_NOTATE2 && (
+          <SeventhChordsNotate2
+            currentUserData={currentUserData}
+            setCurrentUserData={setCurrentUserData}
+            nextViewState={incrementViewState}
+          />
+        )}
+        {viewState === VIEW_STATES.SEVENTH_CHORDS_NOTATE3 && (
+          <SeventhChordsNotate3
+            currentUserData={currentUserData}
+            setCurrentUserData={setCurrentUserData}
+            nextViewState={incrementViewState}
+          />
+        )}
+        {viewState === VIEW_STATES.SEVENTH_CHORDS_NOTATE4 && (
+          <SeventhChordsNotate4
+            currentUserData={currentUserData}
+            setCurrentUserData={setCurrentUserData}
+            nextViewState={incrementViewState}
+          />
+        )}
+        {viewState === VIEW_STATES.SEVENTH_CHORDS_NOTATE5 && (
+          <SeventhChordsNotate5
+            currentUserData={currentUserData}
+            setCurrentUserData={setCurrentUserData}
+            nextViewState={incrementViewState}
+          />
+        )}
+        {viewState === VIEW_STATES.SEVENTH_CHORDS_NOTATE6 && (
+          <SeventhChordsNotate6
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}

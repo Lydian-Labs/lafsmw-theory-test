@@ -54,9 +54,6 @@ export default function ScalesNotation3({
         <Grid container spacing={4} p={2}>
           <Grid item xs={4}>
             <Stack gap={2} alignItems={"center"}>
-              <Typography variant="h6" align="center">
-                Section 3: Notate Scales
-              </Typography>
               <Box
                 width={273}
                 height={456}
