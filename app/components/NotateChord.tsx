@@ -94,7 +94,8 @@ const NotateChord = ({
   }, [chordData]);
 
   const handleChordsClick = (e: React.MouseEvent) => {
-    setChords([chordData.keys.join(", ")]);
+    console.log("chordData.keys: ", chordData.keys);
+    setChords(chordData.keys);
   };
 
   const handleClick = (e: React.MouseEvent) => {

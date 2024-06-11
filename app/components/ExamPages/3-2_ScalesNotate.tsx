@@ -101,7 +101,11 @@ export default function ScalesNotation2({
                   <NotateScale setScales={setScales} />
                 </Grid>
               </Grid>
-              <CardFooter pageNumber={7} handleSubmit={handleSubmit} />
+              <CardFooter
+                buttonText={"Continue >"}
+                pageNumber={7}
+                handleSubmit={handleSubmit}
+              />
             </Box>
           </Grid>
         </Grid>

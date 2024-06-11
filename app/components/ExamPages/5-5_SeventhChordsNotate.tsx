@@ -13,7 +13,7 @@ import {
 import seventhChordsText from "@/app/lib/data/seventhChordsText";
 import { notationInstructions } from "@/app/lib/instructions";
 import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CardFooter from "../CardFooter";
 import NotateChord from "../NotateChord";
 
@@ -24,13 +24,12 @@ export default function NotateSeventhChords5({
 }: UserDataProps) {
   const [chords, setChords] = useState<string[]>([]);
 
+  useEffect(() => {
+    setCurrentUserData({ ...currentUserData, seventhChords5: chords });
+  }, [chords]);
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    const payload = {
-      ...currentUserData,
-      seventhChords1: chords,
-    };
-    setCurrentUserData(payload);
     nextViewState();
   };
 
@@ -102,7 +101,11 @@ export default function NotateSeventhChords5({
                   <NotateChord setChords={setChords} />
                 </Grid>
               </Grid>
-              <CardFooter pageNumber={22} handleSubmit={handleSubmit} />
+              <CardFooter
+                buttonText={"Continue >"}
+                pageNumber={22}
+                handleSubmit={handleSubmit}
+              />
             </Box>
           </Grid>
         </Grid>

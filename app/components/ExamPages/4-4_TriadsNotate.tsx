@@ -13,7 +13,7 @@ import {
 import triadsText from "@/app/lib/data/triadsText";
 import { notationInstructions } from "@/app/lib/instructions";
 import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CardFooter from "../CardFooter";
 import NotateChord from "../NotateChord";
 
@@ -24,13 +24,12 @@ export default function TriadsNotation4({
 }: UserDataProps) {
   const [chords, setChords] = useState<string[]>([]);
 
+  useEffect(() => {
+    setCurrentUserData({ ...currentUserData, triads4: chords });
+  }, [chords]);
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    const payload = {
-      ...currentUserData,
-      triads1: chords,
-    };
-    setCurrentUserData(payload);
     nextViewState();
   };
 
@@ -102,7 +101,11 @@ export default function TriadsNotation4({
                   <NotateChord setChords={setChords} />
                 </Grid>
               </Grid>
-              <CardFooter pageNumber={15} handleSubmit={handleSubmit} />
+              <CardFooter
+                buttonText={"Continue >"}
+                pageNumber={15}
+                handleSubmit={handleSubmit}
+              />
             </Box>
           </Grid>
         </Grid>

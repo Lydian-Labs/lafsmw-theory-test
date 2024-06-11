@@ -45,7 +45,6 @@ const NotateScale = ({
   const [notesAndCoordinates, setNotesAndCoordinates] = useState([
     initialNotesAndCoordsState,
   ]);
-  const [finalScaleData, setFinalScaleData] = useState<string[]>([]);
 
   const [state, dispatch] = useReducer(
     scaleReducer,
