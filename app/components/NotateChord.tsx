@@ -1,6 +1,8 @@
 "use client";
-import { Container } from "@mui/material";
+import { Button, Container, Stack, Typography } from "@mui/material";
 import React, {
+  Dispatch,
+  SetStateAction,
   useCallback,
   useEffect,
   useMemo,
@@ -34,7 +36,11 @@ import {
 
 const { Renderer } = VexFlow.Flow;
 
-const NotateChord = () => {
+const NotateChord = ({
+  setChords,
+}: {
+  setChords: Dispatch<SetStateAction<Array<string>>>;
+}) => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
   const [staves, setStaves] = useState<StaveType[]>([]);
@@ -86,6 +92,10 @@ const NotateChord = () => {
   useEffect(() => {
     renderStavesAndChords();
   }, [chordData]);
+
+  const handleChordsClick = (e: React.MouseEvent) => {
+    setChords([chordData.keys.join(", ")]);
+  };
 
   const handleClick = (e: React.MouseEvent) => {
     const { userClickY, userClickX } = getUserClickInfo(
@@ -160,6 +170,13 @@ const NotateChord = () => {
         })}
         <RegularButton onClick={eraseChord}>Erase Chord</RegularButton>
       </Container>
+      <Stack direction="row" spacing={2}>
+        <Typography marginTop={2} align="left">
+          *Note: You
+          <b> MUST</b> press <em>Save </em>before moving on.
+        </Typography>
+        <Button onClick={handleChordsClick}>Save</Button>
+      </Stack>
     </>
   );
 };

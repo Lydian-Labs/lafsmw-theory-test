@@ -483,6 +483,11 @@ export default function ExamHomePage() {
               <Button onClick={incrementViewState}>
                 <Typography variant="h4">{">"}</Typography>
               </Button>
+              <Button
+                onClick={() => setViewState(VIEW_STATES.WRITE_BLUES_CHANGES)}
+              >
+                <Typography>{"Write Blues"}</Typography>
+              </Button>
             </Box>
           )}
       </Stack>

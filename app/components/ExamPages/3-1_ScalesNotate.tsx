@@ -21,7 +21,7 @@ export default function ScalesNotation({
   setCurrentUserData,
   nextViewState,
 }: UserDataProps) {
-  const [scales, setScales] = useState([]);
+  const [scales, setScales] = useState<Array<string>>([]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();

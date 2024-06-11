@@ -2,6 +2,8 @@
 "use client";
 import { modifyNotesActionTypes } from "../lib/actionTypes";
 import React, {
+  Dispatch,
+  SetStateAction,
   useCallback,
   useEffect,
   useMemo,
@@ -27,10 +29,15 @@ import { scaleReducer } from "../lib/reducer";
 import { setupRendererAndDrawNotes } from "../lib/setupRendererAndDrawNotes";
 import { ScaleData, StaveType } from "../lib/typesAndInterfaces";
 import Container from "@mui/material/Container";
+import { Stack, Typography, Button } from "@mui/material";
 
 const { Renderer } = VexFlow.Flow;
 
-const NotateScale = ({ setScales }: any) => {
+const NotateScale = ({
+  setScales,
+}: {
+  setScales: Dispatch<SetStateAction<Array<string>>>;
+}) => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
   const [staves, setStaves] = useState<StaveType[]>([]);
@@ -81,15 +88,19 @@ const NotateScale = ({ setScales }: any) => {
     setNotesAndCoordinates(() => generateYMinAndYMaxForNotes(8, notesArray));
   }, []);
 
+  //this is the array we will use for grading
+  const scaleDataForGrading = scaleDataMatrix[0].map((scaleDataMatrix) =>
+    scaleDataMatrix.keys.join(", ")
+  );
+
   useEffect(() => {
-    //this is the array we will use for grading
-    const scaleDataForGrading = scaleDataMatrix[0].map((scaleDataMatrix) =>
-      scaleDataMatrix.keys.join(", ")
-    );
     console.log("scale data for grading:", scaleDataForGrading);
     renderStavesAndNotes();
-    setFinalScaleData(scaleDataForGrading);
   }, [scaleDataMatrix]); // Listening to changes in scaleDataMatrix
+
+  const handleScalesClick = (e: React.MouseEvent) => {
+    setScales(scaleDataForGrading);
+  };
 
   const handleClick = (e: React.MouseEvent) => {
     const { userClickY, userClickX } = getUserClickInfo(
@@ -153,7 +164,6 @@ const NotateScale = ({ setScales }: any) => {
     );
     setNotesAndCoordinates(() => newNotesAndCoordinates);
     setScaleDataMatrix(() => newScaleDataMatrix);
-    setScales(finalScaleData);
   };
 
   return (
@@ -190,6 +200,13 @@ const NotateScale = ({ setScales }: any) => {
         })}
         <BlueButton onClick={eraseMeasures}>Erase Measure</BlueButton>
       </Container>
+      <Stack direction="row" spacing={2}>
+        <Typography marginTop={2} align="left">
+          *Note: You
+          <b> MUST</b> press <em>Save </em>before moving on.
+        </Typography>
+        <Button onClick={handleScalesClick}>Save</Button>
+      </Stack>
     </>
   );
 };
