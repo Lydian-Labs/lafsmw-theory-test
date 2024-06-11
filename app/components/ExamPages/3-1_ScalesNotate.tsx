@@ -21,7 +21,7 @@ export default function ScalesNotation({
   setCurrentUserData,
   nextViewState,
 }: UserDataProps) {
-  const [scales, setScales] = useState("");
+  const [scales, setScales] = useState([]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -32,6 +32,10 @@ export default function ScalesNotation({
     setCurrentUserData(payload);
     nextViewState();
   };
+
+  // const handleScaleInteraction = (scaleData: any) => {
+  //   setScales(scaleData);
+  // };
 
   return (
     <Container>
@@ -101,7 +105,7 @@ export default function ScalesNotation({
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <NotateScale handleNotes={setScales} />
+                  <NotateScale setScales={setScales} />
                 </Grid>
               </Grid>
               <CardFooter pageNumber={6} handleSubmit={handleSubmit} />

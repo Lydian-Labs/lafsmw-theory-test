@@ -231,7 +231,10 @@ export interface InputState {
   user: any;
   level: Level;
   keySignatures: InputData;
-  keySignaturesNotation: any;
+  keySignaturesNotation1: string[];
+  keySignaturesNotation2: string[];
+  keySignaturesNotation3: string[];
+  keySignaturesNotation4: string[];
   chords: InputData;
   progressions: InputData;
   blues: InputData;

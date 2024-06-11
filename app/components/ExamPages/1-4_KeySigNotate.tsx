@@ -21,15 +21,14 @@ export default function KeySignaturesNotation({
   setCurrentUserData,
   nextViewState,
 }: UserDataProps) {
-  const [keySignatureNotation, setKeySignatureNotation] = useState("");
+  const [keySignatureNotation, setKeySignatureNotation] = useState([]);
 
   const handleSubmit = async (e: MouseEvent) => {
     e.preventDefault();
-    const payload = {
+    setCurrentUserData({
       ...currentUserData,
-      keySignaturesNotation: keySignatureNotation,
-    };
-    setCurrentUserData(payload);
+      keySignaturesNotation4: keySignatureNotation,
+    });
     nextViewState();
   };
 

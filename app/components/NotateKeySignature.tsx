@@ -1,5 +1,12 @@
 "use client";
-import React, { useEffect, useMemo, useReducer, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useReducer,
+  useRef,
+  useState,
+} from "react";
 import VexFlow from "vexflow";
 import RegularButton from "../components/RegularButton";
 import { modifyKeySigActionTypes } from "../lib/actionTypes";
@@ -45,7 +52,7 @@ const NotateKeySignature = ({ handleNotes }: any) => {
 
   const context = rendererRef.current?.getContext();
 
-  const renderStaves = (): void => {
+  const renderStaves = useCallback((): void => {
     setupRenderer({
       rendererRef,
       ...staveData,
@@ -53,7 +60,8 @@ const NotateKeySignature = ({ handleNotes }: any) => {
       setStaves: setBlankStaves,
       staves: blankStaves,
     });
-  };
+  }, [blankStaves, setBlankStaves]);
+
   const clearKey = () => {
     clearKeySignature(setGlyphs, rendererRef, container, renderStaves),
       setKeySig(() => []);
@@ -72,7 +80,7 @@ const NotateKeySignature = ({ handleNotes }: any) => {
   useEffect(() => {
     console.log("key signature: ", keySig);
     handleNotes(keySig);
-  }, [keySig]);
+  }, [handleNotes, keySig]);
 
   useEffect(() => {
     initializeRenderer(rendererRef, container);
@@ -145,6 +153,7 @@ const NotateKeySignature = ({ handleNotes }: any) => {
     const { notesAndCoordinates: newNotesAndCoordinates } =
       handleKeySigInteraction(notesAndCoordinatesCopy, state, foundNoteData);
 
+    // TO DO: Refactor this to a separate function? It's taking too long to update the state if student clicks on a note too quickly after another note
     setKeySig((prevState) => {
       const newKeySig = [...prevState];
       if (foundNoteData?.note) {

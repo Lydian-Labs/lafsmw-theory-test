@@ -1,3 +1,4 @@
+// TO DO: still not saving the last note in the measure no matter where I place setScales. When called in the useEffect, the DOM claims it is not a function. When called in the handleClick function, it is not saving the last note in the measure.
 "use client";
 import { modifyNotesActionTypes } from "../lib/actionTypes";
 import React, {
@@ -29,7 +30,7 @@ import Container from "@mui/material/Container";
 
 const { Renderer } = VexFlow.Flow;
 
-const NotateScale = ({ handleNotes }: any) => {
+const NotateScale = ({ setScales }: any) => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
   const [staves, setStaves] = useState<StaveType[]>([]);
@@ -37,6 +38,7 @@ const NotateScale = ({ handleNotes }: any) => {
   const [notesAndCoordinates, setNotesAndCoordinates] = useState([
     initialNotesAndCoordsState,
   ]);
+  const [finalScaleData, setFinalScaleData] = useState<string[]>([]);
 
   const [state, dispatch] = useReducer(
     scaleReducer,
@@ -73,11 +75,6 @@ const NotateScale = ({ handleNotes }: any) => {
     [rendererRef, setStaves, scaleDataMatrix, staves]
   );
 
-  //this is the array we will use for grading
-  const scaleDataForGrading = scaleDataMatrix[0].map((scaleDataMatrix) =>
-    scaleDataMatrix.keys.join(", ")
-  );
-
   useEffect(() => {
     initializeRenderer(rendererRef, container);
     renderStavesAndNotes();
@@ -85,12 +82,13 @@ const NotateScale = ({ handleNotes }: any) => {
   }, []);
 
   useEffect(() => {
+    //this is the array we will use for grading
+    const scaleDataForGrading = scaleDataMatrix[0].map((scaleDataMatrix) =>
+      scaleDataMatrix.keys.join(", ")
+    );
+    console.log("scale data for grading:", scaleDataForGrading);
     renderStavesAndNotes();
-    console.log("scale data for grading:", scaleDataForGrading);
-  }, [scaleDataMatrix]);
-
-  useEffect(() => {
-    console.log("scale data for grading:", scaleDataForGrading);
+    setFinalScaleData(scaleDataForGrading);
   }, [scaleDataMatrix]); // Listening to changes in scaleDataMatrix
 
   const handleClick = (e: React.MouseEvent) => {
@@ -155,7 +153,7 @@ const NotateScale = ({ handleNotes }: any) => {
     );
     setNotesAndCoordinates(() => newNotesAndCoordinates);
     setScaleDataMatrix(() => newScaleDataMatrix);
-    handleNotes(scaleDataForGrading);
+    setScales(finalScaleData);
   };
 
   return (
