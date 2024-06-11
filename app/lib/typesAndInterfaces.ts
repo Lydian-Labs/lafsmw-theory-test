@@ -1,3 +1,4 @@
+import { set } from "firebase/database";
 import { Dispatch, RefObject, SetStateAction } from "react";
 import VexFlow, { IRenderContext } from "vexflow";
 const VF = VexFlow.Flow;
@@ -230,7 +231,26 @@ export interface InputState {
   user: any;
   level: Level;
   keySignatures: InputData;
-  keySignaturesNotation: any;
+  keySignaturesNotation1: string[];
+  keySignaturesNotation2: string[];
+  keySignaturesNotation3: string[];
+  keySignaturesNotation4: string[];
+  scales1: string[];
+  scales2: string[];
+  scales3: string[];
+  scales4: string[];
+  triads1: string[];
+  triads2: string[];
+  triads3: string[];
+  triads4: string[];
+  triads5: string[];
+  triads6: string[];
+  seventhChords1: string[];
+  seventhChords2: string[];
+  seventhChords3: string[];
+  seventhChords4: string[];
+  seventhChords5: string[];
+  seventhChords6: string[];
   chords: InputData;
   progressions: InputData;
   blues: InputData;
@@ -241,6 +261,11 @@ export interface UserDataProps {
   currentUserData: InputState;
   setCurrentUserData: (userData: InputState) => void;
   nextViewState: () => void;
+}
+
+export interface UserDataBluesProps extends UserDataProps {
+  isPDFReady: boolean;
+  setIsPDFReady: React.Dispatch<SetStateAction<boolean>>;
 }
 
 export interface TextInput {

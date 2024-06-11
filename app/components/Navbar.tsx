@@ -27,6 +27,14 @@ const Navbar: FC = () => {
               </h1>
             </Link>
           </div>
+          <ul className="hidden sm:text-1xl py-20 sm:py-1 sm:flex">
+            <li className="p-4">
+              <Link href="/registration">Register</Link>
+            </li>
+            <li className="p-4">
+              <Link href="/exam">Exam</Link>
+            </li>
+          </ul>
         </div>
         <Box>
           <CountdownTimer />

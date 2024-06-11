@@ -21,13 +21,13 @@ export default function KeySignaturesNotation({
   setCurrentUserData,
   nextViewState,
 }: UserDataProps) {
-  const [keySignatureNotation, setKeySignatureNotation] = useState("");
+  const [keySignatureNotation, setKeySignatureNotation] = useState([]);
 
   const handleSubmit = async (e: MouseEvent) => {
     e.preventDefault();
     const payload = {
       ...currentUserData,
-      keySignaturesNotation: keySignatureNotation,
+      keySignaturesNotation3: keySignatureNotation,
     };
     setCurrentUserData(payload);
     nextViewState();
@@ -42,7 +42,7 @@ export default function KeySignaturesNotation({
       <Box
         component="main"
         width={1139}
-        height={637}
+        height={610}
         bgcolor={"secondary.main"}
         borderRadius="var(--borderRadius)"
         p={2}
@@ -51,9 +51,6 @@ export default function KeySignaturesNotation({
         <Grid container spacing={4} p={2}>
           <Grid item xs={4}>
             <Stack gap={2} alignItems={"center"}>
-              <Typography variant="h6" align="center">
-                Section 1: Notate Key Signatures
-              </Typography>
               <Box
                 width={273}
                 height={456}

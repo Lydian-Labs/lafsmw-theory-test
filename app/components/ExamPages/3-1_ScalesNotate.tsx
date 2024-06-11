@@ -21,7 +21,7 @@ export default function ScalesNotation({
   setCurrentUserData,
   nextViewState,
 }: UserDataProps) {
-  const [scales, setScales] = useState("");
+  const [scales, setScales] = useState<Array<string>>([]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -38,7 +38,7 @@ export default function ScalesNotation({
       <Box
         component="main"
         width={1139}
-        height={637}
+        height={610}
         bgcolor={"secondary.main"}
         borderRadius="var(--borderRadius)"
         p={2}
@@ -101,10 +101,14 @@ export default function ScalesNotation({
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <NotateScale handleNotes={setScales} />
+                  <NotateScale setScales={setScales} />
                 </Grid>
               </Grid>
-              <CardFooter pageNumber={6} handleSubmit={handleSubmit} />
+              <CardFooter
+                buttonText={"Continue >"}
+                pageNumber={6}
+                handleSubmit={handleSubmit}
+              />
             </Box>
           </Grid>
         </Grid>

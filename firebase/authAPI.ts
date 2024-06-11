@@ -7,11 +7,16 @@ import {
 } from "firebase/auth";
 import { auth } from "./config";
 
-export async function signUp(email, password, displayName) {
+export async function signUp(
+  email: string,
+  password: string,
+  displayName: string
+) {
   try {
     await createUserWithEmailAndPassword(auth, email, password).catch((err) =>
       console.error("createUserWithEmailAndPassword error:", err)
     );
+    if (auth.currentUser === null) throw new Error("User not created yet.");
     await updateProfile(auth.currentUser, { displayName: displayName }).catch(
       (err) => console.error("updateProfile error:", err)
     );
@@ -21,16 +26,18 @@ export async function signUp(email, password, displayName) {
   }
 }
 
-export async function signIn(email, password) {
+export async function signIn(email: string, password: string) {
   try {
     await signInWithEmailAndPassword(auth, email, password).catch((err) => {
       console.error("signInWithEmailAndPassword error:", err);
       alert("Invalid email or password");
     });
-    console.log(
-      "Sign in successfull! CurrentUser:",
-      auth.currentUser.displayName
-    );
+    if (auth.currentUser !== null) {
+      console.log(
+        "Sign in successfull! CurrentUser:",
+        auth.currentUser.displayName
+      );
+    }
   } catch (err) {
     console.error("signIn error:", err);
   }
@@ -40,7 +47,7 @@ export async function signOutOfApp() {
   return signOut(auth);
 }
 
-export async function resetPassword(email) {
+export async function resetPassword(email: string) {
   sendPasswordResetEmail(auth, email)
     .then(() => {
       alert(`Password reset email sent to ${email}`);

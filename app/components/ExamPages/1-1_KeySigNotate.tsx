@@ -23,7 +23,7 @@ export default function KeySignaturesNotation({
   nextViewState,
 }: UserDataProps) {
   const [level, setLevel] = useState<Level>("sibelius-class");
-  const [keySignatureNotation, setKeySignatureNotation] = useState("");
+  const [keySignatureNotation, setKeySignatureNotation] = useState([]);
 
   const handleSubmit = async (e: MouseEvent) => {
     e.preventDefault();

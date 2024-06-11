@@ -1,10 +1,10 @@
-import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { InputState } from "./typesAndInterfaces";
+import { storage } from "../../firebase/config";
 
 // Get a reference to the storage service, which is used to create references in your storage bucket
-const storage = getStorage();
 
 export const savePDF = async (
   userName: string | undefined,

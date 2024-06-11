@@ -1,6 +1,9 @@
 "use client";
-import { modifyNotesActionTypes } from "../lib/actionTypes";
+import { Button, Stack, Typography } from "@mui/material";
+import Container from "@mui/material/Container";
 import React, {
+  Dispatch,
+  SetStateAction,
   useCallback,
   useEffect,
   useMemo,
@@ -12,6 +15,7 @@ import VexFlow from "vexflow";
 import BlueButton from "../components/BlueButton";
 import CheckIfNoteFound from "../components/CheckIfNoteFound";
 import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
+import { modifyNotesActionTypes } from "../lib/actionTypes";
 import { buttonGroup } from "../lib/buttonsAndButtonGroups";
 import { initialNotesAndCoordsState } from "../lib/data/initialNotesAndCoordinatesState";
 import { staveData } from "../lib/data/stavesData";
@@ -25,11 +29,14 @@ import { notesArray } from "../lib/noteArray";
 import { scaleReducer } from "../lib/reducer";
 import { setupRendererAndDrawNotes } from "../lib/setupRendererAndDrawNotes";
 import { ScaleData, StaveType } from "../lib/typesAndInterfaces";
-import Container from "@mui/material/Container";
 
 const { Renderer } = VexFlow.Flow;
 
-const NotateScale = ({ handleNotes }: any) => {
+const NotateScale = ({
+  setScales,
+}: {
+  setScales: Dispatch<SetStateAction<Array<string>>>;
+}) => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
   const [staves, setStaves] = useState<StaveType[]>([]);
@@ -73,25 +80,25 @@ const NotateScale = ({ handleNotes }: any) => {
     [rendererRef, setStaves, scaleDataMatrix, staves]
   );
 
-  //this is the array we will use for grading
-  const scaleDataForGrading = scaleDataMatrix[0].map((scaleDataMatrix) =>
-    scaleDataMatrix.keys.join(", ")
-  );
-
   useEffect(() => {
     initializeRenderer(rendererRef, container);
     renderStavesAndNotes();
     setNotesAndCoordinates(() => generateYMinAndYMaxForNotes(8, notesArray));
   }, []);
 
-  useEffect(() => {
-    renderStavesAndNotes();
-    console.log("scale data for grading:", scaleDataForGrading);
-  }, [scaleDataMatrix]);
+  //this is the array we will use for grading
+  const scaleDataForGrading = scaleDataMatrix[0].map((scaleDataMatrix) =>
+    scaleDataMatrix.keys.join(", ")
+  );
 
   useEffect(() => {
     console.log("scale data for grading:", scaleDataForGrading);
+    renderStavesAndNotes();
   }, [scaleDataMatrix]); // Listening to changes in scaleDataMatrix
+
+  const handleScalesClick = (e: React.MouseEvent) => {
+    setScales(scaleDataForGrading);
+  };
 
   const handleClick = (e: React.MouseEvent) => {
     const { userClickY, userClickX } = getUserClickInfo(
@@ -155,7 +162,6 @@ const NotateScale = ({ handleNotes }: any) => {
     );
     setNotesAndCoordinates(() => newNotesAndCoordinates);
     setScaleDataMatrix(() => newScaleDataMatrix);
-    handleNotes(scaleDataForGrading);
   };
 
   return (
@@ -192,6 +198,13 @@ const NotateScale = ({ handleNotes }: any) => {
         })}
         <BlueButton onClick={eraseMeasures}>Erase Measure</BlueButton>
       </Container>
+      <Stack direction="row" spacing={2}>
+        <Typography marginTop={2} align="left">
+          *Note: You
+          <b> MUST</b> press <em>Save </em>before moving on.
+        </Typography>
+        <Button onClick={handleScalesClick}>Save</Button>
+      </Stack>
     </>
   );
 };

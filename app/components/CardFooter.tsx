@@ -21,7 +21,7 @@ export default function CardFooter({
   buttonForm,
 }: CardFooterProps) {
   return (
-    <Box width={width} height={height} margin={"auto"} alignContent={"center"}>
+    <Box width={width} height={height} margin={"auto"}>
       <Divider sx={{ paddingY: "16px", marginBottom: "12px" }} />
       <Stack
         direction="row"
@@ -33,7 +33,7 @@ export default function CardFooter({
           <Typography
             variant="body2"
             fontWeight="600"
-          >{`Page: ${pageNumber}/16`}</Typography>
+          >{`Page: ${pageNumber}/26`}</Typography>
           <ProgressBar value={Number(pageNumber)} />
         </Stack>
         <Button

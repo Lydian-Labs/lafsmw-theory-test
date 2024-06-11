@@ -1,31 +1,43 @@
 "use client";
 import { savePDF } from "@/app/lib/savePDF";
-import { InputData, UserDataProps } from "@/app/lib/typesAndInterfaces";
+import { InputData, UserDataBluesProps } from "@/app/lib/typesAndInterfaces";
 import { useAuthContext } from "@/firebase/authContext";
 import { Box, Button, Grid, Stack, Typography } from "@mui/material";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import CardFooter from "../CardFooter";
 import WriteBlues from "../WriteBlues";
+import SnackbarToast from "../SnackbarToast";
 
 export default function WriteBluesChanges({
   currentUserData,
   setCurrentUserData,
   nextViewState,
-}: UserDataProps) {
+  isPDFReady,
+  setIsPDFReady,
+}: UserDataBluesProps) {
   const { user } = useAuthContext();
   const userName = user?.displayName?.split(" ").join("_");
   const writeBluesFormRef = useRef<HTMLFormElement | null>(null);
+  const [open, setOpen] = useState<boolean>(false);
 
   function handleBluesInput(input: InputData) {
     setCurrentUserData({ ...currentUserData, blues: input });
   }
 
   async function handlePDF() {
+    if (!isPDFReady) {
+      setIsPDFReady(true);
+    }
     savePDF(userName, setCurrentUserData, currentUserData);
   }
 
   return (
     <Box sx={{ display: "flex", justifyContent: "center" }}>
+      <SnackbarToast
+        open={open}
+        setOpen={setOpen}
+        message={"You must save the PDF before moving on."}
+      />
       <Box
         component="main"
         width={1450}
@@ -84,12 +96,16 @@ export default function WriteBluesChanges({
             </Grid>
             <CardFooter
               width={1100}
-              pageNumber={16}
+              pageNumber={26}
               buttonText="Continue >"
               buttonForm="submit-form-blues"
               handleSubmit={() => {
-                writeBluesFormRef.current?.requestSubmit();
-                nextViewState();
+                if (!isPDFReady) {
+                  setOpen(true);
+                } else {
+                  writeBluesFormRef.current?.requestSubmit();
+                  nextViewState();
+                }
               }}
             />
           </Box>

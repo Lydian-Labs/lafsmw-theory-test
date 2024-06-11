@@ -10,26 +10,26 @@ import {
   Typography,
 } from "@mui/material";
 
+import triadsText from "@/app/lib/data/triadsText";
 import { notationInstructions } from "@/app/lib/instructions";
 import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CardFooter from "../CardFooter";
-import NotateScale from "../NotateScale";
+import NotateChord from "../NotateChord";
 
-export default function ScalesNotation3({
+export default function TriadsNotation1({
   currentUserData,
   setCurrentUserData,
   nextViewState,
 }: UserDataProps) {
-  const [scales, setScales] = useState<Array<string>>([]);
+  const [chords, setChords] = useState<string[]>([]);
+
+  useEffect(() => {
+    setCurrentUserData({ ...currentUserData, triads1: chords });
+  }, [chords]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    const payload = {
-      ...currentUserData,
-      scales3: scales,
-    };
-    setCurrentUserData(payload);
     nextViewState();
   };
 
@@ -47,6 +47,9 @@ export default function ScalesNotation3({
         <Grid container spacing={4} p={2}>
           <Grid item xs={4}>
             <Stack gap={2} alignItems={"center"}>
+              <Typography variant="h6" align="center">
+                Section 4: Notate Triads
+              </Typography>
               <Box
                 width={273}
                 height={456}
@@ -94,16 +97,16 @@ export default function ScalesNotation3({
               >
                 <Grid item>
                   <Typography variant="h6">
-                    Write the following scale: C Dorian
+                    {`Write the following triad: ${triadsText[0]}`}
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <NotateScale setScales={setScales} />
+                  <NotateChord setChords={setChords} />
                 </Grid>
               </Grid>
               <CardFooter
                 buttonText={"Continue >"}
-                pageNumber={8}
+                pageNumber={12}
                 handleSubmit={handleSubmit}
               />
             </Box>

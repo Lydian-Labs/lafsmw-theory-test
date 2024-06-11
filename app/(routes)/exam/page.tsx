@@ -11,8 +11,20 @@ import ScalesNotate4 from "@/app/components/ExamPages/3-4_ScalesNotate";
 import ScalesNotate5 from "@/app/components/ExamPages/3-5_ScalesNotate";
 import ScalesNotate6 from "@/app/components/ExamPages/3-6_ScalesNotate";
 
-import TriadsNotate from "@/app/components/ExamPages/4_TriadsNotate";
-import SeventhChordsNotate from "@/app/components/ExamPages/5_SeventhChordsNotate";
+import TriadsNotate1 from "@/app/components/ExamPages/4-1_TriadsNotate";
+import TriadsNotate2 from "@/app/components/ExamPages/4-2_TriadsNotate";
+import TriadsNotate3 from "@/app/components/ExamPages/4-3_TriadsNotate";
+import TriadsNotate4 from "@/app/components/ExamPages/4-4_TriadsNotate";
+import TriadsNotate5 from "@/app/components/ExamPages/4-5_TriadsNotate";
+import TriadsNotate6 from "@/app/components/ExamPages/4-6_TriadsNotate";
+
+import SeventhChordsNotate1 from "@/app/components/ExamPages/5-1_SeventhChordsNotate";
+import SeventhChordsNotate2 from "@/app/components/ExamPages/5-2_SeventhChordsNotate";
+import SeventhChordsNotate3 from "@/app/components/ExamPages/5-3_SeventhChordsNotate";
+import SeventhChordsNotate4 from "@/app/components/ExamPages/5-4_SeventhChordsNotate";
+import SeventhChordsNotate5 from "@/app/components/ExamPages/5-5_SeventhChordsNotate";
+import SeventhChordsNotate6 from "@/app/components/ExamPages/5-6_SeventhChordsNotate";
+
 import ChordsIdentify from "@/app/components/ExamPages/6_ChordsIdentify";
 import WriteProgressions from "@/app/components/ExamPages/7_WriteProgressions";
 import WriteBluesChanges from "@/app/components/ExamPages/8_WriteBluesChanges";
@@ -35,7 +47,38 @@ import {
 } from "@/firebase/firestore/model";
 import { Box, Button, Stack, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+
+const VIEW_STATES = {
+  START_TEST: 0,
+  KEY_SIG_NOTATE1: 1,
+  KEY_SIG_NOTATE2: 2,
+  KEY_SIG_NOTATE3: 3,
+  KEY_SIG_NOTATE4: 4,
+  KEY_SIG_IDENTIFY: 5,
+  SCALES_NOTATE1: 6,
+  SCALES_NOTATE2: 7,
+  SCALES_NOTATE3: 8,
+  SCALES_NOTATE4: 9,
+  SCALES_NOTATE5: 10,
+  SCALES_NOTATE6: 11,
+  TRIADS_NOTATE1: 12,
+  TRIADS_NOTATE2: 13,
+  TRIADS_NOTATE3: 14,
+  TRIADS_NOTATE4: 15,
+  TRIADS_NOTATE5: 16,
+  TRIADS_NOTATE6: 17,
+  SEVENTH_CHORDS_NOTATE1: 18,
+  SEVENTH_CHORDS_NOTATE2: 19,
+  SEVENTH_CHORDS_NOTATE3: 20,
+  SEVENTH_CHORDS_NOTATE4: 21,
+  SEVENTH_CHORDS_NOTATE5: 22,
+  SEVENTH_CHORDS_NOTATE6: 23,
+  CHORDS_IDENTIFY: 24,
+  WRITE_PROGRESSIONS: 25,
+  WRITE_BLUES_CHANGES: 26,
+  SUBMIT_AND_EXIT: 27,
+};
 
 export default function ExamHomePage() {
   const { user } = useAuthContext();
@@ -50,32 +93,12 @@ export default function ExamHomePage() {
     userId: userId,
   };
 
-  const VIEW_STATES = {
-    START_TEST: 0,
-    KEY_SIG_NOTATE1: 1,
-    KEY_SIG_NOTATE2: 2,
-    KEY_SIG_NOTATE3: 3,
-    KEY_SIG_NOTATE4: 4,
-    KEY_SIG_IDENTIFY: 5,
-    SCALES_NOTATE1: 6,
-    SCALES_NOTATE2: 7,
-    SCALES_NOTATE3: 8,
-    SCALES_NOTATE4: 9,
-    SCALES_NOTATE5: 10,
-    SCALES_NOTATE6: 11,
-    TRIADS_NOTATE: 12,
-    SEVENTH_CHORDS_NOTATE: 13,
-    CHORDS_IDENTIFY: 14,
-    WRITE_PROGRESSIONS: 15,
-    WRITE_BLUES_CHANGES: 16,
-    SUBMIT_AND_EXIT: 17,
-  };
-
   const [currentUserData, setCurrentUserData] =
     useState<InputState>(initialState);
   const [userAnswers, setUserAnswers] = useState<string[]>([]);
   const [viewState, setViewState] = useState(VIEW_STATES.START_TEST);
   const [timesUp, setTimesUp] = useState(false);
+  const [isPDFReady, setIsPDFReady] = useState(false);
 
   useEffect(() => {
     const fetchSnapshot = async () => {
@@ -84,9 +107,11 @@ export default function ExamHomePage() {
         if (error) {
           console.error(message);
         } else if (res) {
-          //console.log(success);
-          let inputRes = { ...currentUserData, ...res[0] };
-          setCurrentUserData(inputRes);
+          console.log(success);
+          setCurrentUserData((prevCurrentUserData) => ({
+            ...prevCurrentUserData,
+            ...res[0],
+          }));
         }
       } catch (error) {
         console.error(error);
@@ -100,7 +125,7 @@ export default function ExamHomePage() {
     }
   }, [router, user]);
 
-  const updateAnswers = async () => {
+  const updateAnswers = useCallback(async () => {
     const userChordAnswers = convertObjectToArray(currentUserData.chords);
     const userKeySigAnswers = convertObjectToArray(
       currentUserData.keySignatures
@@ -132,11 +157,11 @@ export default function ExamHomePage() {
       currentUserData.bluesUrl,
       chordChart,
     ]);
-  };
+  }, [currentUserData]);
 
   useEffect(() => {
     updateAnswers();
-  }, [currentUserData]);
+  }, [updateAnswers, currentUserData]);
 
   const incrementViewState = () => {
     setViewState((prevState) => {
@@ -200,9 +225,6 @@ export default function ExamHomePage() {
           `Failed to send email: ${errorData.error}, Details: ${errorData.details}`
         );
       }
-
-      await response.json();
-
       return router.push("/sign-out");
     } catch (error) {
       console.error("handleSubmit error:", error);
@@ -329,15 +351,85 @@ export default function ExamHomePage() {
             nextViewState={incrementViewState}
           />
         )}
-        {viewState === VIEW_STATES.TRIADS_NOTATE && (
-          <TriadsNotate
+        {viewState === VIEW_STATES.TRIADS_NOTATE1 && (
+          <TriadsNotate1
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
           />
         )}
-        {viewState === VIEW_STATES.SEVENTH_CHORDS_NOTATE && (
-          <SeventhChordsNotate
+        {viewState === VIEW_STATES.TRIADS_NOTATE2 && (
+          <TriadsNotate2
+            currentUserData={currentUserData}
+            setCurrentUserData={setCurrentUserData}
+            nextViewState={incrementViewState}
+          />
+        )}
+        {viewState === VIEW_STATES.TRIADS_NOTATE3 && (
+          <TriadsNotate3
+            currentUserData={currentUserData}
+            setCurrentUserData={setCurrentUserData}
+            nextViewState={incrementViewState}
+          />
+        )}
+        {viewState === VIEW_STATES.TRIADS_NOTATE4 && (
+          <TriadsNotate4
+            currentUserData={currentUserData}
+            setCurrentUserData={setCurrentUserData}
+            nextViewState={incrementViewState}
+          />
+        )}
+        {viewState === VIEW_STATES.TRIADS_NOTATE5 && (
+          <TriadsNotate5
+            currentUserData={currentUserData}
+            setCurrentUserData={setCurrentUserData}
+            nextViewState={incrementViewState}
+          />
+        )}
+        {viewState === VIEW_STATES.TRIADS_NOTATE6 && (
+          <TriadsNotate6
+            currentUserData={currentUserData}
+            setCurrentUserData={setCurrentUserData}
+            nextViewState={incrementViewState}
+          />
+        )}
+        {viewState === VIEW_STATES.SEVENTH_CHORDS_NOTATE1 && (
+          <SeventhChordsNotate1
+            currentUserData={currentUserData}
+            setCurrentUserData={setCurrentUserData}
+            nextViewState={incrementViewState}
+          />
+        )}
+        {viewState === VIEW_STATES.SEVENTH_CHORDS_NOTATE2 && (
+          <SeventhChordsNotate2
+            currentUserData={currentUserData}
+            setCurrentUserData={setCurrentUserData}
+            nextViewState={incrementViewState}
+          />
+        )}
+        {viewState === VIEW_STATES.SEVENTH_CHORDS_NOTATE3 && (
+          <SeventhChordsNotate3
+            currentUserData={currentUserData}
+            setCurrentUserData={setCurrentUserData}
+            nextViewState={incrementViewState}
+          />
+        )}
+        {viewState === VIEW_STATES.SEVENTH_CHORDS_NOTATE4 && (
+          <SeventhChordsNotate4
+            currentUserData={currentUserData}
+            setCurrentUserData={setCurrentUserData}
+            nextViewState={incrementViewState}
+          />
+        )}
+        {viewState === VIEW_STATES.SEVENTH_CHORDS_NOTATE5 && (
+          <SeventhChordsNotate5
+            currentUserData={currentUserData}
+            setCurrentUserData={setCurrentUserData}
+            nextViewState={incrementViewState}
+          />
+        )}
+        {viewState === VIEW_STATES.SEVENTH_CHORDS_NOTATE6 && (
+          <SeventhChordsNotate6
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
@@ -362,6 +454,8 @@ export default function ExamHomePage() {
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
+            isPDFReady={isPDFReady}
+            setIsPDFReady={setIsPDFReady}
           />
         )}
         {viewState === VIEW_STATES.SUBMIT_AND_EXIT && (
@@ -383,7 +477,19 @@ export default function ExamHomePage() {
             </Stack>
           </main>
         )}
-       
+        {viewState !== VIEW_STATES.SUBMIT_AND_EXIT &&
+          viewState !== VIEW_STATES.START_TEST && (
+            <Box>
+              <Button onClick={incrementViewState}>
+                <Typography variant="h4">{">"}</Typography>
+              </Button>
+              <Button
+                onClick={() => setViewState(VIEW_STATES.WRITE_BLUES_CHANGES)}
+              >
+                <Typography>{"Write Blues"}</Typography>
+              </Button>
+            </Box>
+          )}
       </Stack>
     </Box>
   );
