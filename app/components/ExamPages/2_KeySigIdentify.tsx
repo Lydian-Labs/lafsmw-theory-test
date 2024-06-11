@@ -32,7 +32,7 @@ export default function KeySignaturesIdentification({
       <Box
         component="main"
         width={1139}
-        height={580}
+        height={550}
         bgcolor={"secondary.main"}
         borderRadius="var(--borderRadius)"
         p={2}

@@ -39,7 +39,7 @@ export default function TriadsNotation1({
       <Box
         component="main"
         width={1139}
-        height={637}
+        height={610}
         bgcolor={"secondary.main"}
         borderRadius="var(--borderRadius)"
         p={2}
