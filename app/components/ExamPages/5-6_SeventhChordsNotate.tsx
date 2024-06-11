@@ -22,13 +22,13 @@ export default function NotateSeventhChords6({
   setCurrentUserData,
   nextViewState,
 }: UserDataProps) {
-  const [seventhChords, setSeventhChords] = useState([]);
+  const [chords, setChords] = useState<string[]>([]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const payload = {
       ...currentUserData,
-      seventhChords6: seventhChords,
+      seventhChords1: chords,
     };
     setCurrentUserData(payload);
     nextViewState();
@@ -99,7 +99,7 @@ export default function NotateSeventhChords6({
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <NotateChord />
+                  <NotateChord setChords={setChords} />
                 </Grid>
               </Grid>
               <CardFooter pageNumber={23} handleSubmit={handleSubmit} />
