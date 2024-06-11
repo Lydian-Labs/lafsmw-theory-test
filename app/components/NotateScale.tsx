@@ -1,6 +1,6 @@
-// TO DO: still not saving the last note in the measure no matter where I place setScales. When called in the useEffect, the DOM claims it is not a function. When called in the handleClick function, it is not saving the last note in the measure.
 "use client";
-import { modifyNotesActionTypes } from "../lib/actionTypes";
+import { Button, Stack, Typography } from "@mui/material";
+import Container from "@mui/material/Container";
 import React, {
   Dispatch,
   SetStateAction,
@@ -15,6 +15,7 @@ import VexFlow from "vexflow";
 import BlueButton from "../components/BlueButton";
 import CheckIfNoteFound from "../components/CheckIfNoteFound";
 import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
+import { modifyNotesActionTypes } from "../lib/actionTypes";
 import { buttonGroup } from "../lib/buttonsAndButtonGroups";
 import { initialNotesAndCoordsState } from "../lib/data/initialNotesAndCoordinatesState";
 import { staveData } from "../lib/data/stavesData";
@@ -28,8 +29,6 @@ import { notesArray } from "../lib/noteArray";
 import { scaleReducer } from "../lib/reducer";
 import { setupRendererAndDrawNotes } from "../lib/setupRendererAndDrawNotes";
 import { ScaleData, StaveType } from "../lib/typesAndInterfaces";
-import Container from "@mui/material/Container";
-import { Stack, Typography, Button } from "@mui/material";
 
 const { Renderer } = VexFlow.Flow;
 
