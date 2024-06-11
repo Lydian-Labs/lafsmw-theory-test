@@ -89,7 +89,7 @@ export default function NotateSeventhChords({
               </Grid>
             </Grid>
             <CardFooter
-              pageNumber={13}
+              pageNumber={18}
               width={900}
               handleSubmit={handleSubmit}
             />

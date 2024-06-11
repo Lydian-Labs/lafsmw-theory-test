@@ -68,7 +68,7 @@ export default function ChordsIdentification({
             <CardFooter
               width={900}
               height={200}
-              pageNumber={14}
+              pageNumber={19}
               handleSubmit={() => {
                 chordsFormRef.current?.requestSubmit();
                 nextViewState();

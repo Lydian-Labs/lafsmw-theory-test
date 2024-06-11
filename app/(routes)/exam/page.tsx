@@ -11,7 +11,12 @@ import ScalesNotate4 from "@/app/components/ExamPages/3-4_ScalesNotate";
 import ScalesNotate5 from "@/app/components/ExamPages/3-5_ScalesNotate";
 import ScalesNotate6 from "@/app/components/ExamPages/3-6_ScalesNotate";
 
-import TriadsNotate from "@/app/components/ExamPages/4_TriadsNotate";
+import TriadsNotate1 from "@/app/components/ExamPages/4-1_TriadsNotate";
+import TriadsNotate2 from "@/app/components/ExamPages/4-2_TriadsNotate";
+import TriadsNotate3 from "@/app/components/ExamPages/4-3_TriadsNotate";
+import TriadsNotate4 from "@/app/components/ExamPages/4-4_TriadsNotate";
+import TriadsNotate5 from "@/app/components/ExamPages/4-5_TriadsNotate";
+import TriadsNotate6 from "@/app/components/ExamPages/4-6_TriadsNotate";
 import SeventhChordsNotate from "@/app/components/ExamPages/5_SeventhChordsNotate";
 import ChordsIdentify from "@/app/components/ExamPages/6_ChordsIdentify";
 import WriteProgressions from "@/app/components/ExamPages/7_WriteProgressions";
@@ -50,12 +55,17 @@ const VIEW_STATES = {
   SCALES_NOTATE4: 9,
   SCALES_NOTATE5: 10,
   SCALES_NOTATE6: 11,
-  TRIADS_NOTATE: 12,
-  SEVENTH_CHORDS_NOTATE: 13,
-  CHORDS_IDENTIFY: 14,
-  WRITE_PROGRESSIONS: 15,
-  WRITE_BLUES_CHANGES: 16,
-  SUBMIT_AND_EXIT: 17,
+  TRIADS_NOTATE1: 12,
+  TRIADS_NOTATE2: 13,
+  TRIADS_NOTATE3: 14,
+  TRIADS_NOTATE4: 15,
+  TRIADS_NOTATE5: 16,
+  TRIADS_NOTATE6: 17,
+  SEVENTH_CHORDS_NOTATE: 18,
+  CHORDS_IDENTIFY: 19,
+  WRITE_PROGRESSIONS: 20,
+  WRITE_BLUES_CHANGES: 21,
+  SUBMIT_AND_EXIT: 22,
 };
 
 export default function ExamHomePage() {
@@ -329,8 +339,43 @@ export default function ExamHomePage() {
             nextViewState={incrementViewState}
           />
         )}
-        {viewState === VIEW_STATES.TRIADS_NOTATE && (
-          <TriadsNotate
+        {viewState === VIEW_STATES.TRIADS_NOTATE1 && (
+          <TriadsNotate1
+            currentUserData={currentUserData}
+            setCurrentUserData={setCurrentUserData}
+            nextViewState={incrementViewState}
+          />
+        )}
+        {viewState === VIEW_STATES.TRIADS_NOTATE2 && (
+          <TriadsNotate2
+            currentUserData={currentUserData}
+            setCurrentUserData={setCurrentUserData}
+            nextViewState={incrementViewState}
+          />
+        )}
+        {viewState === VIEW_STATES.TRIADS_NOTATE3 && (
+          <TriadsNotate3
+            currentUserData={currentUserData}
+            setCurrentUserData={setCurrentUserData}
+            nextViewState={incrementViewState}
+          />
+        )}
+        {viewState === VIEW_STATES.TRIADS_NOTATE4 && (
+          <TriadsNotate4
+            currentUserData={currentUserData}
+            setCurrentUserData={setCurrentUserData}
+            nextViewState={incrementViewState}
+          />
+        )}
+        {viewState === VIEW_STATES.TRIADS_NOTATE5 && (
+          <TriadsNotate5
+            currentUserData={currentUserData}
+            setCurrentUserData={setCurrentUserData}
+            nextViewState={incrementViewState}
+          />
+        )}
+        {viewState === VIEW_STATES.TRIADS_NOTATE6 && (
+          <TriadsNotate6
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
@@ -385,6 +430,14 @@ export default function ExamHomePage() {
             </Stack>
           </main>
         )}
+        {viewState !== VIEW_STATES.SUBMIT_AND_EXIT &&
+          viewState !== VIEW_STATES.START_TEST && (
+            <Box>
+              <Button onClick={incrementViewState}>
+                <Typography variant="h4">{">"}</Typography>
+              </Button>
+            </Box>
+          )}
       </Stack>
     </Box>
   );
