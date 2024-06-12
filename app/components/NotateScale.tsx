@@ -1,5 +1,5 @@
 "use client";
-import { Button, Stack, Typography, Box } from "@mui/material";
+import { Button, Stack, Typography } from "@mui/material";
 import Container from "@mui/material/Container";
 import React, {
   Dispatch,
