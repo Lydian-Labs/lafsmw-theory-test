@@ -92,7 +92,7 @@ export default function ScalesNotation({
                 direction="column"
                 alignItems={"center"}
                 marginY={"auto"}
-                p={4}
+                p={2}
                 spacing={2}
               >
                 <Grid item>

@@ -160,18 +160,16 @@ const NotateChord = ({
       >
         {modifyChordsButtonGroup.map((button) => {
           return (
-            <RegularButton
-              key={button.text}
-              onClick={button.action}
-              isEnabled={button.isEnabled}
-            >
+            <Button key={button.text} onClick={button.action} sx={{ m: 0.5 }}>
               {button.text}
-            </RegularButton>
+            </Button>
           );
         })}
-        <RegularButton onClick={eraseChord}>Erase Chord</RegularButton>
+        <Button onClick={eraseChord} sx={{ m: 0.5 }}>
+          Erase Chord
+        </Button>
       </Container>
-      <Stack direction="row" spacing={2}>
+      <Stack direction="row" spacing={2} mt={2}>
         <Typography marginTop={2} align="left">
           *Note: You
           <b> MUST</b> press <em>Save </em>before moving on.

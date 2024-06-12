@@ -18,7 +18,7 @@ const BlueButton: React.FC<BlueButtonProps> = ({
       onClick={onClick}
       sx={{
         "&.MuiButton-root": {
-          backgroundColor: isEnabled ? "#0069d9" : "#a4b1bf",
+          backgroundColor: isEnabled ? "#F6D168" : "#a4b1bf",
           borderColor: isEnabled ? "#0063cc" : "#a4b1bf",
           margin: .5
           
