@@ -13,7 +13,7 @@ import {
 import seventhChordsText from "@/app/lib/data/seventhChordsText";
 import { notationInstructions } from "@/app/lib/instructions";
 import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import CardFooter from "../CardFooter";
 import NotateChord from "../NotateChord";
 
@@ -23,10 +23,25 @@ export default function NotateSeventhChords4({
   nextViewState,
 }: UserDataProps) {
   const [chords, setChords] = useState<string[]>([]);
+  const currentUserDataRef = useRef(currentUserData);
+
+  const memoizedSetCurrentUserData = useCallback(
+    (data: any) => {
+      setCurrentUserData(data);
+    },
+    [setCurrentUserData]
+  );
 
   useEffect(() => {
-    setCurrentUserData({ ...currentUserData, seventhChords4: chords });
-  }, [chords]);
+    currentUserDataRef.current = currentUserData;
+  }, [currentUserData]);
+
+  useEffect(() => {
+    memoizedSetCurrentUserData({
+      ...currentUserDataRef.current,
+      seventhChords4: chords,
+    });
+  }, [chords, memoizedSetCurrentUserData]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();

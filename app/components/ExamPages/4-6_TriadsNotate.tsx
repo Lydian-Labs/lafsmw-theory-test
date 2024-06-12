@@ -13,7 +13,7 @@ import {
 import triadsText from "@/app/lib/data/triadsText";
 import { notationInstructions } from "@/app/lib/instructions";
 import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import CardFooter from "../CardFooter";
 import NotateChord from "../NotateChord";
 
@@ -23,10 +23,25 @@ export default function TriadsNotation6({
   nextViewState,
 }: UserDataProps) {
   const [chords, setChords] = useState<string[]>([]);
+  const currentUserDataRef = useRef(currentUserData);
+
+  const memoizedSetCurrentUserData = useCallback(
+    (data: any) => {
+      setCurrentUserData(data);
+    },
+    [setCurrentUserData]
+  );
 
   useEffect(() => {
-    setCurrentUserData({ ...currentUserData, triads6: chords });
-  }, [chords]);
+    currentUserDataRef.current = currentUserData;
+  }, [currentUserData]);
+
+  useEffect(() => {
+    memoizedSetCurrentUserData({
+      ...currentUserDataRef.current,
+      triads6: chords,
+    });
+  }, [chords, memoizedSetCurrentUserData]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
