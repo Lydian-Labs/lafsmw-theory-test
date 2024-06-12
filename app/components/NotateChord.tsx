@@ -50,6 +50,12 @@ const NotateChord = ({
   const [barIndex, setBarIndex] = useState<number>(0);
   const [chordData, setChordData] = useState<Chord>(initialChordData);
 
+  const [staveCoordinates, setStaveCoordinates] = useState({
+    topLineYCoord: 0,
+    topLineForText: 0,
+    lineSpacing: 0,
+  });
+
   const [notesAndCoordinates, setNotesAndCoordinates] = useState<
     NotesAndCoordinatesData[]
   >([initialNotesAndCoordsState]);
@@ -103,12 +109,29 @@ const NotateChord = ({
       container,
       staves[0]
     );
+
     console.log("userClickY: ", userClickY);
+
     let foundNoteData = notesAndCoordinates.find(
       ({ yCoordinateMin, yCoordinateMax }) =>
         userClickY >= yCoordinateMin && userClickY <= yCoordinateMax
     );
     console.log("foundNoteData: ", foundNoteData);
+
+    if (staves) {
+      setStaveCoordinates(() => {
+        const newState = {
+          topLineYCoord: staves[0].getYForLine(0),
+          topLineForText: staves[0].getYForTopText(0),
+          lineSpacing: staves[0].getSpacingBetweenLines(),
+        };
+        return newState;
+      });
+      console.log("staveData", staveCoordinates);
+    } else {
+      console.log("no staves");
+    }
+
     let chordDataCopy = { ...chordData };
     let notesAndCoordinatesCopy = [...notesAndCoordinates];
 
@@ -122,6 +145,7 @@ const NotateChord = ({
       noNoteFound();
       return;
     }
+
     const {
       chordData: newChordData,
       notesAndCoordinates: newNotesAndCoordinates,
