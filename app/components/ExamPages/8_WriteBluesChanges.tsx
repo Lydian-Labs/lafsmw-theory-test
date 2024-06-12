@@ -47,6 +47,7 @@ export default function WriteBluesChanges({
         p={2}
         boxShadow={"0px 4px 4px rgba(0, 0, 0, 0.25)"}
       >
+       
         <Stack gap={2}>
           <Typography variant="h6" marginLeft={8}>
             Section 8: Write Blues Chord Changes

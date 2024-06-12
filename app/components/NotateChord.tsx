@@ -19,7 +19,6 @@ import { initialChordData } from "../lib/data/initialChordData";
 import { initialNotesAndCoordsState } from "../lib/data/initialNotesAndCoordinatesState";
 import { staveData } from "../lib/data/stavesData";
 import { findBarIndex } from "../lib/findBar";
-import generateYMinAndYMaxForNotes from "../lib/generateYMinAndMaxForAllNotes";
 import { handleChordInteraction } from "../lib/handleChordInteraction";
 import { chordInteractionInitialState } from "../lib/initialStates";
 import { initializeRenderer } from "../lib/initializeRenderer";
@@ -59,6 +58,8 @@ const NotateChord = ({
     NotesAndCoordinatesData[]
   >([initialNotesAndCoordsState]);
 
+  const TOLERANCE = 5;
+
   const noNoteFound = () => dispatch({ type: "noNoteFound" });
 
   const modifyChordsButtonGroup = useMemo(
@@ -81,11 +82,25 @@ const NotateChord = ({
     };
   };
 
+  
+  const generateYMinAndYMax = (
+    topNoteYCoordinate: number,
+    notes: string[]
+  ): NotesAndCoordinatesData[] => {
+    return notes.map((note, index) => {
+      const originalNote = note;
+      const yCoordinateMin = topNoteYCoordinate + index * 5;
+      const yCoordinateMax = yCoordinateMin + TOLERANCE;
+
+      return { originalNote, note, yCoordinateMin, yCoordinateMax };
+    });
+  };
+
   const eraseChord = () => {
     setChordData((): Chord => {
       return initialChordData;
     });
-    setNotesAndCoordinates(() => generateYMinAndYMaxForNotes(33, notesArray));
+    setNotesAndCoordinates(() => generateYMinAndYMax(33, notesArray));
     renderStavesAndChords();
   };
 
@@ -105,7 +120,7 @@ const NotateChord = ({
   useEffect(() => {
     initializeRenderer(rendererRef, container);
     renderStavesAndChords();
-    setNotesAndCoordinates(() => generateYMinAndYMaxForNotes(33, notesArray));
+    setNotesAndCoordinates(() => generateYMinAndYMax(33, notesArray));
   }, []);
 
   useEffect(() => {
