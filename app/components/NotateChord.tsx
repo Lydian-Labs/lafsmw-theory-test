@@ -20,7 +20,6 @@ import { initialNotesAndCoordsState } from "../lib/data/initialNotesAndCoordinat
 import { staveData } from "../lib/data/stavesData";
 import { findBarIndex } from "../lib/findBar";
 import generateYMinAndYMaxForNotes from "../lib/generateYMinAndMaxForAllNotes";
-import getUserClickInfo from "../lib/getUserClickInfo";
 import { handleChordInteraction } from "../lib/handleChordInteraction";
 import { chordInteractionInitialState } from "../lib/initialStates";
 import { initializeRenderer } from "../lib/initializeRenderer";
@@ -67,6 +66,21 @@ const NotateChord = ({
     [dispatch, state]
   );
 
+  const getUserClickData = (
+    e: React.MouseEvent,
+    container: React.RefObject<HTMLDivElement>
+  ): any => {
+    const rect = container && container.current?.getBoundingClientRect();
+    const userClickY = rect ? e.clientY - rect.top : 0;
+    const userClickX = rect ? e.clientX - rect.left : 0;
+
+    return {
+      rect,
+      userClickY,
+      userClickX,
+    };
+  };
+
   const eraseChord = () => {
     setChordData((): Chord => {
       return initialChordData;
@@ -104,11 +118,7 @@ const NotateChord = ({
   };
 
   const handleClick = (e: React.MouseEvent) => {
-    const { userClickY, userClickX } = getUserClickInfo(
-      e,
-      container,
-      staves[0]
-    );
+    const { userClickY, userClickX } = getUserClickData(e, container);
 
     console.log("userClickY: ", userClickY);
 
