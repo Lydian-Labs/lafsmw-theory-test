@@ -25,11 +25,10 @@ export default function KeySignaturesNotation({
 
   const handleSubmit = async (e: MouseEvent) => {
     e.preventDefault();
-    const payload = {
+    setCurrentUserData({
       ...currentUserData,
       keySignaturesNotation4: keySignatureNotation,
-    };
-    setCurrentUserData(payload);
+    });
     nextViewState();
   };
 

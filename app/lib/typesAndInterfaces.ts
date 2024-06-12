@@ -31,7 +31,7 @@ export type Level =
   | "advanced-arranging"
   | "rhythm-class"
   | "sibelius-class"
-  | "";
+  | "select-here";
 
 export type RendererRef = RefObject<InstanceType<typeof Renderer>>;
 export type SetStaves = Dispatch<SetStateAction<StaveType[]>>;
