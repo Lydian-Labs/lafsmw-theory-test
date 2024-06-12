@@ -195,36 +195,36 @@ export default function ExamHomePage() {
       await setOrUpdateStudentData(currentUserData, userName);
 
       // Send email with results using API route
-      const response = await fetch("/api/email", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: process.env.EMAIL_CAMP_DIRECTOR,
-          subject: `Exam Results for ${userName}`,
-          text: `<p>Hello Kyle,</p>
+      // const response = await fetch("/api/email", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({
+      //     email: process.env.EMAIL_CAMP_DIRECTOR,
+      //     subject: `Exam Results for ${userName}`,
+      //     text: `<p>Hello Kyle,</p>
 
-          <p>Here are the results for ${userName}:</p>
-          <ul>
-            <li>Level: ${userAnswers[0]}</li>
-            <li>Key Signatures: ${userAnswers[1]}</li>
-            <li>Seventh Chords: ${userAnswers[2]}</li>
-            <li>II-V-I Progressions: ${userAnswers[3]}</li>
-            <li>Link to blues progression pdf: ${userAnswers[4]}</li>
-            <li>Blues progression chart: ${userAnswers[5]}</li>
-          </ul>
+      //     <p>Here are the results for ${userName}:</p>
+      //     <ul>
+      //       <li>Level: ${userAnswers[0]}</li>
+      //       <li>Key Signatures: ${userAnswers[1]}</li>
+      //       <li>Seventh Chords: ${userAnswers[2]}</li>
+      //       <li>II-V-I Progressions: ${userAnswers[3]}</li>
+      //       <li>Link to blues progression pdf: ${userAnswers[4]}</li>
+      //       <li>Blues progression chart: ${userAnswers[5]}</li>
+      //     </ul>
 
-          <p>Thank you,<br>Team at Lydian Labs Technology.</p>`,
-        }),
-      });
+      //     <p>Thank you,<br>Team at Lydian Labs Technology.</p>`,
+      //   }),
+      // });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(
-          `Failed to send email: ${errorData.error}, Details: ${errorData.details}`
-        );
-      }
+      // if (!response.ok) {
+      //   const errorData = await response.json();
+      //   throw new Error(
+      //     `Failed to send email: ${errorData.error}, Details: ${errorData.details}`
+      //   );
+      // }
       return router.push("/sign-out");
     } catch (error) {
       console.error("handleSubmit error:", error);

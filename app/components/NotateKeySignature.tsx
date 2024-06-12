@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import React, {
   useCallback,
@@ -80,7 +81,7 @@ const NotateKeySignature = ({ handleNotes }: any) => {
   useEffect(() => {
     console.log("key signature: ", keySig);
     handleNotes(keySig);
-  }, [handleNotes, keySig]);
+  }, [keySig]);
 
   useEffect(() => {
     initializeRenderer(rendererRef, container);

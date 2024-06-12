@@ -16,6 +16,7 @@ import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import { useCallback, useEffect, useRef, useState } from "react";
 import CardFooter from "../CardFooter";
 import NotateChord from "../NotateChord";
+import SnackbarToast from "../SnackbarToast";
 
 export default function TriadsNotation4({
   currentUserData,
@@ -24,6 +25,8 @@ export default function TriadsNotation4({
 }: UserDataProps) {
   const [chords, setChords] = useState<string[]>([]);
   const currentUserDataRef = useRef(currentUserData);
+  const [open, setOpen] = useState<boolean>(false);
+  const [isReady, setIsReady] = useState<boolean>(false);
 
   const memoizedSetCurrentUserData = useCallback(
     (data: any) => {
@@ -45,11 +48,20 @@ export default function TriadsNotation4({
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    nextViewState();
+    if (!isReady) {
+      setOpen(true);
+    } else {
+      nextViewState();
+    }
   };
 
   return (
     <Container>
+      <SnackbarToast
+        open={open}
+        setOpen={setOpen}
+        message={"You must press Save before moving on."}
+      />
       <Box
         component="main"
         width={1139}
@@ -113,7 +125,7 @@ export default function TriadsNotation4({
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <NotateChord setChords={setChords} />
+                  <NotateChord setChords={setChords} setIsReady={setIsReady} />
                 </Grid>
               </Grid>
               <CardFooter

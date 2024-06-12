@@ -28,7 +28,7 @@ export default function WriteBluesChanges({
     if (!isPDFReady) {
       setIsPDFReady(true);
     }
-    savePDF(userName, setCurrentUserData, currentUserData);
+    // savePDF(userName, setCurrentUserData, currentUserData);
   }
 
   return (

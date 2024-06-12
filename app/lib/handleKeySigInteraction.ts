@@ -2,7 +2,6 @@ import {
   removeAccidentalFromNotesAndCoords,
   updateNotesAndCoordsWithAccidental,
 } from "../lib/modifyNotesAndCoordinates";
-import { deleteAccidentalFromKeySig } from "./modifyKeySignature";
 import { KeySigState, NotesAndCoordinatesData } from "./typesAndInterfaces";
 
 export const handleKeySigInteraction = (

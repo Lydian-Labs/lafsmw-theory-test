@@ -124,7 +124,7 @@ export interface NoteStringData {
 }
 export interface NotesAndCoordinatesData {
   note: string;
-  originalNote: string;
+  originalNote?: string;
   yCoordinateMin: number;
   yCoordinateMax: number;
   userClickY?: number;
@@ -239,6 +239,8 @@ export interface InputState {
   scales2: string[];
   scales3: string[];
   scales4: string[];
+  scales5: string[];
+  scales6: string[];
   triads1: string[];
   triads2: string[];
   triads3: string[];

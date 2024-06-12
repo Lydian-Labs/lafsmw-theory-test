@@ -15,6 +15,7 @@ import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import { useState } from "react";
 import CardFooter from "../CardFooter";
 import NotateScale from "../NotateScale";
+import SnackbarToast from "../SnackbarToast";
 
 export default function ScalesNotation3({
   currentUserData,
@@ -22,19 +23,30 @@ export default function ScalesNotation3({
   nextViewState,
 }: UserDataProps) {
   const [scales, setScales] = useState<Array<string>>([]);
+  const [open, setOpen] = useState<boolean>(false);
+  const [isReady, setIsReady] = useState<boolean>(false);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    const payload = {
-      ...currentUserData,
-      scales3: scales,
-    };
-    setCurrentUserData(payload);
-    nextViewState();
+    if (!isReady) {
+      setOpen(true);
+      return;
+    } else {
+      setCurrentUserData({
+        ...currentUserData,
+        scales3: scales,
+      });
+      nextViewState();
+    }
   };
 
   return (
     <Container>
+      <SnackbarToast
+        open={open}
+        setOpen={setOpen}
+        message={"You must press Save before moving on."}
+      />
       <Box
         component="main"
         width={1139}
@@ -98,7 +110,7 @@ export default function ScalesNotation3({
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <NotateScale setScales={setScales} />
+                  <NotateScale setScales={setScales} setIsReady={setIsReady} />
                 </Grid>
               </Grid>
               <CardFooter
