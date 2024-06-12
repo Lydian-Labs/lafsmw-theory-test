@@ -85,7 +85,7 @@ const NotateChord = ({
     setChordData((): Chord => {
       return initialChordData;
     });
-    setNotesAndCoordinates(() => generateYMinAndYMaxForNotes(147, notesArray));
+    setNotesAndCoordinates(() => generateYMinAndYMaxForNotes(33, notesArray));
     renderStavesAndChords();
   };
 
