@@ -13,7 +13,7 @@ import React, {
   useState,
 } from "react";
 import VexFlow from "vexflow";
-import BlueButton from "../components/BlueButton";
+
 import CheckIfNoteFound from "../components/CheckIfNoteFound";
 import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
 import { modifyNotesActionTypes } from "../lib/actionTypes";
@@ -191,18 +191,16 @@ const NotateScale = ({
       >
         {modifyStaveNotesButtonGroup.map((button) => {
           return (
-            <BlueButton
-              key={button.text}
-              onClick={button.action}
-              isEnabled={button.isEnabled}
-            >
+            <Button key={button.text} onClick={button.action} sx={{ m: 0.5 }}>
               {button.text}
-            </BlueButton>
+            </Button>
           );
         })}
-        <BlueButton onClick={eraseMeasures}>Erase Measure</BlueButton>
+        <Button onClick={eraseMeasures} sx={{ m: 1 }}>
+          Erase Measure
+        </Button>
       </Container>
-      <Stack direction="row" spacing={2}>
+      <Stack direction="row" spacing={2} mt={2}>
         <Typography marginTop={2} align="left">
           *Note: You
           <b> MUST</b> press <em>Save </em>before moving on.

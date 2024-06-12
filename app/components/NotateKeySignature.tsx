@@ -14,8 +14,8 @@ import { modifyKeySigActionTypes } from "../lib/actionTypes";
 import { buildKeySignature } from "../lib/buildKeySignature";
 import { buttonGroup, clearKeySignature } from "../lib/buttonsAndButtonGroups";
 import { initialNotesAndCoordsState } from "../lib/data/initialNotesAndCoordinatesState";
+import generateYMinAndYMaxForKeySig from "../lib/generateYMinAndMaxForKeySig";
 import { INITIAL_STAVES, staveData } from "../lib/data/stavesData";
-import generateYMinAndYMaxForNotes from "../lib/generateYMinAndMaxForAllNotes";
 import getUserClickInfo from "../lib/getUserClickInfo";
 import { handleKeySigInteraction } from "../lib/handleKeySigInteraction";
 import { keySigInitialState } from "../lib/initialStates";
@@ -74,7 +74,7 @@ const NotateKeySignature = ({ handleNotes }: any) => {
   useEffect(() => {
     initializeRenderer(rendererRef, container);
     renderStaves();
-    setNotesAndCoordinates(() => generateYMinAndYMaxForNotes(44, keySigArray));
+    setNotesAndCoordinates(() => generateYMinAndYMaxForKeySig(44, keySigArray));
   }, []);
 
   //this is where the we will get the array to grade
