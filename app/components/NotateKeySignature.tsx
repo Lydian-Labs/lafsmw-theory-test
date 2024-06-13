@@ -16,7 +16,7 @@ import { buttonGroup, clearKeySignature } from "../lib/buttonsAndButtonGroups";
 import { initialNotesAndCoordsState } from "../lib/data/initialNotesAndCoordinatesState";
 import generateYMinAndYMaxForKeySig from "../lib/generateYMinAndMaxForKeySig";
 import { INITIAL_STAVES, staveData } from "../lib/data/stavesData";
-import getUserClickInfo from "../lib/getUserClickInfo";
+//import getUserClickInfo from "../lib/getUserClickInfo";
 import { handleKeySigInteraction } from "../lib/handleKeySigInteraction";
 import { keySigInitialState } from "../lib/initialStates";
 import { initializeRenderer } from "../lib/initializeRenderer";
@@ -84,6 +84,25 @@ const NotateKeySignature = ({ handleNotes }: any) => {
     );
   };
 
+  const getUserClickData = (
+    e: React.MouseEvent,
+    container: React.RefObject<HTMLDivElement>,
+    stave: any
+  ): any => {
+    const rect = container && container.current?.getBoundingClientRect();
+    const userClickY = rect ? e.clientY - rect.top : 0;
+    const userClickX = rect ? e.clientX - rect.left : 0;
+    const topStaveYCoord = stave && stave.getYForTopText();
+    const bottomStaveYCoord = (stave && stave.getYForBottomText()) || undefined;
+    return {
+      rect,
+      userClickY,
+      userClickX,
+      topStaveYCoord,
+      bottomStaveYCoord,
+    };
+  };
+
   useEffect(() => {
     initializeRenderer(rendererRef, container);
     renderStaves();
@@ -113,12 +132,8 @@ const NotateKeySignature = ({ handleNotes }: any) => {
     )
       return;
 
-    const {
-      userClickY,
-      userClickX,
-      topStaveYCoord,
-      bottomStaveYCoord,
-    } = getUserClickInfo(e, container, blankStaves[0]);
+    const { userClickY, userClickX, topStaveYCoord, bottomStaveYCoord } =
+      getUserClickData(e, container, blankStaves[0]);
 
     let foundNoteData = notesAndCoordinates.find(
       ({ yCoordinateMin, yCoordinateMax }) =>
