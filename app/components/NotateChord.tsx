@@ -94,8 +94,13 @@ const NotateChord = ({
     setChordData((): Chord => {
       return initialChordData;
     });
-    setNotesAndCoordinates(() => generateYMinAndYMax(7.5, notesArray));
-    renderStavesAndChords();
+    const newStave: Stave = renderStavesAndChords();
+    if (newStave) {
+      const highG = newStave[0].getYForLine(-4);
+      setNotesAndCoordinates(() =>
+        generateYMinAndYMax(highG - 2.5, notesArray)
+      );
+    }
   };
 
   const renderStavesAndChords = useCallback(
