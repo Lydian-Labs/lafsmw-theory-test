@@ -17,5 +17,3 @@ export const deleteAccidentalFromKeySig = (
     )
   );
 };
-
-export const addAccidentalToKeySig = () => {}
