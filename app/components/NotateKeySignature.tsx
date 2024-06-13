@@ -73,7 +73,9 @@ const NotateKeySignature = ({ handleNotes }: any) => {
   useEffect(() => {
     initializeRenderer(rendererRef, container);
     renderStaves();
-    setNotesAndCoordinates(() => generateYMinAndYMaxForKeySig(42.5, keySigArray));
+    setNotesAndCoordinates(() =>
+      generateYMinAndYMaxForKeySig(42.5, keySigArray)
+    );
   }, []);
 
   //this is where the we will get the array to grade
