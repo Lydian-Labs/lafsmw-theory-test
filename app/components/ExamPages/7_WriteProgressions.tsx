@@ -50,7 +50,7 @@ export default function WriteProgressions({
             >
               <Grid item>
                 <Typography variant="h6" marginBottom={2}>
-                  Write II-V-I Progressions in the following keys:
+                  Write 2-5-1 Progressions in the following keys:
                 </Typography>
               </Grid>
               <Grid item>

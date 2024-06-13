@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { Button, Container, Stack, Typography } from "@mui/material";
 import React, {
@@ -36,8 +37,10 @@ const { Renderer, Stave } = VexFlow.Flow;
 
 const NotateChord = ({
   setChords,
+  setIsReady,
 }: {
   setChords: Dispatch<SetStateAction<Array<string>>>;
+  setIsReady: Dispatch<SetStateAction<boolean>>;
 }) => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
@@ -133,6 +136,7 @@ const NotateChord = ({
 
   const handleChordsClick = (e: React.MouseEvent) => {
     setChords(chordData.keys);
+    setIsReady(true);
   };
 
   const handleClick = (e: React.MouseEvent) => {

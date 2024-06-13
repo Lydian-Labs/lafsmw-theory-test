@@ -13,9 +13,10 @@ import {
 import seventhChordsText from "@/app/lib/data/seventhChordsText";
 import { notationInstructions } from "@/app/lib/instructions";
 import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import CardFooter from "../CardFooter";
 import NotateChord from "../NotateChord";
+import SnackbarToast from "../SnackbarToast";
 
 export default function NotateSeventhChords6({
   currentUserData,
@@ -23,18 +24,44 @@ export default function NotateSeventhChords6({
   nextViewState,
 }: UserDataProps) {
   const [chords, setChords] = useState<string[]>([]);
+  const currentUserDataRef = useRef(currentUserData);
+  const [open, setOpen] = useState<boolean>(false);
+  const [isReady, setIsReady] = useState<boolean>(false);
+
+  const memoizedSetCurrentUserData = useCallback(
+    (data: any) => {
+      setCurrentUserData(data);
+    },
+    [setCurrentUserData]
+  );
 
   useEffect(() => {
-    setCurrentUserData({ ...currentUserData, seventhChords6: chords });
-  }, [chords]);
+    currentUserDataRef.current = currentUserData;
+  }, [currentUserData]);
+
+  useEffect(() => {
+    memoizedSetCurrentUserData({
+      ...currentUserDataRef.current,
+      seventhChords6: chords,
+    });
+  }, [chords, memoizedSetCurrentUserData]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    nextViewState();
+    if (!isReady) {
+      setOpen(true);
+    } else {
+      nextViewState();
+    }
   };
 
   return (
     <Container>
+      <SnackbarToast
+        open={open}
+        setOpen={setOpen}
+        message={"You must press Save before moving on."}
+      />
       <Box
         component="main"
         width={1139}
@@ -98,7 +125,7 @@ export default function NotateSeventhChords6({
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <NotateChord setChords={setChords} />
+                  <NotateChord setChords={setChords} setIsReady={setIsReady} />
                 </Grid>
               </Grid>
               <CardFooter
