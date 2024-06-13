@@ -31,6 +31,7 @@ import {
   NotesAndCoordinatesData,
   StaveType,
   Stave,
+  RenderStavesAndChordParams,
 } from "../lib/typesAndInterfaces";
 
 const { Renderer, Stave } = VexFlow.Flow;
@@ -107,7 +108,7 @@ const NotateChord = ({
   };
 
   const renderStavesAndChords = useCallback(
-    (): any =>
+    (): RenderStavesAndChordParams =>
       setupRendererAndDrawChords({
         rendererRef,
         ...staveData,
@@ -132,6 +133,9 @@ const NotateChord = ({
 
   useEffect(() => {
     renderStavesAndChords();
+    //this is the array to use for grading
+    const chordsArray = chordData.keys;
+    console.log(chordsArray);
   }, [chordData]);
 
   const handleChordsClick = (e: React.MouseEvent) => {
