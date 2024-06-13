@@ -22,7 +22,7 @@ import { keySigInitialState } from "../lib/initialStates";
 import { initializeRenderer } from "../lib/initializeRenderer";
 import isClickWithinStaveBounds from "../lib/isClickWithinStaveBounds";
 import { keySigArray } from "../lib/keySigArray";
-import { deleteAccidentalFromKeySig } from "../lib/modifyKeySignature";
+//import { deleteAccidentalFromKeySig } from "../lib/modifyKeySignature";
 import { parseNote } from "../lib/modifyNotesAndCoordinates";
 import { keySigReducer } from "../lib/reducer";
 import { setupRenderer } from "../lib/setUpRenderer";
@@ -42,7 +42,6 @@ const NotateKeySignature = ({ handleNotes }: any) => {
   const [notesAndCoordinates, setNotesAndCoordinates] = useState<
     NotesAndCoordinatesData[]
   >([initialNotesAndCoordsState]);
-  const [topKeySigNoteYCoord, setTopKeySigYNoteCoord] = useState<number>(0);
   const keySigButtonGroup = useMemo(
     () => buttonGroup(dispatch, state, modifyKeySigActionTypes),
     [dispatch, state]
@@ -52,7 +51,7 @@ const NotateKeySignature = ({ handleNotes }: any) => {
   renderer?.resize(470, 200);
 
   const context = rendererRef.current?.getContext();
-
+  const tolerance = 5;
   const renderStaves = useCallback((): void => {
     setupRenderer({
       rendererRef,
@@ -69,7 +68,21 @@ const NotateKeySignature = ({ handleNotes }: any) => {
     dispatch({ type: "" });
   };
 
-  //need to figure out how to NOT hard code the top note coordinate
+  const deleteAccidentalFromKeySig = (
+    glyphState: (newState: React.SetStateAction<GlyphProps[]>) => void,
+    xClick: number,
+    yClick: number
+  ) => {
+    glyphState((prevState: GlyphProps[]) =>
+      prevState.filter(
+        (glyph) =>
+          !(
+            Math.abs(glyph.xPosition - xClick) <= tolerance &&
+            Math.abs(glyph.yPosition - yClick) <= tolerance
+          )
+      )
+    );
+  };
 
   useEffect(() => {
     initializeRenderer(rendererRef, container);
@@ -81,7 +94,7 @@ const NotateKeySignature = ({ handleNotes }: any) => {
 
   //this is where the we will get the array to grade
   useEffect(() => {
-   // console.log("key signature: ", keySig);
+    // console.log("key signature: ", keySig);
     handleNotes(keySig);
   }, [keySig]);
 
@@ -105,10 +118,7 @@ const NotateKeySignature = ({ handleNotes }: any) => {
       userClickX,
       topStaveYCoord,
       bottomStaveYCoord,
-      topKeySigPosition,
     } = getUserClickInfo(e, container, blankStaves[0]);
-
-    setTopKeySigYNoteCoord(() => topKeySigPosition);
 
     let foundNoteData = notesAndCoordinates.find(
       ({ yCoordinateMin, yCoordinateMax }) =>
