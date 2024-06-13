@@ -29,9 +29,9 @@ import { setupRendererAndDrawChords } from "../lib/setUpRendererAndDrawChords";
 import {
   Chord,
   NotesAndCoordinatesData,
-  StaveType,
-  Stave,
   RenderStavesAndChordParams,
+  Stave,
+  StaveType,
 } from "../lib/typesAndInterfaces";
 
 const { Renderer, Stave } = VexFlow.Flow;
@@ -50,6 +50,7 @@ const NotateChord = ({
     chordReducer,
     chordInteractionInitialState
   );
+  //not currently being used, but will be used in the future
   const [barIndex, setBarIndex] = useState<number>(0);
   const [chordData, setChordData] = useState<Chord>(initialChordData);
 
@@ -153,7 +154,7 @@ const NotateChord = ({
 
     let chordDataCopy = { ...chordData };
     let notesAndCoordinatesCopy = [...notesAndCoordinates];
-
+    //not currently being used but will be used in the future
     const barIndex = findBarIndex(staves, userClickX);
 
     const foundNoteIndex: number = chordData.keys.findIndex(
