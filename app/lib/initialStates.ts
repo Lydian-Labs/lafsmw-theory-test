@@ -34,7 +34,7 @@ export const keySigInitialState: KeySigState = {
 export const initialFormInputState: InputState = {
   userId: "",
   user: null,
-  level: "",
+  level: "select-here",
   keySignatures: {},
   keySignaturesNotation1: [],
   keySignaturesNotation2: [],
@@ -44,6 +44,8 @@ export const initialFormInputState: InputState = {
   scales2: [],
   scales3: [],
   scales4: [],
+  scales5: [],
+  scales6: [],
   triads1: [],
   triads2: [],
   triads3: [],
