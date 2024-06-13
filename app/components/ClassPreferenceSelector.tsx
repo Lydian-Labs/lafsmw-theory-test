@@ -29,6 +29,7 @@ export default function ClassPreferenceSelector({
         label="Class Preference"
         onChange={handleLevel}
       >
+        <MenuItem value="select-here">select level here</MenuItem>
         <MenuItem value="advanced-theory">Advanced Theory</MenuItem>
         <MenuItem value="advanced-improvisation">
           Advanced Improvisation

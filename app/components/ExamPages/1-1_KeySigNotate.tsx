@@ -16,23 +16,28 @@ import { useState } from "react";
 import CardFooter from "../CardFooter";
 import ClassPreferenceSelector from "../ClassPreferenceSelector";
 import NotateKeySignature from "../NotateKeySignature";
+import SnackbarToast from "../SnackbarToast";
 
 export default function KeySignaturesNotation({
   currentUserData,
   setCurrentUserData,
   nextViewState,
 }: UserDataProps) {
-  const [level, setLevel] = useState<Level>("sibelius-class");
+  const [level, setLevel] = useState<Level>("select-here");
   const [keySignatureNotation, setKeySignatureNotation] = useState([]);
+  const [open, setOpen] = useState<boolean>(false);
 
   const handleSubmit = async (e: MouseEvent) => {
     e.preventDefault();
-    const payload = {
+    if (level === "select-here") {
+      setOpen(true);
+      return;
+    }
+    setCurrentUserData({
       ...currentUserData,
       level: level,
       keySignaturesNotation1: keySignatureNotation,
-    };
-    setCurrentUserData(payload);
+    });
     nextViewState();
   };
 
@@ -42,6 +47,11 @@ export default function KeySignaturesNotation({
 
   return (
     <Container>
+      <SnackbarToast
+        open={open}
+        setOpen={setOpen}
+        message={"You must select level before moving on."}
+      />
       <Box
         component="main"
         width={1139}
