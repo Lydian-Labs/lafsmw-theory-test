@@ -20,8 +20,6 @@ import { initialChordData } from "../lib/data/initialChordData";
 import { initialNotesAndCoordsState } from "../lib/data/initialNotesAndCoordinatesState";
 import { staveData } from "../lib/data/stavesData";
 import { findBarIndex } from "../lib/findBar";
-import generateYMinAndYMaxForNotes from "../lib/generateYMinAndMaxForAllNotes";
-import getUserClickInfo from "../lib/getUserClickInfo";
 import { handleChordInteraction } from "../lib/handleChordInteraction";
 import { chordInteractionInitialState } from "../lib/initialStates";
 import { initializeRenderer } from "../lib/initializeRenderer";
@@ -31,10 +29,12 @@ import { setupRendererAndDrawChords } from "../lib/setUpRendererAndDrawChords";
 import {
   Chord,
   NotesAndCoordinatesData,
+  RenderStavesAndChordParams,
+  Stave,
   StaveType,
 } from "../lib/typesAndInterfaces";
 
-const { Renderer } = VexFlow.Flow;
+const { Renderer, Stave } = VexFlow.Flow;
 
 const NotateChord = ({
   setChords,
@@ -50,12 +50,15 @@ const NotateChord = ({
     chordReducer,
     chordInteractionInitialState
   );
+  //not currently being used, but will be used in the future
   const [barIndex, setBarIndex] = useState<number>(0);
   const [chordData, setChordData] = useState<Chord>(initialChordData);
 
   const [notesAndCoordinates, setNotesAndCoordinates] = useState<
     NotesAndCoordinatesData[]
   >([initialNotesAndCoordsState]);
+
+  const TOLERANCE = 5;
 
   const noNoteFound = () => dispatch({ type: "noNoteFound" });
 
@@ -64,16 +67,49 @@ const NotateChord = ({
     [dispatch, state]
   );
 
+  const getUserClickData = (
+    e: React.MouseEvent,
+    container: React.RefObject<HTMLDivElement>
+  ): any => {
+    const rect = container && container.current?.getBoundingClientRect();
+    const userClickY = rect ? e.clientY - rect.top : 0;
+    const userClickX = rect ? e.clientX - rect.left : 0;
+
+    return {
+      rect,
+      userClickY,
+      userClickX,
+    };
+  };
+
+  const generateYMinAndYMax = (
+    topNoteYCoordinate: number,
+    notes: string[]
+  ): NotesAndCoordinatesData[] => {
+    return notes.map((note, index) => {
+      const originalNote = note;
+      const yCoordinateMin = topNoteYCoordinate + index * 5;
+      const yCoordinateMax = yCoordinateMin + TOLERANCE;
+
+      return { originalNote, note, yCoordinateMin, yCoordinateMax };
+    });
+  };
+
   const eraseChord = () => {
     setChordData((): Chord => {
       return initialChordData;
     });
-    setNotesAndCoordinates(() => generateYMinAndYMaxForNotes(147, notesArray));
-    renderStavesAndChords();
+    const newStave: Stave = renderStavesAndChords();
+    if (newStave) {
+      const highG = newStave[0].getYForLine(-4);
+      setNotesAndCoordinates(() =>
+        generateYMinAndYMax(highG - 2.5, notesArray)
+      );
+    }
   };
 
   const renderStavesAndChords = useCallback(
-    (): void =>
+    (): RenderStavesAndChordParams =>
       setupRendererAndDrawChords({
         rendererRef,
         ...staveData,
@@ -87,12 +123,20 @@ const NotateChord = ({
 
   useEffect(() => {
     initializeRenderer(rendererRef, container);
-    renderStavesAndChords();
-    setNotesAndCoordinates(() => generateYMinAndYMaxForNotes(33, notesArray));
+    const newStave: Stave = renderStavesAndChords();
+    if (newStave) {
+      const highG = newStave[0].getYForLine(-4);
+      setNotesAndCoordinates(() =>
+        generateYMinAndYMax(highG - 2.5, notesArray)
+      );
+    }
   }, []);
 
   useEffect(() => {
     renderStavesAndChords();
+    //this is the array to use for grading
+    const chordsArray = chordData.keys;
+    console.log(chordsArray);
   }, [chordData]);
 
   const handleChordsClick = (e: React.MouseEvent) => {
@@ -101,20 +145,16 @@ const NotateChord = ({
   };
 
   const handleClick = (e: React.MouseEvent) => {
-    const { userClickY, userClickX } = getUserClickInfo(
-      e,
-      container,
-      staves[0]
-    );
-    console.log("userClickY: ", userClickY);
+    const { userClickY, userClickX } = getUserClickData(e, container);
+
     let foundNoteData = notesAndCoordinates.find(
       ({ yCoordinateMin, yCoordinateMax }) =>
         userClickY >= yCoordinateMin && userClickY <= yCoordinateMax
     );
-    console.log("foundNoteData: ", foundNoteData);
+
     let chordDataCopy = { ...chordData };
     let notesAndCoordinatesCopy = [...notesAndCoordinates];
-
+    //not currently being used but will be used in the future
     const barIndex = findBarIndex(staves, userClickX);
 
     const foundNoteIndex: number = chordData.keys.findIndex(
@@ -125,6 +165,7 @@ const NotateChord = ({
       noNoteFound();
       return;
     }
+
     const {
       chordData: newChordData,
       notesAndCoordinates: newNotesAndCoordinates,
