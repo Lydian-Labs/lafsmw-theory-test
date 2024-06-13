@@ -29,8 +29,9 @@ import { setupRendererAndDrawChords } from "../lib/setUpRendererAndDrawChords";
 import {
   Chord,
   NotesAndCoordinatesData,
-  StaveType,
+  RenderStavesAndChordParams,
   Stave,
+  StaveType,
 } from "../lib/typesAndInterfaces";
 
 const { Renderer, Stave } = VexFlow.Flow;
@@ -49,6 +50,7 @@ const NotateChord = ({
     chordReducer,
     chordInteractionInitialState
   );
+  //not currently being used, but will be used in the future
   const [barIndex, setBarIndex] = useState<number>(0);
   const [chordData, setChordData] = useState<Chord>(initialChordData);
 
@@ -107,7 +109,7 @@ const NotateChord = ({
   };
 
   const renderStavesAndChords = useCallback(
-    (): any =>
+    (): RenderStavesAndChordParams =>
       setupRendererAndDrawChords({
         rendererRef,
         ...staveData,
@@ -132,6 +134,9 @@ const NotateChord = ({
 
   useEffect(() => {
     renderStavesAndChords();
+    //this is the array to use for grading
+    const chordsArray = chordData.keys;
+    console.log(chordsArray);
   }, [chordData]);
 
   const handleChordsClick = (e: React.MouseEvent) => {
@@ -149,7 +154,7 @@ const NotateChord = ({
 
     let chordDataCopy = { ...chordData };
     let notesAndCoordinatesCopy = [...notesAndCoordinates];
-
+    //not currently being used but will be used in the future
     const barIndex = findBarIndex(staves, userClickX);
 
     const foundNoteIndex: number = chordData.keys.findIndex(
