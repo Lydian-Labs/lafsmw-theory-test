@@ -30,13 +30,14 @@ import WriteProgressions from "@/app/components/ExamPages/7_WriteProgressions";
 import WriteBluesChanges from "@/app/components/ExamPages/8_WriteBluesChanges";
 
 import { useTimer } from "@/app/context/TimerContext";
-import { checkAnswers } from "@/app/lib/calculateAnswers";
+import { checkAnswers, createChordAnswer } from "@/app/lib/calculateAnswers";
 import convertObjectToArray from "@/app/lib/convertObjectToArray";
 import convertObjectToChordChart from "@/app/lib/convertObjectToChordChart";
 import {
-  exampleCorrectKeySigAnswers,
-  exampleCorrectProgressionAnswers,
-  exampleCorrectSeventhChordAnswers,
+  correctKeySigAnswers,
+  correctProgressionAnswers,
+  correctSeventhChordAnswers,
+  correctTriadAnswers,
 } from "@/app/lib/data/answerKey";
 import { initialFormInputState } from "@/app/lib/initialStates";
 import { InputState, MouseEvent } from "@/app/lib/typesAndInterfaces";
@@ -126,6 +127,14 @@ export default function ExamHomePage() {
   }, [router, user]);
 
   const updateAnswers = useCallback(async () => {
+    const userTriads = [
+      currentUserData.triads1,
+      currentUserData.triads2,
+      currentUserData.triads3,
+      currentUserData.triads4,
+      currentUserData.triads5,
+      currentUserData.triads6,
+    ];
     const userChordAnswers = convertObjectToArray(currentUserData.chords);
     const userKeySigAnswers = convertObjectToArray(
       currentUserData.keySignatures
@@ -136,18 +145,23 @@ export default function ExamHomePage() {
     const chordChart = convertObjectToChordChart(currentUserData.blues);
     let keySigAnswers = checkAnswers(
       userKeySigAnswers,
-      exampleCorrectKeySigAnswers,
+      correctKeySigAnswers,
       "Key Signatures"
     );
     let seventhAnswers = checkAnswers(
       userChordAnswers,
-      exampleCorrectSeventhChordAnswers,
+      correctSeventhChordAnswers,
       "Seventh Chords"
     );
     let progressionAnswers = checkAnswers(
       userProgressionAnswers,
-      exampleCorrectProgressionAnswers,
+      correctProgressionAnswers,
       "II-V-I Progressions"
+    );
+    let triadsAnswers = createChordAnswer(
+      userTriads,
+      correctTriadAnswers,
+      "Triads"
     );
     setUserAnswers([
       currentUserData.level,
@@ -156,6 +170,7 @@ export default function ExamHomePage() {
       progressionAnswers,
       currentUserData.bluesUrl,
       chordChart,
+      triadsAnswers,
     ]);
   }, [currentUserData]);
 
@@ -193,6 +208,9 @@ export default function ExamHomePage() {
       }
 
       await setOrUpdateStudentData(currentUserData, userName);
+      console.log("currnetUserData", currentUserData);
+      console.log("userAnswers", userAnswers);
+      console.log("userName", userName);
 
       // Send email with results using API route
       const response = await fetch("/api/email", {
@@ -213,6 +231,8 @@ export default function ExamHomePage() {
             <li>II-V-I Progressions: ${userAnswers[3]}</li>
             <li>Link to blues progression pdf: ${userAnswers[4]}</li>
             <li>Blues progression chart: ${userAnswers[5]}</li>
+            <li>Triads 1: ${userAnswers[6]}</li>
+            <li>Triads 2: ${userAnswers[7]}</li>
           </ul>
 
           <p>Thank you,<br>Team at Lydian Labs Technology.</p>`,
@@ -479,8 +499,7 @@ export default function ExamHomePage() {
         )}
         {viewState !== VIEW_STATES.SUBMIT_AND_EXIT &&
           viewState !== VIEW_STATES.START_TEST && (
-            <Box  sx={{ pl: 5 }}>
-             
+            <Box sx={{ pl: 5 }}>
               <Button onClick={incrementViewState}>
                 <Typography variant="h4">{">"}</Typography>
               </Button>
