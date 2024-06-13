@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { Button, Stack, Typography } from "@mui/material";
 import Container from "@mui/material/Container";
@@ -34,8 +35,10 @@ const { Renderer } = VexFlow.Flow;
 
 const NotateScale = ({
   setScales,
+  setIsReady,
 }: {
   setScales: Dispatch<SetStateAction<Array<string>>>;
+  setIsReady: Dispatch<SetStateAction<boolean>>;
 }) => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
@@ -98,6 +101,7 @@ const NotateScale = ({
 
   const handleScalesClick = (e: React.MouseEvent) => {
     setScales(scaleDataForGrading);
+    setIsReady(true);
   };
 
   const handleClick = (e: React.MouseEvent) => {

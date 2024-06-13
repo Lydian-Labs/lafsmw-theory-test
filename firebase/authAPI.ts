@@ -13,10 +13,21 @@ export async function signUp(
   displayName: string
 ) {
   try {
-    await createUserWithEmailAndPassword(auth, email, password).catch((err) =>
-      console.error("createUserWithEmailAndPassword error:", err)
-    );
+    await createUserWithEmailAndPassword(auth, email, password).catch((err) => {
+      if (err.code === "auth/email-already-in-use") {
+        alert("Email already in use");
+      }
+      if (err.code === "auth/weak-password") {
+        alert("Password should be at least 6 characters long");
+      }
+      if (err.code === "auth/invalid-email") {
+        alert("Invalid email");
+      }
+      console.error("createUserWithEmailAndPassword error:", err);
+    });
+
     if (auth.currentUser === null) throw new Error("User not created yet.");
+
     await updateProfile(auth.currentUser, { displayName: displayName }).catch(
       (err) => console.error("updateProfile error:", err)
     );
