@@ -29,9 +29,10 @@ import {
   Chord,
   NotesAndCoordinatesData,
   StaveType,
+  Stave,
 } from "../lib/typesAndInterfaces";
 
-const { Renderer } = VexFlow.Flow;
+const { Renderer, Stave } = VexFlow.Flow;
 
 const NotateChord = ({
   setChords,
@@ -47,12 +48,6 @@ const NotateChord = ({
   );
   const [barIndex, setBarIndex] = useState<number>(0);
   const [chordData, setChordData] = useState<Chord>(initialChordData);
-
-  const [staveCoordinates, setStaveCoordinates] = useState({
-    topLineYCoord: 0,
-    topLineForText: 0,
-    lineSpacing: 0,
-  });
 
   const [notesAndCoordinates, setNotesAndCoordinates] = useState<
     NotesAndCoordinatesData[]
@@ -82,7 +77,6 @@ const NotateChord = ({
     };
   };
 
-  
   const generateYMinAndYMax = (
     topNoteYCoordinate: number,
     notes: string[]
@@ -100,12 +94,12 @@ const NotateChord = ({
     setChordData((): Chord => {
       return initialChordData;
     });
-    setNotesAndCoordinates(() => generateYMinAndYMax(33, notesArray));
+    setNotesAndCoordinates(() => generateYMinAndYMax(7.5, notesArray));
     renderStavesAndChords();
   };
 
   const renderStavesAndChords = useCallback(
-    (): void =>
+    (): any =>
       setupRendererAndDrawChords({
         rendererRef,
         ...staveData,
@@ -119,8 +113,13 @@ const NotateChord = ({
 
   useEffect(() => {
     initializeRenderer(rendererRef, container);
-    renderStavesAndChords();
-    setNotesAndCoordinates(() => generateYMinAndYMax(33, notesArray));
+    const newStave: Stave = renderStavesAndChords();
+    if (newStave) {
+      const highG = newStave[0].getYForLine(-4);
+      setNotesAndCoordinates(() =>
+        generateYMinAndYMax(highG - 2.5, notesArray)
+      );
+    }
   }, []);
 
   useEffect(() => {
@@ -128,34 +127,16 @@ const NotateChord = ({
   }, [chordData]);
 
   const handleChordsClick = (e: React.MouseEvent) => {
-    console.log("chordData.keys: ", chordData.keys);
     setChords(chordData.keys);
   };
 
   const handleClick = (e: React.MouseEvent) => {
     const { userClickY, userClickX } = getUserClickData(e, container);
 
-    console.log("userClickY: ", userClickY);
-
     let foundNoteData = notesAndCoordinates.find(
       ({ yCoordinateMin, yCoordinateMax }) =>
         userClickY >= yCoordinateMin && userClickY <= yCoordinateMax
     );
-    console.log("foundNoteData: ", foundNoteData);
-
-    if (staves) {
-      setStaveCoordinates(() => {
-        const newState = {
-          topLineYCoord: staves[0].getYForLine(0),
-          topLineForText: staves[0].getYForTopText(0),
-          lineSpacing: staves[0].getSpacingBetweenLines(),
-        };
-        return newState;
-      });
-      console.log("staveData", staveCoordinates);
-    } else {
-      console.log("no staves");
-    }
 
     let chordDataCopy = { ...chordData };
     let notesAndCoordinatesCopy = [...notesAndCoordinates];
