@@ -477,7 +477,7 @@ export default function ExamHomePage() {
             </Stack>
           </main>
         )}
-        {viewState !== VIEW_STATES.SUBMIT_AND_EXIT &&
+        {/* {viewState !== VIEW_STATES.SUBMIT_AND_EXIT &&
           viewState !== VIEW_STATES.START_TEST && (
             <Box  sx={{ pl: 5 }}>
              
@@ -488,7 +488,7 @@ export default function ExamHomePage() {
                 <Typography>{"Go to Triads"}</Typography>
               </Button>
             </Box>
-          )}
+          )} */}
       </Stack>
     </Box>
   );
