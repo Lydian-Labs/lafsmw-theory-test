@@ -2,7 +2,7 @@ import {
   removeAccidentalFromNotesAndCoords,
   updateNotesAndCoordsWithAccidentalForKeySig,
 } from "../lib/modifyNotesAndCoordinates";
-import { deleteAccidentalFromKeySig } from "./modifyKeySignature";
+import { deleteGlyphFromStave } from "./modifyKeySignature";
 import {
   KeySigState,
   NotesAndCoordinatesData,
@@ -25,7 +25,7 @@ export const handleKeySigInteraction = (
       notesAndCoordinates
     );
   } else if (state.isRemoveAccidentalActive) {
-    deleteAccidentalFromKeySig(glyphState, xClick, yClick);
+    deleteGlyphFromStave(glyphState, xClick, yClick);
     notesAndCoordinates = removeAccidentalFromNotesAndCoords(
       notesAndCoordinates,
       foundNoteData

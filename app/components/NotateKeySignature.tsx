@@ -22,7 +22,7 @@ import { keySigInitialState } from "../lib/initialStates";
 import { initializeRenderer } from "../lib/initializeRenderer";
 import isClickWithinStaveBounds from "../lib/isClickWithinStaveBounds";
 import { keySigArray } from "../lib/keySigArray";
-import { deleteAccidentalFromKeySig } from "../lib/modifyKeySignature";
+import { deleteGlyphFromStave } from "../lib/modifyKeySignature";
 import { parseNote } from "../lib/modifyNotesAndCoordinates";
 import { keySigReducer } from "../lib/reducer";
 import { setupRenderer } from "../lib/setUpRenderer";
