@@ -25,6 +25,14 @@ const keySignatureFSharp = ["f#", "c#", "g#", "d#"];
 const keySignatureGminor = ["bb", "eb"];
 const keySignatureGSharpMinor = ["f#", "c#", "g#", "d#", "a#"];
 
+const Emin7flat5 = ["e/4", "g/4", "bb/4", "d/5"];
+const Gmin7 = ["g/4", "bb/5", "d/5", "f/5"];
+const Dbdominant7 = ["db/4", "f/4", "ab/4", "c/5"];
+const Dsharpdim7 = ["d#/4", "f#/4", "a/4", "c/5"];
+const Dhalfdim7 = ["d/4", "f/4", "ab/4", "c/5"];
+const Gbaug7 = ["g/4", "bb/4", "d#/5", "f#/5"];
+const Ebmindim7 = ["eb/4", "gb/4", "bb/4", "db/5"];
+
 export const correctTriadAnswers = [
   correctTriad1Answers,
   correctTriad2Answers,
@@ -48,6 +56,16 @@ export const correctKeySigNotationAnswers = [
   keySignatureFSharp,
   keySignatureGminor,
   keySignatureGSharpMinor,
+];
+
+export const correctSeventhChordNotationAnswers = [
+  Emin7flat5,
+  Gmin7,
+  Dbdominant7,
+  Dsharpdim7,
+  Dhalfdim7,
+  Gbaug7,
+  Ebmindim7,
 ];
 
 export const correctSeventhChordAnswers = ["A", "B", "C", "D", "E", "F", "G"];
