@@ -30,7 +30,7 @@ import WriteProgressions from "@/app/components/ExamPages/7_WriteProgressions";
 import WriteBluesChanges from "@/app/components/ExamPages/8_WriteBluesChanges";
 
 import { useTimer } from "@/app/context/TimerContext";
-import { checkAnswers, createChordAnswer } from "@/app/lib/calculateAnswers";
+import { checkAnswers, checkArrOfArrsAnswer } from "@/app/lib/calculateAnswers";
 import convertObjectToArray from "@/app/lib/convertObjectToArray";
 import convertObjectToChordChart from "@/app/lib/convertObjectToChordChart";
 import {
@@ -38,6 +38,8 @@ import {
   correctProgressionAnswers,
   correctSeventhChordAnswers,
   correctTriadAnswers,
+  correctScalesAnswers,
+  correctKeySigNotationAnswers,
 } from "@/app/lib/data/answerKey";
 import { initialFormInputState } from "@/app/lib/initialStates";
 import { InputState, MouseEvent } from "@/app/lib/typesAndInterfaces";
@@ -127,6 +129,20 @@ export default function ExamHomePage() {
   }, [router, user]);
 
   const updateAnswers = useCallback(async () => {
+    const userKeySigNotationAnswers = [
+      currentUserData.keySignaturesNotation1,
+      currentUserData.keySignaturesNotation2,
+      currentUserData.keySignaturesNotation3,
+      currentUserData.keySignaturesNotation4,
+    ];
+    const userScales = [
+      currentUserData.scales1,
+      currentUserData.scales2,
+      currentUserData.scales3,
+      currentUserData.scales4,
+      currentUserData.scales5,
+      currentUserData.scales6,
+    ];
     const userTriads = [
       currentUserData.triads1,
       currentUserData.triads2,
@@ -158,10 +174,20 @@ export default function ExamHomePage() {
       correctProgressionAnswers,
       "II-V-I Progressions"
     );
-    let triadsAnswers = createChordAnswer(
+    let triadsAnswers = checkArrOfArrsAnswer(
       userTriads,
       correctTriadAnswers,
       "Triads"
+    );
+    let scalesAnswers = checkArrOfArrsAnswer(
+      userScales,
+      correctScalesAnswers,
+      "Scales"
+    );
+    let keySigNotationAnswers = checkArrOfArrsAnswer(
+      userKeySigNotationAnswers,
+      correctKeySigNotationAnswers,
+      "Key Signatures"
     );
     setUserAnswers([
       currentUserData.level,
@@ -171,6 +197,8 @@ export default function ExamHomePage() {
       currentUserData.bluesUrl,
       chordChart,
       triadsAnswers,
+      scalesAnswers,
+      keySigNotationAnswers,
     ]);
   }, [currentUserData]);
 
@@ -231,8 +259,9 @@ export default function ExamHomePage() {
             <li>II-V-I Progressions: ${userAnswers[3]}</li>
             <li>Link to blues progression pdf: ${userAnswers[4]}</li>
             <li>Blues progression chart: ${userAnswers[5]}</li>
-            <li>Triads 1: ${userAnswers[6]}</li>
-            <li>Triads 2: ${userAnswers[7]}</li>
+            <li>Triads: ${userAnswers[6]}</li>
+            <li>Scales: ${userAnswers[7]}</li>
+            <li>Key Signature Notation: ${userAnswers[8]}</li>
           </ul>
 
           <p>Thank you,<br>Team at Lydian Labs Technology.</p>`,

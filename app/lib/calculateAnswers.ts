@@ -6,28 +6,28 @@ export const checkAnswers = (
   let score = 0;
   let result = "";
   let numAnswers = correctAnswers.length;
-  answers.forEach((answer, index) => {
-    if (answer === correctAnswers[index]) {
+  for (let i = 0; i < answers.length; i++) {
+    if (answers[i] === correctAnswers[i]) {
       score++;
     }
-  });
-  result = `score: ${score}/${numAnswers} on the ${questionType} section.`;
+  }
+  result = `${score}/${numAnswers} on the ${questionType} section.`;
   return result;
 };
 
-const checkChordNotesTrue = (
+function checkArrNotesTrue(
   answers: string[],
   correctAnswers: string[]
-): boolean => {
+): boolean {
   for (let i = 0; i < answers.length; i++) {
     if (answers[i] !== correctAnswers[i]) {
       return false;
     }
   }
   return true;
-};
+}
 
-export const createChordAnswer = (
+export const checkArrOfArrsAnswer = (
   answerTriads: string[][],
   correctAnswers: string[][],
   questionType: string
@@ -36,10 +36,10 @@ export const createChordAnswer = (
   let result = "";
   let numAnswers = correctAnswers.length;
   for (let i = 0; i < answerTriads.length; i++) {
-    if (checkChordNotesTrue(answerTriads[i], correctAnswers[i])) {
+    if (checkArrNotesTrue(answerTriads[i], correctAnswers[i])) {
       score++;
     }
   }
-  result = `score: ${score}/${numAnswers} on the ${questionType} section.`;
+  result = `${score}/${numAnswers} on the ${questionType} section.`;
   return result;
 };
