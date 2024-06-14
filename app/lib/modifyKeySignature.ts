@@ -1,4 +1,9 @@
-import { GlyphProps, KeySigState } from "./typesAndInterfaces";
+import {
+  GlyphProps,
+  KeySigState,
+  NotesAndCoordinatesData,
+} from "./typesAndInterfaces";
+import { parseNote } from "./modifyNotesAndCoordinates";
 
 const tolerance = 5;
 
@@ -34,4 +39,36 @@ export const addGlyphs = (
       : "",
   };
   glyphState((prevState: GlyphProps[]) => [...prevState, newState]);
+};
+
+export const updateKeySigArrayForGrading = (
+  foundNoteData: NotesAndCoordinatesData,
+  state: KeySigState,
+  keySigState: (newState: React.SetStateAction<string[]>) => void
+) => {
+  const noteBase = parseNote(foundNoteData.note).noteBase;
+  const noteWithAccidental = state.isAddSharpActive
+    ? `${noteBase}` + "#"
+    : `${noteBase}` + "b";
+  keySigState((prevState: string[]) => {
+    const newKeySig = [...prevState];
+    if (!newKeySig.includes(noteWithAccidental)) {
+      newKeySig.push(noteWithAccidental);
+    }
+    return newKeySig;
+  });
+
+  // setKeySig((prevState) => {
+  //   const newKeySig = [...prevState];
+  //   if (foundNoteData?.note) {
+  //     const noteBase = parseNote(foundNoteData?.note).noteBase;
+  //     const noteWithAccidental = state.isAddSharpActive
+  //       ? `${noteBase}` + "#"
+  //       : `${noteBase}` + "b";
+  //     if (!newKeySig.includes(noteWithAccidental)) {
+  //       newKeySig.push(noteWithAccidental);
+  //     }
+  //   }
+  //   return newKeySig;
+  // });
 };

@@ -154,23 +154,9 @@ const NotateKeySignature = ({ handleNotes }: any) => {
         foundNoteData,
         userClickX,
         userClickY,
-        setGlyphs
+        setGlyphs,
+        setKeySig
       );
-
-    // TO DO: Refactor this to a separate function? It's taking too long to update the state if student clicks on a note too quickly after another note
-    setKeySig((prevState) => {
-      const newKeySig = [...prevState];
-      if (foundNoteData?.note) {
-        const noteBase = parseNote(foundNoteData?.note).noteBase;
-        const noteWithAccidental = state.isAddSharpActive
-          ? `${noteBase}` + "#"
-          : `${noteBase}` + "b";
-        if (!newKeySig.includes(noteWithAccidental)) {
-          newKeySig.push(noteWithAccidental);
-        }
-      }
-      return newKeySig;
-    });
 
     setNotesAndCoordinates(() => newNotesAndCoordinates);
     console.log("notes and coordinates after modifying: ", notesAndCoordinates);
