@@ -22,8 +22,13 @@ import { keySigInitialState } from "../lib/initialStates";
 import { initializeRenderer } from "../lib/initializeRenderer";
 import isClickWithinStaveBounds from "../lib/isClickWithinStaveBounds";
 import { keySigArray } from "../lib/keySigArray";
-//import { deleteAccidentalFromKeySig } from "../lib/modifyKeySignature";
-import { parseNote } from "../lib/modifyNotesAndCoordinates";
+import { deleteAccidentalFromKeySig } from "../lib/modifyKeySignature";
+import {
+  parseNote,
+  appendAccidentalToNote,
+  updateNotesAndCoordsWithAccidental,
+  removeAccidentalFromNotesAndCoords,
+} from "../lib/modifyNotesAndCoordinates";
 import { keySigReducer } from "../lib/reducer";
 import { setupRenderer } from "../lib/setUpRenderer";
 import { GlyphProps, NotesAndCoordinatesData } from "../lib/typesAndInterfaces";
@@ -66,25 +71,6 @@ const NotateKeySignature = ({ handleNotes }: any) => {
     clearKeySignature(setGlyphs, rendererRef, container, renderStaves),
       setKeySig(() => []);
     dispatch({ type: "" });
-  };
-
-  const deleteAccidentalFromKeySig = (
-    glyphState: (newState: React.SetStateAction<GlyphProps[]>) => void,
-    xClick: number,
-    yClick: number
-  ): GlyphProps[] => {
-    let newState: GlyphProps[] = [];
-    glyphState((prevState: GlyphProps[]) => {
-      newState = prevState.filter(
-        (glyph) =>
-          !(
-            Math.abs(glyph.xPosition - xClick) <= tolerance &&
-            Math.abs(glyph.yPosition - yClick) <= tolerance
-          )
-      );
-      return newState;
-    });
-    return newState;
   };
 
   const getUserClickData = (
