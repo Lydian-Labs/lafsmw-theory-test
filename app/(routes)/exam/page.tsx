@@ -552,6 +552,11 @@ export default function ExamHomePage() {
               <Button onClick={() => setViewState(VIEW_STATES.TRIADS_NOTATE1)}>
                 <Typography>{"Go to Triads"}</Typography>
               </Button>
+              <Button
+                onClick={() => setViewState(VIEW_STATES.WRITE_PROGRESSIONS)}
+              >
+                <Typography>{"Go to Progressions"}</Typography>
+              </Button>
             </Box>
           )}
       </Stack>
