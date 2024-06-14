@@ -1,9 +1,9 @@
-const correctTriad1Answers = ["d/3", "f#/4", "a/4"];
+const correctTriad1Answers = ["d/4", "f#/4", "a/4"];
 const correctTriad2Answers = ["f#/4", "a#/4", "c#/5"];
 const correctTriad3Answers = ["db/4", "f/4", "ab/4"];
-const correctTriad4Answers = ["f#/3", "a/3", "c#/4"];
+const correctTriad4Answers = ["f#/4", "a/4", "c#/5"];
 const correctTriad5Answers = ["eb/4", "g/5", "bb/5"];
-const correctTriad6Answers = ["e/3", "g#/4", "b#/4"];
+const correctTriad6Answers = ["e/4", "g#/4", "b#/4"];
 
 const DbMajor = ["db/4", "eb/4", "f/4", "gb/4", "ab/4", "bb/4", "c/5"];
 const BMajor = ["b/4", "c#/5", "d#/5", "e/5", "f#/5", "g#/5", "a#/5"];

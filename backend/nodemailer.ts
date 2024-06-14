@@ -4,8 +4,8 @@ export const getTransporter = () => {
   return createTransport({
     service: "gmail",
     auth: {
-      user: process.env.EMAIL,
-      pass: process.env.EMAIL_PASS,
+      user: process.env.NEXT_PUBLIC_EMAIL,
+      pass: process.env.NEXT_PUBLIC_EMAIL_PASS,
     },
   });
 };

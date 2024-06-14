@@ -263,22 +263,23 @@ export default function ExamHomePage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: process.env.EMAIL_CAMP_DIRECTOR,
+          email: process.env.NEXT_PUBLIC_EMAIL_CAMP_DIRECTOR,
           subject: `Exam Results for ${userName}`,
           text: `<p>Hello Kyle,</p>
 
           <p>Here are the results for ${userName}:</p>
           <ul>
             <li>Level: ${userAnswers[0]}</li>
-            <li>Key Signature Notation: ${userAnswers[1]}</li>
-            <li>Key Signatures: ${userAnswers[2]}</li>
+            <li>Key Signatures (notate): ${userAnswers[1]}</li>
+            <li>Key Signatures (identify): ${userAnswers[2]}</li>
             <li>Scales: ${userAnswers[3]}</li>
             <li>Triads: ${userAnswers[4]}</li>
-            <li>Seventh Chords: ${userAnswers[5]}</li>
-            <li>Seventh Chord Notation: ${userAnswers[6]}</li>
+            <li>Seventh Chords (notate): ${userAnswers[5]}</li>
+            <li>Seventh Chords (identify): ${userAnswers[6]}</li>
             <li>2-5-1 Progressions: ${userAnswers[7]}</li>
             <li>Link to blues progression pdf: ${userAnswers[8]}</li>
-            <li>Blues progression chart: ${userAnswers[9]}</li>
+            <li>Blues progression backup chart:
+            ${userAnswers[9]}</li>
           </ul>
 
           <p>Thank you,<br>Team at Lydian Labs Technology.</p>`,
