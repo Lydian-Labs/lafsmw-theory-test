@@ -145,11 +145,6 @@ const NotateKeySignature = ({ handleNotes }: any) => {
     )
       return;
 
-    if (state.isRemoveAccidentalActive) {
-      deleteAccidentalFromKeySig(setGlyphs, userClickX, userClickY);
-      return;
-    }
-
     let notesAndCoordinatesCopy = [...notesAndCoordinates];
 
     setGlyphs((prevState) => [
@@ -165,7 +160,14 @@ const NotateKeySignature = ({ handleNotes }: any) => {
       },
     ]);
     const { notesAndCoordinates: newNotesAndCoordinates } =
-      handleKeySigInteraction(notesAndCoordinatesCopy, state, foundNoteData);
+      handleKeySigInteraction(
+        notesAndCoordinatesCopy,
+        state,
+        foundNoteData,
+        userClickX,
+        userClickY,
+        setGlyphs
+      );
 
     // TO DO: Refactor this to a separate function? It's taking too long to update the state if student clicks on a note too quickly after another note
     setKeySig((prevState) => {
