@@ -57,18 +57,19 @@ export const updateKeySigArrayForGrading = (
     }
     return newKeySig;
   });
+};
 
-  // setKeySig((prevState) => {
-  //   const newKeySig = [...prevState];
-  //   if (foundNoteData?.note) {
-  //     const noteBase = parseNote(foundNoteData?.note).noteBase;
-  //     const noteWithAccidental = state.isAddSharpActive
-  //       ? `${noteBase}` + "#"
-  //       : `${noteBase}` + "b";
-  //     if (!newKeySig.includes(noteWithAccidental)) {
-  //       newKeySig.push(noteWithAccidental);
-  //     }
-  //   }
-  //   return newKeySig;
-  // });
+export const deleteAccidentalFromKeySigArray = (
+  foundNoteData: NotesAndCoordinatesData,
+  keySigArray: string[],
+  keySigState: (newState: React.SetStateAction<string[]>) => void
+) => {
+  const noteBase = parseNote(foundNoteData.note).noteBase;
+  console.log("note base", noteBase);
+  const newKeySig = [...keySigArray];
+  if (newKeySig.includes(noteBase)) {
+    const index = newKeySig.findIndex((note) => note === noteBase);
+    newKeySig.splice(index, 1);
+  }
+  keySigState(() => newKeySig);
 };

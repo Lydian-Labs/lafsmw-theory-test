@@ -6,6 +6,7 @@ import {
   deleteGlyphFromStave,
   addGlyphs,
   updateKeySigArrayForGrading,
+  deleteAccidentalFromKeySigArray,
 } from "./modifyKeySignature";
 import {
   KeySigState,
@@ -20,8 +21,8 @@ export const handleKeySigInteraction = (
   xClick: number,
   yClick: number,
   glyphState: (newState: React.SetStateAction<GlyphProps[]>) => void,
-  keySigState: (newState: React.SetStateAction<string[]>) => void
-  //keySig: string[],
+  keySigState: (newState: React.SetStateAction<string[]>) => void,
+  keySig: string[]
 ) => {
   if (state.isAddSharpActive || state.isAddFlatActive) {
     notesAndCoordinates = updateNotesAndCoordsWithAccidentalForKeySig(
@@ -33,6 +34,7 @@ export const handleKeySigInteraction = (
     updateKeySigArrayForGrading(foundNoteData, state, keySigState);
   } else if (state.isRemoveAccidentalActive) {
     deleteGlyphFromStave(glyphState, xClick, yClick);
+    deleteAccidentalFromKeySigArray(foundNoteData, keySig, keySigState);
     notesAndCoordinates = removeAccidentalFromNotesAndCoords(
       notesAndCoordinates,
       foundNoteData

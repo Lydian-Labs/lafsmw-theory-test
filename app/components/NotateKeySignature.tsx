@@ -155,7 +155,8 @@ const NotateKeySignature = ({ handleNotes }: any) => {
         userClickX,
         userClickY,
         setGlyphs,
-        setKeySig
+        setKeySig,
+        keySig
       );
 
     setNotesAndCoordinates(() => newNotesAndCoordinates);
