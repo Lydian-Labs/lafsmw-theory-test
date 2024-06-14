@@ -147,18 +147,6 @@ const NotateKeySignature = ({ handleNotes }: any) => {
 
     let notesAndCoordinatesCopy = [...notesAndCoordinates];
 
-    setGlyphs((prevState) => [
-      ...prevState,
-      {
-        xPosition: userClickX,
-        yPosition: userClickY,
-        glyph: state.isAddSharpActive
-          ? "accidentalSharp"
-          : state.isAddFlatActive
-          ? "accidentalFlat"
-          : "",
-      },
-    ]);
     const { notesAndCoordinates: newNotesAndCoordinates } =
       handleKeySigInteraction(
         notesAndCoordinatesCopy,

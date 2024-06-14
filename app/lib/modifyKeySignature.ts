@@ -1,4 +1,4 @@
-import { GlyphProps } from "./typesAndInterfaces";
+import { GlyphProps, KeySigState } from "./typesAndInterfaces";
 
 const tolerance = 5;
 
@@ -16,4 +16,22 @@ export const deleteGlyphFromStave = (
         )
     )
   );
+};
+
+export const addGlyphs = (
+  userClickX: number,
+  userClickY: number,
+  state: KeySigState,
+  glyphState: (newState: React.SetStateAction<GlyphProps[]>) => void
+) => {
+  const newState = {
+    xPosition: userClickX,
+    yPosition: userClickY,
+    glyph: state.isAddSharpActive
+      ? "accidentalSharp"
+      : state.isAddFlatActive
+      ? "accidentalFlat"
+      : "",
+  };
+  glyphState((prevState: GlyphProps[]) => [...prevState, newState]);
 };
