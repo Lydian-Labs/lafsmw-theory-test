@@ -23,12 +23,7 @@ import { initializeRenderer } from "../lib/initializeRenderer";
 import isClickWithinStaveBounds from "../lib/isClickWithinStaveBounds";
 import { keySigArray } from "../lib/keySigArray";
 import { deleteAccidentalFromKeySig } from "../lib/modifyKeySignature";
-import {
-  parseNote,
-  appendAccidentalToNote,
-  updateNotesAndCoordsWithAccidental,
-  removeAccidentalFromNotesAndCoords,
-} from "../lib/modifyNotesAndCoordinates";
+import { parseNote } from "../lib/modifyNotesAndCoordinates";
 import { keySigReducer } from "../lib/reducer";
 import { setupRenderer } from "../lib/setUpRenderer";
 import { GlyphProps, NotesAndCoordinatesData } from "../lib/typesAndInterfaces";
@@ -56,7 +51,6 @@ const NotateKeySignature = ({ handleNotes }: any) => {
   renderer?.resize(470, 200);
 
   const context = rendererRef.current?.getContext();
-  const tolerance = 5;
   const renderStaves = useCallback((): void => {
     setupRenderer({
       rendererRef,
@@ -70,6 +64,9 @@ const NotateKeySignature = ({ handleNotes }: any) => {
   const clearKey = () => {
     clearKeySignature(setGlyphs, rendererRef, container, renderStaves),
       setKeySig(() => []);
+    setNotesAndCoordinates(() =>
+      generateYMinAndYMaxForKeySig(42.5, keySigArray)
+    );
     dispatch({ type: "" });
   };
 
@@ -186,6 +183,7 @@ const NotateKeySignature = ({ handleNotes }: any) => {
     });
 
     setNotesAndCoordinates(() => newNotesAndCoordinates);
+    console.log("notes and coordinates after modifying: ", notesAndCoordinates);
   };
 
   return (

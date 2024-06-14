@@ -1,6 +1,6 @@
 import {
   removeAccidentalFromNotesAndCoords,
-  updateNotesAndCoordsWithAccidental,
+  updateNotesAndCoordsWithAccidentalForKeySig,
 } from "../lib/modifyNotesAndCoordinates";
 import { KeySigState, NotesAndCoordinatesData } from "./typesAndInterfaces";
 
@@ -11,7 +11,7 @@ export const handleKeySigInteraction = (
   //keySig: string[],
 ) => {
   if (state.isAddSharpActive || state.isAddFlatActive) {
-    notesAndCoordinates = updateNotesAndCoordsWithAccidental(
+    notesAndCoordinates = updateNotesAndCoordsWithAccidentalForKeySig(
       state,
       foundNoteData,
       notesAndCoordinates
