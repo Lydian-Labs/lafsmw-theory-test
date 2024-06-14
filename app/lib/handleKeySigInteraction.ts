@@ -10,13 +10,13 @@ export const handleKeySigInteraction = (
   foundNoteData: NotesAndCoordinatesData
   //keySig: string[],
 ) => {
-  if (state.isSharpActive || state.isFlatActive) {
+  if (state.isAddSharpActive || state.isAddFlatActive) {
     notesAndCoordinates = updateNotesAndCoordsWithAccidental(
       state,
       foundNoteData,
       notesAndCoordinates
     );
-  } else if (state.isEraseAccidentalActive) {
+  } else if (state.isRemoveAccidentalActive) {
     notesAndCoordinates = removeAccidentalFromNotesAndCoords(
       notesAndCoordinates,
       foundNoteData
