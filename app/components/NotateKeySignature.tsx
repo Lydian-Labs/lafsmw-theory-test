@@ -126,6 +126,7 @@ const NotateKeySignature = ({ handleNotes }: any) => {
         userClickY >= yCoordinateMin && userClickY <= yCoordinateMax
     );
     if (!foundNoteData) {
+      console.log("No matching note found for coordinates");
       return;
     }
 
@@ -142,8 +143,10 @@ const NotateKeySignature = ({ handleNotes }: any) => {
       userClickX > maxRightClick ||
       userClickY < minTopClick ||
       userClickY > maxBottomClick
-    )
+    ) {
+      console.log("Click outside of stave bounds");
       return;
+    }
 
     let notesAndCoordinatesCopy = [...notesAndCoordinates];
 
@@ -160,7 +163,7 @@ const NotateKeySignature = ({ handleNotes }: any) => {
       );
 
     setNotesAndCoordinates(() => newNotesAndCoordinates);
-    console.log("notes and coordinates after modifying: ", notesAndCoordinates);
+    //console.log("notes and coordinates after modifying: ", notesAndCoordinates);
   };
 
   return (

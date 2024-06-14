@@ -1,9 +1,9 @@
+import { parseNote } from "./modifyNotesAndCoordinates";
 import {
   GlyphProps,
   KeySigState,
   NotesAndCoordinatesData,
 } from "./typesAndInterfaces";
-import { parseNote } from "./modifyNotesAndCoordinates";
 
 const tolerance = 5;
 
@@ -38,6 +38,9 @@ export const addGlyphs = (
       ? "accidentalFlat"
       : "",
   };
+  console.log(
+    `glyph coordinates:  x: ${newState.xPosition}, y: ${newState.yPosition}`
+  );
   glyphState((prevState: GlyphProps[]) => [...prevState, newState]);
 };
 
@@ -65,7 +68,7 @@ export const deleteAccidentalFromKeySigArray = (
   keySigState: (newState: React.SetStateAction<string[]>) => void
 ) => {
   const noteBase = parseNote(foundNoteData.note).noteBase;
-  console.log("note base", noteBase);
+  //console.log("note base", noteBase);
   const newKeySig = [...keySigArray];
   if (newKeySig.includes(noteBase)) {
     const index = newKeySig.findIndex((note) => note === noteBase);
