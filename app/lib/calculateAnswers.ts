@@ -28,15 +28,18 @@ function checkArrNotesTrue(
 }
 
 export const checkArrOfArrsAnswer = (
-  answerTriads: string[][],
+  userAnswers: string[][],
   correctAnswers: string[][],
   questionType: string
 ): string => {
   let score = 0;
   let result = "";
   let numAnswers = correctAnswers.length;
-  for (let i = 0; i < answerTriads.length; i++) {
-    if (checkArrNotesTrue(answerTriads[i], correctAnswers[i])) {
+  for (let i = 0; i < userAnswers.length; i++) {
+    if (!userAnswers[i].length) {
+      continue;
+    }
+    if (checkArrNotesTrue(userAnswers[i], correctAnswers[i])) {
       score++;
     }
   }

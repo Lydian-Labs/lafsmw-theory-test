@@ -40,6 +40,7 @@ import {
   correctTriadAnswers,
   correctScalesAnswers,
   correctKeySigNotationAnswers,
+  correctSeventhChordNotationAnswers,
 } from "@/app/lib/data/answerKey";
 import { initialFormInputState } from "@/app/lib/initialStates";
 import { InputState, MouseEvent } from "@/app/lib/typesAndInterfaces";
@@ -120,7 +121,6 @@ export default function ExamHomePage() {
         console.error(error);
       }
     };
-
     if (user == null) {
       return router.push("/registration");
     } else {
@@ -135,6 +135,9 @@ export default function ExamHomePage() {
       currentUserData.keySignaturesNotation3,
       currentUserData.keySignaturesNotation4,
     ];
+    const userKeySigAnswers = convertObjectToArray(
+      currentUserData.keySignatures
+    );
     const userScales = [
       currentUserData.scales1,
       currentUserData.scales2,
@@ -151,18 +154,44 @@ export default function ExamHomePage() {
       currentUserData.triads5,
       currentUserData.triads6,
     ];
+    const userSeventhChordAnswers = [
+      currentUserData.seventhChords1,
+      currentUserData.seventhChords2,
+      currentUserData.seventhChords3,
+      currentUserData.seventhChords4,
+      currentUserData.seventhChords5,
+      currentUserData.seventhChords6,
+    ];
     const userChordAnswers = convertObjectToArray(currentUserData.chords);
-    const userKeySigAnswers = convertObjectToArray(
-      currentUserData.keySignatures
-    );
+
     const userProgressionAnswers = convertObjectToArray(
       currentUserData.progressions
     );
-    const chordChart = convertObjectToChordChart(currentUserData.blues);
+
+    let keySigNotationAnswers = checkArrOfArrsAnswer(
+      userKeySigNotationAnswers,
+      correctKeySigNotationAnswers,
+      "Key Signature Notation"
+    );
     let keySigAnswers = checkAnswers(
       userKeySigAnswers,
       correctKeySigAnswers,
       "Key Signatures"
+    );
+    let scalesAnswers = checkArrOfArrsAnswer(
+      userScales,
+      correctScalesAnswers,
+      "Scales"
+    );
+    let triadsAnswers = checkArrOfArrsAnswer(
+      userTriads,
+      correctTriadAnswers,
+      "Triads"
+    );
+    let seventhNotationAnswers = checkArrOfArrsAnswer(
+      userSeventhChordAnswers,
+      correctSeventhChordNotationAnswers,
+      "Seventh Chord Notation"
     );
     let seventhAnswers = checkAnswers(
       userChordAnswers,
@@ -174,31 +203,19 @@ export default function ExamHomePage() {
       correctProgressionAnswers,
       "II-V-I Progressions"
     );
-    let triadsAnswers = checkArrOfArrsAnswer(
-      userTriads,
-      correctTriadAnswers,
-      "Triads"
-    );
-    let scalesAnswers = checkArrOfArrsAnswer(
-      userScales,
-      correctScalesAnswers,
-      "Scales"
-    );
-    let keySigNotationAnswers = checkArrOfArrsAnswer(
-      userKeySigNotationAnswers,
-      correctKeySigNotationAnswers,
-      "Key Signatures"
-    );
+
+    const chordChart = convertObjectToChordChart(currentUserData.blues);
     setUserAnswers([
       currentUserData.level,
+      keySigNotationAnswers,
       keySigAnswers,
+      scalesAnswers,
+      triadsAnswers,
+      seventhNotationAnswers,
       seventhAnswers,
       progressionAnswers,
       currentUserData.bluesUrl,
       chordChart,
-      triadsAnswers,
-      scalesAnswers,
-      keySigNotationAnswers,
     ]);
   }, [currentUserData]);
 
@@ -234,7 +251,6 @@ export default function ExamHomePage() {
       if (!userName) {
         throw new Error("No current user found.");
       }
-
       await setOrUpdateStudentData(currentUserData, userName);
       console.log("currnetUserData", currentUserData);
       console.log("userAnswers", userAnswers);
@@ -247,27 +263,28 @@ export default function ExamHomePage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: process.env.EMAIL_CAMP_DIRECTOR,
+          email: process.env.NEXT_PUBLIC_EMAIL_CAMP_DIRECTOR,
           subject: `Exam Results for ${userName}`,
           text: `<p>Hello Kyle,</p>
 
           <p>Here are the results for ${userName}:</p>
           <ul>
             <li>Level: ${userAnswers[0]}</li>
-            <li>Key Signatures: ${userAnswers[1]}</li>
-            <li>Seventh Chords: ${userAnswers[2]}</li>
-            <li>II-V-I Progressions: ${userAnswers[3]}</li>
-            <li>Link to blues progression pdf: ${userAnswers[4]}</li>
-            <li>Blues progression chart: ${userAnswers[5]}</li>
-            <li>Triads: ${userAnswers[6]}</li>
-            <li>Scales: ${userAnswers[7]}</li>
-            <li>Key Signature Notation: ${userAnswers[8]}</li>
+            <li>Key Signatures (notate): ${userAnswers[1]}</li>
+            <li>Key Signatures (identify): ${userAnswers[2]}</li>
+            <li>Scales: ${userAnswers[3]}</li>
+            <li>Triads: ${userAnswers[4]}</li>
+            <li>Seventh Chords (notate): ${userAnswers[5]}</li>
+            <li>Seventh Chords (identify): ${userAnswers[6]}</li>
+            <li>2-5-1 Progressions: ${userAnswers[7]}</li>
+            <li>Link to blues progression pdf: ${userAnswers[8]}</li>
+            <li>Blues progression backup chart:
+            ${userAnswers[9]}</li>
           </ul>
 
           <p>Thank you,<br>Team at Lydian Labs Technology.</p>`,
         }),
       });
-
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(
@@ -534,6 +551,11 @@ export default function ExamHomePage() {
               </Button>
               <Button onClick={() => setViewState(VIEW_STATES.TRIADS_NOTATE1)}>
                 <Typography>{"Go to Triads"}</Typography>
+              </Button>
+              <Button
+                onClick={() => setViewState(VIEW_STATES.WRITE_PROGRESSIONS)}
+              >
+                <Typography>{"Go to Progressions"}</Typography>
               </Button>
             </Box>
           )}
