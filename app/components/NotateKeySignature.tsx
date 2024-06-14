@@ -14,8 +14,8 @@ import { modifyKeySigActionTypes } from "../lib/actionTypes";
 import { buildKeySignature } from "../lib/buildKeySignature";
 import { buttonGroup, clearKeySignature } from "../lib/buttonsAndButtonGroups";
 import { initialNotesAndCoordsState } from "../lib/data/initialNotesAndCoordinatesState";
-import generateYMinAndYMaxForKeySig from "../lib/generateYMinAndMaxForKeySig";
 import { INITIAL_STAVES, staveData } from "../lib/data/stavesData";
+import generateYMinAndYMaxForKeySig from "../lib/generateYMinAndMaxForKeySig";
 //import getUserClickInfo from "../lib/getUserClickInfo";
 import { handleKeySigInteraction } from "../lib/handleKeySigInteraction";
 import { keySigInitialState } from "../lib/initialStates";
@@ -72,16 +72,19 @@ const NotateKeySignature = ({ handleNotes }: any) => {
     glyphState: (newState: React.SetStateAction<GlyphProps[]>) => void,
     xClick: number,
     yClick: number
-  ) => {
-    glyphState((prevState: GlyphProps[]) =>
-      prevState.filter(
+  ): GlyphProps[] => {
+    let newState: GlyphProps[] = [];
+    glyphState((prevState: GlyphProps[]) => {
+      newState = prevState.filter(
         (glyph) =>
           !(
             Math.abs(glyph.xPosition - xClick) <= tolerance &&
             Math.abs(glyph.yPosition - yClick) <= tolerance
           )
-      )
-    );
+      );
+      return newState;
+    });
+    return newState;
   };
 
   const getUserClickData = (
@@ -113,7 +116,7 @@ const NotateKeySignature = ({ handleNotes }: any) => {
 
   //this is where the we will get the array to grade
   useEffect(() => {
-    // console.log("key signature: ", keySig);
+    console.log("key signature: ", keySig);
     handleNotes(keySig);
   }, [keySig]);
 
