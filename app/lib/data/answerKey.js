@@ -1,16 +1,16 @@
-const correctTriad1Answers = ["d/3", "f#/4", "a/4"];
-const correctTriad2Answers = ["f#/4", "a#/4", "c#/5"];
-const correctTriad3Answers = ["db/4", "f/4", "ab/4"];
-const correctTriad4Answers = ["f#/3", "a/3", "c#/4"];
-const correctTriad5Answers = ["eb/4", "g/5", "bb/5"];
-const correctTriad6Answers = ["e/3", "g#/4", "b#/4"];
+const triadDMajor = ["d/4", "f#/4", "a/4"];
+const triadFsharpMajor = ["f#/4", "a#/4", "c#/5"];
+const triadDbMinor = ["db/4", "f/4", "ab/4"];
+const triadFsharpMinor = ["f#/4", "a/4", "c#/5"];
+const triadEbDiminished = ["eb/4", "g/5", "bb/5"];
+const triadEAugmented = ["e/4", "g#/4", "b#/4"];
 
-const DbMajor = ["db/4", "eb/4", "f/4", "gb/4", "ab/4", "bb/4", "c/5"];
-const BMajor = ["b/4", "c#/5", "d#/5", "e/5", "f#/5", "g#/5", "a#/5"];
-const FSharpDorian = ["f#/4", "g#/4", "a/4", "b/4", "c#/5", "d#/5", "e/5"];
-const CDorian = ["c/4", "d/4", "eb/4", "f/4", "g/4", "a/4", "bb/4"];
-const BbMixolydian = ["bb/4", "c/5", "d/5", "eb/5", "f/5", "g/5", "ab/5"];
-const CSharpMixolydian = [
+const scaleDbMajor = ["db/4", "eb/4", "f/4", "gb/4", "ab/4", "bb/4", "c/5"];
+const scaleBMajor = ["b/4", "c#/5", "d#/5", "e/5", "f#/5", "g#/5", "a#/5"];
+const scaleFSharpDorian = ["f#/4", "g#/4", "a/4", "b/4", "c#/5", "d#/5", "e/5"];
+const scaleCDorian = ["c/4", "d/4", "eb/4", "f/4", "g/4", "a/4", "bb/4"];
+const scaleBbMixolydian = ["bb/4", "c/5", "d/5", "eb/5", "f/5", "g/5", "ab/5"];
+const scaleCSharpMixolydian = [
   "c#/4",
   "d#/4",
   "e#/4",
@@ -25,22 +25,30 @@ const keySignatureFSharp = ["f#", "c#", "g#", "d#"];
 const keySignatureGminor = ["bb", "eb"];
 const keySignatureGSharpMinor = ["f#", "c#", "g#", "d#", "a#"];
 
+const chordEmin7flat5 = ["e/4", "g/4", "bb/4", "d/5"];
+const chordGmin7 = ["g/4", "bb/5", "d/5", "f/5"];
+const chordDbdominant7 = ["db/4", "f/4", "ab/4", "c/5"];
+const chordDsharpdim7 = ["d#/4", "f#/4", "a/4", "c/5"];
+const chordDhalfdim7 = ["d/4", "f/4", "ab/4", "c/5"];
+const chordGbaug7 = ["g/4", "bb/4", "d#/5", "f#/5"];
+const chordEbmindim7 = ["eb/4", "gb/4", "bb/4", "db/5"];
+
 export const correctTriadAnswers = [
-  correctTriad1Answers,
-  correctTriad2Answers,
-  correctTriad3Answers,
-  correctTriad4Answers,
-  correctTriad5Answers,
-  correctTriad6Answers,
+  triadDMajor,
+  triadFsharpMajor,
+  triadDbMinor,
+  triadFsharpMinor,
+  triadEbDiminished,
+  triadEAugmented,
 ];
 
 export const correctScalesAnswers = [
-  DbMajor,
-  BMajor,
-  CDorian,
-  FSharpDorian,
-  BbMixolydian,
-  CSharpMixolydian,
+  scaleDbMajor,
+  scaleBMajor,
+  scaleCDorian,
+  scaleFSharpDorian,
+  scaleBbMixolydian,
+  scaleCSharpMixolydian,
 ];
 
 export const correctKeySigNotationAnswers = [
@@ -50,27 +58,37 @@ export const correctKeySigNotationAnswers = [
   keySignatureGSharpMinor,
 ];
 
+export const correctSeventhChordNotationAnswers = [
+  chordEmin7flat5,
+  chordGmin7,
+  chordDbdominant7,
+  chordDsharpdim7,
+  chordDhalfdim7,
+  chordGbaug7,
+  chordEbmindim7,
+];
+
 export const correctSeventhChordAnswers = ["A", "B", "C", "D", "E", "F", "G"];
 
-export const correctKeySigAnswers = ["b", "e", "a", "d"];
+export const correctKeySigAnswers = ["db", "a", "f", "c#"];
 
 export const correctProgressionAnswers = [
   "Dm7",
   "G7",
   "Cmaj7",
-  "Fmaj7",
-  "Bm7",
-  "Em7",
-  "Amaj7",
-  "Dmaj7",
-  "Gm7",
-  "C7",
-  "Fmaj7",
+  "Fm7",
   "Bbmaj7",
   "Em7",
-  "A7",
-  "Dmaj7",
-  "Abmaj7",
-  "Dbm7",
+  "Ebm7",
+  "Ab7",
+  "Dbmaj7",
+  "D#m7",
+  "G#maj7",
+  "C#m7",
+  "Em7",
+  "A#7",
+  "D#maj7",
+  "Abm7",
+  "Dbmaj7",
   "Gbm7",
 ];

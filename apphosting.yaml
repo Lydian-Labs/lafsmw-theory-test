@@ -1,0 +1,23 @@
+env:
+  - variable: NEXT_PUBLIC_FIREBASE_API_KEY
+    secret: firebase-api-key
+  - variable: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
+    secret: firebase-auth-domain
+  - variable: NEXT_PUBLIC_FIREBASE_DATABASE_URL
+    secret: firebase-database-url
+  - variable: NEXT_PUBLIC_FIREBASE_PROJECT_ID
+    secret: firebase-project-id
+  - variable: NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
+    secret: firebase-storage-bucket
+  - variable: NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
+    secret: firebase-messaging-sender-id
+  - variable: NEXT_PUBLIC_FIREBASE_APP_ID
+    secret: firebase-app-id
+  - variable: NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
+    secret: firebase-measurement-id
+  - variable: NEXT_PUBLIC_EMAIL
+    secret: email
+  - variable: NEXT_PUBLIC_EMAIL_PASS
+    secret: email-pass
+  - variable: NEXT_PUBLIC_EMAIL_CAMP_DIRECTOR
+    secret: email-camp-director
