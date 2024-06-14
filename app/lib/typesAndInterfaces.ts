@@ -106,10 +106,6 @@ export interface StaveNoteData {
   userClickY: number;
 }
 
-export interface Stave {
-  [key: string]: any;
-}
-
 export interface ScaleData {
   keys: string[];
   duration: string;

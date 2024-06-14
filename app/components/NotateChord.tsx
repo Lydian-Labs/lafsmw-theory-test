@@ -30,7 +30,6 @@ import {
   Chord,
   NotesAndCoordinatesData,
   RenderStavesAndChordParams,
-  Stave,
   StaveType,
 } from "../lib/typesAndInterfaces";
 
@@ -99,7 +98,7 @@ const NotateChord = ({
     setChordData((): Chord => {
       return initialChordData;
     });
-    const newStave: Stave = renderStavesAndChords();
+    const newStave: any = renderStavesAndChords();
     if (newStave) {
       const highG = newStave[0].getYForLine(-4);
       setNotesAndCoordinates(() =>
@@ -123,7 +122,7 @@ const NotateChord = ({
 
   useEffect(() => {
     initializeRenderer(rendererRef, container);
-    const newStave: Stave = renderStavesAndChords();
+    const newStave: any = renderStavesAndChords();
     if (newStave) {
       const highG = newStave[0].getYForLine(-4);
       setNotesAndCoordinates(() =>
