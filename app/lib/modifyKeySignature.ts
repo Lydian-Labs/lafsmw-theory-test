@@ -1,8 +1,14 @@
-import { GlyphProps } from "./typesAndInterfaces";
+import { parseNote } from "./modifyNotesAndCoordinates";
+import {
+  GlyphProps,
+  KeySigState,
+  NotesAndCoordinatesData,
+} from "./typesAndInterfaces";
+import { roundToNearest5 } from "./roundToNearest5";
 
 const tolerance = 5;
 
-export const deleteAccidentalFromKeySig = (
+export const deleteGlyphFromStave = (
   glyphState: (newState: React.SetStateAction<GlyphProps[]>) => void,
   xClick: number,
   yClick: number
@@ -18,4 +24,53 @@ export const deleteAccidentalFromKeySig = (
   );
 };
 
-export const addAccidentalToKeySig = () => {}
+export const addGlyphs = (
+  userClickX: number,
+  userClickY: number,
+  state: KeySigState,
+  glyphState: (newState: React.SetStateAction<GlyphProps[]>) => void
+) => {
+  const newState = {
+    xPosition: roundToNearest5(userClickX),
+    yPosition: roundToNearest5(userClickY),
+    glyph: state.isAddSharpActive
+      ? "accidentalSharp"
+      : state.isAddFlatActive
+      ? "accidentalFlat"
+      : "",
+  };
+
+  glyphState((prevState: GlyphProps[]) => [...prevState, newState]);
+};
+
+export const updateKeySigArrayForGrading = (
+  foundNoteData: NotesAndCoordinatesData,
+  state: KeySigState,
+  keySigState: (newState: React.SetStateAction<string[]>) => void
+) => {
+  const noteBase = parseNote(foundNoteData.note).noteBase;
+  const noteWithAccidental = state.isAddSharpActive
+    ? `${noteBase}` + "#"
+    : `${noteBase}` + "b";
+  keySigState((prevState: string[]) => {
+    const newKeySig = [...prevState];
+    if (!newKeySig.includes(noteWithAccidental)) {
+      newKeySig.push(noteWithAccidental);
+    }
+    return newKeySig;
+  });
+};
+
+export const deleteAccidentalFromKeySigArray = (
+  foundNoteData: NotesAndCoordinatesData,
+  keySigArray: string[],
+  keySigState: (newState: React.SetStateAction<string[]>) => void
+) => {
+  const noteBase = parseNote(foundNoteData.note).noteBase;
+  const newKeySig = [...keySigArray];
+  if (newKeySig.includes(noteBase)) {
+    const index = newKeySig.findIndex((note) => note === noteBase);
+    newKeySig.splice(index, 1);
+  }
+  keySigState(() => newKeySig);
+};

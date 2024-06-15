@@ -35,7 +35,7 @@ import {
   StaveType,
 } from "../lib/typesAndInterfaces";
 
-const { Renderer, Stave } = VexFlow.Flow;
+const { Renderer } = VexFlow.Flow;
 
 const NotateChord = ({
   setChords,
