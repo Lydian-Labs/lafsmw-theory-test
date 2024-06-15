@@ -26,9 +26,9 @@ export default forwardRef(function WriteProgression(
     }
   }, [currentData]);
 
-  const chordWidth = width * 0.055;
-  const gapWidth = chordWidth * 0.2;
-  const chordGroupSpacing = chordWidth * 0.07;
+  const chordWidth = width * 0.058;
+  const gapWidth = chordWidth * 0.15;
+  const chordGroupSpacing = chordWidth * 0.05;
 
   const gridInputInline = {
     display: "grid",

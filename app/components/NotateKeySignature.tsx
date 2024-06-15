@@ -9,7 +9,7 @@ import React, {
   useState,
 } from "react";
 import VexFlow from "vexflow";
-import RegularButton from "../components/RegularButton";
+import CustomButton from "./CustomButton";
 import { modifyKeySigActionTypes } from "../lib/actionTypes";
 import { buildKeySignature } from "../lib/buildKeySignature";
 import { buttonGroup, clearKeySignature } from "../lib/buttonsAndButtonGroups";
@@ -79,7 +79,7 @@ const NotateKeySignature = ({ handleNotes }: any) => {
 
   //this is where the we will get the array to grade
   useEffect(() => {
-   // console.log("key signature: ", keySig);
+    // console.log("key signature: ", keySig);
     handleNotes(keySig);
   }, [keySig]);
 
@@ -179,16 +179,16 @@ const NotateKeySignature = ({ handleNotes }: any) => {
       <div>
         {keySigButtonGroup.map((button) => {
           return (
-            <RegularButton
+            <CustomButton
               key={button.text}
               onClick={button.action}
               isEnabled={button.isEnabled}
             >
               {button.text}
-            </RegularButton>
+            </CustomButton>
           );
         })}
-        <RegularButton onClick={clearKey}>Clear Key Signature</RegularButton>
+        <CustomButton onClick={clearKey}>Clear Key Signature</CustomButton>
       </div>
     </>
   );
