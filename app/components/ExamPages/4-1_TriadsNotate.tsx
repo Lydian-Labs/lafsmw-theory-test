@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 
 import triadsText from "@/app/lib/data/triadsText";
-import { notationInstructions } from "@/app/lib/instructions";
+import { notationInstructions } from "@/app/lib/data/instructions";
 import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import { useCallback, useEffect, useRef, useState } from "react";
 import CardFooter from "../CardFooter";

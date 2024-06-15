@@ -9,24 +9,26 @@ import React, {
   useState,
 } from "react";
 import VexFlow from "vexflow";
-import CustomButton from "./CustomButton";
 import { modifyKeySigActionTypes } from "../lib/actionTypes";
 import { buildKeySignature } from "../lib/buildKeySignature";
 import { buttonGroup, clearKeySignature } from "../lib/buttonsAndButtonGroups";
-import { initialNotesAndCoordsState } from "../lib/data/initialNotesAndCoordinatesState";
-import generateYMinAndYMaxForKeySig from "../lib/generateYMinAndMaxForKeySig";
+import { keySigArray } from "../lib/data/keySigArray";
 import { INITIAL_STAVES, staveData } from "../lib/data/stavesData";
+import generateYMinAndYMaxForKeySig from "../lib/generateYMinAndMaxForKeySig";
 import getUserClickInfo from "../lib/getUserClickInfo";
 import { handleKeySigInteraction } from "../lib/handleKeySigInteraction";
-import { keySigInitialState } from "../lib/initialStates";
+import {
+  initialNotesAndCoordsState,
+  keySigInitialState,
+} from "../lib/initialStates";
 import { initializeRenderer } from "../lib/initializeRenderer";
 import isClickWithinStaveBounds from "../lib/isClickWithinStaveBounds";
-import { keySigArray } from "../lib/keySigArray";
 import { deleteAccidentalFromKeySig } from "../lib/modifyKeySignature";
 import { parseNote } from "../lib/modifyNotesAndCoordinates";
 import { keySigReducer } from "../lib/reducer";
 import { setupRenderer } from "../lib/setUpRenderer";
 import { GlyphProps, NotesAndCoordinatesData } from "../lib/typesAndInterfaces";
+import CustomButton from "./CustomButton";
 
 const VF = VexFlow.Flow;
 const { Renderer } = VF;
