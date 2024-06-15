@@ -46,6 +46,7 @@ export default function TriadsNotation({
       ...currentUserDataRef.current,
       [triadsPropName]: chords,
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chords, memoizedSetCurrentUserData]);
 
   const handleSubmit = async (e: FormEvent) => {

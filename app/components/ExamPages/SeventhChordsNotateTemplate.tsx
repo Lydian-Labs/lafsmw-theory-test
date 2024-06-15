@@ -46,6 +46,7 @@ export default function NotateSeventhChords({
       ...currentUserDataRef.current,
       [seventhChordsPropName]: chords,
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chords, memoizedSetCurrentUserData]);
 
   const handleSubmit = async (e: FormEvent) => {
