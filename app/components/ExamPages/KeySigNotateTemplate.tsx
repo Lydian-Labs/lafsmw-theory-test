@@ -1,4 +1,7 @@
 "use client";
+import { notationInstructions } from "@/app/lib/data/instructions";
+import keySignaturesText from "@/app/lib/data/keySignaturesText";
+import { MouseEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import {
   Box,
   Container,
@@ -9,11 +12,6 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-
-import keySignaturesText from "@/app/lib/data/keySignaturesText";
-
-import { notationInstructions } from "@/app/lib/data/instructions";
-import { UserDataProps } from "@/app/lib/typesAndInterfaces";
 import { useState } from "react";
 import CardFooter from "../CardFooter";
 import NotateKeySignature from "../NotateKeySignature";

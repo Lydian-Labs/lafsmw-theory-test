@@ -18,7 +18,7 @@ import CardFooter from "../CardFooter";
 import NotateChord from "../NotateChord";
 import SnackbarToast from "../SnackbarToast";
 
-export default function NotateSeventhChords2({
+export default function NotateSeventhChords({
   currentUserData,
   setCurrentUserData,
   nextViewState,
@@ -77,6 +77,11 @@ export default function NotateSeventhChords2({
         <Grid container spacing={4} p={2}>
           <Grid item xs={4}>
             <Stack gap={2} alignItems={"center"}>
+              {page === 18 && (
+                <Typography variant="h6" align="center">
+                  Section 5: Notate Seventh Chords
+                </Typography>
+              )}
               <Box
                 width={273}
                 height={456}

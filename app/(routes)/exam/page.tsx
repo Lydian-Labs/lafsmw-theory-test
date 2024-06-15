@@ -1,20 +1,13 @@
 "use client";
-import KeySigNotate1 from "@/app/components/ExamPages/1-1_KeySigNotate";
+import ChordsIdentify from "@/app/components/ExamPages/ChordsIdentify";
+import KeySigIdentify from "@/app/components/ExamPages/KeySigIdentify";
+import KeySigNotate1 from "@/app/components/ExamPages/KeySigNotate1";
 import KeySignaturesNotation from "@/app/components/ExamPages/KeySigNotateTemplate";
-
-import KeySigIdentify from "@/app/components/ExamPages/2_KeySigIdentify";
-import ScalesNotate1 from "@/app/components/ExamPages/3-1_ScalesNotate";
 import ScalesNotation from "@/app/components/ExamPages/ScalesNotateTemplate";
-
-import TriadsNotate1 from "@/app/components/ExamPages/4-1_TriadsNotate";
-import TriadsNotation from "@/app/components/ExamPages/TriadsNotateTemplate";
-
-import SeventhChordsNotate1 from "@/app/components/ExamPages/5-1_SeventhChordsNotate";
 import SeventhChordsNotation from "@/app/components/ExamPages/SeventhChordsNotateTemplate";
-
-import ChordsIdentify from "@/app/components/ExamPages/6_ChordsIdentify";
-import WriteProgressions from "@/app/components/ExamPages/7_WriteProgressions";
-import WriteBluesChanges from "@/app/components/ExamPages/8_WriteBluesChanges";
+import TriadsNotation from "@/app/components/ExamPages/TriadsNotateTemplate";
+import WriteBluesChanges from "@/app/components/ExamPages/WriteBluesChanges";
+import WriteProgressions from "@/app/components/ExamPages/WriteProgressions";
 
 import { useTimer } from "@/app/context/TimerContext";
 import { checkAnswers, checkArrOfArrsAnswer } from "@/app/lib/calculateAnswers";
@@ -22,12 +15,12 @@ import convertObjectToArray from "@/app/lib/convertObjectToArray";
 import convertObjectToChordChart from "@/app/lib/convertObjectToChordChart";
 import {
   correctKeySigAnswers,
-  correctProgressionAnswers,
-  correctSeventhChordAnswers,
-  correctTriadAnswers,
-  correctScalesAnswers,
   correctKeySigNotationAnswers,
+  correctProgressionAnswers,
+  correctScalesAnswers,
+  correctSeventhChordAnswers,
   correctSeventhChordNotationAnswers,
+  correctTriadAnswers,
 } from "@/app/lib/data/answerKey";
 import { initialFormInputState } from "@/app/lib/initialStates";
 import { InputState, MouseEvent } from "@/app/lib/typesAndInterfaces";
@@ -38,7 +31,7 @@ import {
 } from "@/firebase/firestore/model";
 import { Box, Button, Stack, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const VIEW_STATES = {
   START_TEST: 0,
@@ -366,7 +359,7 @@ export default function ExamHomePage() {
           />
         )}
         {viewState === VIEW_STATES.SCALES_NOTATE1 && (
-          <ScalesNotate1
+          <ScalesNotation
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
@@ -414,7 +407,7 @@ export default function ExamHomePage() {
           />
         )}
         {viewState === VIEW_STATES.TRIADS_NOTATE1 && (
-          <TriadsNotate1
+          <TriadsNotation
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
@@ -462,7 +455,7 @@ export default function ExamHomePage() {
           />
         )}
         {viewState === VIEW_STATES.SEVENTH_CHORDS_NOTATE1 && (
-          <SeventhChordsNotate1
+          <SeventhChordsNotation
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}

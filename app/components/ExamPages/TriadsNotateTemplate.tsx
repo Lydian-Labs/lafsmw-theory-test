@@ -77,6 +77,11 @@ export default function TriadsNotation({
         <Grid container spacing={4} p={2}>
           <Grid item xs={4}>
             <Stack gap={2} alignItems={"center"}>
+              {page === 12 && (
+                <Typography variant="h6" align="center">
+                  Section 4: Notate Triads
+                </Typography>
+              )}
               <Box
                 width={273}
                 height={456}
