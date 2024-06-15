@@ -4,11 +4,6 @@ import KeySignaturesNotation from "@/app/components/ExamPages/KeySigNotateTempla
 
 import KeySigIdentify from "@/app/components/ExamPages/2_KeySigIdentify";
 import ScalesNotate1 from "@/app/components/ExamPages/3-1_ScalesNotate";
-import ScalesNotate2 from "@/app/components/ExamPages/3-2_ScalesNotate";
-import ScalesNotate3 from "@/app/components/ExamPages/3-3_ScalesNotate";
-import ScalesNotate4 from "@/app/components/ExamPages/3-4_ScalesNotate";
-import ScalesNotate5 from "@/app/components/ExamPages/3-5_ScalesNotate";
-import ScalesNotate6 from "@/app/components/ExamPages/3-6_ScalesNotate";
 import ScalesNotation from "@/app/components/ExamPages/ScalesNotateTemplate";
 
 import TriadsNotate1 from "@/app/components/ExamPages/4-1_TriadsNotate";
@@ -17,6 +12,7 @@ import TriadsNotate3 from "@/app/components/ExamPages/4-3_TriadsNotate";
 import TriadsNotate4 from "@/app/components/ExamPages/4-4_TriadsNotate";
 import TriadsNotate5 from "@/app/components/ExamPages/4-5_TriadsNotate";
 import TriadsNotate6 from "@/app/components/ExamPages/4-6_TriadsNotate";
+import TriadsNotation from "@/app/components/ExamPages/TriadsNotateTemplate";
 
 import SeventhChordsNotate1 from "@/app/components/ExamPages/5-1_SeventhChordsNotate";
 import SeventhChordsNotate2 from "@/app/components/ExamPages/5-2_SeventhChordsNotate";
@@ -431,41 +427,47 @@ export default function ExamHomePage() {
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
+            page={12}
           />
         )}
         {viewState === VIEW_STATES.TRIADS_NOTATE2 && (
-          <TriadsNotate2
+          <TriadsNotation
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
+            page={13}
           />
         )}
         {viewState === VIEW_STATES.TRIADS_NOTATE3 && (
-          <TriadsNotate3
+          <TriadsNotation
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
+            page={14}
           />
         )}
         {viewState === VIEW_STATES.TRIADS_NOTATE4 && (
-          <TriadsNotate4
+          <TriadsNotation
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
+            page={15}
           />
         )}
         {viewState === VIEW_STATES.TRIADS_NOTATE5 && (
-          <TriadsNotate5
+          <TriadsNotation
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
+            page={16}
           />
         )}
         {viewState === VIEW_STATES.TRIADS_NOTATE6 && (
-          <TriadsNotate6
+          <TriadsNotation
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
+            page={17}
           />
         )}
         {viewState === VIEW_STATES.SEVENTH_CHORDS_NOTATE1 && (

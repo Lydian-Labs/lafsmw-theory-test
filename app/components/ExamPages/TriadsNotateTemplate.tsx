@@ -18,15 +18,18 @@ import CardFooter from "../CardFooter";
 import NotateChord from "../NotateChord";
 import SnackbarToast from "../SnackbarToast";
 
-export default function TriadsNotation3({
+export default function TriadsNotation({
   currentUserData,
   setCurrentUserData,
   nextViewState,
+  page,
 }: UserDataProps) {
   const [chords, setChords] = useState<string[]>([]);
   const currentUserDataRef = useRef(currentUserData);
   const [open, setOpen] = useState<boolean>(false);
   const [isReady, setIsReady] = useState<boolean>(false);
+
+  const triadsPropName = `triads${page - 11}`;
 
   const memoizedSetCurrentUserData = useCallback(
     (data: any) => {
@@ -42,7 +45,7 @@ export default function TriadsNotation3({
   useEffect(() => {
     memoizedSetCurrentUserData({
       ...currentUserDataRef.current,
-      triads3: chords,
+      [triadsPropName]: chords,
     });
   }, [chords, memoizedSetCurrentUserData]);
 
@@ -121,7 +124,7 @@ export default function TriadsNotation3({
               >
                 <Grid item>
                   <Typography variant="h6">
-                    {`Write the following triad: ${triadsText[2]}`}
+                    {`Write the following triad: ${triadsText[page - 12]}`}
                   </Typography>
                 </Grid>
                 <Grid item>
@@ -130,7 +133,7 @@ export default function TriadsNotation3({
               </Grid>
               <CardFooter
                 buttonText={"Continue >"}
-                pageNumber={14}
+                pageNumber={13}
                 handleSubmit={handleSubmit}
               />
             </Box>
