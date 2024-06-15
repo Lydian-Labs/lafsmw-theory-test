@@ -1,8 +1,9 @@
 import { SyntheticEvent, Dispatch, SetStateAction } from "react";
 import Snackbar from "@mui/material/Snackbar";
+//import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import { Slide } from "@mui/material";
+import { Slide, SnackbarContent } from "@mui/material";
 
 type SimpleSnackbarProps = {
   open: boolean;
@@ -10,13 +11,20 @@ type SimpleSnackbarProps = {
   message: string;
 };
 
+// function Alert(props: AlertProps) {
+//   return <MuiAlert elevation={6} variant="filled" {...props} />;
+// }
+
 export default function SimpleSnackbar({
   open,
   setOpen,
   message,
 }: SimpleSnackbarProps) {
-  const handleClose = (event: Event | SyntheticEvent) => {
-    setOpen((prev: boolean) => !prev);
+  const handleClose = (event: SyntheticEvent | Event, reason?: string) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
   };
 
   const action = (
@@ -31,16 +39,43 @@ export default function SimpleSnackbar({
   );
 
   return (
-    <div>
-      <Snackbar
-        open={open}
-        autoHideDuration={3000}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        onClose={handleClose}
+    <Snackbar
+      open={open}
+      autoHideDuration={3000}
+      anchorOrigin={{ vertical: "top", horizontal: "center" }} // Position at the top initially
+      onClose={handleClose}
+      TransitionComponent={Slide}
+      ContentProps={{
+        style: {
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        },
+      }}
+      style={{
+        position: "fixed",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <SnackbarContent
+        style={{
+          backgroundColor: "red",
+          textAlign: "center",
+          color: "white",
+          maxWidth: "300px",
+          margin: "0 auto",
+          padding: "10px", // Reduce padding to decrease height
+          borderRadius: "8px", // Optionally, add some border-radius
+        }}
         message={message}
         action={action}
-        TransitionComponent={Slide}
       />
-    </div>
+    </Snackbar>
   );
 }
