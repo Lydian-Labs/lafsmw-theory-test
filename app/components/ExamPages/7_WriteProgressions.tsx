@@ -9,6 +9,7 @@ export default function WriteProgressions({
   currentUserData,
   setCurrentUserData,
   nextViewState,
+  page,
 }: UserDataProps) {
   const writeProgressionsFormRef = useRef<HTMLFormElement | null>(null);
 
@@ -65,7 +66,7 @@ export default function WriteProgressions({
             <CardFooter
               width={900}
               height={100}
-              pageNumber={25}
+              pageNumber={page}
               handleSubmit={() => {
                 writeProgressionsFormRef.current?.requestSubmit();
                 nextViewState();

@@ -10,6 +10,7 @@ export default function ChordsIdentification({
   currentUserData,
   setCurrentUserData,
   nextViewState,
+  page,
 }: UserDataProps) {
   const chordsFormRef = useRef<HTMLFormElement | null>(null);
 
@@ -68,7 +69,7 @@ export default function ChordsIdentification({
             <CardFooter
               width={900}
               height={200}
-              pageNumber={24}
+              pageNumber={page}
               handleSubmit={() => {
                 chordsFormRef.current?.requestSubmit();
                 nextViewState();

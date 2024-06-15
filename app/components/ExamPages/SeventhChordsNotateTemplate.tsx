@@ -18,15 +18,18 @@ import CardFooter from "../CardFooter";
 import NotateChord from "../NotateChord";
 import SnackbarToast from "../SnackbarToast";
 
-export default function NotateSeventhChords5({
+export default function NotateSeventhChords2({
   currentUserData,
   setCurrentUserData,
   nextViewState,
+  page,
 }: UserDataProps) {
   const [chords, setChords] = useState<string[]>([]);
   const currentUserDataRef = useRef(currentUserData);
   const [open, setOpen] = useState<boolean>(false);
   const [isReady, setIsReady] = useState<boolean>(false);
+
+  const seventhChordsPropName = `seventhChords${page - 17}`;
 
   const memoizedSetCurrentUserData = useCallback(
     (data: any) => {
@@ -42,7 +45,7 @@ export default function NotateSeventhChords5({
   useEffect(() => {
     memoizedSetCurrentUserData({
       ...currentUserDataRef.current,
-      seventhChords5: chords,
+      [seventhChordsPropName]: chords,
     });
   }, [chords, memoizedSetCurrentUserData]);
 
@@ -121,7 +124,9 @@ export default function NotateSeventhChords5({
               >
                 <Grid item>
                   <Typography variant="h6">
-                    {`Write the following seventh chord: ${seventhChordsText[4]}`}
+                    {`Write the following seventh chord: ${
+                      seventhChordsText[page - 18]
+                    }`}
                   </Typography>
                 </Grid>
                 <Grid item>
@@ -130,7 +135,7 @@ export default function NotateSeventhChords5({
               </Grid>
               <CardFooter
                 buttonText={"Continue >"}
-                pageNumber={22}
+                pageNumber={page}
                 handleSubmit={handleSubmit}
               />
             </Box>

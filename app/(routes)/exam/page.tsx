@@ -7,19 +7,10 @@ import ScalesNotate1 from "@/app/components/ExamPages/3-1_ScalesNotate";
 import ScalesNotation from "@/app/components/ExamPages/ScalesNotateTemplate";
 
 import TriadsNotate1 from "@/app/components/ExamPages/4-1_TriadsNotate";
-import TriadsNotate2 from "@/app/components/ExamPages/4-2_TriadsNotate";
-import TriadsNotate3 from "@/app/components/ExamPages/4-3_TriadsNotate";
-import TriadsNotate4 from "@/app/components/ExamPages/4-4_TriadsNotate";
-import TriadsNotate5 from "@/app/components/ExamPages/4-5_TriadsNotate";
-import TriadsNotate6 from "@/app/components/ExamPages/4-6_TriadsNotate";
 import TriadsNotation from "@/app/components/ExamPages/TriadsNotateTemplate";
 
 import SeventhChordsNotate1 from "@/app/components/ExamPages/5-1_SeventhChordsNotate";
-import SeventhChordsNotate2 from "@/app/components/ExamPages/5-2_SeventhChordsNotate";
-import SeventhChordsNotate3 from "@/app/components/ExamPages/5-3_SeventhChordsNotate";
-import SeventhChordsNotate4 from "@/app/components/ExamPages/5-4_SeventhChordsNotate";
-import SeventhChordsNotate5 from "@/app/components/ExamPages/5-5_SeventhChordsNotate";
-import SeventhChordsNotate6 from "@/app/components/ExamPages/5-6_SeventhChordsNotate";
+import SeventhChordsNotation from "@/app/components/ExamPages/SeventhChordsNotateTemplate";
 
 import ChordsIdentify from "@/app/components/ExamPages/6_ChordsIdentify";
 import WriteProgressions from "@/app/components/ExamPages/7_WriteProgressions";
@@ -475,41 +466,47 @@ export default function ExamHomePage() {
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
+            page={18}
           />
         )}
         {viewState === VIEW_STATES.SEVENTH_CHORDS_NOTATE2 && (
-          <SeventhChordsNotate2
+          <SeventhChordsNotation
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
+            page={19}
           />
         )}
         {viewState === VIEW_STATES.SEVENTH_CHORDS_NOTATE3 && (
-          <SeventhChordsNotate3
+          <SeventhChordsNotation
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
+            page={20}
           />
         )}
         {viewState === VIEW_STATES.SEVENTH_CHORDS_NOTATE4 && (
-          <SeventhChordsNotate4
+          <SeventhChordsNotation
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
+            page={21}
           />
         )}
         {viewState === VIEW_STATES.SEVENTH_CHORDS_NOTATE5 && (
-          <SeventhChordsNotate5
+          <SeventhChordsNotation
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
+            page={22}
           />
         )}
         {viewState === VIEW_STATES.SEVENTH_CHORDS_NOTATE6 && (
-          <SeventhChordsNotate6
+          <SeventhChordsNotation
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
+            page={23}
           />
         )}
         {viewState === VIEW_STATES.CHORDS_IDENTIFY && (
@@ -517,6 +514,7 @@ export default function ExamHomePage() {
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
+            page={24}
           />
         )}
         {viewState === VIEW_STATES.WRITE_PROGRESSIONS && (
@@ -524,6 +522,7 @@ export default function ExamHomePage() {
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
+            page={25}
           />
         )}
         {viewState === VIEW_STATES.WRITE_BLUES_CHANGES && (
@@ -533,6 +532,7 @@ export default function ExamHomePage() {
             nextViewState={incrementViewState}
             isPDFReady={isPDFReady}
             setIsPDFReady={setIsPDFReady}
+            page={26}
           />
         )}
         {viewState === VIEW_STATES.SUBMIT_AND_EXIT && (
@@ -554,7 +554,7 @@ export default function ExamHomePage() {
             </Stack>
           </main>
         )}
-        {/* {viewState !== VIEW_STATES.SUBMIT_AND_EXIT &&
+        {viewState !== VIEW_STATES.SUBMIT_AND_EXIT &&
           viewState !== VIEW_STATES.START_TEST && (
             <Box sx={{ pl: 5 }}>
               <Button onClick={incrementViewState}>
@@ -569,7 +569,7 @@ export default function ExamHomePage() {
                 <Typography>{"Go to Progressions"}</Typography>
               </Button>
             </Box>
-          )} */}
+          )}
       </Stack>
     </Box>
   );

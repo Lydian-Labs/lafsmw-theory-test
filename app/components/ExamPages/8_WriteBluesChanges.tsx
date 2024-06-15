@@ -14,6 +14,7 @@ export default function WriteBluesChanges({
   nextViewState,
   isPDFReady,
   setIsPDFReady,
+  page,
 }: UserDataBluesProps) {
   const { user } = useAuthContext();
   const userName = user?.displayName?.split(" ").join("_");
@@ -96,7 +97,7 @@ export default function WriteBluesChanges({
             </Grid>
             <CardFooter
               width={1100}
-              pageNumber={26}
+              pageNumber={page}
               buttonText="Continue >"
               buttonForm="submit-form-blues"
               handleSubmit={() => {
