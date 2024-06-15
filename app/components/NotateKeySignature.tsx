@@ -26,6 +26,7 @@ import { keySigReducer } from "../lib/reducer";
 import { setupRenderer } from "../lib/setUpRenderer";
 import { GlyphProps, NotesAndCoordinatesData } from "../lib/typesAndInterfaces";
 import CustomButton from "./CustomButton";
+import SnackbarToast from "../components/SnackbarToast";
 
 const VF = VexFlow.Flow;
 const { Renderer } = VF;
@@ -35,7 +36,8 @@ const NotateKeySignature = ({ handleNotes }: any) => {
   const container = useRef<HTMLDivElement | null>(null);
   const [blankStaves, setBlankStaves] = useState(INITIAL_STAVES);
   const [glyphs, setGlyphs] = useState<GlyphProps[]>([]);
-
+  const [open, setOpen] = useState(false); // Snackbar visibility state
+  const [snackbarMessage, setSnackbarMessage] = useState(""); // Snackbar message state
   const [state, dispatch] = useReducer(keySigReducer, keySigInitialState);
   const [keySig, setKeySig] = useState<string[]>([]);
   const [notesAndCoordinates, setNotesAndCoordinates] = useState<
@@ -125,7 +127,8 @@ const NotateKeySignature = ({ handleNotes }: any) => {
         userClickY >= yCoordinateMin && userClickY <= yCoordinateMax
     );
     if (!foundNoteData) {
-      console.log("No matching note found for coordinates");
+      setSnackbarMessage("Click outside of stave bounds.");
+      setOpen(true); // 
       return;
     }
     //console.log("foundNoteData: ", foundNoteData);
@@ -143,7 +146,8 @@ const NotateKeySignature = ({ handleNotes }: any) => {
       userClickY < minTopClick ||
       userClickY > maxBottomClick
     ) {
-      console.log("Click outside of stave bounds");
+      setSnackbarMessage("Click outside of stave bounds.");
+      setOpen(true); // 
       return;
     }
 
@@ -182,6 +186,7 @@ const NotateKeySignature = ({ handleNotes }: any) => {
         })}
         <CustomButton onClick={clearKey}>Clear Key Signature</CustomButton>
       </div>
+      <SnackbarToast open={open} setOpen={setOpen} message={snackbarMessage} />
     </>
   );
 };
