@@ -9,6 +9,7 @@ import ScalesNotate3 from "@/app/components/ExamPages/3-3_ScalesNotate";
 import ScalesNotate4 from "@/app/components/ExamPages/3-4_ScalesNotate";
 import ScalesNotate5 from "@/app/components/ExamPages/3-5_ScalesNotate";
 import ScalesNotate6 from "@/app/components/ExamPages/3-6_ScalesNotate";
+import ScalesNotation from "@/app/components/ExamPages/ScalesNotateTemplate";
 
 import TriadsNotate1 from "@/app/components/ExamPages/4-1_TriadsNotate";
 import TriadsNotate2 from "@/app/components/ExamPages/4-2_TriadsNotate";
@@ -254,40 +255,40 @@ export default function ExamHomePage() {
       console.log("currnetUserData", currentUserData);
 
       // Send email with results using API route
-      const response = await fetch("/api/email", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: process.env.NEXT_PUBLIC_EMAIL_CAMP_DIRECTOR,
-          subject: `Exam Results for ${userName}`,
-          text: `<p>Hello Kyle,</p>
+      // const response = await fetch("/api/email", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({
+      //     email: process.env.NEXT_PUBLIC_EMAIL_CAMP_DIRECTOR,
+      //     subject: `Exam Results for ${userName}`,
+      //     text: `<p>Hello Kyle,</p>
 
-          <p>Here are the results for ${userName}:</p>
-          <ul>
-            <li>Level: ${userAnswers[0]}</li>
-            <li>Key Signatures (notate): ${userAnswers[1]}</li>
-            <li>Key Signatures (identify): ${userAnswers[2]}</li>
-            <li>Scales: ${userAnswers[3]}</li>
-            <li>Triads: ${userAnswers[4]}</li>
-            <li>Seventh Chords (notate): ${userAnswers[5]}</li>
-            <li>Seventh Chords (identify): ${userAnswers[6]}</li>
-            <li>2-5-1 Progressions: ${userAnswers[7]}</li>
-            <li>Link to blues progression pdf: ${userAnswers[8]}</li>
-            <li>Blues progression backup chart:
-            ${userAnswers[9]}</li>
-          </ul>
+      //     <p>Here are the results for ${userName}:</p>
+      //     <ul>
+      //       <li>Level: ${userAnswers[0]}</li>
+      //       <li>Key Signatures (notate): ${userAnswers[1]}</li>
+      //       <li>Key Signatures (identify): ${userAnswers[2]}</li>
+      //       <li>Scales: ${userAnswers[3]}</li>
+      //       <li>Triads: ${userAnswers[4]}</li>
+      //       <li>Seventh Chords (notate): ${userAnswers[5]}</li>
+      //       <li>Seventh Chords (identify): ${userAnswers[6]}</li>
+      //       <li>2-5-1 Progressions: ${userAnswers[7]}</li>
+      //       <li>Link to blues progression pdf: ${userAnswers[8]}</li>
+      //       <li>Blues progression backup chart:
+      //       ${userAnswers[9]}</li>
+      //     </ul>
 
-          <p>Thank you,<br>Team at Lydian Labs Technology.</p>`,
-        }),
-      });
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(
-          `Failed to send email: ${errorData.error}, Details: ${errorData.details}`
-        );
-      }
+      //     <p>Thank you,<br>Team at Lydian Labs Technology.</p>`,
+      //   }),
+      // });
+      // if (!response.ok) {
+      //   const errorData = await response.json();
+      //   throw new Error(
+      //     `Failed to send email: ${errorData.error}, Details: ${errorData.details}`
+      //   );
+      // }
       return router.push("/sign-out");
     } catch (error) {
       console.error("handleSubmit error:", error);
@@ -342,6 +343,7 @@ export default function ExamHomePage() {
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
+            page={1}
           />
         )}
         {viewState === VIEW_STATES.KEY_SIG_NOTATE2 && (
@@ -381,41 +383,47 @@ export default function ExamHomePage() {
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
+            page={6}
           />
         )}
         {viewState === VIEW_STATES.SCALES_NOTATE2 && (
-          <ScalesNotate2
+          <ScalesNotation
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
+            page={7}
           />
         )}
         {viewState === VIEW_STATES.SCALES_NOTATE3 && (
-          <ScalesNotate3
+          <ScalesNotation
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
+            page={8}
           />
         )}
         {viewState === VIEW_STATES.SCALES_NOTATE4 && (
-          <ScalesNotate4
+          <ScalesNotation
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
+            page={9}
           />
         )}
         {viewState === VIEW_STATES.SCALES_NOTATE5 && (
-          <ScalesNotate5
+          <ScalesNotation
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
+            page={10}
           />
         )}
         {viewState === VIEW_STATES.SCALES_NOTATE6 && (
-          <ScalesNotate6
+          <ScalesNotation
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
+            page={11}
           />
         )}
         {viewState === VIEW_STATES.TRIADS_NOTATE1 && (

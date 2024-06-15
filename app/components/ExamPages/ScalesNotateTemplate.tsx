@@ -10,6 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 
+import scalesText from "@/app/lib/data/scalesText";
 import { notationInstructions } from "@/app/lib/data/instructions";
 import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import { useState } from "react";
@@ -17,14 +18,17 @@ import CardFooter from "../CardFooter";
 import NotateScale from "../NotateScale";
 import SnackbarToast from "../SnackbarToast";
 
-export default function ScalesNotation3({
+export default function ScalesNotation({
   currentUserData,
   setCurrentUserData,
   nextViewState,
+  page,
 }: UserDataProps) {
   const [scales, setScales] = useState<Array<string>>([]);
   const [open, setOpen] = useState<boolean>(false);
   const [isReady, setIsReady] = useState<boolean>(false);
+
+  const scalesPropName = `scales${page - 5}`;
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -34,7 +38,7 @@ export default function ScalesNotation3({
     } else {
       setCurrentUserData({
         ...currentUserData,
-        scales3: scales,
+        [scalesPropName]: scales,
       });
       nextViewState();
     }
@@ -106,7 +110,7 @@ export default function ScalesNotation3({
               >
                 <Grid item>
                   <Typography variant="h6">
-                    Write the following scale: C Dorian
+                    {`Write the following scale: ${scalesText[page - 6]}`}
                   </Typography>
                 </Grid>
                 <Grid item>
@@ -115,7 +119,7 @@ export default function ScalesNotation3({
               </Grid>
               <CardFooter
                 buttonText={"Continue >"}
-                pageNumber={8}
+                pageNumber={page}
                 handleSubmit={handleSubmit}
               />
             </Box>

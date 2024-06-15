@@ -22,10 +22,13 @@ export default function KeySignaturesNotation({
   currentUserData,
   setCurrentUserData,
   nextViewState,
+  page,
 }: UserDataProps) {
   const [level, setLevel] = useState<Level>("select-here");
   const [keySignatureNotation, setKeySignatureNotation] = useState([]);
   const [open, setOpen] = useState<boolean>(false);
+
+  const keySigPropName = `keySignaturesNotation${page}`;
 
   const handleSubmit = async (e: MouseEvent) => {
     e.preventDefault();
@@ -36,7 +39,7 @@ export default function KeySignaturesNotation({
     setCurrentUserData({
       ...currentUserData,
       level: level,
-      keySignaturesNotation1: keySignatureNotation,
+      [keySigPropName]: keySignatureNotation,
     });
     nextViewState();
   };
@@ -125,7 +128,7 @@ export default function KeySignaturesNotation({
                   <NotateKeySignature handleNotes={handleKeySigNotation} />
                 </Grid>
               </Grid>
-              <CardFooter pageNumber={1} handleSubmit={handleSubmit} />
+              <CardFooter pageNumber={page} handleSubmit={handleSubmit} />
             </Box>
           </Grid>
         </Grid>

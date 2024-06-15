@@ -10,6 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 
+import scalesText from "@/app/lib/data/scalesText";
 import { notationInstructions } from "@/app/lib/data/instructions";
 import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import { useState } from "react";
@@ -21,10 +22,13 @@ export default function ScalesNotation({
   currentUserData,
   setCurrentUserData,
   nextViewState,
+  page,
 }: UserDataProps) {
   const [scales, setScales] = useState<Array<string>>([]);
   const [open, setOpen] = useState<boolean>(false);
   const [isReady, setIsReady] = useState<boolean>(false);
+
+  const scalesPropName = `scales${page - 5}`;
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -34,7 +38,7 @@ export default function ScalesNotation({
     } else {
       setCurrentUserData({
         ...currentUserData,
-        scales1: scales,
+        [scalesPropName]: scales,
       });
       nextViewState();
     }
@@ -109,7 +113,7 @@ export default function ScalesNotation({
               >
                 <Grid item>
                   <Typography variant="h6">
-                    Write the following scale: Db Major
+                    {`Write the following scale: ${scalesText[page - 6]}`}
                   </Typography>
                 </Grid>
                 <Grid item>
@@ -118,7 +122,7 @@ export default function ScalesNotation({
               </Grid>
               <CardFooter
                 buttonText={"Continue >"}
-                pageNumber={6}
+                pageNumber={page}
                 handleSubmit={handleSubmit}
               />
             </Box>
