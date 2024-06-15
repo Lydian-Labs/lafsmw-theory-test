@@ -99,9 +99,15 @@ const NotateKeySignature = ({ handleNotes }: any) => {
 
   //this is where the we will get the array to grade
   useEffect(() => {
-    console.log("key signature: ", keySig);
+    //console.log("key signature: ", keySig);
     handleNotes(keySig);
   }, [keySig]);
+
+  useEffect(() => {
+    console.log("notes and coordinates: ", notesAndCoordinates);
+    console.log("glyphs: ", glyphs);
+    console.log("key signature: ", keySig);
+  }, [glyphs, notesAndCoordinates, keySig]);
 
   useEffect(() => {
     initializeRenderer(rendererRef, container);
@@ -129,7 +135,7 @@ const NotateKeySignature = ({ handleNotes }: any) => {
       console.log("No matching note found for coordinates");
       return;
     }
-
+    console.log("foundNoteData: ", foundNoteData);
     const { maxRightClick, minLeftClick, minTopClick, maxBottomClick } =
       isClickWithinStaveBounds(
         blankStaves[0],
@@ -163,7 +169,6 @@ const NotateKeySignature = ({ handleNotes }: any) => {
       );
 
     setNotesAndCoordinates(() => newNotesAndCoordinates);
-    //console.log("notes and coordinates after modifying: ", notesAndCoordinates);
   };
 
   return (

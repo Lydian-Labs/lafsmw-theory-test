@@ -10,6 +10,7 @@ export const buildKeySignature = (
   context: IRenderContext,
   stave: StaveType
 ) => {
+  //to do: add error handling so user can't add duplicate accidentals
   glyphs &&
     glyphs.forEach((glyphInfo) => {
       const adjustedYPosition = roundToNearest5(glyphInfo.yPosition);
@@ -18,5 +19,6 @@ export const buildKeySignature = (
         .setContext(context)
         .setStave(stave)
         .render(context, glyphInfo.xPosition, adjustedYPosition);
+        console.log('adjustedYPosition: ', adjustedYPosition)
     });
 };

@@ -4,6 +4,7 @@ import {
   KeySigState,
   NotesAndCoordinatesData,
 } from "./typesAndInterfaces";
+import { roundToNearest5 } from "./roundToNearest5";
 
 const tolerance = 5;
 
@@ -30,17 +31,15 @@ export const addGlyphs = (
   glyphState: (newState: React.SetStateAction<GlyphProps[]>) => void
 ) => {
   const newState = {
-    xPosition: userClickX,
-    yPosition: userClickY,
+    xPosition: roundToNearest5(userClickX),
+    yPosition: roundToNearest5(userClickY),
     glyph: state.isAddSharpActive
       ? "accidentalSharp"
       : state.isAddFlatActive
       ? "accidentalFlat"
       : "",
   };
-  console.log(
-    `glyph coordinates:  x: ${newState.xPosition}, y: ${newState.yPosition}`
-  );
+
   glyphState((prevState: GlyphProps[]) => [...prevState, newState]);
 };
 
