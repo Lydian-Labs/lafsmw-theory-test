@@ -9,13 +9,13 @@ import React, {
   useState,
 } from "react";
 import VexFlow from "vexflow";
+import SnackbarToast from "../components/SnackbarToast";
 import { modifyKeySigActionTypes } from "../lib/actionTypes";
 import { buildKeySignature } from "../lib/buildKeySignature";
 import { buttonGroup, clearKeySignature } from "../lib/buttonsAndButtonGroups";
 import { keySigArray } from "../lib/data/keySigArray";
 import { INITIAL_STAVES, staveData } from "../lib/data/stavesData";
 import generateYMinAndYMaxForKeySig from "../lib/generateYMinAndMaxForKeySig";
-import getUserClickInfo from "../lib/getUserClickInfo";
 import { handleKeySigInteraction } from "../lib/handleKeySigInteraction";
 import {
   initialNotesAndCoordsState,
@@ -23,8 +23,6 @@ import {
 } from "../lib/initialStates";
 import { initializeRenderer } from "../lib/initializeRenderer";
 import isClickWithinStaveBounds from "../lib/isClickWithinStaveBounds";
-import { deleteAccidentalFromKeySig } from "../lib/modifyKeySignature";
-import { parseNote } from "../lib/modifyNotesAndCoordinates";
 import { keySigReducer } from "../lib/reducer";
 import { setupRenderer } from "../lib/setUpRenderer";
 import { GlyphProps, NotesAndCoordinatesData } from "../lib/typesAndInterfaces";
@@ -38,13 +36,13 @@ const NotateKeySignature = ({ handleNotes }: any) => {
   const container = useRef<HTMLDivElement | null>(null);
   const [blankStaves, setBlankStaves] = useState(INITIAL_STAVES);
   const [glyphs, setGlyphs] = useState<GlyphProps[]>([]);
-
+  const [open, setOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
   const [state, dispatch] = useReducer(keySigReducer, keySigInitialState);
   const [keySig, setKeySig] = useState<string[]>([]);
   const [notesAndCoordinates, setNotesAndCoordinates] = useState<
     NotesAndCoordinatesData[]
   >([initialNotesAndCoordsState]);
-  const [topKeySigNoteYCoord, setTopKeySigYNoteCoord] = useState<number>(0);
   const keySigButtonGroup = useMemo(
     () => buttonGroup(dispatch, state, modifyKeySigActionTypes),
     [dispatch, state]
@@ -54,7 +52,6 @@ const NotateKeySignature = ({ handleNotes }: any) => {
   renderer?.resize(470, 200);
 
   const context = rendererRef.current?.getContext();
-
   const renderStaves = useCallback((): void => {
     setupRenderer({
       rendererRef,
@@ -68,20 +65,42 @@ const NotateKeySignature = ({ handleNotes }: any) => {
   const clearKey = () => {
     clearKeySignature(setGlyphs, rendererRef, container, renderStaves),
       setKeySig(() => []);
+    setNotesAndCoordinates(() =>
+      generateYMinAndYMaxForKeySig(42.5, keySigArray)
+    );
     dispatch({ type: "" });
   };
 
-  //need to figure out how to NOT hard code the top note coordinate
+  const getUserClickData = (
+    e: React.MouseEvent,
+    container: React.RefObject<HTMLDivElement>,
+    stave: any
+  ): any => {
+    const rect = container && container.current?.getBoundingClientRect();
+    const userClickY = rect ? e.clientY - rect.top : 0;
+    const userClickX = rect ? e.clientX - rect.left : 0;
+    const topStaveYCoord = stave && stave.getYForTopText();
+    const bottomStaveYCoord = (stave && stave.getYForBottomText()) || undefined;
+    return {
+      rect,
+      userClickY,
+      userClickX,
+      topStaveYCoord,
+      bottomStaveYCoord,
+    };
+  };
 
   useEffect(() => {
     initializeRenderer(rendererRef, container);
     renderStaves();
-    setNotesAndCoordinates(() => generateYMinAndYMaxForKeySig(44, keySigArray));
+    setNotesAndCoordinates(() =>
+      generateYMinAndYMaxForKeySig(42.5, keySigArray)
+    );
   }, []);
 
   //this is where the we will get the array to grade
   useEffect(() => {
-    // console.log("key signature: ", keySig);
+    console.log("key signature: ", keySig);
     handleNotes(keySig);
   }, [keySig]);
 
@@ -100,24 +119,18 @@ const NotateKeySignature = ({ handleNotes }: any) => {
     )
       return;
 
-    const {
-      userClickY,
-      userClickX,
-      topStaveYCoord,
-      bottomStaveYCoord,
-      topKeySigPosition,
-    } = getUserClickInfo(e, container, blankStaves[0]);
-
-    setTopKeySigYNoteCoord(() => topKeySigPosition);
+    const { userClickY, userClickX, topStaveYCoord, bottomStaveYCoord } =
+      getUserClickData(e, container, blankStaves[0]);
 
     let foundNoteData = notesAndCoordinates.find(
       ({ yCoordinateMin, yCoordinateMax }) =>
         userClickY >= yCoordinateMin && userClickY <= yCoordinateMax
     );
     if (!foundNoteData) {
+      setSnackbarMessage("Click outside of stave bounds.");
+      setOpen(true); //
       return;
     }
-
     const { maxRightClick, minLeftClick, minTopClick, maxBottomClick } =
       isClickWithinStaveBounds(
         blankStaves[0],
@@ -131,45 +144,25 @@ const NotateKeySignature = ({ handleNotes }: any) => {
       userClickX > maxRightClick ||
       userClickY < minTopClick ||
       userClickY > maxBottomClick
-    )
-      return;
-
-    if (state.isRemoveAccidentalActive) {
-      deleteAccidentalFromKeySig(setGlyphs, userClickX, userClickY);
+    ) {
+      setSnackbarMessage("Click outside of stave bounds.");
+      setOpen(true);
       return;
     }
 
     let notesAndCoordinatesCopy = [...notesAndCoordinates];
 
-    setGlyphs((prevState) => [
-      ...prevState,
-      {
-        xPosition: userClickX,
-        yPosition: userClickY,
-        glyph: state.isAddSharpActive
-          ? "accidentalSharp"
-          : state.isAddFlatActive
-          ? "accidentalFlat"
-          : "",
-      },
-    ]);
     const { notesAndCoordinates: newNotesAndCoordinates } =
-      handleKeySigInteraction(notesAndCoordinatesCopy, state, foundNoteData);
-
-    // TO DO: Refactor this to a separate function? It's taking too long to update the state if student clicks on a note too quickly after another note
-    setKeySig((prevState) => {
-      const newKeySig = [...prevState];
-      if (foundNoteData?.note) {
-        const noteBase = parseNote(foundNoteData?.note).noteBase;
-        const noteWithAccidental = state.isAddSharpActive
-          ? `${noteBase}` + "#"
-          : `${noteBase}` + "b";
-        if (!newKeySig.includes(noteWithAccidental)) {
-          newKeySig.push(noteWithAccidental);
-        }
-      }
-      return newKeySig;
-    });
+      handleKeySigInteraction(
+        notesAndCoordinatesCopy,
+        state,
+        foundNoteData,
+        userClickX,
+        userClickY,
+        setGlyphs,
+        setKeySig,
+        keySig
+      );
 
     setNotesAndCoordinates(() => newNotesAndCoordinates);
   };
@@ -192,6 +185,7 @@ const NotateKeySignature = ({ handleNotes }: any) => {
         })}
         <CustomButton onClick={clearKey}>Clear Key Signature</CustomButton>
       </div>
+      <SnackbarToast open={open} setOpen={setOpen} message={snackbarMessage} />
     </>
   );
 };

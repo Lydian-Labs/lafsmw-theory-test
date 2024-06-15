@@ -46,6 +46,23 @@ export const updateNotesAndCoordsWithAccidental = (
   return newNotesAndCoords;
 };
 
+export const updateNotesAndCoordsWithAccidentalForKeySig = (
+  state: KeySigState,
+  foundNoteData: NotesAndCoordinatesData,
+  notesAndCoordinates: NotesAndCoordinatesData[]
+) => {
+  const accidental = state.isAddSharpActive ? "#" : "b";
+  const newNotesAndCoords = notesAndCoordinates.map((noteData) =>
+    noteData.note === foundNoteData.note
+      ? {
+          ...noteData,
+          note: appendAccidentalToNote(accidental, foundNoteData.note),
+        }
+      : noteData
+  );
+  return newNotesAndCoords;
+};
+
 export const removeAccidentals = (note: string) => {
   let { noteBase, octave } = parseNote(note);
   if (noteBase.length > 2) {
