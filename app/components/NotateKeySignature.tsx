@@ -9,6 +9,7 @@ import React, {
   useState,
 } from "react";
 import VexFlow from "vexflow";
+import SnackbarToast from "../components/SnackbarToast";
 import { modifyKeySigActionTypes } from "../lib/actionTypes";
 import { buildKeySignature } from "../lib/buildKeySignature";
 import { buttonGroup, clearKeySignature } from "../lib/buttonsAndButtonGroups";
@@ -26,7 +27,6 @@ import { keySigReducer } from "../lib/reducer";
 import { setupRenderer } from "../lib/setUpRenderer";
 import { GlyphProps, NotesAndCoordinatesData } from "../lib/typesAndInterfaces";
 import CustomButton from "./CustomButton";
-import SnackbarToast from "../components/SnackbarToast";
 
 const VF = VexFlow.Flow;
 const { Renderer } = VF;
@@ -36,8 +36,8 @@ const NotateKeySignature = ({ handleNotes }: any) => {
   const container = useRef<HTMLDivElement | null>(null);
   const [blankStaves, setBlankStaves] = useState(INITIAL_STAVES);
   const [glyphs, setGlyphs] = useState<GlyphProps[]>([]);
-  const [open, setOpen] = useState(false); // Snackbar visibility state
-  const [snackbarMessage, setSnackbarMessage] = useState(""); // Snackbar message state
+  const [open, setOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
   const [state, dispatch] = useReducer(keySigReducer, keySigInitialState);
   const [keySig, setKeySig] = useState<string[]>([]);
   const [notesAndCoordinates, setNotesAndCoordinates] = useState<
@@ -128,10 +128,9 @@ const NotateKeySignature = ({ handleNotes }: any) => {
     );
     if (!foundNoteData) {
       setSnackbarMessage("Click outside of stave bounds.");
-      setOpen(true); // 
+      setOpen(true); //
       return;
     }
-    //console.log("foundNoteData: ", foundNoteData);
     const { maxRightClick, minLeftClick, minTopClick, maxBottomClick } =
       isClickWithinStaveBounds(
         blankStaves[0],
@@ -147,7 +146,7 @@ const NotateKeySignature = ({ handleNotes }: any) => {
       userClickY > maxBottomClick
     ) {
       setSnackbarMessage("Click outside of stave bounds.");
-      setOpen(true); // 
+      setOpen(true);
       return;
     }
 
