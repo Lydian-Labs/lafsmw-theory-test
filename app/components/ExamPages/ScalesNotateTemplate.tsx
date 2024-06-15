@@ -1,4 +1,7 @@
 "use client";
+import { notationInstructions } from "@/app/lib/data/instructions";
+import scalesText from "@/app/lib/data/scalesText";
+import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import {
   Box,
   Container,
@@ -9,10 +12,6 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-
-import scalesText from "@/app/lib/data/scalesText";
-import { notationInstructions } from "@/app/lib/data/instructions";
-import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import { useState } from "react";
 import CardFooter from "../CardFooter";
 import NotateScale from "../NotateScale";

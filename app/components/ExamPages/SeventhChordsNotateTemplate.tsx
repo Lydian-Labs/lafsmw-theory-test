@@ -1,4 +1,7 @@
 "use client";
+import { notationInstructions } from "@/app/lib/data/instructions";
+import seventhChordsText from "@/app/lib/data/seventhChordsText";
+import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import {
   Box,
   Container,
@@ -9,10 +12,6 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-
-import seventhChordsText from "@/app/lib/data/seventhChordsText";
-import { notationInstructions } from "@/app/lib/data/instructions";
-import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import { useCallback, useEffect, useRef, useState } from "react";
 import CardFooter from "../CardFooter";
 import NotateChord from "../NotateChord";

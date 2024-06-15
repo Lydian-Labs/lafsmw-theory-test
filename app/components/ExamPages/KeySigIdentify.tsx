@@ -1,4 +1,6 @@
 "use client";
+import { inputInstructions } from "@/app/lib/data/instructions";
+import { InputData, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import {
   Box,
   Container,
@@ -9,9 +11,6 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-
-import { inputInstructions } from "@/app/lib/data/instructions";
-import { InputData, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import { useRef } from "react";
 import CardFooter from "../CardFooter";
 import IdentifyNotation from "../IdentifyNotation";
