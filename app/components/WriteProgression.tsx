@@ -26,9 +26,9 @@ export default forwardRef(function WriteProgression(
     }
   }, [currentData]);
 
-  const chordWidth = width * 0.05;
-  const gapWidth = chordWidth * 0.3;
-  const chordGroupSpacing = chordWidth * 0.1;
+  const chordWidth = width * 0.055;
+  const gapWidth = chordWidth * 0.2;
+  const chordGroupSpacing = chordWidth * 0.07;
 
   const gridInputInline = {
     display: "grid",
@@ -59,7 +59,7 @@ export default forwardRef(function WriteProgression(
           name={key}
           type="text"
           value={numeralInput[key] || ""}
-          width={chordWidth.toString() + "px"}
+          width={(chordWidth + 6).toString() + "px"}
           onChange={(e: ChangeEvent) =>
             setNumeralInput({ ...numeralInput, [key]: e.target.value })
           }
