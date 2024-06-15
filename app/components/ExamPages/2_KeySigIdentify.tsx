@@ -10,7 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import { inputInstructions } from "@/app/lib/instructions";
+import { inputInstructions } from "@/app/lib/data/instructions";
 import { InputData, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import { useRef } from "react";
 import CardFooter from "../CardFooter";

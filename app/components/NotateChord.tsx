@@ -16,14 +16,16 @@ import CheckIfNoteFound from "../components/CheckIfNoteFound";
 import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
 import { modifyChordsActionTypes } from "../lib/actionTypes";
 import { buttonGroup } from "../lib/buttonsAndButtonGroups";
-import { initialChordData } from "../lib/data/initialChordData";
-import { initialNotesAndCoordsState } from "../lib/data/initialNotesAndCoordinatesState";
+import { notesArray } from "../lib/data/noteArray";
 import { staveData } from "../lib/data/stavesData";
 import { findBarIndex } from "../lib/findBar";
 import { handleChordInteraction } from "../lib/handleChordInteraction";
-import { chordInteractionInitialState } from "../lib/initialStates";
+import {
+  chordInteractionInitialState,
+  initialChordData,
+  initialNotesAndCoordsState,
+} from "../lib/initialStates";
 import { initializeRenderer } from "../lib/initializeRenderer";
-import { notesArray } from "../lib/noteArray";
 import { chordReducer } from "../lib/reducer";
 import { setupRendererAndDrawChords } from "../lib/setUpRendererAndDrawChords";
 import {

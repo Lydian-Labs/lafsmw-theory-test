@@ -9,24 +9,26 @@ import React, {
   useState,
 } from "react";
 import VexFlow from "vexflow";
-import RegularButton from "../components/RegularButton";
 import { modifyKeySigActionTypes } from "../lib/actionTypes";
 import { buildKeySignature } from "../lib/buildKeySignature";
 import { buttonGroup, clearKeySignature } from "../lib/buttonsAndButtonGroups";
-import { initialNotesAndCoordsState } from "../lib/data/initialNotesAndCoordinatesState";
-import generateYMinAndYMaxForKeySig from "../lib/generateYMinAndMaxForKeySig";
+import { keySigArray } from "../lib/data/keySigArray";
 import { INITIAL_STAVES, staveData } from "../lib/data/stavesData";
+import generateYMinAndYMaxForKeySig from "../lib/generateYMinAndMaxForKeySig";
 import getUserClickInfo from "../lib/getUserClickInfo";
 import { handleKeySigInteraction } from "../lib/handleKeySigInteraction";
-import { keySigInitialState } from "../lib/initialStates";
+import {
+  initialNotesAndCoordsState,
+  keySigInitialState,
+} from "../lib/initialStates";
 import { initializeRenderer } from "../lib/initializeRenderer";
 import isClickWithinStaveBounds from "../lib/isClickWithinStaveBounds";
-import { keySigArray } from "../lib/keySigArray";
 import { deleteAccidentalFromKeySig } from "../lib/modifyKeySignature";
 import { parseNote } from "../lib/modifyNotesAndCoordinates";
 import { keySigReducer } from "../lib/reducer";
 import { setupRenderer } from "../lib/setUpRenderer";
 import { GlyphProps, NotesAndCoordinatesData } from "../lib/typesAndInterfaces";
+import CustomButton from "./CustomButton";
 
 const VF = VexFlow.Flow;
 const { Renderer } = VF;
@@ -79,7 +81,7 @@ const NotateKeySignature = ({ handleNotes }: any) => {
 
   //this is where the we will get the array to grade
   useEffect(() => {
-   // console.log("key signature: ", keySig);
+    // console.log("key signature: ", keySig);
     handleNotes(keySig);
   }, [keySig]);
 
@@ -179,16 +181,16 @@ const NotateKeySignature = ({ handleNotes }: any) => {
       <div>
         {keySigButtonGroup.map((button) => {
           return (
-            <RegularButton
+            <CustomButton
               key={button.text}
               onClick={button.action}
               isEnabled={button.isEnabled}
             >
               {button.text}
-            </RegularButton>
+            </CustomButton>
           );
         })}
-        <RegularButton onClick={clearKey}>Clear Key Signature</RegularButton>
+        <CustomButton onClick={clearKey}>Clear Key Signature</CustomButton>
       </div>
     </>
   );

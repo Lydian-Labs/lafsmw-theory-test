@@ -1,37 +1,29 @@
-const triadDMajor = ["d/4", "f#/4", "a/4"];
-const triadFsharpMajor = ["f#/4", "a#/4", "c#/5"];
-const triadDbMinor = ["db/4", "f/4", "ab/4"];
-const triadFsharpMinor = ["f#/4", "a/4", "c#/5"];
-const triadEbDiminished = ["eb/4", "g/5", "bb/5"];
-const triadEAugmented = ["e/4", "g#/4", "b#/4"];
+const triadDMajor = ["d", "f#", "a"];
+const triadFsharpMajor = ["f#", "a#", "c#"];
+const triadDbMinor = ["db", "f", "ab"];
+const triadFsharpMinor = ["f#", "a", "c#"];
+const triadEbDiminished = ["eb", "g", "bb"];
+const triadEAugmented = ["e", "g#", "b#"];
 
-const scaleDbMajor = ["db/4", "eb/4", "f/4", "gb/4", "ab/4", "bb/4", "c/5"];
-const scaleBMajor = ["b/4", "c#/5", "d#/5", "e/5", "f#/5", "g#/5", "a#/5"];
-const scaleFSharpDorian = ["f#/4", "g#/4", "a/4", "b/4", "c#/5", "d#/5", "e/5"];
-const scaleCDorian = ["c/4", "d/4", "eb/4", "f/4", "g/4", "a/4", "bb/4"];
-const scaleBbMixolydian = ["bb/4", "c/5", "d/5", "eb/5", "f/5", "g/5", "ab/5"];
-const scaleCSharpMixolydian = [
-  "c#/4",
-  "d#/4",
-  "e#/4",
-  "f#/4",
-  "g#/4",
-  "a#/4",
-  "b/4",
-];
+const scaleDbMajor = ["db", "eb", "f", "gb", "ab", "bb", "c"];
+const scaleBMajor = ["b", "c#", "d#", "e", "f#", "g#", "a#"];
+const scaleFSharpDorian = ["f#", "g#", "a", "b", "c#", "d#", "e"];
+const scaleCDorian = ["c", "d", "eb", "f", "g", "a", "bb"];
+const scaleBbMixolydian = ["bb", "c", "d", "eb", "f", "g", "ab"];
+const scaleCSharpMixolydian = ["c#", "d#", "e#", "f#", "g#", "a#", "b"];
 
 const keySignatureDbMajor = ["bb", "eb", "ab", "db", "gb"];
 const keySignatureFSharp = ["f#", "c#", "g#", "d#"];
 const keySignatureGminor = ["bb", "eb"];
 const keySignatureGSharpMinor = ["f#", "c#", "g#", "d#", "a#"];
 
-const chordEmin7flat5 = ["e/4", "g/4", "bb/4", "d/5"];
-const chordGmin7 = ["g/4", "bb/5", "d/5", "f/5"];
-const chordDbdominant7 = ["db/4", "f/4", "ab/4", "c/5"];
-const chordDsharpdim7 = ["d#/4", "f#/4", "a/4", "c/5"];
-const chordDhalfdim7 = ["d/4", "f/4", "ab/4", "c/5"];
-const chordGbaug7 = ["g/4", "bb/4", "d#/5", "f#/5"];
-const chordEbmindim7 = ["eb/4", "gb/4", "bb/4", "db/5"];
+const chordEmin7flat5 = ["e", "g", "bb", "d"];
+const chordGmin7 = ["g", "bb", "d", "f"];
+const chordDbdominant7 = ["db", "f", "ab", "c"];
+const chordDsharpdim7 = ["d#", "f#", "a", "c"];
+const chordDhalfdim7 = ["d", "f", "ab", "c"];
+const chordGbaug7 = ["g", "bb", "d#", "f#"];
+const chordEbmindim7 = ["eb", "gb", "bb", "db"];
 
 export const correctTriadAnswers = [
   triadDMajor,
