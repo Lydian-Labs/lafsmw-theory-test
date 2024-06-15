@@ -1,8 +1,7 @@
 "use client";
 import KeySigNotate1 from "@/app/components/ExamPages/1-1_KeySigNotate";
-import KeySigNotate2 from "@/app/components/ExamPages/1-2_KeySigNotate";
-import KeySigNotate3 from "@/app/components/ExamPages/1-3_KeySigNotate";
-import KeySigNotate4 from "@/app/components/ExamPages/1-4_KeySigNotate";
+import KeySignaturesNotation from "@/app/components/ExamPages/KeySigNotateTemplate";
+
 import KeySigIdentify from "@/app/components/ExamPages/2_KeySigIdentify";
 import ScalesNotate1 from "@/app/components/ExamPages/3-1_ScalesNotate";
 import ScalesNotate2 from "@/app/components/ExamPages/3-2_ScalesNotate";
@@ -346,24 +345,27 @@ export default function ExamHomePage() {
           />
         )}
         {viewState === VIEW_STATES.KEY_SIG_NOTATE2 && (
-          <KeySigNotate2
+          <KeySignaturesNotation
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
+            page={2}
           />
         )}
         {viewState === VIEW_STATES.KEY_SIG_NOTATE3 && (
-          <KeySigNotate3
+          <KeySignaturesNotation
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
+            page={3}
           />
         )}
         {viewState === VIEW_STATES.KEY_SIG_NOTATE4 && (
-          <KeySigNotate4
+          <KeySignaturesNotation
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
+            page={4}
           />
         )}
         {viewState === VIEW_STATES.KEY_SIG_IDENTIFY && (
@@ -371,6 +373,7 @@ export default function ExamHomePage() {
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
+            page={5}
           />
         )}
         {viewState === VIEW_STATES.SCALES_NOTATE1 && (

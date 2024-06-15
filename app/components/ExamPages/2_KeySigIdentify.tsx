@@ -20,6 +20,7 @@ export default function KeySignaturesIdentification({
   currentUserData,
   setCurrentUserData,
   nextViewState,
+  page,
 }: UserDataProps) {
   const keySigFormRef = useRef<HTMLFormElement | null>(null);
 
@@ -105,7 +106,7 @@ export default function KeySignaturesIdentification({
                 </Grid>
               </Grid>
               <CardFooter
-                pageNumber={5}
+                pageNumber={page}
                 height={200}
                 buttonForm="keySigs"
                 handleSubmit={() => {

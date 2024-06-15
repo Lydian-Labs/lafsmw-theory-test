@@ -10,6 +10,8 @@ import {
   Typography,
 } from "@mui/material";
 
+import keySignaturesText from "@/app/lib/data/keySignaturesText";
+
 import { notationInstructions } from "@/app/lib/data/instructions";
 import { UserDataProps } from "@/app/lib/typesAndInterfaces";
 import { useState } from "react";
@@ -20,14 +22,17 @@ export default function KeySignaturesNotation({
   currentUserData,
   setCurrentUserData,
   nextViewState,
+  page,
 }: UserDataProps) {
   const [keySignatureNotation, setKeySignatureNotation] = useState([]);
+
+  const keySigPropName = `keySignaturesNotation${page}`;
 
   const handleSubmit = async (e: MouseEvent) => {
     e.preventDefault();
     setCurrentUserData({
       ...currentUserData,
-      keySignaturesNotation2: keySignatureNotation,
+      [keySigPropName]: keySignatureNotation,
     });
     nextViewState();
   };
@@ -97,14 +102,16 @@ export default function KeySignaturesNotation({
               >
                 <Grid item>
                   <Typography variant="h6">
-                    Notate the following key signature: F# Major
+                    {`Notate the following key signature: ${
+                      keySignaturesText[page - 1]
+                    }`}
                   </Typography>
                 </Grid>
                 <Grid item>
                   <NotateKeySignature handleNotes={handleKeySigNotation} />
                 </Grid>
               </Grid>
-              <CardFooter pageNumber={2} handleSubmit={handleSubmit} />
+              <CardFooter pageNumber={page} handleSubmit={handleSubmit} />
             </Box>
           </Grid>
         </Grid>
