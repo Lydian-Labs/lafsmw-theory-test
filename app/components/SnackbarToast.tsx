@@ -1,6 +1,5 @@
 import { SyntheticEvent, Dispatch, SetStateAction } from "react";
 import Snackbar from "@mui/material/Snackbar";
-//import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { Slide, SnackbarContent } from "@mui/material";
@@ -10,10 +9,6 @@ type SimpleSnackbarProps = {
   setOpen: Dispatch<SetStateAction<boolean>>;
   message: string;
 };
-
-// function Alert(props: AlertProps) {
-//   return <MuiAlert elevation={6} variant="filled" {...props} />;
-// }
 
 export default function SimpleSnackbar({
   open,
