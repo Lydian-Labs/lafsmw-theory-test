@@ -1,13 +1,13 @@
 import React from "react";
 import Button from "@mui/material/Button";
 
-interface BlueButtonProps {
+interface CustomButtonProps {
   onClick: () => void;
   children: React.ReactNode;
   isEnabled?: boolean;
 }
 
-const BlueButton: React.FC<BlueButtonProps> = ({
+const CustomButton: React.FC<CustomButtonProps> = ({
   onClick,
   children,
   isEnabled,
@@ -18,15 +18,15 @@ const BlueButton: React.FC<BlueButtonProps> = ({
       onClick={onClick}
       sx={{
         "&.MuiButton-root": {
-          backgroundColor: isEnabled ? "#F6D168" : "#a4b1bf",
+          backgroundColor: isEnabled
+            ? "var(--colorEnabledButtonColor)"
+            : "var(--colorPressedButtonColor)",
           borderColor: isEnabled ? "#0063cc" : "#a4b1bf",
-          margin: .5
-          
+          margin: 0.5,
         },
         "&:hover": {
-          backgroundColor: "#0069d9",
-          borderColor: "#0062cc",
-          boxShadow: "0 0 0 0.2rem rgba(0,123,255,.5)",
+          backgroundColor: "var(--colorUnfilledProgressBarColor)",
+          boxShadow: "none",
         },
       }}
     >
@@ -35,4 +35,4 @@ const BlueButton: React.FC<BlueButtonProps> = ({
   );
 };
 
-export default BlueButton;
+export default CustomButton;

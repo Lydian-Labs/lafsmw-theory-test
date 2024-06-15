@@ -3,15 +3,15 @@ import {
   updateNotesAndCoordsWithAccidentalForKeySig,
 } from "../lib/modifyNotesAndCoordinates";
 import {
-  deleteGlyphFromStave,
   addGlyphs,
-  updateKeySigArrayForGrading,
   deleteAccidentalFromKeySigArray,
+  deleteGlyphFromStave,
+  updateKeySigArrayForGrading,
 } from "./modifyKeySignature";
 import {
+  GlyphProps,
   KeySigState,
   NotesAndCoordinatesData,
-  GlyphProps,
 } from "./typesAndInterfaces";
 
 export const handleKeySigInteraction = (
@@ -32,14 +32,15 @@ export const handleKeySigInteraction = (
     );
     addGlyphs(xClick, yClick, state, glyphState);
     updateKeySigArrayForGrading(foundNoteData, state, keySigState);
-  } else if (state.isRemoveAccidentalActive) {
-    deleteGlyphFromStave(glyphState, xClick, yClick);
-    deleteAccidentalFromKeySigArray(foundNoteData, keySig, keySigState);
-    notesAndCoordinates = removeAccidentalFromNotesAndCoords(
-      notesAndCoordinates,
-      foundNoteData
-    );
-  }
+  } 
+  // else if (state.isRemoveAccidentalActive) {
+  //   deleteGlyphFromStave(glyphState, xClick, yClick);
+  //   deleteAccidentalFromKeySigArray(foundNoteData, keySig, keySigState);
+  //   notesAndCoordinates = removeAccidentalFromNotesAndCoords(
+  //     notesAndCoordinates,
+  //     foundNoteData
+  //   );
+  // }
   return {
     notesAndCoordinates,
   };

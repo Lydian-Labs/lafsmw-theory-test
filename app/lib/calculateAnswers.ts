@@ -20,7 +20,8 @@ function checkArrNotesTrue(
   correctAnswers: string[]
 ): boolean {
   for (let i = 0; i < answers.length; i++) {
-    if (answers[i] !== correctAnswers[i]) {
+    let currentAnswer = answers[i].split("/")[0];
+    if (currentAnswer !== correctAnswers[i]) {
       return false;
     }
   }

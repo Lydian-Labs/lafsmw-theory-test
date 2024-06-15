@@ -18,15 +18,17 @@ import CheckIfNoteFound from "../components/CheckIfNoteFound";
 import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
 import { modifyNotesActionTypes } from "../lib/actionTypes";
 import { buttonGroup } from "../lib/buttonsAndButtonGroups";
-import { initialNotesAndCoordsState } from "../lib/data/initialNotesAndCoordinatesState";
+import { notesArray } from "../lib/data/noteArray";
 import { staveData } from "../lib/data/stavesData";
 import { findBarIndex } from "../lib/findBar";
 import generateYMinAndYMaxForNotes from "../lib/generateYMinAndMaxForAllNotes";
 import getUserClickInfo from "../lib/getUserClickInfo";
 import { HandleScaleInteraction } from "../lib/handleScaleInteraction";
-import { noteInteractionInitialState } from "../lib/initialStates";
+import {
+  initialNotesAndCoordsState,
+  noteInteractionInitialState,
+} from "../lib/initialStates";
 import { initializeRenderer } from "../lib/initializeRenderer";
-import { notesArray } from "../lib/noteArray";
 import { scaleReducer } from "../lib/reducer";
 import { setupRendererAndDrawNotes } from "../lib/setupRendererAndDrawNotes";
 import { ScaleData, StaveType } from "../lib/typesAndInterfaces";

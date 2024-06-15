@@ -19,6 +19,5 @@ export const buildKeySignature = (
         .setContext(context)
         .setStave(stave)
         .render(context, glyphInfo.xPosition, adjustedYPosition);
-        console.log('adjustedYPosition: ', adjustedYPosition)
     });
 };

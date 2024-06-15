@@ -1,9 +1,34 @@
 import {
+  Chord,
   ChordInteractionState,
   InputState,
   KeySigState,
   NoteInteractionState,
+  NotesAndCoordinatesData,
+  ScaleData,
 } from "./typesAndInterfaces";
+
+export const initialChordData: Chord = {
+  keys: [],
+  duration: "w",
+  staveNotes: null,
+  userClickY: 0,
+};
+
+export const initialScaleState: ScaleData = {
+  keys: [""],
+  duration: "q",
+  staveNote: null,
+  userClickY: 0,
+  staveNoteAbsoluteX: 0,
+};
+
+export const initialNotesAndCoordsState: NotesAndCoordinatesData = {
+  note: "",
+  originalNote: "",
+  yCoordinateMin: 0,
+  yCoordinateMax: 0,
+};
 
 export const noteInteractionInitialState: NoteInteractionState = {
   isEraseNoteActive: false,

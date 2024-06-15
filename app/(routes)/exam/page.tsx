@@ -253,8 +253,6 @@ export default function ExamHomePage() {
       }
       await setOrUpdateStudentData(currentUserData, userName);
       console.log("currnetUserData", currentUserData);
-      console.log("userAnswers", userAnswers);
-      console.log("userName", userName);
 
       // Send email with results using API route
       const response = await fetch("/api/email", {
