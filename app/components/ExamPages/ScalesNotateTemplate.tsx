@@ -1,4 +1,7 @@
 "use client";
+import { notationInstructions } from "@/app/lib/data/instructions";
+import scalesText from "@/app/lib/data/scalesText";
+import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import {
   Box,
   Container,
@@ -9,35 +12,44 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-
-import { notationInstructions } from "@/app/lib/data/instructions";
-import { UserDataProps } from "@/app/lib/typesAndInterfaces";
 import { useState } from "react";
 import CardFooter from "../CardFooter";
-import NotateKeySignature from "../NotateKeySignature";
+import NotateScale from "../NotateScale";
+import SnackbarToast from "../SnackbarToast";
 
-export default function KeySignaturesNotation({
+export default function ScalesNotation({
   currentUserData,
   setCurrentUserData,
   nextViewState,
+  page,
 }: UserDataProps) {
-  const [keySignatureNotation, setKeySignatureNotation] = useState([]);
+  const [scales, setScales] = useState<Array<string>>([]);
+  const [open, setOpen] = useState<boolean>(false);
+  const [isReady, setIsReady] = useState<boolean>(false);
 
-  const handleSubmit = async (e: MouseEvent) => {
+  const scalesPropName = `scales${page - 5}`;
+
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setCurrentUserData({
-      ...currentUserData,
-      keySignaturesNotation2: keySignatureNotation,
-    });
-    nextViewState();
+    if (!isReady) {
+      setOpen(true);
+      return;
+    } else {
+      setCurrentUserData({
+        ...currentUserData,
+        [scalesPropName]: scales,
+      });
+      nextViewState();
+    }
   };
-
-  function handleKeySigNotation(input: any) {
-    setKeySignatureNotation(input);
-  }
 
   return (
     <Container>
+      <SnackbarToast
+        open={open}
+        setOpen={setOpen}
+        message={"You must press Save before moving on."}
+      />
       <Box
         component="main"
         width={1139}
@@ -50,6 +62,11 @@ export default function KeySignaturesNotation({
         <Grid container spacing={4} p={2}>
           <Grid item xs={4}>
             <Stack gap={2} alignItems={"center"}>
+              {page === 6 && (
+                <Typography variant="h6" align="center">
+                  Section 3: Notate Scales
+                </Typography>
+              )}
               <Box
                 width={273}
                 height={456}
@@ -92,19 +109,23 @@ export default function KeySignaturesNotation({
                 direction="column"
                 alignItems={"center"}
                 marginY={"auto"}
-                p={4}
+                p={2}
                 spacing={2}
               >
                 <Grid item>
                   <Typography variant="h6">
-                    Notate the following key signature: F# Major
+                    {`Write the following scale: ${scalesText[page - 6]}`}
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <NotateKeySignature handleNotes={handleKeySigNotation} />
+                  <NotateScale setScales={setScales} setIsReady={setIsReady} />
                 </Grid>
               </Grid>
-              <CardFooter pageNumber={2} handleSubmit={handleSubmit} />
+              <CardFooter
+                buttonText={"Continue >"}
+                pageNumber={page}
+                handleSubmit={handleSubmit}
+              />
             </Box>
           </Grid>
         </Grid>

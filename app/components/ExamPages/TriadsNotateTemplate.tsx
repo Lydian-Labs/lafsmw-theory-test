@@ -1,4 +1,7 @@
 "use client";
+import { notationInstructions } from "@/app/lib/data/instructions";
+import triadsText from "@/app/lib/data/triadsText";
+import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import {
   Box,
   Container,
@@ -9,33 +12,48 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-
-import { notationInstructions } from "@/app/lib/data/instructions";
-import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import CardFooter from "../CardFooter";
-import NotateScale from "../NotateScale";
+import NotateChord from "../NotateChord";
 import SnackbarToast from "../SnackbarToast";
 
-export default function ScalesNotation3({
+export default function TriadsNotation({
   currentUserData,
   setCurrentUserData,
   nextViewState,
+  page,
 }: UserDataProps) {
-  const [scales, setScales] = useState<Array<string>>([]);
+  const [chords, setChords] = useState<string[]>([]);
+  const currentUserDataRef = useRef(currentUserData);
   const [open, setOpen] = useState<boolean>(false);
   const [isReady, setIsReady] = useState<boolean>(false);
+
+  const triadsPropName = `triads${page - 11}`;
+
+  const memoizedSetCurrentUserData = useCallback(
+    (data: any) => {
+      setCurrentUserData(data);
+    },
+    [setCurrentUserData]
+  );
+
+  useEffect(() => {
+    currentUserDataRef.current = currentUserData;
+  }, [currentUserData]);
+
+  useEffect(() => {
+    memoizedSetCurrentUserData({
+      ...currentUserDataRef.current,
+      [triadsPropName]: chords,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chords, memoizedSetCurrentUserData]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!isReady) {
       setOpen(true);
-      return;
     } else {
-      setCurrentUserData({
-        ...currentUserData,
-        scales5: scales,
-      });
       nextViewState();
     }
   };
@@ -59,6 +77,11 @@ export default function ScalesNotation3({
         <Grid container spacing={4} p={2}>
           <Grid item xs={4}>
             <Stack gap={2} alignItems={"center"}>
+              {page === 12 && (
+                <Typography variant="h6" align="center">
+                  Section 4: Notate Triads
+                </Typography>
+              )}
               <Box
                 width={273}
                 height={456}
@@ -101,21 +124,21 @@ export default function ScalesNotation3({
                 direction="column"
                 alignItems={"center"}
                 marginY={"auto"}
-                p={2}
+                p={4}
                 spacing={2}
               >
                 <Grid item>
                   <Typography variant="h6">
-                    Write the following scale: Bb Mixolydian
+                    {`Write the following triad: ${triadsText[page - 12]}`}
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <NotateScale setScales={setScales} setIsReady={setIsReady} />
+                  <NotateChord setChords={setChords} setIsReady={setIsReady} />
                 </Grid>
               </Grid>
               <CardFooter
                 buttonText={"Continue >"}
-                pageNumber={10}
+                pageNumber={13}
                 handleSubmit={handleSubmit}
               />
             </Box>
