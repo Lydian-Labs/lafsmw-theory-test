@@ -1,5 +1,6 @@
 import AuthContextProvider from "@/firebase/authContext";
 import { ThemeProvider } from "@mui/material/styles";
+import { GoogleTagManager } from "@next/third-parties/google";
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import Navbar from "./components/Navbar";
@@ -26,6 +27,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <GoogleTagManager gtmId="G-WYES3RTNHV" />
       <body className={poppins.className}>
         <AuthContextProvider>
           <ThemeProvider theme={theme}>
