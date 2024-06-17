@@ -7,11 +7,15 @@ export const checkAnswers = (
   let result = "";
   let numAnswers = correctAnswers.length;
   for (let i = 0; i < answers.length; i++) {
-    if (answers[i] === correctAnswers[i]) {
+    if (answers[i].toLowerCase() === correctAnswers[i].toLowerCase()) {
       score++;
     }
   }
-  result = `${score}/${numAnswers} on the ${questionType} section.`;
+  result = `${score}/${numAnswers} on the ${questionType} section. <li>Key Signatures (notate):
+              <ul>
+                <li>Actual student answers: ${answers}</li>
+              </ul>
+            </li>`;
   return result;
 };
 
@@ -44,6 +48,6 @@ export const checkArrOfArrsAnswer = (
       score++;
     }
   }
-  result = `${score}/${numAnswers} on the ${questionType} section.`;
+  result = `${score}/${numAnswers} on the ${questionType} section. Actual student answers: ${userAnswers}`;
   return result;
 };

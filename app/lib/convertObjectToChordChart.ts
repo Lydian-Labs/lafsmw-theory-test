@@ -25,7 +25,7 @@ export default function convertObjectToChordChart(inputObject: any) {
       }
     }
     if (line < numLines - 1) {
-      result += "|\n";
+      result += "|<br />";
     }
   }
 
