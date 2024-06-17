@@ -13,6 +13,7 @@ type StaffProps = {
   addDoubleBarLine?: boolean;
   numBars?: number;
   chords?: Chord[];
+  keySig?: string;
 };
 
 export default function Staff({

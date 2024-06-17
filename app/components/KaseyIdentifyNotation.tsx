@@ -10,6 +10,7 @@ import {
 } from "../lib/typesAndInterfaces";
 import FormInput from "./FormInput";
 import Staff from "./Staff";
+import CreateBlankStaves from "./CreateBlankStaves";
 
 interface TextInput {
   [key: string]: string;
