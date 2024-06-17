@@ -14,6 +14,7 @@ export default function WriteBluesChanges({
   nextViewState,
   isPDFReady,
   setIsPDFReady,
+  page,
 }: UserDataBluesProps) {
   const { user } = useAuthContext();
   const userName = user?.displayName?.split(" ").join("_");
@@ -47,7 +48,6 @@ export default function WriteBluesChanges({
         p={2}
         boxShadow={"0px 4px 4px rgba(0, 0, 0, 0.25)"}
       >
-       
         <Stack gap={2}>
           <Typography variant="h6" marginLeft={8}>
             Section 8: Write Blues Chord Changes
@@ -97,7 +97,7 @@ export default function WriteBluesChanges({
             </Grid>
             <CardFooter
               width={1100}
-              pageNumber={26}
+              pageNumber={page}
               buttonText="Continue >"
               buttonForm="submit-form-blues"
               handleSubmit={() => {

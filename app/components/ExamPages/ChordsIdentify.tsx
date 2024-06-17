@@ -2,18 +2,20 @@
 import { InputData, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import { Box, Container, Grid, Stack, Typography } from "@mui/material";
 import { useRef } from "react";
+import seventhChords from "../../lib/data/seventhChords";
 import CardFooter from "../CardFooter";
-import WriteProgression from "../WriteProgression";
+import IdentifyNotation from "../IdentifyNotation";
 
-export default function WriteProgressions({
+export default function ChordsIdentification({
   currentUserData,
   setCurrentUserData,
   nextViewState,
+  page,
 }: UserDataProps) {
-  const writeProgressionsFormRef = useRef<HTMLFormElement | null>(null);
+  const chordsFormRef = useRef<HTMLFormElement | null>(null);
 
-  function handleProgressions(input: InputData) {
-    setCurrentUserData({ ...currentUserData, progressions: input });
+  function handleChords(input: InputData) {
+    setCurrentUserData({ ...currentUserData, chords: input });
   }
 
   return (
@@ -21,19 +23,19 @@ export default function WriteProgressions({
       <Box
         component="main"
         width={1139}
-        height={780}
+        height={637}
         bgcolor={"secondary.main"}
         borderRadius="var(--borderRadius)"
         p={2}
         boxShadow={"0px 4px 4px rgba(0, 0, 0, 0.25)"}
       >
         <Stack gap={2}>
-          <Typography variant="h6" marginLeft={8} marginY={1}>
-            Section 7: Write Progressions
+          <Typography variant="h6" marginLeft={8} marginY={2}>
+            Section 6: Identify Chords
           </Typography>
           <Box
             width={1000}
-            height={630}
+            height={480}
             bgcolor={"card.background"}
             borderRadius="var(--borderRadius)"
             margin={"auto"}
@@ -45,29 +47,31 @@ export default function WriteProgressions({
               direction="column"
               alignItems={"center"}
               marginY={"auto"}
-              p={3}
+              p={4}
               spacing={2}
             >
               <Grid item>
-                <Typography variant="h6" marginBottom={2}>
-                  Write 2-5-1 Progressions in the following keys:
+                <Typography variant="h6">
+                  Identify the following 7th chords:
                 </Typography>
               </Grid>
               <Grid item>
-                <WriteProgression
-                  handleInput={handleProgressions}
-                  currentData={currentUserData.progressions}
-                  ref={writeProgressionsFormRef}
+                <IdentifyNotation
+                  chords={seventhChords}
+                  currentData={currentUserData.chords}
+                  numBars={7}
+                  handleInput={handleChords}
+                  ref={chordsFormRef}
                   width={950}
                 />
               </Grid>
             </Grid>
             <CardFooter
               width={900}
-              height={100}
-              pageNumber={25}
+              height={200}
+              pageNumber={page}
               handleSubmit={() => {
-                writeProgressionsFormRef.current?.requestSubmit();
+                chordsFormRef.current?.requestSubmit();
                 nextViewState();
               }}
             />

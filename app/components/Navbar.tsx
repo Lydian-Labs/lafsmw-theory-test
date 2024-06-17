@@ -36,9 +36,11 @@ const Navbar: FC = () => {
             </li>
           </ul>
         </div>
-        <Box>
-          <CountdownTimer />
-        </Box>
+        {user !== null && (
+          <Box>
+            <CountdownTimer />
+          </Box>
+        )}
       </Box>
 
       <Box gridColumn="span 1" padding={2}>

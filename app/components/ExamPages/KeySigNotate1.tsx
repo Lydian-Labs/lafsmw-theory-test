@@ -1,4 +1,7 @@
 "use client";
+import { notationInstructions } from "@/app/lib/data/instructions";
+import keySignaturesText from "@/app/lib/data/keySignaturesText";
+import { Level, MouseEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import {
   Box,
   Container,
@@ -9,63 +12,53 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-
-import triadsText from "@/app/lib/data/triadsText";
-import { notationInstructions } from "@/app/lib/data/instructions";
-import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import CardFooter from "../CardFooter";
-import NotateChord from "../NotateChord";
+import ClassPreferenceSelector from "../ClassPreferenceSelector";
+import NotateKeySignature from "../NotateKeySignature";
 import SnackbarToast from "../SnackbarToast";
 
-export default function TriadsNotation3({
+export default function KeySignaturesNotation1({
   currentUserData,
   setCurrentUserData,
   nextViewState,
+  page,
 }: UserDataProps) {
-  const [chords, setChords] = useState<string[]>([]);
-  const currentUserDataRef = useRef(currentUserData);
+  const [level, setLevel] = useState<Level>("select-here");
+  const [keySignatureNotation, setKeySignatureNotation] = useState([]);
   const [open, setOpen] = useState<boolean>(false);
-  const [isReady, setIsReady] = useState<boolean>(false);
 
-  const memoizedSetCurrentUserData = useCallback(
-    (data: any) => {
-      setCurrentUserData(data);
-    },
-    [setCurrentUserData]
-  );
+  const keySigPropName = `keySignaturesNotation${page}`;
 
-  useEffect(() => {
-    currentUserDataRef.current = currentUserData;
-  }, [currentUserData]);
-
-  useEffect(() => {
-    memoizedSetCurrentUserData({
-      ...currentUserDataRef.current,
-      triads3: chords,
-    });
-  }, [chords, memoizedSetCurrentUserData]);
-
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = async (e: MouseEvent) => {
     e.preventDefault();
-    if (!isReady) {
+    if (level === "select-here") {
       setOpen(true);
-    } else {
-      nextViewState();
+      return;
     }
+    setCurrentUserData({
+      ...currentUserData,
+      level: level,
+      [keySigPropName]: keySignatureNotation,
+    });
+    nextViewState();
   };
+
+  function handleKeySigNotation(input: any) {
+    setKeySignatureNotation(input);
+  }
 
   return (
     <Container>
       <SnackbarToast
         open={open}
         setOpen={setOpen}
-        message={"You must press Save before moving on."}
+        message={"You must select level before moving on."}
       />
       <Box
         component="main"
         width={1139}
-        height={610}
+        height={637}
         bgcolor={"secondary.main"}
         borderRadius="var(--borderRadius)"
         p={2}
@@ -74,6 +67,13 @@ export default function TriadsNotation3({
         <Grid container spacing={4} p={2}>
           <Grid item xs={4}>
             <Stack gap={2} alignItems={"center"}>
+              <Typography variant="h6" align="center">
+                Section 1: Notate Key Signatures
+              </Typography>
+              <ClassPreferenceSelector
+                level={level}
+                setLevel={setLevel}
+              ></ClassPreferenceSelector>
               <Box
                 width={273}
                 height={456}
@@ -121,18 +121,16 @@ export default function TriadsNotation3({
               >
                 <Grid item>
                   <Typography variant="h6">
-                    {`Write the following triad: ${triadsText[2]}`}
+                    {`Notate the following key signature: ${
+                      keySignaturesText[page - 1]
+                    }`}
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <NotateChord setChords={setChords} setIsReady={setIsReady} />
+                  <NotateKeySignature handleNotes={handleKeySigNotation} />
                 </Grid>
               </Grid>
-              <CardFooter
-                buttonText={"Continue >"}
-                pageNumber={14}
-                handleSubmit={handleSubmit}
-              />
+              <CardFooter pageNumber={page} handleSubmit={handleSubmit} />
             </Box>
           </Grid>
         </Grid>

@@ -1,4 +1,6 @@
 "use client";
+import { inputInstructions } from "@/app/lib/data/instructions";
+import { InputData, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import {
   Box,
   Container,
@@ -9,31 +11,20 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-
-import { notationInstructions } from "@/app/lib/data/instructions";
-import { UserDataProps } from "@/app/lib/typesAndInterfaces";
-import { useState } from "react";
+import { useRef } from "react";
 import CardFooter from "../CardFooter";
-import NotateKeySignature from "../NotateKeySignature";
+import IdentifyNotation from "../IdentifyNotation";
 
-export default function KeySignaturesNotation({
+export default function KeySignaturesIdentification({
   currentUserData,
   setCurrentUserData,
   nextViewState,
+  page,
 }: UserDataProps) {
-  const [keySignatureNotation, setKeySignatureNotation] = useState([]);
+  const keySigFormRef = useRef<HTMLFormElement | null>(null);
 
-  const handleSubmit = async (e: MouseEvent) => {
-    e.preventDefault();
-    setCurrentUserData({
-      ...currentUserData,
-      keySignaturesNotation4: keySignatureNotation,
-    });
-    nextViewState();
-  };
-
-  function handleKeySigNotation(input: any) {
-    setKeySignatureNotation(input);
+  function handleKeySignatures(input: InputData) {
+    setCurrentUserData({ ...currentUserData, keySignatures: input });
   }
 
   return (
@@ -41,7 +32,7 @@ export default function KeySignaturesNotation({
       <Box
         component="main"
         width={1139}
-        height={610}
+        height={550}
         bgcolor={"secondary.main"}
         borderRadius="var(--borderRadius)"
         p={2}
@@ -50,9 +41,12 @@ export default function KeySignaturesNotation({
         <Grid container spacing={4} p={2}>
           <Grid item xs={4}>
             <Stack gap={2} alignItems={"center"}>
+              <Typography variant="h6" align="center">
+                Section 2: Identify Key Signatures
+              </Typography>
               <Box
                 width={273}
-                height={456}
+                height={375}
                 bgcolor={"card.background"}
                 borderRadius="var(--borderRadius)"
                 boxShadow="var(--cardShadow)"
@@ -62,7 +56,7 @@ export default function KeySignaturesNotation({
                     Tutorial
                   </Typography>
                   <List>
-                    {notationInstructions.map((value, index) => (
+                    {inputInstructions.map((value, index) => (
                       <ListItem key={index} disableGutters>
                         <ListItemText
                           primary={`${index + 1}. ${value.instructionTitle}`}
@@ -80,7 +74,7 @@ export default function KeySignaturesNotation({
           <Grid item xs={8} margin={"auto"}>
             <Box
               width={569}
-              height={540}
+              height={480}
               bgcolor={"card.background"}
               borderRadius="var(--borderRadius)"
               margin={"auto"}
@@ -97,14 +91,28 @@ export default function KeySignaturesNotation({
               >
                 <Grid item>
                   <Typography variant="h6">
-                    Notate the following key signature: G# Minor
+                    Identify the following key signatures:
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <NotateKeySignature handleNotes={handleKeySigNotation} />
+                  <IdentifyNotation
+                    currentData={currentUserData.keySignatures}
+                    evenbars
+                    handleInput={handleKeySignatures}
+                    ref={keySigFormRef}
+                    width={520}
+                  />
                 </Grid>
               </Grid>
-              <CardFooter pageNumber={4} handleSubmit={handleSubmit} />
+              <CardFooter
+                pageNumber={page}
+                height={200}
+                buttonForm="keySigs"
+                handleSubmit={() => {
+                  keySigFormRef.current?.requestSubmit();
+                  nextViewState();
+                }}
+              />
             </Box>
           </Grid>
         </Grid>

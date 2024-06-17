@@ -263,6 +263,7 @@ export interface UserDataProps {
   currentUserData: InputState;
   setCurrentUserData: (userData: InputState) => void;
   nextViewState: () => void;
+  page: number;
 }
 
 export interface UserDataBluesProps extends UserDataProps {
