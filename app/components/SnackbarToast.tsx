@@ -2,7 +2,7 @@ import { SyntheticEvent, Dispatch, SetStateAction } from "react";
 import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import { Fade, Slide, SnackbarContent } from "@mui/material";
+import { Fade, SnackbarContent } from "@mui/material";
 
 type SimpleSnackbarProps = {
   open: boolean;
