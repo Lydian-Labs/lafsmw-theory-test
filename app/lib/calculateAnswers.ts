@@ -11,11 +11,35 @@ export const checkAnswers = (
       score++;
     }
   }
-  result = `${score}/${numAnswers} on the ${questionType} section. <li>Key Signatures (notate):
-              <ul>
-                <li>Actual student answers: ${answers}</li>
-              </ul>
-            </li>`;
+  result = `${score}/${numAnswers} on the ${questionType} section.
+    <ul>
+      <li>Actual student answers: ${answers}</li>
+    </ul>`;
+  return result;
+};
+
+export const checkArrOfArrsAnswer = (
+  userAnswers: string[][],
+  correctAnswers: string[][],
+  questionType: string
+): string => {
+  let score = 0;
+  let result = "";
+  let numAnswers = correctAnswers.length;
+  let actualStudentAnswers = prepareArrOfArrsAnswer(userAnswers);
+
+  for (let i = 0; i < userAnswers.length; i++) {
+    if (!userAnswers[i].length) {
+      continue;
+    }
+    if (checkArrNotesTrue(userAnswers[i], correctAnswers[i])) {
+      score++;
+    }
+  }
+  result = `${score}/${numAnswers} on the ${questionType} section.
+    <ul>
+        <li>Actual student answers: ${actualStudentAnswers}</li>
+    </ul>`;
   return result;
 };
 
@@ -32,22 +56,41 @@ function checkArrNotesTrue(
   return true;
 }
 
-export const checkArrOfArrsAnswer = (
-  userAnswers: string[][],
-  correctAnswers: string[][],
-  questionType: string
-): string => {
-  let score = 0;
+function prepareArrOfArrsAnswer(userAnswers: string[][]): string {
   let result = "";
-  let numAnswers = correctAnswers.length;
   for (let i = 0; i < userAnswers.length; i++) {
-    if (!userAnswers[i].length) {
-      continue;
-    }
-    if (checkArrNotesTrue(userAnswers[i], correctAnswers[i])) {
-      score++;
-    }
+    let current = userAnswers[i].join(", ");
+    result += `<li>${i + 1}. ${current}</li>`;
   }
-  result = `${score}/${numAnswers} on the ${questionType} section. Actual student answers: ${userAnswers}`;
   return result;
-};
+}
+// function prepareArrOfArrsAnswer(
+//   userAnswers: string[][],
+//   questionType: string
+// ): string {
+//   let result = "";
+//   if (questionType === "Scales") {
+//     result = prepareScalesAnswer(userAnswers);
+//   } else if (questionType === "Key Signature Notation") {
+//     result = prepareKeySigNotateAnswer(userAnswers);
+//   }
+//   return result;
+// }
+
+// function prepareScalesAnswer(userAnswers: string[][]): string {
+//   let result = "";
+//   for (let i = 0; i < userAnswers.length; i++) {
+//     let current = userAnswers[i].join(", ");
+//     result += `<li>${i + 1}. ${current}</li>`;
+//   }
+//   return result;
+// }
+
+// function prepareKeySigNotateAnswer(userAnswers: string[][]): string {
+//   let result = "";
+//   for (let i = 0; i < userAnswers.length; i++) {
+//     let current = userAnswers[i].join(", ");
+//     result += `<li>${i + 1}. ${current}</li>`;
+//   }
+//   return result;
+// }
