@@ -8,7 +8,7 @@ import SeventhChordsNotation from "@/app/components/ExamPages/SeventhChordsNotat
 import TriadsNotation from "@/app/components/ExamPages/TriadsNotateTemplate";
 import WriteBluesChanges from "@/app/components/ExamPages/WriteBluesChanges";
 import WriteProgressions from "@/app/components/ExamPages/WriteProgressions";
-
+import ClassPreferenceSelector from "@/app/components/ClassPreferenceSelector";
 import { useTimer } from "@/app/context/TimerContext";
 import { checkAnswers, checkArrOfArrsAnswer } from "@/app/lib/calculateAnswers";
 import convertObjectToArray from "@/app/lib/convertObjectToArray";
@@ -23,7 +23,7 @@ import {
   correctTriadAnswers,
 } from "@/app/lib/data/answerKey";
 import { initialFormInputState } from "@/app/lib/initialStates";
-import { InputState, MouseEvent } from "@/app/lib/typesAndInterfaces";
+import { InputState, MouseEvent, Level } from "@/app/lib/typesAndInterfaces";
 import { useAuthContext } from "@/firebase/authContext";
 import {
   getUserSnapshot,
@@ -92,6 +92,7 @@ export default function ExamHomePage() {
   const [viewState, setViewState] = useState(VIEW_STATES.START_TEST);
   const [timesUp, setTimesUp] = useState(false);
   const [isPDFReady, setIsPDFReady] = useState(false);
+  const [level, setLevel] = useState<Level>("select-here");
 
   useEffect(() => {
     const fetchSnapshot = async () => {
@@ -323,24 +324,25 @@ export default function ExamHomePage() {
         {viewState === VIEW_STATES.START_TEST && (
           <Box mt={5}>
             <Box mb={7}>
-            <FormControl size="small" fullWidth>
-              <InputLabel id="clef-label">
-                Select Clef
-              </InputLabel>
-              <Select
-                labelId="class-preference-label"
-                id="class-preference-select"
-                value={"need to add set clef state"}
-                label="Class Preference"
-                onChange={handleClef}
-              >
-                <MenuItem value="select-here">Select Clef Here</MenuItem>
-                <MenuItem value="treble-clef">Treble Clef</MenuItem>
-                <MenuItem value="bass-clef">Bass Clef</MenuItem>
-              </Select>
-            </FormControl>
+              <FormControl size="small" fullWidth>
+                <InputLabel id="clef-label">Select Clef</InputLabel>
+                <Select
+                  labelId="clef-preference-label"
+                  id="clef-preference-select"
+                  value={"need to add set clef state"}
+                  label="Clef Preference"
+                  onChange={handleClef}
+                >
+                  <MenuItem value="select-here">Select Clef Here</MenuItem>
+                  <MenuItem value="treble-clef">Treble Clef</MenuItem>
+                  <MenuItem value="bass-clef">Bass Clef</MenuItem>
+                </Select>
+              </FormControl>
+              <Box mt={4}>
+                <ClassPreferenceSelector level={setLevel} setLevel={setLevel} />
+              </Box>
             </Box>
-            <Button variant="contained" onClick={handleStartTest} fullWidth >
+            <Button variant="contained" onClick={handleStartTest} fullWidth>
               <Typography variant="h4" p={2}>
                 Begin Test
               </Typography>
