@@ -1,3 +1,25 @@
+export const checkProgressionAnswers = (
+  answers: string[],
+  correctAnswers: string[],
+  questionType: string
+): string => {
+  let score = 0;
+  let result = "";
+  let numAnswers = correctAnswers.length;
+  for (let i = 0; i < answers.length; i++) {
+    if (answers[i].toLowerCase() === correctAnswers[i].toLowerCase()) {
+      score++;
+    }
+  }
+  result = `${score}/${numAnswers} on the ${questionType} section.
+    <ul>Actual student answers:
+      <li>${answers.slice(0, 3)}</li>
+      <li>${answers.slice(3, 6)}</li>
+      <li>${answers.slice(6, 9)}</li>
+    </ul>`;
+  return result;
+};
+
 export const checkAnswers = (
   answers: string[],
   correctAnswers: string[],
@@ -7,11 +29,37 @@ export const checkAnswers = (
   let result = "";
   let numAnswers = correctAnswers.length;
   for (let i = 0; i < answers.length; i++) {
-    if (answers[i] === correctAnswers[i]) {
+    if (answers[i].toLowerCase() === correctAnswers[i].toLowerCase()) {
       score++;
     }
   }
-  result = `${score}/${numAnswers} on the ${questionType} section.`;
+  result = `${score}/${numAnswers} on the ${questionType} section.
+    <ul>Actual student answers:
+      <li>${answers}</li>
+    </ul>`;
+  return result;
+};
+
+export const checkArrOfArrsAnswer = (
+  userAnswers: string[][],
+  correctAnswers: string[][],
+  questionType: string
+): string => {
+  let score = 0;
+  let result = "";
+  let numAnswers = correctAnswers.length;
+  let actualStudentAnswers = prepareArrOfArrsAnswer(userAnswers);
+
+  for (let i = 0; i < userAnswers.length; i++) {
+    if (!userAnswers[i].length) {
+      continue;
+    }
+    if (checkArrNotesTrue(userAnswers[i], correctAnswers[i])) {
+      score++;
+    }
+  }
+  result = `${score}/${numAnswers} on the ${questionType} section.
+    <ul>Actual student answers:${actualStudentAnswers}</ul>`;
   return result;
 };
 
@@ -28,22 +76,14 @@ function checkArrNotesTrue(
   return true;
 }
 
-export const checkArrOfArrsAnswer = (
-  userAnswers: string[][],
-  correctAnswers: string[][],
-  questionType: string
-): string => {
-  let score = 0;
+function prepareArrOfArrsAnswer(userAnswers: string[][]): string {
   let result = "";
-  let numAnswers = correctAnswers.length;
   for (let i = 0; i < userAnswers.length; i++) {
-    if (!userAnswers[i].length) {
-      continue;
+    for (let j = 0; j < userAnswers[i].length; j++) {
+      userAnswers[i][j] = userAnswers[i][j].split("/")[0];
     }
-    if (checkArrNotesTrue(userAnswers[i], correctAnswers[i])) {
-      score++;
-    }
+    let current = userAnswers[i].join(", ");
+    result += `<li>${i + 1}. ${current}</li>`;
   }
-  result = `${score}/${numAnswers} on the ${questionType} section.`;
   return result;
-};
+}

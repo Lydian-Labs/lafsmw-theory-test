@@ -1,5 +1,5 @@
 "use client";
-import { notationInstructions } from "@/app/lib/data/instructions";
+import { keySigNotationInstructions } from "@/app/lib/data/instructions";
 import keySignaturesText from "@/app/lib/data/keySignaturesText";
 import { MouseEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import {
@@ -65,7 +65,7 @@ export default function KeySignaturesNotation({
                     Tutorial
                   </Typography>
                   <List>
-                    {notationInstructions.map((value, index) => (
+                    {keySigNotationInstructions.map((value, index) => (
                       <ListItem key={index} disableGutters>
                         <ListItemText
                           primary={`${index + 1}. ${value.instructionTitle}`}

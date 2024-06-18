@@ -1,5 +1,5 @@
 "use client";
-import { notationInstructions } from "@/app/lib/data/instructions";
+import { scalesNotationInstructions } from "@/app/lib/data/instructions";
 import scalesText from "@/app/lib/data/scalesText";
 import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import {
@@ -79,7 +79,7 @@ export default function ScalesNotation({
                     Tutorial
                   </Typography>
                   <List>
-                    {notationInstructions.map((value, index) => (
+                    {scalesNotationInstructions.map((value, index) => (
                       <ListItem key={index} disableGutters>
                         <ListItemText
                           primary={`${index + 1}. ${value.instructionTitle}`}
