@@ -1,7 +1,6 @@
 "use client";
 import ChordsIdentify from "@/app/components/ExamPages/ChordsIdentify";
 import KeySigIdentify from "@/app/components/ExamPages/KeySigIdentify";
-import KaseyKeySigIdentify from "@/app/components/ExamPages/KeySigIdentify";
 import KeySigNotate1 from "@/app/components/ExamPages/KeySigNotate1";
 import KeySignaturesNotation from "@/app/components/ExamPages/KeySigNotateTemplate";
 import ScalesNotation from "@/app/components/ExamPages/ScalesNotateTemplate";
@@ -352,7 +351,7 @@ export default function ExamHomePage() {
           />
         )}
         {viewState === VIEW_STATES.KEY_SIG_IDENTIFY && (
-          <KaseyKeySigIdentify
+          <KeySigIdentify
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}

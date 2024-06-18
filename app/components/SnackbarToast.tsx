@@ -59,7 +59,7 @@ export default function SimpleSnackbar({
     >
       <SnackbarContent
         style={{
-          backgroundColor: "red",
+          backgroundColor: "#FA8072",
           textAlign: "center",
           color: "white",
           maxWidth: "300px",
