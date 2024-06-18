@@ -1,5 +1,5 @@
 "use client";
-import { notationInstructions } from "@/app/lib/data/instructions";
+import { chordsNotationInstructions } from "@/app/lib/data/instructions";
 import triadsText from "@/app/lib/data/triadsText";
 import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import {
@@ -94,7 +94,7 @@ export default function TriadsNotation({
                     Tutorial
                   </Typography>
                   <List>
-                    {notationInstructions.map((value, index) => (
+                    {chordsNotationInstructions.map((value, index) => (
                       <ListItem key={index} disableGutters>
                         <ListItemText
                           primary={`${index + 1}. ${value.instructionTitle}`}

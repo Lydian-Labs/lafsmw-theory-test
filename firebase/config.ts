@@ -21,7 +21,7 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase - this is the initialized Firebase application instance which can be used to access various Firebase services, such as Firestore, Authentication, Realtime Database, etc.
-const app = initializeApp(firebaseConfig);
+export const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);
 

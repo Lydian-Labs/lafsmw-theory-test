@@ -10,7 +10,11 @@ import WriteBluesChanges from "@/app/components/ExamPages/WriteBluesChanges";
 import WriteProgressions from "@/app/components/ExamPages/WriteProgressions";
 
 import { useTimer } from "@/app/context/TimerContext";
-import { checkAnswers, checkArrOfArrsAnswer } from "@/app/lib/calculateAnswers";
+import {
+  checkAnswers,
+  checkArrOfArrsAnswer,
+  checkProgressionAnswers,
+} from "@/app/lib/calculateAnswers";
 import convertObjectToArray from "@/app/lib/convertObjectToArray";
 import convertObjectToChordChart from "@/app/lib/convertObjectToChordChart";
 import {
@@ -79,7 +83,7 @@ export default function ExamHomePage() {
 
   const [currentUserData, setCurrentUserData] =
     useState<InputState>(initialState);
-  const [userAnswers, setUserAnswers] = useState<string[]>([]);
+  const [correctedAnswers, setCorrectedAnswers] = useState<string[]>([]);
   const [viewState, setViewState] = useState(VIEW_STATES.START_TEST);
   const [timesUp, setTimesUp] = useState(false);
   const [isPDFReady, setIsPDFReady] = useState(false);
@@ -178,14 +182,14 @@ export default function ExamHomePage() {
       correctSeventhChordAnswers,
       "Seventh Chords"
     );
-    let progressionAnswers = checkAnswers(
+    let progressionAnswers = checkProgressionAnswers(
       userProgressionAnswers,
       correctProgressionAnswers,
-      "II-V-I Progressions"
+      "2-5-1 Progressions"
     );
 
     const chordChart = convertObjectToChordChart(currentUserData.blues);
-    setUserAnswers([
+    setCorrectedAnswers([
       currentUserData.level,
       keySigNotationAnswers,
       keySigAnswers,
@@ -232,7 +236,6 @@ export default function ExamHomePage() {
         throw new Error("No current user found.");
       }
       await setOrUpdateStudentData(currentUserData, userName);
-      console.log("currnetUserData", currentUserData);
 
       // Send email with results using API route
       const response = await fetch("/api/email", {
@@ -247,17 +250,19 @@ export default function ExamHomePage() {
 
           <p>Here are the results for ${userName}:</p>
           <ul>
-            <li>Level: ${userAnswers[0]}</li>
-            <li>Key Signatures (notate): ${userAnswers[1]}</li>
-            <li>Key Signatures (identify): ${userAnswers[2]}</li>
-            <li>Scales: ${userAnswers[3]}</li>
-            <li>Triads: ${userAnswers[4]}</li>
-            <li>Seventh Chords (notate): ${userAnswers[5]}</li>
-            <li>Seventh Chords (identify): ${userAnswers[6]}</li>
-            <li>2-5-1 Progressions: ${userAnswers[7]}</li>
-            <li>Link to blues progression pdf: ${userAnswers[8]}</li>
-            <li>Blues progression backup chart:
-            ${userAnswers[9]}</li>
+            <li>Level:${correctedAnswers[0]}</li>
+            <li>Key Signatures (notate): ${correctedAnswers[1]}</li>
+            <li>Key Signatures (identify): ${correctedAnswers[2]}</li>
+            <li>Scales: ${correctedAnswers[3]}</li>
+            <li>Triads: ${correctedAnswers[4]}</li>
+            <li>Seventh Chords (notate): ${correctedAnswers[5]}</li>
+            <li>Seventh Chords (identify): ${correctedAnswers[6]}</li>
+            <li>2-5-1 Progressions: ${correctedAnswers[7]}</li>
+            <li>Link to blues progression pdf: ${correctedAnswers[8]}</li>
+            <li>
+              <p>Blues progression backup chart:</p>
+              <p>${correctedAnswers[9]}</p>
+            </li>
           </ul>
 
           <p>Thank you,<br>Team at Lydian Labs Technology.</p>`,

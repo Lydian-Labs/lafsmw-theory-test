@@ -1,5 +1,5 @@
 "use client";
-import { inputInstructions } from "@/app/lib/data/instructions";
+import { keySigInputInstructions } from "@/app/lib/data/instructions";
 import { InputData, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import {
   Box,
@@ -56,7 +56,7 @@ export default function KeySignaturesIdentification({
                     Tutorial
                   </Typography>
                   <List>
-                    {inputInstructions.map((value, index) => (
+                    {keySigInputInstructions.map((value, index) => (
                       <ListItem key={index} disableGutters>
                         <ListItemText
                           primary={`${index + 1}. ${value.instructionTitle}`}
