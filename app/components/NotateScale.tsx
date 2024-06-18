@@ -32,6 +32,7 @@ import { initializeRenderer } from "../lib/initializeRenderer";
 import { scaleReducer } from "../lib/reducer";
 import { setupRendererAndDrawNotes } from "../lib/setupRendererAndDrawNotes";
 import { ScaleData, StaveType } from "../lib/typesAndInterfaces";
+import CustomButton from "./CustomButton";
 
 const { Renderer } = VexFlow.Flow;
 
@@ -193,9 +194,13 @@ const NotateScale = ({
       >
         {modifyStaveNotesButtonGroup.map((button) => {
           return (
-            <Button key={button.text} onClick={button.action} sx={{ m: 0.5 }}>
+            <CustomButton
+              key={button.text}
+              onClick={button.action}
+              isEnabled={button.isEnabled}
+            >
               {button.text}
-            </Button>
+            </CustomButton>
           );
         })}
         <Button onClick={eraseMeasures} sx={{ m: 1 }}>

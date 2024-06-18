@@ -20,6 +20,7 @@ import { notesArray } from "../lib/data/noteArray";
 import { staveData } from "../lib/data/stavesData";
 import { findBarIndex } from "../lib/findBar";
 import { handleChordInteraction } from "../lib/handleChordInteraction";
+import CustomButton from "./CustomButton";
 import {
   chordInteractionInitialState,
   initialChordData,
@@ -204,9 +205,13 @@ const NotateChord = ({
       >
         {modifyChordsButtonGroup.map((button) => {
           return (
-            <Button key={button.text} onClick={button.action} sx={{ m: 0.5 }}>
+            <CustomButton
+              key={button.text}
+              onClick={button.action}
+              isEnabled={button.isEnabled}
+            >
               {button.text}
-            </Button>
+            </CustomButton>
           );
         })}
         <Button onClick={eraseChord} sx={{ m: 0.5 }}>
