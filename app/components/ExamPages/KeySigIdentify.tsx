@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { useRef } from "react";
 import CardFooter from "../CardFooter";
-import IdentifyNotation from "../IdentifyNotation";
+import IdentifyKeySigNotation from "../IdentifyKeySigNotation";
 
 export default function KeySignaturesIdentification({
   currentUserData,
@@ -95,7 +95,7 @@ export default function KeySignaturesIdentification({
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <IdentifyNotation
+                  <IdentifyKeySigNotation
                     currentData={currentUserData.keySignatures}
                     evenbars
                     handleInput={handleKeySignatures}
