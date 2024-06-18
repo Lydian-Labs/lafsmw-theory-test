@@ -13,6 +13,8 @@ type StaffProps = {
   addDoubleBarLine?: boolean;
   numBars?: number;
   chords?: Chord[];
+  keySig?: string[];
+  allDoubleBarLines?: boolean;
 };
 
 export default function Staff({
@@ -25,6 +27,8 @@ export default function Staff({
   addDoubleBarLine = false,
   numBars = 4,
   chords = [],
+  keySig = [],
+  allDoubleBarLines = false,
 }: StaffProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const rendererRef = useRef<Flow.Renderer | null>(null);
@@ -86,8 +90,18 @@ export default function Staff({
             ? stave.addClef(clef)
             : stave.addClef(clef).addTimeSignature(timeSignature);
         }
-        if (i === numBars - 1 && addDoubleBarLine) {
-          stave.setEndBarType(3);
+        if (allDoubleBarLines) {
+          stave.setEndBarType(2);
+        } else {
+          if (i === numBars - 1 && addDoubleBarLine) {
+            stave.setEndBarType(3);
+          }
+        }
+
+        if (keySig.length) {
+          stave.addKeySignature(keySig[i]);
+        } else if (!keySig.length || i > keySig.length) {
+          stave.addKeySignature("C");
         }
         // Connect the stave to the rendering context and draw.
         stave.setContext(rendererContext).draw();
@@ -129,6 +143,8 @@ export default function Staff({
     timeSignature,
     width,
     evenbars,
+    keySig,
+    allDoubleBarLines,
   ]);
 
   return <div ref={containerRef} />;

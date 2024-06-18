@@ -9,8 +9,7 @@ import {
   InputData,
 } from "../lib/typesAndInterfaces";
 import FormInput from "./FormInput";
-import Staff from "./Staff";
-import CreateBlankStaves from "./CreateBlankStaves";
+import KeySigStaff from "./KeySigStaff";
 
 interface TextInput {
   [key: string]: string;
@@ -25,7 +24,7 @@ type IdentifyNotationProps = {
   handleInput: (input: InputData) => void;
 };
 
-export default forwardRef(function IdentifyNotation(
+export default forwardRef(function IdentifyKeySigNotation(
   {
     numBars = 4,
     evenbars = false,
@@ -69,8 +68,6 @@ export default forwardRef(function IdentifyNotation(
 
   const remainingBarsString = (numBars - 1).toString();
 
-
-
   const gridInputInline = {
     display: "grid",
     gridTemplateColumns: `${widthOfFirstBar}px repeat(${remainingBarsString}, ${widthOfRemainingBars}px)`,
@@ -97,17 +94,19 @@ export default forwardRef(function IdentifyNotation(
       />
     ));
   };
-
+  const keySignatures = ["Db", "A", "Ab", "E"];
   return (
     <div>
       <form ref={ref} id="submit-form-chords" onSubmit={handleInputSubmit}>
-        <Staff
+        <KeySigStaff
           evenbars={evenbars}
           addDoubleBarLine={true}
           numBars={numBars}
           chords={chords}
           width={width}
           noTimeSignature
+          allDoubleBarLines
+          keySig={keySignatures}
         />
         <div style={gridInputInline}>{renderTextInputs()}</div>
       </form>

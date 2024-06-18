@@ -68,8 +68,6 @@ export default forwardRef(function IdentifyNotation(
 
   const remainingBarsString = (numBars - 1).toString();
 
-
-
   const gridInputInline = {
     display: "grid",
     gridTemplateColumns: `${widthOfFirstBar}px repeat(${remainingBarsString}, ${widthOfRemainingBars}px)`,
@@ -96,7 +94,7 @@ export default forwardRef(function IdentifyNotation(
       />
     ));
   };
-
+  const keySignatures = ["Db", "A", "Ab", "E"];
   return (
     <div>
       <form ref={ref} id="submit-form-chords" onSubmit={handleInputSubmit}>
