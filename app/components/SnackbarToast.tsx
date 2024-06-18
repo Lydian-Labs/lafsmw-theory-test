@@ -2,7 +2,7 @@ import { SyntheticEvent, Dispatch, SetStateAction } from "react";
 import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import { Fade, SnackbarContent } from "@mui/material";
+import { Slide, SnackbarContent } from "@mui/material";
 
 type SimpleSnackbarProps = {
   open: boolean;
@@ -39,7 +39,7 @@ export default function SimpleSnackbar({
       autoHideDuration={3000}
       anchorOrigin={{ vertical: "top", horizontal: "center" }}
       onClose={handleClose}
-      TransitionComponent={Fade}
+      TransitionComponent={Slide}
       style={{
         position: "fixed",
         top: "35%",
@@ -49,10 +49,11 @@ export default function SimpleSnackbar({
         style={{
           backgroundColor: "var(--colorFilledProgressBarColor)",
           textAlign: "center",
-          fontSize: "1.5rem",
+          fontSize: "1rem",
           color: "var(--primary10)",
           width: "100%",
           padding: "1rem",
+          border: "1px solid var(--primary10)",
           borderRadius: "var(--borderRadius)",
         }}
         message={message}
