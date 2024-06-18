@@ -24,7 +24,7 @@ export default function SimpleSnackbar({
 
   const action = (
     <IconButton
-      size="small"
+      size="large"
       aria-label="close"
       color="inherit"
       onClick={handleClose}
@@ -37,35 +37,23 @@ export default function SimpleSnackbar({
     <Snackbar
       open={open}
       autoHideDuration={3000}
-      anchorOrigin={{ vertical: "top", horizontal: "center" }} // Position at the top initially
+      anchorOrigin={{ vertical: "top", horizontal: "center" }}
       onClose={handleClose}
       TransitionComponent={Fade}
-      ContentProps={{
-        style: {
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        },
-      }}
       style={{
         position: "fixed",
-        top: "50%",
-        left: "50%",
-        width: "100%",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
+        top: "35%",
       }}
     >
       <SnackbarContent
         style={{
-          backgroundColor: "#FA8072",
+          backgroundColor: "var(--colorFilledProgressBarColor)",
           textAlign: "center",
-          color: "white",
-          maxWidth: "300px",
-          margin: "0 auto",
-          padding: "5px", // Reduce padding to decrease height
-          borderRadius: "8px", // Optionally, add some border-radius
+          fontSize: "1.5rem",
+          color: "var(--primary10)",
+          width: "100%",
+          padding: "1rem",
+          borderRadius: "var(--borderRadius)",
         }}
         message={message}
         action={action}

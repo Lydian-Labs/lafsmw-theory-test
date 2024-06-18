@@ -79,6 +79,9 @@ function checkArrNotesTrue(
 function prepareArrOfArrsAnswer(userAnswers: string[][]): string {
   let result = "";
   for (let i = 0; i < userAnswers.length; i++) {
+    for (let j = 0; j < userAnswers[i].length; j++) {
+      userAnswers[i][j] = userAnswers[i][j].split("/")[0];
+    }
     let current = userAnswers[i].join(", ");
     result += `<li>${i + 1}. ${current}</li>`;
   }
