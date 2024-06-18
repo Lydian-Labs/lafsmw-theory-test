@@ -10,7 +10,11 @@ import WriteBluesChanges from "@/app/components/ExamPages/WriteBluesChanges";
 import WriteProgressions from "@/app/components/ExamPages/WriteProgressions";
 
 import { useTimer } from "@/app/context/TimerContext";
-import { checkAnswers, checkArrOfArrsAnswer } from "@/app/lib/calculateAnswers";
+import {
+  checkAnswers,
+  checkArrOfArrsAnswer,
+  checkProgressionAnswers,
+} from "@/app/lib/calculateAnswers";
 import convertObjectToArray from "@/app/lib/convertObjectToArray";
 import convertObjectToChordChart from "@/app/lib/convertObjectToChordChart";
 import {
@@ -178,7 +182,7 @@ export default function ExamHomePage() {
       correctSeventhChordAnswers,
       "Seventh Chords"
     );
-    let progressionAnswers = checkAnswers(
+    let progressionAnswers = checkProgressionAnswers(
       userProgressionAnswers,
       correctProgressionAnswers,
       "2-5-1 Progressions"

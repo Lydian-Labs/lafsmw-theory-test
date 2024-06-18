@@ -1,3 +1,25 @@
+export const checkProgressionAnswers = (
+  answers: string[],
+  correctAnswers: string[],
+  questionType: string
+): string => {
+  let score = 0;
+  let result = "";
+  let numAnswers = correctAnswers.length;
+  for (let i = 0; i < answers.length; i++) {
+    if (answers[i].toLowerCase() === correctAnswers[i].toLowerCase()) {
+      score++;
+    }
+  }
+  result = `${score}/${numAnswers} on the ${questionType} section.
+    <ul>Actual student answers:
+      <li>${answers.slice(0, 3)}</li>
+      <li>${answers.slice(3, 6)}</li>
+      <li>${answers.slice(6, 9)}</li>
+    </ul>`;
+  return result;
+};
+
 export const checkAnswers = (
   answers: string[],
   correctAnswers: string[],
@@ -12,8 +34,8 @@ export const checkAnswers = (
     }
   }
   result = `${score}/${numAnswers} on the ${questionType} section.
-    <ul>
-      <li>Actual student answers: ${answers}</li>
+    <ul>Actual student answers:
+      <li>${answers}</li>
     </ul>`;
   return result;
 };
@@ -37,9 +59,7 @@ export const checkArrOfArrsAnswer = (
     }
   }
   result = `${score}/${numAnswers} on the ${questionType} section.
-    <ul>
-        <li>Actual student answers: ${actualStudentAnswers}</li>
-    </ul>`;
+    <ul>Actual student answers:${actualStudentAnswers}</ul>`;
   return result;
 };
 
@@ -64,33 +84,3 @@ function prepareArrOfArrsAnswer(userAnswers: string[][]): string {
   }
   return result;
 }
-// function prepareArrOfArrsAnswer(
-//   userAnswers: string[][],
-//   questionType: string
-// ): string {
-//   let result = "";
-//   if (questionType === "Scales") {
-//     result = prepareScalesAnswer(userAnswers);
-//   } else if (questionType === "Key Signature Notation") {
-//     result = prepareKeySigNotateAnswer(userAnswers);
-//   }
-//   return result;
-// }
-
-// function prepareScalesAnswer(userAnswers: string[][]): string {
-//   let result = "";
-//   for (let i = 0; i < userAnswers.length; i++) {
-//     let current = userAnswers[i].join(", ");
-//     result += `<li>${i + 1}. ${current}</li>`;
-//   }
-//   return result;
-// }
-
-// function prepareKeySigNotateAnswer(userAnswers: string[][]): string {
-//   let result = "";
-//   for (let i = 0; i < userAnswers.length; i++) {
-//     let current = userAnswers[i].join(", ");
-//     result += `<li>${i + 1}. ${current}</li>`;
-//   }
-//   return result;
-// }
