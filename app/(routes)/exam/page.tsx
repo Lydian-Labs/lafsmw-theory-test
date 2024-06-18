@@ -29,7 +29,16 @@ import {
   getUserSnapshot,
   setOrUpdateStudentData,
 } from "@/firebase/firestore/model";
-import { Box, Button, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Stack,
+  Typography,
+  FormControl,
+  Select,
+  InputLabel,
+  MenuItem,
+} from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
@@ -215,6 +224,8 @@ export default function ExamHomePage() {
     });
   };
 
+  const handleClef = () => {};
+
   const handleTimeUp = () => {
     setTimesUp(true);
     setViewState(VIEW_STATES.SUBMIT_AND_EXIT);
@@ -310,8 +321,26 @@ export default function ExamHomePage() {
             </Box>
           )}
         {viewState === VIEW_STATES.START_TEST && (
-          <Box>
-            <Button variant="contained" onClick={handleStartTest}>
+          <Box mt={5}>
+            <Box mb={7}>
+            <FormControl size="small" fullWidth>
+              <InputLabel id="clef-label">
+                Select Clef
+              </InputLabel>
+              <Select
+                labelId="class-preference-label"
+                id="class-preference-select"
+                value={"need to add set clef state"}
+                label="Class Preference"
+                onChange={handleClef}
+              >
+                <MenuItem value="select-here">Select Clef Here</MenuItem>
+                <MenuItem value="treble-clef">Treble Clef</MenuItem>
+                <MenuItem value="bass-clef">Bass Clef</MenuItem>
+              </Select>
+            </FormControl>
+            </Box>
+            <Button variant="contained" onClick={handleStartTest} fullWidth >
               <Typography variant="h4" p={2}>
                 Begin Test
               </Typography>
