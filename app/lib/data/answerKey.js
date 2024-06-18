@@ -2,7 +2,7 @@ const triadDMajor = ["d", "f#", "a"];
 const triadFsharpMajor = ["f#", "a#", "c#"];
 const triadDbMinor = ["db", "f", "ab"];
 const triadFsharpMinor = ["f#", "a", "c#"];
-const triadEbDiminished = ["eb", "g", "bb"];
+const triadEbDiminished = ["eb", "gb", "bbb"];
 const triadEAugmented = ["e", "g#", "b#"];
 
 const scaleDbMajor = ["db", "eb", "f", "gb", "ab", "bb", "c"];
@@ -62,7 +62,7 @@ export const correctSeventhChordNotationAnswers = [
 
 export const correctSeventhChordAnswers = ["A", "B", "C", "D", "E", "F", "G"];
 
-export const correctKeySigAnswers = ["db", "a", "f", "c#"];
+export const correctKeySigAnswers = ["db", "a", "f-", "c#-"];
 
 export const correctProgressionAnswers = [
   "Dm7",
