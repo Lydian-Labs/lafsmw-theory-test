@@ -16,7 +16,7 @@ export const keySigNotationInstructions = [
   },
   {
     instructionTitle: "Start over or continue:",
-    instructionText: `You can erase the measure and start over by selecting the “Clear Measure” button. When finished, click "Save and Continue".`,
+    instructionText: `You can erase the measure and start over by selecting the “Erase Key Signature” button. When finished, click "Save and Continue".`,
   },
 ];
 

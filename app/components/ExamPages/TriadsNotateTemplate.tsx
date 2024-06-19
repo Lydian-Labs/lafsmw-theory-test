@@ -2,20 +2,12 @@
 import { chordsNotationInstructions } from "@/app/lib/data/instructions";
 import triadsText from "@/app/lib/data/triadsText";
 import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
-import {
-  Box,
-  Container,
-  Grid,
-  List,
-  ListItem,
-  ListItemText,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Box, Container, Grid, Typography } from "@mui/material";
 import { useCallback, useEffect, useRef, useState } from "react";
 import CardFooter from "../CardFooter";
 import NotateChord from "../NotateChord";
 import SnackbarToast from "../SnackbarToast";
+import TutorialCard from "../TutorialCard";
 
 export default function TriadsNotation({
   currentUserData,
@@ -76,38 +68,11 @@ export default function TriadsNotation({
       >
         <Grid container spacing={4} p={2}>
           <Grid item xs={4}>
-            <Stack gap={2} alignItems={"center"}>
-              {page === 12 && (
-                <Typography variant="h6" align="center">
-                  Section 4: Notate Triads
-                </Typography>
-              )}
-              <Box
-                width={273}
-                height={456}
-                bgcolor={"card.background"}
-                borderRadius="var(--borderRadius)"
-                boxShadow="var(--cardShadow)"
-              >
-                <Stack mx={3} p={1}>
-                  <Typography variant="h6" align="center">
-                    Tutorial
-                  </Typography>
-                  <List>
-                    {chordsNotationInstructions.map((value, index) => (
-                      <ListItem key={index} disableGutters>
-                        <ListItemText
-                          primary={`${index + 1}. ${value.instructionTitle}`}
-                          secondary={value.instructionText}
-                          primaryTypographyProps={{ fontSize: "11px" }}
-                          secondaryTypographyProps={{ fontSize: "11px" }}
-                        />
-                      </ListItem>
-                    ))}
-                  </List>
-                </Stack>
-              </Box>
-            </Stack>
+            <TutorialCard
+              tutorialInstructions={chordsNotationInstructions}
+              firstPage={page === 12}
+              title={"Section 4: Triads"}
+            />
           </Grid>
           <Grid item xs={8} margin={"auto"}>
             <Box
