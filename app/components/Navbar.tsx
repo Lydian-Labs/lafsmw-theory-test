@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { FC } from "react";
 import { useAuthContext } from "@/firebase/authContext";
 import CountdownTimer from "./CountdownTimer";
+import CustomButton from "./CustomButton";
 
 const Navbar: FC = () => {
   const router = useRouter();
@@ -46,12 +47,12 @@ const Navbar: FC = () => {
       <Box gridColumn="span 1" padding={2}>
         {user !== null ? (
           <div>
-            <Button variant="text" color="primary" onClick={signOutOfAppButton}>
+            <CustomButton onClick={signOutOfAppButton}>
               <Stack>
                 <Typography fontSize={"10px"}>{user.email}</Typography>
                 <Typography>Sign Out</Typography>
               </Stack>
-            </Button>
+            </CustomButton>
           </div>
         ) : null}
       </Box>
