@@ -9,6 +9,7 @@ import TriadsNotation from "@/app/components/ExamPages/TriadsNotateTemplate";
 import WriteBluesChanges from "@/app/components/ExamPages/WriteBluesChanges";
 import WriteProgressions from "@/app/components/ExamPages/WriteProgressions";
 import ClassPreferenceSelector from "@/app/components/ClassPreferenceSelector";
+import ClefPreferenceSelector from "@/app/components/ClefPreferenceSelector";
 import { useTimer } from "@/app/context/TimerContext";
 import {
   checkAnswers,
@@ -33,16 +34,7 @@ import {
   getUserSnapshot,
   setOrUpdateStudentData,
 } from "@/firebase/firestore/model";
-import {
-  Box,
-  Button,
-  Stack,
-  Typography,
-  FormControl,
-  Select,
-  InputLabel,
-  MenuItem,
-} from "@mui/material";
+import { Box, Button, Stack, Typography, Container, Grid } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
@@ -97,6 +89,7 @@ export default function ExamHomePage() {
   const [timesUp, setTimesUp] = useState(false);
   const [isPDFReady, setIsPDFReady] = useState(false);
   const [level, setLevel] = useState<Level>("select-here");
+  const [clef, setClef] = useState("select-clef");
 
   useEffect(() => {
     const fetchSnapshot = async () => {
@@ -327,32 +320,41 @@ export default function ExamHomePage() {
             </Box>
           )}
         {viewState === VIEW_STATES.START_TEST && (
-          <Box mt={5}>
-            <Box mb={7}>
-              <FormControl size="small" fullWidth>
-                <InputLabel id="clef-label">Select Clef</InputLabel>
-                <Select
-                  labelId="clef-preference-label"
-                  id="clef-preference-select"
-                  value={"need to add set clef state"}
-                  label="Clef Preference"
-                  onChange={handleClef}
-                >
-                  <MenuItem value="select-here">Select Clef Here</MenuItem>
-                  <MenuItem value="treble-clef">Treble Clef</MenuItem>
-                  <MenuItem value="bass-clef">Bass Clef</MenuItem>
-                </Select>
-              </FormControl>
-              <Box mt={4}>
-                <ClassPreferenceSelector level={setLevel} setLevel={setLevel} />
-              </Box>
-            </Box>
-            <Button variant="contained" onClick={handleStartTest} fullWidth>
-              <Typography variant="h4" p={2}>
-                Begin Test
+          <Container maxWidth="lg">
+            <Box mt={10} mb={5} textAlign="center">
+              <Typography variant="h6" component="p" color="textSecondary">
+                Please select your preferences below to start the test:
               </Typography>
-            </Button>
-          </Box>
+            </Box>
+            <Grid container spacing={6} justifyContent="center">
+              <Grid item xs={12} md={4}>
+                <Box p={4} boxShadow={4} borderRadius={4}>
+                  <Typography variant="h5" mb={2}>
+                    Select Your Clef Preference
+                  </Typography>
+                  <ClefPreferenceSelector clef={clef} setClef={setClef} />
+                </Box>
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <Box p={4} boxShadow={4} borderRadius={4}>
+                  <Typography variant="h5" mb={2}>
+                    Select Your Preferred Class
+                  </Typography>
+                  <ClassPreferenceSelector level={level} setLevel={setLevel} />
+                </Box>
+              </Grid>
+            </Grid>
+            <Box mt={10} textAlign="center">
+              <Button
+                variant="contained"
+                size="large"
+                onClick={handleStartTest}
+                sx={{ padding: "16px 32px", borderRadius: 8 }}
+              >
+                <Typography variant="h5">Begin Test</Typography>
+              </Button>
+            </Box>
+          </Container>
         )}
         {viewState === VIEW_STATES.KEY_SIG_NOTATE1 && (
           <KeySigNotate1

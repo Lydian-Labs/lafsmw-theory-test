@@ -105,6 +105,10 @@ export interface StaveNoteData {
   staveNoteAbsoluteX: number;
   userClickY: number;
 }
+export interface Clef {
+  clef: string;
+  setClef: Dispatch<SetStateAction<string>>;
+}
 
 export interface ScaleData {
   keys: string[];

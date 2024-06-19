@@ -70,10 +70,7 @@ export default function KeySignaturesNotation1({
               <Typography variant="h6" align="center">
                 Section 1: Notate Key Signatures
               </Typography>
-              <ClassPreferenceSelector
-                level={level}
-                setLevel={setLevel}
-              ></ClassPreferenceSelector>
+              <ClassPreferenceSelector level={level} setLevel={setLevel} />
               <Box
                 width={273}
                 height={456}
