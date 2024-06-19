@@ -1,4 +1,5 @@
 import { ForwardedRef, forwardRef, useState } from "react";
+import { useClef } from "../context/ClefContext";
 import createInitialState from "../lib/createInitialState";
 import gatherWidthInfo from "../lib/gatherWidthInfo";
 import {
@@ -9,7 +10,6 @@ import {
 } from "../lib/typesAndInterfaces";
 import FormInput from "./FormInput";
 import Staff from "./Staff";
-import { useClef } from "../context/ClefContext";
 type IdentifyKeySignatureProps = {
   numBars: number;
   chords?: Chord[];

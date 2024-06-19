@@ -19,7 +19,6 @@ type StaffProps = {
 };
 
 export default function Staff({
-  clef = "",
   timeSignature = "4/4",
   noTimeSignature = false,
   evenbars = false,
@@ -33,6 +32,7 @@ export default function Staff({
 }: StaffProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const rendererRef = useRef<Flow.Renderer | null>(null);
+  const { clef } = useClef();
 
   // Gather needed width info - slightly different calculations than other components.
   const fullWidth = width * 0.97;
@@ -85,12 +85,8 @@ export default function Staff({
           i === 0 ? widthOfFirstBar : widthOfRemainingBars,
           spaceAboveStaff
         );
+        stave.addClef(clef);
 
-        if (i === 0) {
-          noTimeSignature
-            ? stave.addClef(clef)
-            : stave.addClef(clef).addTimeSignature(timeSignature);
-        }
         if (allDoubleBarLines) {
           stave.setEndBarType(2);
         } else {
@@ -106,7 +102,6 @@ export default function Staff({
         }
         // Connect the stave to the rendering context and draw.
         stave.setContext(rendererContext).draw();
-
         if (chords.length > 0) {
           // Create each chord as a StaveNote.
           let notesMeasure = [new StaveNote(chords[i])];
