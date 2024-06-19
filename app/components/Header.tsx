@@ -1,14 +1,14 @@
 "use client";
 import { signOutOfApp } from "@/firebase/authAPI";
-import { Box, Button, Stack, Typography } from "@mui/material";
+import { useAuthContext } from "@/firebase/authContext";
+import { Box, Stack, Typography } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FC } from "react";
-import { useAuthContext } from "@/firebase/authContext";
 import CountdownTimer from "./CountdownTimer";
 import CustomButton from "./CustomButton";
 
-const Navbar: FC = () => {
+const Header: FC = () => {
   const router = useRouter();
   const signOutOfAppButton = () => {
     signOutOfApp();
@@ -52,4 +52,4 @@ const Navbar: FC = () => {
   );
 };
 
-export default Navbar;
+export default Header;
