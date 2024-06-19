@@ -1,7 +1,7 @@
 "use client";
 import { keySigNotationInstructions } from "@/app/lib/data/instructions";
 import keySignaturesText from "@/app/lib/data/keySignaturesText";
-import { Level, MouseEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
+import { MouseEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import {
   Box,
   Container,
@@ -15,7 +15,6 @@ import {
 import { useState } from "react";
 import CardFooter from "../CardFooter";
 import NotateKeySignature from "../NotateKeySignature";
-import SnackbarToast from "../SnackbarToast";
 
 export default function KeySignaturesNotation1({
   currentUserData,
@@ -23,22 +22,12 @@ export default function KeySignaturesNotation1({
   nextViewState,
   page,
 }: UserDataProps) {
-  const [level, setLevel] = useState<Level>("select-here");
   const [keySignatureNotation, setKeySignatureNotation] = useState([]);
-  const [open, setOpen] = useState<boolean>(false);
-
   const keySigPropName = `keySignaturesNotation${page}`;
-
-  function handleKeySigNotation(input: any) {
-    setKeySignatureNotation(input);
-  }
 
   const handleSubmit = async (e: MouseEvent) => {
     e.preventDefault();
-    if (level === "select-here") {
-      setOpen(true);
-      return;
-    }
+
     setCurrentUserData({
       ...currentUserData,
       [keySigPropName]: keySignatureNotation,
@@ -46,13 +35,12 @@ export default function KeySignaturesNotation1({
     nextViewState();
   };
 
+  function handleKeySigNotation(input: any) {
+    setKeySignatureNotation(input);
+  }
+
   return (
     <Container>
-      <SnackbarToast
-        open={open}
-        setOpen={setOpen}
-        message={"You must select level before moving on."}
-      />
       <Box
         component="main"
         width={1139}
@@ -68,6 +56,7 @@ export default function KeySignaturesNotation1({
               <Typography variant="h6" align="center">
                 Section 1: Notate Key Signatures
               </Typography>
+
               <Box
                 width={273}
                 height={456}
