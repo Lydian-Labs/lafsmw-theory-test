@@ -14,7 +14,6 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import CardFooter from "../CardFooter";
-import ClassPreferenceSelector from "../ClassPreferenceSelector";
 import NotateKeySignature from "../NotateKeySignature";
 import SnackbarToast from "../SnackbarToast";
 
@@ -30,6 +29,10 @@ export default function KeySignaturesNotation1({
 
   const keySigPropName = `keySignaturesNotation${page}`;
 
+  function handleKeySigNotation(input: any) {
+    setKeySignatureNotation(input);
+  }
+
   const handleSubmit = async (e: MouseEvent) => {
     e.preventDefault();
     if (level === "select-here") {
@@ -38,15 +41,10 @@ export default function KeySignaturesNotation1({
     }
     setCurrentUserData({
       ...currentUserData,
-      level: level,
       [keySigPropName]: keySignatureNotation,
     });
     nextViewState();
   };
-
-  function handleKeySigNotation(input: any) {
-    setKeySignatureNotation(input);
-  }
 
   return (
     <Container>

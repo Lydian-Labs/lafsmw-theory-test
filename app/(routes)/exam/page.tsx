@@ -38,7 +38,8 @@ import { Box, Button, Stack, Typography, Container, Grid } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { useClef } from "@/app/context/ClefContext";
-
+import SnackbarToast from "@/app/components/SnackbarToast";
+import CardFooter from "@/app/components/CardFooter";
 const VIEW_STATES = {
   START_TEST: 0,
   KEY_SIG_NOTATE1: 1,
@@ -89,6 +90,7 @@ export default function ExamHomePage() {
   const [viewState, setViewState] = useState(VIEW_STATES.START_TEST);
   const [timesUp, setTimesUp] = useState(false);
   const [isPDFReady, setIsPDFReady] = useState(false);
+  const [open, setOpen] = useState<boolean>(false);
   const [level, setLevel] = useState<Level>("select-here");
   const { clef, setClef } = useClef();
 
@@ -228,9 +230,24 @@ export default function ExamHomePage() {
     setViewState(VIEW_STATES.SUBMIT_AND_EXIT);
   };
 
-  const handleStartTest = () => {
-    startTimer(1800, handleTimeUp);
-    setViewState(VIEW_STATES.KEY_SIG_NOTATE1);
+  const handleSubmit = async (e: MouseEvent) => {
+    e.preventDefault();
+    if (level === "select-here") {
+      setOpen(true);
+      return;
+    }
+    setCurrentUserData({
+      ...currentUserData,
+      level: level,
+    });
+  };
+
+  const handleStartTest = (handleSubmit: (e: MouseEvent) => Promise<void>) => {
+    return async (e: MouseEvent) => {
+      await handleSubmit(e);
+      startTimer(1800, handleTimeUp);
+      setViewState(VIEW_STATES.KEY_SIG_NOTATE1);
+    };
   };
 
   const handleFinalSubmit = async (e: MouseEvent) => {
@@ -320,6 +337,11 @@ export default function ExamHomePage() {
           )}
         {viewState === VIEW_STATES.START_TEST && (
           <Container maxWidth="lg">
+            <SnackbarToast
+              open={open}
+              setOpen={setOpen}
+              message={"You must select level before moving on."}
+            />
             <Box mt={10} mb={5} textAlign="center">
               <Typography variant="h6" component="p" color="textSecondary">
                 Please select your preferences below to start the test:
@@ -347,7 +369,7 @@ export default function ExamHomePage() {
               <Button
                 variant="contained"
                 size="large"
-                onClick={handleStartTest}
+                onClick={handleStartTest(handleSubmit)}
                 sx={{ padding: "16px 32px", borderRadius: 8 }}
               >
                 <Typography variant="h5">Begin Test</Typography>

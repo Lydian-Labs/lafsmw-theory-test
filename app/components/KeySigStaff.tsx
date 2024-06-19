@@ -1,8 +1,8 @@
 "use client";
 import { useEffect, useRef } from "react";
 import { Flow } from "vexflow";
-import { Chord } from "../lib/typesAndInterfaces";
 import { useClef } from "../context/ClefContext";
+import { Chord } from "../lib/typesAndInterfaces";
 
 type StaffProps = {
   clef?: string;

@@ -14,13 +14,13 @@ import React, {
 import VexFlow from "vexflow";
 import CheckIfNoteFound from "../components/CheckIfNoteFound";
 import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
+import { useClef } from "../context/ClefContext";
 import { modifyChordsActionTypes } from "../lib/actionTypes";
 import { buttonGroup } from "../lib/buttonsAndButtonGroups";
 import { notesArray } from "../lib/data/noteArray";
 import { staveData } from "../lib/data/stavesData";
 import { findBarIndex } from "../lib/findBar";
 import { handleChordInteraction } from "../lib/handleChordInteraction";
-import CustomButton from "./CustomButton";
 import {
   chordInteractionInitialState,
   initialChordData,
@@ -35,7 +35,7 @@ import {
   RenderStavesAndChordParams,
   StaveType,
 } from "../lib/typesAndInterfaces";
-import { useClef } from "../context/ClefContext";
+import CustomButton from "./CustomButton";
 const { Renderer } = VexFlow.Flow;
 
 const NotateChord = ({

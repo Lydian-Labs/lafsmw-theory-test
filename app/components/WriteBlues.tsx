@@ -1,11 +1,11 @@
 "use client";
 import Stack from "@mui/material/Stack";
 import { ForwardedRef, forwardRef, useEffect, useState } from "react";
+import { useClef } from "../context/ClefContext";
 import createInitialState from "../lib/createInitialState";
 import isCurrentDataFilled from "../lib/isCurrentDataFilled";
 import { ChangeEvent, FormEvent, WriteProps } from "../lib/typesAndInterfaces";
 import FormInput from "./FormInput";
-import { useClef } from "../context/ClefContext";
 import Staff from "./Staff";
 
 const initialBluesInputState = createInitialState(48);

@@ -10,6 +10,7 @@ import React, {
 } from "react";
 import VexFlow from "vexflow";
 import SnackbarToast from "../components/SnackbarToast";
+import { useClef } from "../context/ClefContext";
 import { modifyKeySigActionTypes } from "../lib/actionTypes";
 import { buildKeySignature } from "../lib/buildKeySignature";
 import { buttonGroup, clearKeySignature } from "../lib/buttonsAndButtonGroups";
@@ -27,7 +28,6 @@ import { keySigReducer } from "../lib/reducer";
 import { setupRenderer } from "../lib/setUpRenderer";
 import { GlyphProps, NotesAndCoordinatesData } from "../lib/typesAndInterfaces";
 import CustomButton from "./CustomButton";
-import { useClef } from "../context/ClefContext";
 
 const VF = VexFlow.Flow;
 const { Renderer } = VF;
