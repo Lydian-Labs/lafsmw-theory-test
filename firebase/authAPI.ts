@@ -41,13 +41,13 @@ export async function signIn(email: string, password: string) {
   try {
     await signInWithEmailAndPassword(auth, email, password).catch((err) => {
       console.error("signInWithEmailAndPassword error:", err);
-      alert("Invalid email or password");
     });
     if (auth.currentUser !== null) {
       console.log(
         "Sign in successfull! CurrentUser:",
         auth.currentUser.displayName
       );
+      return true;
     }
   } catch (err) {
     console.error("signIn error:", err);
