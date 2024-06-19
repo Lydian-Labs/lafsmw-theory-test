@@ -232,10 +232,7 @@ export default function ExamHomePage() {
 
   const handleSubmit = async (e: MouseEvent) => {
     e.preventDefault();
-    if (level === "select-here") {
-      setOpen(true);
-      return;
-    }
+
     setCurrentUserData({
       ...currentUserData,
       level: level,
@@ -244,6 +241,11 @@ export default function ExamHomePage() {
 
   const handleStartTest = (handleSubmit: (e: MouseEvent) => Promise<void>) => {
     return async (e: MouseEvent) => {
+      e.preventDefault();
+      if (level === "select-here") {
+        setOpen(true);
+        return;
+      }
       await handleSubmit(e);
       startTimer(1800, handleTimeUp);
       setViewState(VIEW_STATES.KEY_SIG_NOTATE1);
