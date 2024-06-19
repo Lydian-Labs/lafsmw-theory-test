@@ -1,25 +1,30 @@
 import {
   FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
   Radio,
   RadioGroup,
-  FormControlLabel
+  FormControlLabel,
 } from "@mui/material";
 import { Clef } from "../lib/typesAndInterfaces";
+import { ChangeEvent } from "react";
 
 const ClefPreferenceSelector = ({ clef, setClef }: Clef) => {
-  function handleClef(event) {
-   setClef(event.target.value)
+  function handleClef(event: ChangeEvent<HTMLInputElement>) {
+    setClef(event.target.value);
   }
   return (
     <FormControl size="small" fullWidth>
-     <RadioGroup row value={clef} onChange={handleClef}>
-        <FormControlLabel value={"treble-clef"} control={<Radio />} label="Treble Clef"/>
-        <FormControlLabel value={"bass-clef"} control={<Radio />} label="Bass Clef"/>
-     </RadioGroup>
+      <RadioGroup row value={clef} onChange={handleClef}>
+        <FormControlLabel
+          value={"treble"}
+          control={<Radio />}
+          label="Treble Clef"
+        />
+        <FormControlLabel
+          value={"bass"}
+          control={<Radio />}
+          label="Bass Clef"
+        />
+      </RadioGroup>
     </FormControl>
   );
 };

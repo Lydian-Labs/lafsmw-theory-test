@@ -35,7 +35,7 @@ import {
   RenderStavesAndChordParams,
   StaveType,
 } from "../lib/typesAndInterfaces";
-
+import { useClef } from "../context/ClefContext";
 const { Renderer } = VexFlow.Flow;
 
 const NotateChord = ({
@@ -55,7 +55,7 @@ const NotateChord = ({
   //not currently being used, but will be used in the future
   const [barIndex, setBarIndex] = useState<number>(0);
   const [chordData, setChordData] = useState<Chord>(initialChordData);
-
+  const { clef } = useClef();
   const [notesAndCoordinates, setNotesAndCoordinates] = useState<
     NotesAndCoordinatesData[]
   >([initialNotesAndCoordsState]);
@@ -119,6 +119,7 @@ const NotateChord = ({
         chordData,
         staves,
         barIndex,
+        clef: clef,
       }),
     [rendererRef, setStaves, chordData, staves, barIndex]
   );

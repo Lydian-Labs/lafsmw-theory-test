@@ -6,6 +6,7 @@ import keyNames from "../lib/data/keyNamesText";
 import isCurrentDataFilled from "../lib/isCurrentDataFilled";
 import { ChangeEvent, FormEvent, WriteProps } from "../lib/typesAndInterfaces";
 import FormInput from "./FormInput";
+import { useClef } from "../context/ClefContext";
 import Staff from "./Staff";
 
 const initialProgressionInputState = createInitialState(18);
@@ -17,6 +18,8 @@ export default forwardRef(function WriteProgression(
   const [numeralInput, setNumeralInput] = useState<Record<string, string>>(
     initialProgressionInputState
   );
+
+  const { clef } = useClef();
 
   useEffect(() => {
     if (currentData && isCurrentDataFilled(currentData)) {
@@ -95,7 +98,7 @@ export default forwardRef(function WriteProgression(
           >
             {renderKeyNames(0, 3)}
           </Stack>
-          <Staff numBars={6} width={width} />
+          <Staff clef={clef} numBars={6} width={width} />
           <Stack
             direction="row"
             spacing={chordGroupSpacing}
@@ -113,7 +116,13 @@ export default forwardRef(function WriteProgression(
           >
             {renderKeyNames(3, 6)}
           </Stack>
-          <Staff numBars={6} noTimeSignature width={width} addDoubleBarLine />
+          <Staff
+            clef={clef}
+            numBars={6}
+            noTimeSignature
+            width={width}
+            addDoubleBarLine
+          />
           <Stack
             direction="row"
             spacing={chordGroupSpacing}

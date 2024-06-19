@@ -2,6 +2,7 @@
 import { useEffect, useRef } from "react";
 import { Flow } from "vexflow";
 import { Chord } from "../lib/typesAndInterfaces";
+import { useClef } from "../context/ClefContext";
 
 type StaffProps = {
   clef?: string;
@@ -18,7 +19,7 @@ type StaffProps = {
 };
 
 export default function Staff({
-  clef = "treble",
+  clef = "",
   timeSignature = "4/4",
   noTimeSignature = false,
   evenbars = false,

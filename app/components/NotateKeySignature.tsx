@@ -27,6 +27,7 @@ import { keySigReducer } from "../lib/reducer";
 import { setupRenderer } from "../lib/setUpRenderer";
 import { GlyphProps, NotesAndCoordinatesData } from "../lib/typesAndInterfaces";
 import CustomButton from "./CustomButton";
+import { useClef } from "../context/ClefContext";
 
 const VF = VexFlow.Flow;
 const { Renderer } = VF;
@@ -37,6 +38,7 @@ const NotateKeySignature = ({ handleNotes }: any) => {
   const [blankStaves, setBlankStaves] = useState(INITIAL_STAVES);
   const [glyphs, setGlyphs] = useState<GlyphProps[]>([]);
   const [open, setOpen] = useState(false);
+  const { clef } = useClef();
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [state, dispatch] = useReducer(keySigReducer, keySigInitialState);
   const [keySig, setKeySig] = useState<string[]>([]);
@@ -56,6 +58,7 @@ const NotateKeySignature = ({ handleNotes }: any) => {
     setupRenderer({
       rendererRef,
       ...staveData,
+      clef: clef,
       firstStaveWidth: 450,
       setStaves: setBlankStaves,
       staves: blankStaves,

@@ -10,6 +10,7 @@ import {
 } from "../lib/typesAndInterfaces";
 import FormInput from "./FormInput";
 import Staff from "./Staff";
+import { useClef } from "../context/ClefContext";
 
 interface TextInput {
   [key: string]: string;
@@ -43,6 +44,8 @@ export default forwardRef(function IdentifyNotation(
   const [textInput, setTextInput] = useState<Record<string, string>>(
     initialChordsInputState
   );
+
+  const {clef} = useClef()
 
   useEffect(() => {
     if (!currentData || !isCurrentDataFilled(currentData)) {
@@ -99,6 +102,7 @@ export default forwardRef(function IdentifyNotation(
     <div>
       <form ref={ref} id="submit-form-chords" onSubmit={handleInputSubmit}>
         <Staff
+        clef={clef}
           evenbars={evenbars}
           addDoubleBarLine={true}
           numBars={numBars}

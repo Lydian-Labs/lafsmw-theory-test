@@ -37,6 +37,7 @@ import {
 import { Box, Button, Stack, Typography, Container, Grid } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
+import { useClef } from "@/app/context/ClefContext";
 
 const VIEW_STATES = {
   START_TEST: 0,
@@ -89,7 +90,7 @@ export default function ExamHomePage() {
   const [timesUp, setTimesUp] = useState(false);
   const [isPDFReady, setIsPDFReady] = useState(false);
   const [level, setLevel] = useState<Level>("select-here");
-  const [clef, setClef] = useState("select-clef");
+  const { clef, setClef } = useClef();
 
   useEffect(() => {
     const fetchSnapshot = async () => {
@@ -222,8 +223,6 @@ export default function ExamHomePage() {
     });
   };
 
-  const handleClef = () => {};
-
   const handleTimeUp = () => {
     setTimesUp(true);
     setViewState(VIEW_STATES.SUBMIT_AND_EXIT);
@@ -338,7 +337,7 @@ export default function ExamHomePage() {
               <Grid item xs={12} md={4}>
                 <Box p={4} boxShadow={4} borderRadius={4}>
                   <Typography variant="h5" mb={2}>
-                    Select Your Preferred Class
+                    Select Your Class Preference
                   </Typography>
                   <ClassPreferenceSelector level={level} setLevel={setLevel} />
                 </Box>

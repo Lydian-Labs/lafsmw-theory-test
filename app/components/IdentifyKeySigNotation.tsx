@@ -10,7 +10,7 @@ import {
 } from "../lib/typesAndInterfaces";
 import FormInput from "./FormInput";
 import KeySigStaff from "./KeySigStaff";
-
+import { useClef } from "../context/ClefContext";
 interface TextInput {
   [key: string]: string;
 }
@@ -43,6 +43,8 @@ export default forwardRef(function IdentifyKeySigNotation(
   const [textInput, setTextInput] = useState<Record<string, string>>(
     initialChordsInputState
   );
+
+  const { clef } = useClef();
 
   useEffect(() => {
     if (!currentData || !isCurrentDataFilled(currentData)) {
@@ -99,6 +101,7 @@ export default forwardRef(function IdentifyKeySigNotation(
     <div>
       <form ref={ref} id="submit-form-chords" onSubmit={handleInputSubmit}>
         <KeySigStaff
+          clef={clef}
           evenbars={evenbars}
           addDoubleBarLine={true}
           numBars={numBars}

@@ -5,6 +5,7 @@ import createInitialState from "../lib/createInitialState";
 import isCurrentDataFilled from "../lib/isCurrentDataFilled";
 import { ChangeEvent, FormEvent, WriteProps } from "../lib/typesAndInterfaces";
 import FormInput from "./FormInput";
+import { useClef } from "../context/ClefContext";
 import Staff from "./Staff";
 
 const initialBluesInputState = createInitialState(48);
@@ -16,6 +17,8 @@ export default forwardRef(function WriteBlues(
   const [numeralInput, setNumeralInput] = useState<Record<string, string>>(
     initialBluesInputState
   );
+
+  const { clef } = useClef();
 
   useEffect(() => {
     if (currentData && isCurrentDataFilled(currentData)) {
@@ -66,7 +69,7 @@ export default forwardRef(function WriteBlues(
     <div>
       <form ref={ref} id="submit-form-blues" onSubmit={handleNumeralSubmit}>
         <Stack direction="column">
-          <Staff numBars={4} width={width} />
+          <Staff clef={clef} numBars={4} width={width} />
           <Stack
             direction="row"
             spacing={chordGroupSpacing}
@@ -77,7 +80,7 @@ export default forwardRef(function WriteBlues(
             <div style={gridInputInline}>{renderNumeralInputs(8, 12)}</div>
             <div style={gridInputInline}>{renderNumeralInputs(12, 16)}</div>
           </Stack>
-          <Staff numBars={4} noTimeSignature={true} width={width} />
+          <Staff clef={clef} numBars={4} noTimeSignature={true} width={width} />
           <Stack
             direction="row"
             spacing={chordGroupSpacing}
@@ -89,6 +92,7 @@ export default forwardRef(function WriteBlues(
             <div style={gridInputInline}>{renderNumeralInputs(28, 32)}</div>
           </Stack>
           <Staff
+            clef={clef}
             numBars={4}
             noTimeSignature={true}
             addDoubleBarLine={true}

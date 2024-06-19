@@ -9,7 +9,7 @@ import {
 } from "../lib/typesAndInterfaces";
 import FormInput from "./FormInput";
 import Staff from "./Staff";
-
+import { useClef } from "../context/ClefContext";
 type IdentifyKeySignatureProps = {
   numBars: number;
   chords?: Chord[];
@@ -26,6 +26,8 @@ export default forwardRef(function IdentifyKeySignatures(
   const [keysInput, setKeysInput] = useState<Record<string, string>>(
     initialKeysInputState
   );
+
+  const { clef } = useClef();
 
   // Gather needed width info.
   const { widthOfFirstBar, widthOfRemainingBars } = gatherWidthInfo(
@@ -65,7 +67,12 @@ export default forwardRef(function IdentifyKeySignatures(
   return (
     <div>
       <form ref={ref} id="submit-form-keys" onSubmit={handleKeysSubmit}>
-        <Staff addDoubleBarLine={true} numBars={numBars} width={width} />
+        <Staff
+          clef={clef}
+          addDoubleBarLine={true}
+          numBars={numBars}
+          width={width}
+        />
         <div style={gridInputInline}>{renderKeysInputs()}</div>
       </form>
     </div>

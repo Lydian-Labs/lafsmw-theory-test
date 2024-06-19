@@ -13,9 +13,9 @@ import React, {
   useState,
 } from "react";
 import VexFlow from "vexflow";
-
 import CheckIfNoteFound from "../components/CheckIfNoteFound";
 import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
+import { useClef } from "../context/ClefContext";
 import { modifyNotesActionTypes } from "../lib/actionTypes";
 import { buttonGroup } from "../lib/buttonsAndButtonGroups";
 import { notesArray } from "../lib/data/noteArray";
@@ -50,7 +50,7 @@ const NotateScale = ({
   const [notesAndCoordinates, setNotesAndCoordinates] = useState([
     initialNotesAndCoordsState,
   ]);
-
+  const { clef } = useClef();
   const [state, dispatch] = useReducer(
     scaleReducer,
     noteInteractionInitialState
@@ -82,6 +82,7 @@ const NotateScale = ({
         setStaves,
         scaleDataMatrix,
         staves,
+        clef: clef,
       }),
     [rendererRef, setStaves, scaleDataMatrix, staves]
   );
