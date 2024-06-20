@@ -3,7 +3,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import { GoogleTagManager } from "@next/third-parties/google";
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
-import Navbar from "./components/Navbar";
+import Header from "./components/Header";
 import { TimerProvider } from "./context/TimerContext";
 import "./styles/globals.css";
 import theme from "./theme";
@@ -32,7 +32,7 @@ export default function RootLayout({
         <AuthContextProvider>
           <ThemeProvider theme={theme}>
             <TimerProvider>
-              <Navbar />
+              <Header />
               {children}
             </TimerProvider>
           </ThemeProvider>

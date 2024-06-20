@@ -2,20 +2,12 @@
 import { chordsNotationInstructions } from "@/app/lib/data/instructions";
 import seventhChordsText from "@/app/lib/data/seventhChordsText";
 import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
-import {
-  Box,
-  Container,
-  Grid,
-  List,
-  ListItem,
-  ListItemText,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Box, Container, Grid, Typography } from "@mui/material";
 import { useCallback, useEffect, useRef, useState } from "react";
 import CardFooter from "../CardFooter";
 import NotateChord from "../NotateChord";
 import SnackbarToast from "../SnackbarToast";
+import TutorialCard from "../TutorialCard";
 
 export default function NotateSeventhChords({
   currentUserData,
@@ -76,38 +68,11 @@ export default function NotateSeventhChords({
       >
         <Grid container spacing={4} p={2}>
           <Grid item xs={4}>
-            <Stack gap={2} alignItems={"center"}>
-              {page === 18 && (
-                <Typography variant="h6" align="center">
-                  Section 5: Notate Seventh Chords
-                </Typography>
-              )}
-              <Box
-                width={273}
-                height={456}
-                bgcolor={"card.background"}
-                borderRadius="var(--borderRadius)"
-                boxShadow="var(--cardShadow)"
-              >
-                <Stack mx={3} p={1}>
-                  <Typography variant="h6" align="center">
-                    Tutorial
-                  </Typography>
-                  <List>
-                    {chordsNotationInstructions.map((value, index) => (
-                      <ListItem key={index} disableGutters>
-                        <ListItemText
-                          primary={`${index + 1}. ${value.instructionTitle}`}
-                          secondary={value.instructionText}
-                          primaryTypographyProps={{ fontSize: "11px" }}
-                          secondaryTypographyProps={{ fontSize: "11px" }}
-                        />
-                      </ListItem>
-                    ))}
-                  </List>
-                </Stack>
-              </Box>
-            </Stack>
+            <TutorialCard
+              tutorialInstructions={chordsNotationInstructions}
+              firstPage={page === 18}
+              title={"Section 5: Seventh Chords"}
+            />
           </Grid>
           <Grid item xs={8} margin={"auto"}>
             <Box

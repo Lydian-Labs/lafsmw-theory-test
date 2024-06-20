@@ -13,8 +13,12 @@ export default function SignInForm() {
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
-    await signIn(email, password);
-    router.push("/exam");
+    let success = await signIn(email, password);
+    if (!success) {
+      alert("Invalid email or password. Please try again.");
+    } else {
+      router.push("/exam");
+    }
   };
 
   return (

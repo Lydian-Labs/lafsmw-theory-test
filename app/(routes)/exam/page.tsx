@@ -36,6 +36,7 @@ import {
 import { Box, Button, Stack, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
+import CustomButton from "@/app/components/CustomButton";
 
 const VIEW_STATES = {
   START_TEST: 0,
@@ -309,18 +310,18 @@ export default function ExamHomePage() {
           viewState !== VIEW_STATES.SUBMIT_AND_EXIT &&
           viewState !== VIEW_STATES.START_TEST && (
             <Box>
-              <Button onClick={decrementViewState}>
+              <CustomButton onClick={decrementViewState}>
                 <Typography variant="h4">{"<"}</Typography>
-              </Button>
+              </CustomButton>
             </Box>
           )}
         {viewState === VIEW_STATES.START_TEST && (
-          <Box>
-            <Button variant="contained" onClick={handleStartTest}>
-              <Typography variant="h4" p={2}>
+          <Box sx={{ position: "fixed", top: "35%" }}>
+            <CustomButton onClick={handleStartTest}>
+              <Typography variant="h5" p={2}>
                 Begin Test
               </Typography>
-            </Button>
+            </CustomButton>
           </Box>
         )}
         {viewState === VIEW_STATES.KEY_SIG_NOTATE1 && (
@@ -554,19 +555,21 @@ export default function ExamHomePage() {
         )}
         {viewState !== VIEW_STATES.SUBMIT_AND_EXIT &&
           viewState !== VIEW_STATES.START_TEST && (
-            <Box sx={{ pl: 5 }}>
-              <Button onClick={incrementViewState}>
+            <Stack gap={"30px"} sx={{ pl: 5 }}>
+              <CustomButton onClick={incrementViewState}>
                 <Typography variant="h4">{">"}</Typography>
-              </Button>
-              <Button onClick={() => setViewState(VIEW_STATES.TRIADS_NOTATE1)}>
+              </CustomButton>
+              <CustomButton
+                onClick={() => setViewState(VIEW_STATES.TRIADS_NOTATE1)}
+              >
                 <Typography>{"Go to Triads"}</Typography>
-              </Button>
-              <Button
+              </CustomButton>
+              <CustomButton
                 onClick={() => setViewState(VIEW_STATES.WRITE_PROGRESSIONS)}
               >
                 <Typography>{"Go to Progressions"}</Typography>
-              </Button>
-            </Box>
+              </CustomButton>
+            </Stack>
           )}
       </Stack>
     </Box>
