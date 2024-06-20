@@ -31,7 +31,11 @@ import {
 import { initializeRenderer } from "../lib/initializeRenderer";
 import { scaleReducer } from "../lib/reducer";
 import { setupRendererAndDrawNotes } from "../lib/setupRendererAndDrawNotes";
-import { ScaleData, StaveType } from "../lib/typesAndInterfaces";
+import {
+  NotesAndCoordinatesData,
+  ScaleData,
+  StaveType,
+} from "../lib/typesAndInterfaces";
 import CustomButton from "./CustomButton";
 
 const { Renderer } = VexFlow.Flow;
@@ -47,9 +51,9 @@ const NotateScale = ({
   const container = useRef<HTMLDivElement | null>(null);
   const [staves, setStaves] = useState<StaveType[]>([]);
   const [scaleDataMatrix, setScaleDataMatrix] = useState<ScaleData[][]>([[]]);
-  const [notesAndCoordinates, setNotesAndCoordinates] = useState([
-    initialNotesAndCoordsState,
-  ]);
+  const [notesAndCoordinates, setNotesAndCoordinates] = useState<
+    NotesAndCoordinatesData[]
+  >([initialNotesAndCoordsState]);
   const { clef } = useClef();
   const [state, dispatch] = useReducer(
     scaleReducer,
@@ -70,12 +74,17 @@ const NotateScale = ({
     setScaleDataMatrix((): ScaleData[][] => {
       return [[]];
     });
-    setNotesAndCoordinates(() => generateYMinAndYMaxForNotes(147, notesArray));
-    renderStavesAndNotes();
+    const newStave = renderStavesAndNotes();
+    if (newStave) {
+      const highG = newStave[0].getYForLine(-4);
+      setNotesAndCoordinates(() =>
+        generateYMinAndYMaxForNotes(highG - 2.5, notesArray)
+      );
+    }
   };
 
   const renderStavesAndNotes = useCallback(
-    (): void =>
+    (): any =>
       setupRendererAndDrawNotes({
         rendererRef,
         ...staveData,
@@ -89,8 +98,13 @@ const NotateScale = ({
 
   useEffect(() => {
     initializeRenderer(rendererRef, container);
-    renderStavesAndNotes();
-    setNotesAndCoordinates(() => generateYMinAndYMaxForNotes(8, notesArray));
+    const newStave = renderStavesAndNotes();
+    if (newStave) {
+      const highG = newStave[0].getYForLine(-4);
+      setNotesAndCoordinates(() =>
+        generateYMinAndYMaxForNotes(highG - 2.5, notesArray)
+      );
+    }
   }, []);
 
   //this is the array we will use for grading
