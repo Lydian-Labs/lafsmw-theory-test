@@ -1,13 +1,14 @@
 "use client";
 import { signOutOfApp } from "@/firebase/authAPI";
-import { Box, Button, Stack, Typography } from "@mui/material";
+import { useAuthContext } from "@/firebase/authContext";
+import { Box, Stack, Typography } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FC } from "react";
-import { useAuthContext } from "@/firebase/authContext";
 import CountdownTimer from "./CountdownTimer";
+import CustomButton from "./CustomButton";
 
-const Navbar: FC = () => {
+const Header: FC = () => {
   const router = useRouter();
   const signOutOfAppButton = () => {
     signOutOfApp();
@@ -27,14 +28,6 @@ const Navbar: FC = () => {
               </h1>
             </Link>
           </div>
-          <ul className="hidden sm:text-1xl py-20 sm:py-1 sm:flex">
-            <li className="p-4">
-              <Link href="/registration">Register</Link>
-            </li>
-            <li className="p-4">
-              <Link href="/exam">Exam</Link>
-            </li>
-          </ul>
         </div>
         {user !== null && (
           <Box>
@@ -46,12 +39,12 @@ const Navbar: FC = () => {
       <Box gridColumn="span 1" padding={2}>
         {user !== null ? (
           <div>
-            <Button variant="text" color="primary" onClick={signOutOfAppButton}>
+            <CustomButton onClick={signOutOfAppButton}>
               <Stack>
                 <Typography fontSize={"10px"}>{user.email}</Typography>
                 <Typography>Sign Out</Typography>
               </Stack>
-            </Button>
+            </CustomButton>
           </div>
         ) : null}
       </Box>
@@ -59,4 +52,4 @@ const Navbar: FC = () => {
   );
 };
 
-export default Navbar;
+export default Header;

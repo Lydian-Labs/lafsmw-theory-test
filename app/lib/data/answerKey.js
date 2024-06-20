@@ -23,7 +23,6 @@ const chordDbdominant7 = ["db", "f", "ab", "c"];
 const chordDsharpdim7 = ["d#", "f#", "a", "c"];
 const chordDhalfdim7 = ["d", "f", "ab", "c"];
 const chordGbaug7 = ["g", "bb", "d#", "f#"];
-const chordEbmindim7 = ["eb", "gb", "bb", "db"];
 
 export const correctTriadAnswers = [
   triadDMajor,
@@ -57,7 +56,6 @@ export const correctSeventhChordNotationAnswers = [
   chordDsharpdim7,
   chordDhalfdim7,
   chordGbaug7,
-  chordEbmindim7,
 ];
 
 export const correctSeventhChordAnswers = ["A", "B", "C", "D", "E", "F", "G"];

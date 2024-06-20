@@ -22,6 +22,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
             ? "var(--colorEnabledButtonColor)"
             : "var(--colorPressedButtonColor)",
           borderColor: isEnabled ? "#0063cc" : "#a4b1bf",
+          borderRadius: "var(--borderRadius)",
           margin: 0.5,
         },
         "&:hover": {

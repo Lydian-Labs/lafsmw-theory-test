@@ -186,7 +186,7 @@ const NotateKeySignature = ({ handleNotes }: any) => {
             </CustomButton>
           );
         })}
-        <CustomButton onClick={clearKey}>Clear Key Signature</CustomButton>
+        <CustomButton onClick={clearKey}>Erase Key Signature</CustomButton>
       </div>
       <SnackbarToast open={open} setOpen={setOpen} message={snackbarMessage} />
     </>

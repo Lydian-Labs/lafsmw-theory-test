@@ -1,19 +1,11 @@
 "use client";
 import { keySigInputInstructions } from "@/app/lib/data/instructions";
 import { InputData, UserDataProps } from "@/app/lib/typesAndInterfaces";
-import {
-  Box,
-  Container,
-  Grid,
-  List,
-  ListItem,
-  ListItemText,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Box, Container, Grid, Typography } from "@mui/material";
 import { useRef } from "react";
 import CardFooter from "../CardFooter";
 import IdentifyKeySigNotation from "../IdentifyKeySigNotation";
+import TutorialCard from "../TutorialCard";
 
 export default function KeySignaturesIdentification({
   currentUserData,
@@ -40,36 +32,12 @@ export default function KeySignaturesIdentification({
       >
         <Grid container spacing={4} p={2}>
           <Grid item xs={4}>
-            <Stack gap={2} alignItems={"center"}>
-              <Typography variant="h6" align="center">
-                Section 2: Identify Key Signatures
-              </Typography>
-              <Box
-                width={273}
-                height={375}
-                bgcolor={"card.background"}
-                borderRadius="var(--borderRadius)"
-                boxShadow="var(--cardShadow)"
-              >
-                <Stack mx={3} p={1}>
-                  <Typography variant="h6" align="center">
-                    Tutorial
-                  </Typography>
-                  <List>
-                    {keySigInputInstructions.map((value, index) => (
-                      <ListItem key={index} disableGutters>
-                        <ListItemText
-                          primary={`${index + 1}. ${value.instructionTitle}`}
-                          secondary={value.instructionText}
-                          primaryTypographyProps={{ fontSize: "11px" }}
-                          secondaryTypographyProps={{ fontSize: "11px" }}
-                        />
-                      </ListItem>
-                    ))}
-                  </List>
-                </Stack>
-              </Box>
-            </Stack>
+            <TutorialCard
+              tutorialInstructions={keySigInputInstructions}
+              firstPage={page === 5}
+              title={"Section 2: Identify Key Signatures"}
+              height={400}
+            />
           </Grid>
           <Grid item xs={8} margin={"auto"}>
             <Box
