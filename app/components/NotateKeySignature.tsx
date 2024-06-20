@@ -54,6 +54,7 @@ const NotateKeySignature = ({ handleNotes }: any) => {
   renderer?.resize(470, 200);
 
   const context = rendererRef.current?.getContext();
+  
   const renderStaves = useCallback((): void => {
     setupRenderer({
       rendererRef,

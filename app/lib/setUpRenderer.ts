@@ -1,7 +1,9 @@
-import createBlankStavesNew from "./createBlankStavesNew";
-import { RenderStaves } from "./typesAndInterfaces";
+import createBlankStaves from "./createBlankStavesNew";
+import { BlankStaves, RenderStaves } from "./typesAndInterfaces";
 
-export const setupRenderer = (params: RenderStaves): void => {
+export const setupRenderer = (
+  params: RenderStaves
+): BlankStaves | undefined => {
   const {
     rendererRef,
     font,
@@ -16,25 +18,24 @@ export const setupRenderer = (params: RenderStaves): void => {
     keySig,
     setStaves,
   } = params;
-
   const renderer = rendererRef?.current;
   renderer?.resize(rendererWidth, rendererHeight);
   const context = renderer && renderer.getContext();
   context?.setFont(font, fontSize);
   context?.clear();
-
+  let newStaves;
   if (context && rendererRef) {
-    setStaves(() =>
-      createBlankStavesNew({
-        numStaves,
-        context,
-        firstStaveWidth,
-        x: xPositionOfStaves,
-        y: yPositionOfStaves,
-        regularStaveWidth: 300,
-        clef,
-        keySig,
-      })
-    );
+    newStaves = createBlankStaves({
+      numStaves,
+      context,
+      firstStaveWidth,
+      x: xPositionOfStaves,
+      y: yPositionOfStaves,
+      regularStaveWidth: 300,
+      clef,
+      keySig,
+    });
+    setStaves(newStaves);
   }
+  return newStaves;
 };
