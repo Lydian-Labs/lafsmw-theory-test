@@ -31,7 +31,6 @@ export async function signUp(
     await updateProfile(auth.currentUser, { displayName: displayName }).catch(
       (err) => console.error("updateProfile error:", err)
     );
-    console.log("Sign in successfull! CurrentUser:", auth.currentUser);
   } catch (err) {
     console.error("signUp error:", err);
   }
