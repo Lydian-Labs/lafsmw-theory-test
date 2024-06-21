@@ -4,7 +4,7 @@ import { Flow } from "vexflow";
 import { Chord } from "../lib/typesAndInterfaces";
 
 type StaffProps = {
-  clef?: string;
+  chosenClef: string;
   timeSignature?: string;
   noTimeSignature?: boolean;
   evenbars?: boolean;
@@ -16,7 +16,7 @@ type StaffProps = {
 };
 
 export default function Staff({
-  clef = "treble",
+  chosenClef,
   timeSignature = "4/4",
   noTimeSignature = false,
   evenbars = false,
@@ -83,8 +83,8 @@ export default function Staff({
 
         if (i === 0) {
           noTimeSignature
-            ? stave.addClef(clef)
-            : stave.addClef(clef).addTimeSignature(timeSignature);
+            ? stave.addClef(chosenClef)
+            : stave.addClef(chosenClef).addTimeSignature(timeSignature);
         }
         if (i === numBars - 1 && addDoubleBarLine) {
           stave.setEndBarType(3);
@@ -120,7 +120,7 @@ export default function Staff({
   }, [
     addDoubleBarLine,
     chords,
-    clef,
+    chosenClef,
     widthOfFirstBar,
     height,
     noTimeSignature,

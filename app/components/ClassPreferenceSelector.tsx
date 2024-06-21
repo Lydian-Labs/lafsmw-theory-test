@@ -20,7 +20,7 @@ export default function ClassPreferenceSelector({
   }
 
   return (
-    <FormControl size="small">
+    <FormControl size="small" fullWidth>
       <InputLabel id="class-preference-label">Class Preference</InputLabel>
       <Select
         labelId="class-preference-label"
@@ -29,7 +29,7 @@ export default function ClassPreferenceSelector({
         label="Class Preference"
         onChange={handleLevel}
       >
-        <MenuItem value="select-here">select level here</MenuItem>
+        <MenuItem value="select-here">select class here...</MenuItem>
         <MenuItem value="advanced-theory">Advanced Theory</MenuItem>
         <MenuItem value="advanced-improvisation">
           Advanced Improvisation

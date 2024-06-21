@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import Header from "./components/Header";
 import { TimerProvider } from "./context/TimerContext";
+import { ClefProvider } from "../app/context/ClefContext";
 import "./styles/globals.css";
 import theme from "./theme";
 
@@ -32,8 +33,10 @@ export default function RootLayout({
         <AuthContextProvider>
           <ThemeProvider theme={theme}>
             <TimerProvider>
-              <Header />
-              {children}
+              <ClefProvider>
+                <Header />
+                {children}
+              </ClefProvider>
             </TimerProvider>
           </ThemeProvider>
         </AuthContextProvider>

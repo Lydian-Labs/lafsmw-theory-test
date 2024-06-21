@@ -10,12 +10,14 @@ import React, {
 } from "react";
 import VexFlow from "vexflow";
 import SnackbarToast from "../components/SnackbarToast";
+import { useClef } from "../context/ClefContext";
 import { modifyKeySigActionTypes } from "../lib/actionTypes";
 import { buildKeySignature } from "../lib/buildKeySignature";
 import { buttonGroup, clearKeySignature } from "../lib/buttonsAndButtonGroups";
+import calculateNotesAndCoordinates from "../lib/calculateNotesAndCoordinates";
 import { keySigArray } from "../lib/data/keySigArray";
-import { INITIAL_STAVES, staveData } from "../lib/data/stavesData";
-import generateYMinAndYMaxForKeySig from "../lib/generateYMinAndMaxForKeySig";
+import { staveData } from "../lib/data/stavesData";
+import getUserClickInfo from "../lib/getUserClickInfo";
 import { handleKeySigInteraction } from "../lib/handleKeySigInteraction";
 import {
   initialNotesAndCoordsState,
@@ -24,8 +26,12 @@ import {
 import { initializeRenderer } from "../lib/initializeRenderer";
 import isClickWithinStaveBounds from "../lib/isClickWithinStaveBounds";
 import { keySigReducer } from "../lib/reducer";
-import { setupRenderer } from "../lib/setUpRenderer";
-import { GlyphProps, NotesAndCoordinatesData } from "../lib/typesAndInterfaces";
+import { setupRendererAndDrawStaves } from "../lib/setUpRenderer";
+import {
+  GlyphProps,
+  NotesAndCoordinatesData,
+  StaveType,
+} from "../lib/typesAndInterfaces";
 import CustomButton from "./CustomButton";
 
 const VF = VexFlow.Flow;
@@ -34,9 +40,10 @@ const { Renderer } = VF;
 const NotateKeySignature = ({ handleNotes }: any) => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
-  const [blankStaves, setBlankStaves] = useState(INITIAL_STAVES);
+  const [staves, setStaves] = useState<StaveType[]>([]);
   const [glyphs, setGlyphs] = useState<GlyphProps[]>([]);
   const [open, setOpen] = useState(false);
+  const { chosenClef } = useClef();
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [state, dispatch] = useReducer(keySigReducer, keySigInitialState);
   const [keySig, setKeySig] = useState<string[]>([]);
@@ -52,51 +59,40 @@ const NotateKeySignature = ({ handleNotes }: any) => {
   renderer?.resize(470, 200);
 
   const context = rendererRef.current?.getContext();
-  const renderStaves = useCallback((): void => {
-    setupRenderer({
-      rendererRef,
-      ...staveData,
-      firstStaveWidth: 450,
-      setStaves: setBlankStaves,
-      staves: blankStaves,
-    });
-  }, [blankStaves, setBlankStaves]);
 
-  const clearKey = () => {
-    clearKeySignature(setGlyphs, rendererRef, container, renderStaves),
-      setKeySig(() => []);
-    setNotesAndCoordinates(() =>
-      generateYMinAndYMaxForKeySig(42.5, keySigArray)
-    );
-    dispatch({ type: "" });
-  };
+  const renderStaves = useCallback(
+    (): StaveType[] | undefined =>
+      setupRendererAndDrawStaves({
+        rendererRef,
+        ...staveData,
+        chosenClef,
+        firstStaveWidth: 450,
+        staves,
+        setStaves,
+      }),
+    [staves, setStaves]
+  );
 
-  const getUserClickData = (
-    e: React.MouseEvent,
-    container: React.RefObject<HTMLDivElement>,
-    stave: any
-  ): any => {
-    const rect = container && container.current?.getBoundingClientRect();
-    const userClickY = rect ? e.clientY - rect.top : 0;
-    const userClickX = rect ? e.clientX - rect.left : 0;
-    const topStaveYCoord = stave && stave.getYForTopText();
-    const bottomStaveYCoord = (stave && stave.getYForBottomText()) || undefined;
-    return {
-      rect,
-      userClickY,
-      userClickX,
-      topStaveYCoord,
-      bottomStaveYCoord,
-    };
-  };
+  useEffect(() => {
+    initializeRenderer(rendererRef, container);
+    const newStaves = renderStaves();
+    if (newStaves)
+      calculateNotesAndCoordinates(
+        chosenClef,
+        setNotesAndCoordinates,
+        newStaves,
+        keySigArray,
+        0,
+        1,
+        0
+      );
+  }, []);
 
   useEffect(() => {
     initializeRenderer(rendererRef, container);
     renderStaves();
-    setNotesAndCoordinates(() =>
-      generateYMinAndYMaxForKeySig(42.5, keySigArray)
-    );
-  }, []);
+    context && buildKeySignature(glyphs, 40, context, staves[0]);
+  }, [glyphs]);
 
   //this is where the we will get the array to grade
   useEffect(() => {
@@ -104,12 +100,24 @@ const NotateKeySignature = ({ handleNotes }: any) => {
     handleNotes(keySig);
   }, [keySig]);
 
-  useEffect(() => {
-    initializeRenderer(rendererRef, container);
-    renderStaves();
-    context?.clear();
-    context && buildKeySignature(glyphs, 40, context, blankStaves[0]);
-  }, [glyphs]);
+  const clearKey = () => {
+    clearKeySignature(setGlyphs, rendererRef, container), setKeySig(() => []);
+    const newStaves = renderStaves();
+
+    if (newStaves) {
+      if (newStaves)
+        calculateNotesAndCoordinates(
+          chosenClef,
+          setNotesAndCoordinates,
+          newStaves,
+          keySigArray,
+          0,
+          1,
+          0
+        );
+    }
+    dispatch({ type: "" });
+  };
 
   const handleClick = (e: React.MouseEvent) => {
     if (
@@ -120,23 +128,20 @@ const NotateKeySignature = ({ handleNotes }: any) => {
       return;
 
     const { userClickY, userClickX, topStaveYCoord, bottomStaveYCoord } =
-      getUserClickData(e, container, blankStaves[0]);
+      getUserClickInfo(e, container, staves[0]);
 
     let foundNoteData = notesAndCoordinates.find(
       ({ yCoordinateMin, yCoordinateMax }) =>
         userClickY >= yCoordinateMin && userClickY <= yCoordinateMax
     );
+    console.log("userClickY: ", userClickY);
     if (!foundNoteData) {
       setSnackbarMessage("Click outside of stave bounds.");
-      setOpen(true); //
+      setOpen(true);
       return;
     }
     const { maxRightClick, minLeftClick, minTopClick, maxBottomClick } =
-      isClickWithinStaveBounds(
-        blankStaves[0],
-        topStaveYCoord,
-        bottomStaveYCoord
-      );
+      isClickWithinStaveBounds(staves[0], topStaveYCoord, bottomStaveYCoord);
 
     if (
       typeof maxBottomClick === "undefined" ||

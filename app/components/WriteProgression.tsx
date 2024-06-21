@@ -1,6 +1,7 @@
 "use client";
 import Stack from "@mui/material/Stack";
 import { ForwardedRef, forwardRef, useEffect, useState } from "react";
+import { useClef } from "../context/ClefContext";
 import createInitialState from "../lib/createInitialState";
 import keyNames from "../lib/data/keyNamesText";
 import isCurrentDataFilled from "../lib/isCurrentDataFilled";
@@ -17,6 +18,8 @@ export default forwardRef(function WriteProgression(
   const [numeralInput, setNumeralInput] = useState<Record<string, string>>(
     initialProgressionInputState
   );
+
+  const { chosenClef } = useClef();
 
   useEffect(() => {
     if (currentData && isCurrentDataFilled(currentData)) {
@@ -95,7 +98,7 @@ export default forwardRef(function WriteProgression(
           >
             {renderKeyNames(0, 3)}
           </Stack>
-          <Staff numBars={6} width={width} />
+          <Staff chosenClef={chosenClef} numBars={6} width={width} />
           <Stack
             direction="row"
             spacing={chordGroupSpacing}
@@ -113,7 +116,13 @@ export default forwardRef(function WriteProgression(
           >
             {renderKeyNames(3, 6)}
           </Stack>
-          <Staff numBars={6} noTimeSignature width={width} addDoubleBarLine />
+          <Staff
+            chosenClef={chosenClef}
+            numBars={6}
+            noTimeSignature
+            width={width}
+            addDoubleBarLine
+          />
           <Stack
             direction="row"
             spacing={chordGroupSpacing}

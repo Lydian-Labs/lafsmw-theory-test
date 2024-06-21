@@ -43,9 +43,8 @@ export const clearKeySignature = (
   setGlyphs: React.Dispatch<React.SetStateAction<GlyphProps[]>>,
   renderer: React.MutableRefObject<InstanceType<typeof Renderer> | null>,
   container: React.MutableRefObject<HTMLDivElement | null>,
-  renderStaves: () => void
 ): void => {
   setGlyphs(() => []);
   initializeRenderer(renderer, container);
-  renderStaves();
+  
 };

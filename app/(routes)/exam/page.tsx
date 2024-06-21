@@ -8,7 +8,8 @@ import SeventhChordsNotation from "@/app/components/ExamPages/SeventhChordsNotat
 import TriadsNotation from "@/app/components/ExamPages/TriadsNotateTemplate";
 import WriteBluesChanges from "@/app/components/ExamPages/WriteBluesChanges";
 import WriteProgressions from "@/app/components/ExamPages/WriteProgressions";
-
+import ClassPreferenceSelector from "@/app/components/ClassPreferenceSelector";
+import ClefPreferenceSelector from "@/app/components/ClefPreferenceSelector";
 import { useTimer } from "@/app/context/TimerContext";
 import {
   checkAnswers,
@@ -27,17 +28,18 @@ import {
   correctTriadAnswers,
 } from "@/app/lib/data/answerKey";
 import { initialFormInputState } from "@/app/lib/initialStates";
-import { InputState, MouseEvent } from "@/app/lib/typesAndInterfaces";
+import { InputState, MouseEvent, Level } from "@/app/lib/typesAndInterfaces";
 import { useAuthContext } from "@/firebase/authContext";
 import {
   getUserSnapshot,
   setOrUpdateStudentData,
 } from "@/firebase/firestore/model";
-import { Box, Button, Stack, Typography } from "@mui/material";
+import { Box, Button, Stack, Typography, Container, Grid } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
-import CustomButton from "@/app/components/CustomButton";
-
+import { useClef } from "@/app/context/ClefContext";
+import SnackbarToast from "@/app/components/SnackbarToast";
+import CardFooter from "@/app/components/CardFooter";
 const VIEW_STATES = {
   START_TEST: 0,
   KEY_SIG_NOTATE1: 1,
@@ -88,6 +90,9 @@ export default function ExamHomePage() {
   const [viewState, setViewState] = useState(VIEW_STATES.START_TEST);
   const [timesUp, setTimesUp] = useState(false);
   const [isPDFReady, setIsPDFReady] = useState(false);
+  const [open, setOpen] = useState<boolean>(false);
+  const [level, setLevel] = useState<Level>("select-here");
+  const { chosenClef: clef, setChosenClef: setClef } = useClef();
 
   useEffect(() => {
     const fetchSnapshot = async () => {
@@ -225,9 +230,26 @@ export default function ExamHomePage() {
     setViewState(VIEW_STATES.SUBMIT_AND_EXIT);
   };
 
-  const handleStartTest = () => {
-    startTimer(1800, handleTimeUp);
-    setViewState(VIEW_STATES.KEY_SIG_NOTATE1);
+  const handleSubmit = async (e: MouseEvent) => {
+    e.preventDefault();
+
+    setCurrentUserData({
+      ...currentUserData,
+      level: level,
+    });
+  };
+
+  const handleStartTest = (handleSubmit: (e: MouseEvent) => Promise<void>) => {
+    return async (e: MouseEvent) => {
+      e.preventDefault();
+      if (level === "select-here") {
+        setOpen(true);
+        return;
+      }
+      await handleSubmit(e);
+      startTimer(1800, handleTimeUp);
+      setViewState(VIEW_STATES.KEY_SIG_NOTATE1);
+    };
   };
 
   const handleFinalSubmit = async (e: MouseEvent) => {
@@ -310,19 +332,55 @@ export default function ExamHomePage() {
           viewState !== VIEW_STATES.SUBMIT_AND_EXIT &&
           viewState !== VIEW_STATES.START_TEST && (
             <Box>
-              <CustomButton onClick={decrementViewState}>
+              <Button onClick={decrementViewState}>
                 <Typography variant="h4">{"<"}</Typography>
-              </CustomButton>
+              </Button>
             </Box>
           )}
         {viewState === VIEW_STATES.START_TEST && (
-          <Box sx={{ position: "fixed", top: "35%" }}>
-            <CustomButton onClick={handleStartTest}>
-              <Typography variant="h5" p={2}>
-                Begin Test
+          <Container maxWidth="lg">
+            <SnackbarToast
+              open={open}
+              setOpen={setOpen}
+              message={"You must select level before moving on."}
+            />
+            <Box mt={10} mb={5} textAlign="center">
+              <Typography variant="h6" component="p" color="textSecondary">
+                Please select your preferences below to start the test:
               </Typography>
-            </CustomButton>
-          </Box>
+            </Box>
+            <Grid container spacing={6} justifyContent="center">
+              <Grid item xs={12} md={4}>
+                <Box p={4} boxShadow={4} borderRadius={4}>
+                  <Typography variant="h5" mb={2}>
+                    Select Your Clef Preference
+                  </Typography>
+                  <ClefPreferenceSelector
+                    chosenClef={clef}
+                    setChosenClef={setClef}
+                  />
+                </Box>
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <Box p={4} boxShadow={4} borderRadius={4}>
+                  <Typography variant="h5" mb={2}>
+                    Select Your Class Preference
+                  </Typography>
+                  <ClassPreferenceSelector level={level} setLevel={setLevel} />
+                </Box>
+              </Grid>
+            </Grid>
+            <Box mt={10} textAlign="center">
+              <Button
+                variant="contained"
+                size="large"
+                onClick={handleStartTest(handleSubmit)}
+                sx={{ padding: "16px 32px", borderRadius: 8 }}
+              >
+                <Typography variant="h5">Begin Test</Typography>
+              </Button>
+            </Box>
+          </Container>
         )}
         {viewState === VIEW_STATES.KEY_SIG_NOTATE1 && (
           <KeySigNotate1
@@ -555,21 +613,22 @@ export default function ExamHomePage() {
         )}
         {viewState !== VIEW_STATES.SUBMIT_AND_EXIT &&
           viewState !== VIEW_STATES.START_TEST && (
-            <Stack gap={"30px"} sx={{ pl: 5 }}>
-              <CustomButton onClick={incrementViewState}>
+            <Box sx={{ pl: 5 }}>
+              <Button onClick={incrementViewState}>
                 <Typography variant="h4">{">"}</Typography>
-              </CustomButton>
-              <CustomButton
-                onClick={() => setViewState(VIEW_STATES.TRIADS_NOTATE1)}
-              >
+              </Button>
+              <Button onClick={() => setViewState(VIEW_STATES.TRIADS_NOTATE1)}>
                 <Typography>{"Go to Triads"}</Typography>
-              </CustomButton>
-              <CustomButton
+              </Button>
+              <Button onClick={() => setViewState(VIEW_STATES.SCALES_NOTATE1)}>
+                <Typography>{"Go to Scales"}</Typography>
+              </Button>
+              <Button
                 onClick={() => setViewState(VIEW_STATES.WRITE_PROGRESSIONS)}
               >
                 <Typography>{"Go to Progressions"}</Typography>
-              </CustomButton>
-            </Stack>
+              </Button>
+            </Box>
           )}
       </Stack>
     </Box>

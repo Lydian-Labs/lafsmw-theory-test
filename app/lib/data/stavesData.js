@@ -1,4 +1,3 @@
-const CLEF = "treble";
 const TIME_SIG = "8/4";
 export const NUM_STAVES = 1;
 const Y_POSITION_OF_STAVES = 150;
@@ -19,6 +18,5 @@ export const staveData = {
   rendererHeight: RENDERER_HEIGHT,
   yPositionOfStaves: Y_POSITION_OF_STAVES,
   xPositionOfStaves: X_POSITION_OF_STAVES,
-  clef: CLEF,
   firstStaveWidth: FIRST_STAVE_WIDTH,
 };
