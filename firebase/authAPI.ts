@@ -1,4 +1,7 @@
 import {
+  sendSignInLinkToEmail,
+  signInWithEmailLink,
+  isSignInWithEmailLink,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
@@ -6,6 +9,51 @@ import {
   sendPasswordResetEmail,
 } from "firebase/auth";
 import { auth } from "./config";
+
+// Configuration for email link. This is the URL that the student will be redirected to after clicking the link in their email.
+const actionCodeSettings = {
+  url: "https://lafsmw-backend--lafsmw-theory-test.us-central1.hosted.app/confirm",
+  // url: "http://localhost:3000/confirm",
+  handleCodeInApp: true,
+};
+
+export async function sendSignInEmail(email: string) {
+  try {
+    await sendSignInLinkToEmail(auth, email, actionCodeSettings);
+    window.localStorage.setItem("emailForSignIn", email);
+    alert("Verification email sent. Check your inbox.");
+  } catch (err) {
+    console.error("sendSignInLinkToEmail error:", err);
+  }
+}
+
+export async function completeSignIn(email: string, link: string) {
+  try {
+    if (isSignInWithEmailLink(auth, link)) {
+      const emailForSignIn = window.localStorage.getItem("emailForSignIn");
+      if (!emailForSignIn) {
+        throw new Error("Email not found in local storage.");
+      }
+
+      const result = await signInWithEmailLink(auth, emailForSignIn, link);
+      window.localStorage.removeItem("emailForSignIn");
+
+      if (result.user) {
+        console.log(
+          "Sign in successful! CurrentUser:",
+          result.user.displayName
+        );
+        return true;
+      }
+    }
+  } catch (err) {
+    console.error("completeSignIn error:", err);
+  }
+}
+
+export async function signOutOfApp() {
+  return signOut(auth);
+}
 
 export async function signUp(
   email: string,
@@ -51,10 +99,6 @@ export async function signIn(email: string, password: string) {
   } catch (err) {
     console.error("signIn error:", err);
   }
-}
-
-export async function signOutOfApp() {
-  return signOut(auth);
 }
 
 export async function resetPassword(email: string) {

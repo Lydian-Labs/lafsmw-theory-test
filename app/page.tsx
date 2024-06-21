@@ -25,8 +25,8 @@ export default function Home() {
     <main className="flex min-h-[500px] flex-col items-center justify-center mt-12 gap-20">
       <Typography variant="h3">Welcome to the LAFSMW Theory Test!</Typography>
       <Button variant="contained" color="primary">
-        <Link href="/registration">
-          <Typography>Register or Sign In Here</Typography>
+        <Link href="/login">
+          <Typography>Login Here</Typography>
         </Link>
       </Button>
     </main>
