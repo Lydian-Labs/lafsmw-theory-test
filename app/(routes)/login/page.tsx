@@ -1,15 +1,12 @@
 "use client";
 import { useState } from "react";
 import { sendSignInEmail } from "@/firebase/authAPI";
+import { Button, Container, TextField, Typography } from "@mui/material";
 
-const Login = () => {
+export default function Login() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,7 +15,7 @@ const Login = () => {
 
     try {
       await sendSignInEmail(email);
-      setMessage("Verification email sent. Check your inbox.");
+      setMessage("Verification email sent. Please check your inbox.");
     } catch (err) {
       setError("Failed to send verification email. Please try again.");
       console.error("Error sending sign-in email:", err);
@@ -26,23 +23,36 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <h1>Login</h1>
+    <Container
+      component="main"
+      maxWidth="xs"
+      sx={{ fontFamily: "Monospace", paddingTop: "4rem" }}
+    >
+      <Typography variant="body1" align="center">
+        Please enter your email address to receive a sign-in link.
+      </Typography>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="email">Email:</label>
-        <input
+        <TextField
+          margin="normal"
+          fullWidth
+          label="Email Address"
           type="email"
-          id="email"
           value={email}
-          onChange={handleEmailChange}
+          onChange={(e) => setEmail(e.target.value)}
           required
         />
-        <button type="submit">Register</button>
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          color="primary"
+          sx={{ mt: 3 }}
+        >
+          Login
+        </Button>
       </form>
       {message && <p>{message}</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
-    </div>
+    </Container>
   );
-};
-
-export default Login;
+}

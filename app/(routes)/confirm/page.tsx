@@ -57,10 +57,12 @@ const ConfirmSignIn = () => {
           <Stack alignItems={"center"}>
             <Typography
               variant="body1"
-              width={"180px"}
+              width={"190px"}
+              border={"1px solid"}
+              borderRadius={"12px"}
               p={4}
               sx={{
-                "&:hover": { color: "var(--primary40)" },
+                "&:hover": { color: "var(--primary40)", border: "none" },
               }}
             >
               Return to login
