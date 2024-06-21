@@ -2,20 +2,20 @@ import React from "react";
 import { NotesAndCoordinatesData, StaveType } from "./typesAndInterfaces";
 import generateYMinAndYMaxForKeySig from "./generateYMinAndMaxForKeySig";
 
+const TOLERANCE: number = 2.5;
 const helperFunction = (
   newStaves: StaveType[],
   index: number,
   clefLineNumber: number,
-  tolerance: number = 2,
   spacingBetweenLines?: number
 ) => {
   if (spacingBetweenLines) {
     spacingBetweenLines = spacingBetweenLines / 2;
     const topLineCoordinate = newStaves[index].getYForLine(clefLineNumber);
-    return topLineCoordinate - spacingBetweenLines - tolerance;
+    return topLineCoordinate - spacingBetweenLines - TOLERANCE;
   }
   const topLineCoordinate = newStaves[index].getYForLine(clefLineNumber);
-  return topLineCoordinate - tolerance;
+  return topLineCoordinate - 2.5;
 };
 
 const calculateNotesAndCoordinates = (
@@ -45,7 +45,8 @@ const calculateNotesAndCoordinates = (
         minimumYCoordinate = helperFunction(
           newStaves,
           index,
-          trebleClefLineNumber
+          trebleClefLineNumber,
+          spacingBetweenLines
         );
       }
       setNotesAndCoordinates(() =>

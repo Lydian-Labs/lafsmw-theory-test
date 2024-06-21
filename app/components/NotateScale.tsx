@@ -14,14 +14,17 @@ import React, {
 } from "react";
 import VexFlow from "vexflow";
 import CheckIfNoteFound from "../components/CheckIfNoteFound";
+import calculateNotesAndCoordinates from "../lib/calculateNotesAndCoordinates";
 import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
 import { useClef } from "../context/ClefContext";
 import { modifyNotesActionTypes } from "../lib/actionTypes";
 import { buttonGroup } from "../lib/buttonsAndButtonGroups";
-import { notesArray } from "../lib/data/noteArray";
+import {
+  trebleClefNotesArray,
+  bassClefNotesArray,
+} from "../lib/data/noteArray";
 import { staveData } from "../lib/data/stavesData";
 import { findBarIndex } from "../lib/findBar";
-import generateYMinAndYMaxForNotes from "../lib/generateYMinAndMaxForAllNotes";
 import getUserClickInfo from "../lib/getUserClickInfo";
 import { HandleScaleInteraction } from "../lib/handleScaleInteraction";
 import {
@@ -70,28 +73,15 @@ const NotateScale = ({
     [dispatch, state]
   );
 
-  const eraseMeasures = () => {
-    setScaleDataMatrix((): ScaleData[][] => {
-      return [[]];
-    });
-    const newStave = renderStavesAndNotes();
-    if (newStave) {
-      const highG = newStave[0].getYForLine(-4);
-      setNotesAndCoordinates(() =>
-        generateYMinAndYMaxForNotes(highG - 2.5, notesArray)
-      );
-    }
-  };
-
   const renderStavesAndNotes = useCallback(
-    (): any =>
+    (): StaveType[] =>
       setupRendererAndDrawNotes({
         rendererRef,
         ...staveData,
         setStaves,
         scaleDataMatrix,
         staves,
-        clef: clef,
+        clef,
       }),
     [rendererRef, setStaves, scaleDataMatrix, staves]
   );
@@ -99,23 +89,62 @@ const NotateScale = ({
   useEffect(() => {
     initializeRenderer(rendererRef, container);
     const newStave = renderStavesAndNotes();
+    if (newStave)
+      calculateNotesAndCoordinates(
+        clef,
+        setNotesAndCoordinates,
+        newStave,
+        clef === "bass" ? bassClefNotesArray : trebleClefNotesArray,
+        0,
+        -3,
+        -4,
+        true
+      );
+  }, []);
+
+  useEffect(() => {
+    console.log("scale data for grading:", scaleDataForGrading);
+    console.log(
+      scaleDataMatrix.map((scale) => scale.map((note) => note.staveNote))
+    );
+    const newStave: StaveType[] = renderStavesAndNotes();
     if (newStave) {
-      const highG = newStave[0].getYForLine(-4);
-      setNotesAndCoordinates(() =>
-        generateYMinAndYMaxForNotes(highG - 2.5, notesArray)
+      calculateNotesAndCoordinates(
+        clef,
+        setNotesAndCoordinates,
+        newStave,
+        clef === "bass" ? bassClefNotesArray : trebleClefNotesArray,
+        0,
+        -3,
+        -4,
+        true
       );
     }
-  }, []);
+  }, [scaleDataMatrix]);
 
   //this is the array we will use for grading
   const scaleDataForGrading = scaleDataMatrix[0].map((scaleDataMatrix) =>
     scaleDataMatrix.keys.join(", ")
   );
 
-  useEffect(() => {
-    console.log("scale data for grading:", scaleDataForGrading);
-    renderStavesAndNotes();
-  }, [scaleDataMatrix]); // Listening to changes in scaleDataMatrix
+  const eraseMeasures = () => {
+    setScaleDataMatrix((): ScaleData[][] => {
+      return [[]];
+    });
+    const newStave = renderStavesAndNotes();
+    if (newStave) {
+      calculateNotesAndCoordinates(
+        clef,
+        setNotesAndCoordinates,
+        newStave,
+        clef === "bass" ? bassClefNotesArray : trebleClefNotesArray,
+        0,
+        -3,
+        -4,
+        true
+      );
+    }
+  };
 
   const handleScalesClick = (e: React.MouseEvent) => {
     setScales(scaleDataForGrading);
@@ -128,13 +157,12 @@ const NotateScale = ({
       container,
       staves[0]
     );
-    console.log("userClickY", userClickY);
 
     let foundNoteData = notesAndCoordinates.find(
       ({ yCoordinateMin, yCoordinateMax }) =>
         userClickY >= yCoordinateMin && userClickY <= yCoordinateMax
     );
-
+    console.log("userClickY: ", userClickY);
     if (!foundNoteData) {
       return;
     }
@@ -180,7 +208,8 @@ const NotateScale = ({
       state,
       userClickX,
       userClickY,
-      barIndex
+      barIndex,
+      clef
     );
     setNotesAndCoordinates(() => newNotesAndCoordinates);
     setScaleDataMatrix(() => newScaleDataMatrix);

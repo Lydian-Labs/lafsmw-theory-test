@@ -134,7 +134,7 @@ const NotateKeySignature = ({ handleNotes }: any) => {
       ({ yCoordinateMin, yCoordinateMax }) =>
         userClickY >= yCoordinateMin && userClickY <= yCoordinateMax
     );
-
+    console.log("userClickY: ", userClickY);
     if (!foundNoteData) {
       setSnackbarMessage("Click outside of stave bounds.");
       setOpen(true);

@@ -18,7 +18,10 @@ import { useClef } from "../context/ClefContext";
 import { modifyChordsActionTypes } from "../lib/actionTypes";
 import { buttonGroup } from "../lib/buttonsAndButtonGroups";
 import calculateNotesAndCoordinates from "../lib/calculateNotesAndCoordinates";
-import { notesArray } from "../lib/data/noteArray";
+import {
+  trebleClefNotesArray,
+  bassClefNotesArray,
+} from "../lib/data/noteArray";
 import { staveData } from "../lib/data/stavesData";
 import { findBarIndex } from "../lib/findBar";
 import getUserClickInfo from "../lib/getUserClickInfo";
@@ -90,10 +93,11 @@ const NotateChord = ({
         clef,
         setNotesAndCoordinates,
         newStave,
-        notesArray,
+        clef === "bass" ? bassClefNotesArray : trebleClefNotesArray,
         0,
         -3,
-        -4
+        -4,
+        true
       );
     }
   }, []);
@@ -105,10 +109,11 @@ const NotateChord = ({
         clef,
         setNotesAndCoordinates,
         newStave,
-        notesArray,
+        clef === "bass" ? bassClefNotesArray : trebleClefNotesArray,
         0,
         -3,
-        -4
+        -4,
+        true
       );
     }
     //this is the array to use for grading
@@ -126,10 +131,11 @@ const NotateChord = ({
         clef,
         setNotesAndCoordinates,
         newStave,
-        notesArray,
+        clef === "bass" ? bassClefNotesArray : trebleClefNotesArray,
         0,
         -3,
-        -4
+        -4,
+        true
       );
     }
   };
@@ -145,7 +151,6 @@ const NotateChord = ({
       container,
       staves[0]
     );
-
     let foundNoteData = notesAndCoordinates.find(
       ({ yCoordinateMin, yCoordinateMax }) =>
         userClickY >= yCoordinateMin && userClickY <= yCoordinateMax
@@ -155,7 +160,7 @@ const NotateChord = ({
     let notesAndCoordinatesCopy = [...notesAndCoordinates];
     //not currently being used but will be used in the future
     const barIndex = findBarIndex(staves, userClickX);
-
+console.log(notesAndCoordinates)
     const foundNoteIndex: number = chordData.keys.findIndex(
       (note) => note === foundNoteData?.note
     );
@@ -173,7 +178,8 @@ const NotateChord = ({
       state,
       foundNoteData,
       chordDataCopy,
-      foundNoteIndex
+      foundNoteIndex,
+      clef
     );
 
     setNotesAndCoordinates(() => newNotesAndCoordinates);
