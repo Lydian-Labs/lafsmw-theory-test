@@ -20,6 +20,7 @@
   --colorEnabledButtonColor: #f6d168; /* This will be the color when the buttons are enabled */
   --colorUnfilledProgressBarColor: #cacaca; /* This will be the color for section of the progress bar that has not been filled */
   --colorFilledProgressBarColor: #fde55b; /* This will be the color for the section of the progress bar that has been filled */
+  --salmonWarningColor: #ff7f7f; /* This will be the color for the warning */
   --shadowGreyBackgroundDropShadow1: 0 783px 219px 0 #000000; /* drop shadow 1 for grey background */
   --shadowGreyBackgroundDropShadow2: 0 501px 200px 0 #000000 opacity 1%; /* drop shadow 2 for grey background */
   --shadowGreyBackgroundDropShadow3: 0 282px 169px 0 #000000 opacity 5%; /* box shadow 3 for grey background */

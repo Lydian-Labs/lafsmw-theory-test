@@ -11,9 +11,12 @@ import { useEffect } from "react";
 export default function Home() {
   const { user } = useAuthContext();
   const router = useRouter();
-  if (user) {
-    router.push("/exam");
-  }
+
+  useEffect(() => {
+    if (user) {
+      router.push("/exam");
+    }
+  }, [router, user]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -25,8 +28,8 @@ export default function Home() {
     <main className="flex min-h-[500px] flex-col items-center justify-center mt-12 gap-20">
       <Typography variant="h3">Welcome to the LAFSMW Theory Test!</Typography>
       <Button variant="contained" color="primary">
-        <Link href="/registration">
-          <Typography>Register or Sign In Here</Typography>
+        <Link href="/login">
+          <Typography>Login Here</Typography>
         </Link>
       </Button>
     </main>
