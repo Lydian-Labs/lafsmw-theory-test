@@ -24,6 +24,7 @@ import {
   keySigInitialState,
 } from "../lib/initialStates";
 import { initializeRenderer } from "../lib/initializeRenderer";
+import calculateNotesAndCoordinates from "../lib/calculateNotesAndCoordinates";
 import isClickWithinStaveBounds from "../lib/isClickWithinStaveBounds";
 import { keySigReducer } from "../lib/reducer";
 import { setupRendererAndDrawStaves } from "../lib/setUpRenderer";
@@ -61,7 +62,7 @@ const NotateKeySignature = ({ handleNotes }: any) => {
   const context = rendererRef.current?.getContext();
 
   const renderStaves = useCallback(
-    (): any =>
+    (): StaveType[] | undefined =>
       setupRendererAndDrawStaves({
         rendererRef,
         ...staveData,
@@ -76,23 +77,14 @@ const NotateKeySignature = ({ handleNotes }: any) => {
   useEffect(() => {
     initializeRenderer(rendererRef, container);
     const newStaves = renderStaves();
-
-    if (newStaves) {
-      if (clef === "bass") {
-        setNotesAndCoordinates(() =>
-          generateYMinAndYMaxForKeySig(
-            newStaves[0].getYForLine(1) - 7.5,
-            keySigArray
-          )
-        );
-      } else if (clef === "treble")
-        setNotesAndCoordinates(() =>
-          generateYMinAndYMaxForKeySig(
-            newStaves[0].getYForLine(0) - 7.5,
-            keySigArray
-          )
-        );
-    }
+    if (newStaves)
+      calculateNotesAndCoordinates(
+        clef,
+        setNotesAndCoordinates,
+        newStaves,
+        keySigArray,
+        0
+      );
   }, []);
 
   useEffect(() => {
@@ -112,19 +104,13 @@ const NotateKeySignature = ({ handleNotes }: any) => {
     const newStaves = renderStaves();
 
     if (newStaves) {
-      if (clef === "bass") {
-        setNotesAndCoordinates(() =>
-          generateYMinAndYMaxForKeySig(
-            newStaves[0].getYForLine(1) - 7.5,
-            keySigArray
-          )
-        );
-      } else if (clef === "treble")
-        setNotesAndCoordinates(() =>
-          generateYMinAndYMaxForKeySig(
-            newStaves[0].getYForLine(0) - 7.5,
-            keySigArray
-          )
+      if (newStaves)
+        calculateNotesAndCoordinates(
+          clef,
+          setNotesAndCoordinates,
+          newStaves,
+          keySigArray,
+          0
         );
     }
     dispatch({ type: "" });
