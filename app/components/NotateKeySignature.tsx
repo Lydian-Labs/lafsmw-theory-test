@@ -14,9 +14,9 @@ import { useClef } from "../context/ClefContext";
 import { modifyKeySigActionTypes } from "../lib/actionTypes";
 import { buildKeySignature } from "../lib/buildKeySignature";
 import { buttonGroup, clearKeySignature } from "../lib/buttonsAndButtonGroups";
+import calculateNotesAndCoordinates from "../lib/calculateNotesAndCoordinates";
 import { keySigArray } from "../lib/data/keySigArray";
 import { staveData } from "../lib/data/stavesData";
-import generateYMinAndYMaxForKeySig from "../lib/generateYMinAndMaxForKeySig";
 import getUserClickInfo from "../lib/getUserClickInfo";
 import { handleKeySigInteraction } from "../lib/handleKeySigInteraction";
 import {
@@ -24,7 +24,6 @@ import {
   keySigInitialState,
 } from "../lib/initialStates";
 import { initializeRenderer } from "../lib/initializeRenderer";
-import calculateNotesAndCoordinates from "../lib/calculateNotesAndCoordinates";
 import isClickWithinStaveBounds from "../lib/isClickWithinStaveBounds";
 import { keySigReducer } from "../lib/reducer";
 import { setupRendererAndDrawStaves } from "../lib/setUpRenderer";
@@ -83,6 +82,8 @@ const NotateKeySignature = ({ handleNotes }: any) => {
         setNotesAndCoordinates,
         newStaves,
         keySigArray,
+        0,
+        1,
         0
       );
   }, []);
@@ -110,6 +111,8 @@ const NotateKeySignature = ({ handleNotes }: any) => {
           setNotesAndCoordinates,
           newStaves,
           keySigArray,
+          0,
+          1,
           0
         );
     }

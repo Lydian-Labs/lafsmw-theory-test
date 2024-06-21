@@ -11,6 +11,7 @@ import React, {
   useRef,
   useState,
 } from "react";
+import calculateNotesAndCoordinates from "../lib/calculateNotesAndCoordinates";
 import VexFlow from "vexflow";
 import CheckIfNoteFound from "../components/CheckIfNoteFound";
 import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
