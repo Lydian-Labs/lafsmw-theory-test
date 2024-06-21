@@ -13,6 +13,7 @@ import SnackbarToast from "../components/SnackbarToast";
 import { useClef } from "../context/ClefContext";
 import { modifyKeySigActionTypes } from "../lib/actionTypes";
 import { buildKeySignature } from "../lib/buildKeySignature";
+import getUserClickInfo from "../lib/getUserClickInfo";
 import { buttonGroup, clearKeySignature } from "../lib/buttonsAndButtonGroups";
 import { keySigArray } from "../lib/data/keySigArray";
 import { INITIAL_STAVES, staveData } from "../lib/data/stavesData";
@@ -25,7 +26,7 @@ import {
 import { initializeRenderer } from "../lib/initializeRenderer";
 import isClickWithinStaveBounds from "../lib/isClickWithinStaveBounds";
 import { keySigReducer } from "../lib/reducer";
-import { setupRenderer } from "../lib/setUpRenderer";
+import { setupRendererAndDrawStaves } from "../lib/setUpRenderer";
 import { GlyphProps, NotesAndCoordinatesData } from "../lib/typesAndInterfaces";
 import CustomButton from "./CustomButton";
 
@@ -54,9 +55,10 @@ const NotateKeySignature = ({ handleNotes }: any) => {
   renderer?.resize(470, 200);
 
   const context = rendererRef.current?.getContext();
-  
-  const renderStaves = useCallback((): void => {
-    setupRenderer({
+
+  //function to render and return the staves
+  const renderStaves = useCallback((): any => {
+    setupRendererAndDrawStaves({
       rendererRef,
       ...staveData,
       clef: clef,
@@ -66,41 +68,25 @@ const NotateKeySignature = ({ handleNotes }: any) => {
     });
   }, [blankStaves, setBlankStaves]);
 
-  const clearKey = () => {
-    clearKeySignature(setGlyphs, rendererRef, container, renderStaves),
-      setKeySig(() => []);
-    setNotesAndCoordinates(() =>
-      generateYMinAndYMaxForKeySig(42.5, keySigArray)
-    );
-    dispatch({ type: "" });
-  };
+  //useEffect that initializes the renderer for the 1st TIME, calls renderStaves, sets the notes and coordinates
+  useEffect(() => {
+    initializeRenderer(rendererRef, container);
+    const newStaves = renderStaves();
+    if (newStaves) {
+      const middleG = newStaves[0].getYForLine(0);
+      console.log("middle G: ", middleG);
+      setNotesAndCoordinates(() =>
+        generateYMinAndYMaxForKeySig(middleG - 7.5, keySigArray)
+      );
+    }
+  }, []);
 
-  const getUserClickData = (
-    e: React.MouseEvent,
-    container: React.RefObject<HTMLDivElement>,
-    stave: any
-  ): any => {
-    const rect = container && container.current?.getBoundingClientRect();
-    const userClickY = rect ? e.clientY - rect.top : 0;
-    const userClickX = rect ? e.clientX - rect.left : 0;
-    const topStaveYCoord = stave && stave.getYForTopText();
-    const bottomStaveYCoord = (stave && stave.getYForBottomText()) || undefined;
-    return {
-      rect,
-      userClickY,
-      userClickX,
-      topStaveYCoord,
-      bottomStaveYCoord,
-    };
-  };
-
+  //useEffect that sets initializes the renderer, sets the staves and builds the keySignature every time the glyphs change
   useEffect(() => {
     initializeRenderer(rendererRef, container);
     renderStaves();
-    setNotesAndCoordinates(() =>
-      generateYMinAndYMaxForKeySig(42.5, keySigArray)
-    );
-  }, []);
+    context && buildKeySignature(glyphs, 40, context, blankStaves[0]);
+  }, [glyphs]);
 
   //this is where the we will get the array to grade
   useEffect(() => {
@@ -108,12 +94,17 @@ const NotateKeySignature = ({ handleNotes }: any) => {
     handleNotes(keySig);
   }, [keySig]);
 
-  useEffect(() => {
-    initializeRenderer(rendererRef, container);
-    renderStaves();
-    context?.clear();
-    context && buildKeySignature(glyphs, 40, context, blankStaves[0]);
-  }, [glyphs]);
+  const clearKey = () => {
+    clearKeySignature(setGlyphs, rendererRef, container), setKeySig(() => []);
+    const newStaves = renderStaves();
+    if (newStaves) {
+      const middleG = newStaves[0].getYForLine(0);
+      setNotesAndCoordinates(() =>
+        generateYMinAndYMaxForKeySig(middleG - 7.5, keySigArray)
+      );
+    }
+    dispatch({ type: "" });
+  };
 
   const handleClick = (e: React.MouseEvent) => {
     if (
@@ -124,12 +115,13 @@ const NotateKeySignature = ({ handleNotes }: any) => {
       return;
 
     const { userClickY, userClickX, topStaveYCoord, bottomStaveYCoord } =
-      getUserClickData(e, container, blankStaves[0]);
+      getUserClickInfo(e, container, blankStaves[0]);
 
     let foundNoteData = notesAndCoordinates.find(
       ({ yCoordinateMin, yCoordinateMax }) =>
         userClickY >= yCoordinateMin && userClickY <= yCoordinateMax
     );
+
     if (!foundNoteData) {
       setSnackbarMessage("Click outside of stave bounds.");
       setOpen(true); //
