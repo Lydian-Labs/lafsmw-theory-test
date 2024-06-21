@@ -2,10 +2,10 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { completeSignIn } from "@/firebase/authAPI";
-import { Box, Grid, Stack, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import Link from "next/link";
 
-const ConfirmSignIn = () => {
+export default function ConfirmSignIn() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -74,6 +74,4 @@ const ConfirmSignIn = () => {
   }
 
   return null;
-};
-
-export default ConfirmSignIn;
+}

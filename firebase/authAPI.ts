@@ -21,7 +21,7 @@ export async function sendSignInEmail(email: string) {
   try {
     await sendSignInLinkToEmail(auth, email, actionCodeSettings);
     window.localStorage.setItem("emailForSignIn", email);
-    alert("Verification email sent. Check your inbox.");
+    // alert("Verification email sent. Check your inbox.");
   } catch (err) {
     console.error("sendSignInLinkToEmail error:", err);
   }

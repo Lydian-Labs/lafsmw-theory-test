@@ -12,10 +12,10 @@ export default function Login() {
     e.preventDefault();
     setMessage("");
     setError("");
-
     try {
       await sendSignInEmail(email);
       setMessage("Verification email sent. Please check your inbox.");
+      setEmail("");
     } catch (err) {
       setError("Failed to send verification email. Please try again.");
       console.error("Error sending sign-in email:", err);
@@ -51,8 +51,22 @@ export default function Login() {
           Login
         </Button>
       </form>
-      {message && <p>{message}</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {message && (
+        <Typography variant="body1" align="center" fontSize="13px" mt={5}>
+          {message}
+        </Typography>
+      )}
+      {error && (
+        <Typography
+          variant="body1"
+          align="center"
+          fontSize="13px"
+          mt={5}
+          style={{ color: "var(--salmonWarningColor)" }}
+        >
+          {error}
+        </Typography>
+      )}
     </Container>
   );
 }
