@@ -11,16 +11,17 @@ import React, {
   useRef,
   useState,
 } from "react";
-import calculateNotesAndCoordinates from "../lib/calculateNotesAndCoordinates";
 import VexFlow from "vexflow";
 import CheckIfNoteFound from "../components/CheckIfNoteFound";
 import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
 import { useClef } from "../context/ClefContext";
 import { modifyChordsActionTypes } from "../lib/actionTypes";
 import { buttonGroup } from "../lib/buttonsAndButtonGroups";
+import calculateNotesAndCoordinates from "../lib/calculateNotesAndCoordinates";
 import { notesArray } from "../lib/data/noteArray";
 import { staveData } from "../lib/data/stavesData";
 import { findBarIndex } from "../lib/findBar";
+import getUserClickInfo from "../lib/getUserClickInfo";
 import { handleChordInteraction } from "../lib/handleChordInteraction";
 import {
   chordInteractionInitialState,
@@ -33,7 +34,6 @@ import { setupRendererAndDrawChords } from "../lib/setUpRendererAndDrawChords";
 import {
   Chord,
   NotesAndCoordinatesData,
-  RenderStavesAndChordParams,
   StaveType,
 } from "../lib/typesAndInterfaces";
 import CustomButton from "./CustomButton";
@@ -61,8 +61,6 @@ const NotateChord = ({
     NotesAndCoordinatesData[]
   >([initialNotesAndCoordsState]);
 
-  const TOLERANCE = 5;
-
   const noNoteFound = () => dispatch({ type: "noNoteFound" });
 
   const modifyChordsButtonGroup = useMemo(
@@ -70,49 +68,8 @@ const NotateChord = ({
     [dispatch, state]
   );
 
-  const getUserClickData = (
-    e: React.MouseEvent,
-    container: React.RefObject<HTMLDivElement>
-  ): any => {
-    const rect = container && container.current?.getBoundingClientRect();
-    const userClickY = rect ? e.clientY - rect.top : 0;
-    const userClickX = rect ? e.clientX - rect.left : 0;
-
-    return {
-      rect,
-      userClickY,
-      userClickX,
-    };
-  };
-
-  const generateYMinAndYMax = (
-    topNoteYCoordinate: number,
-    notes: string[]
-  ): NotesAndCoordinatesData[] => {
-    return notes.map((note, index) => {
-      const originalNote = note;
-      const yCoordinateMin = topNoteYCoordinate + index * 5;
-      const yCoordinateMax = yCoordinateMin + TOLERANCE;
-
-      return { originalNote, note, yCoordinateMin, yCoordinateMax };
-    });
-  };
-
-  const eraseChord = () => {
-    setChordData((): Chord => {
-      return initialChordData;
-    });
-    const newStave: any = renderStavesAndChords();
-    if (newStave) {
-      const highG = newStave[0].getYForLine(-4);
-      setNotesAndCoordinates(() =>
-        generateYMinAndYMax(highG - 2.5, notesArray)
-      );
-    }
-  };
-
   const renderStavesAndChords = useCallback(
-    (): RenderStavesAndChordParams =>
+    (): StaveType[] =>
       setupRendererAndDrawChords({
         rendererRef,
         ...staveData,
@@ -127,21 +84,55 @@ const NotateChord = ({
 
   useEffect(() => {
     initializeRenderer(rendererRef, container);
-    const newStave: any = renderStavesAndChords();
+    const newStave: StaveType[] = renderStavesAndChords();
     if (newStave) {
-      const highG = newStave[0].getYForLine(-4);
-      setNotesAndCoordinates(() =>
-        generateYMinAndYMax(highG - 2.5, notesArray)
+      calculateNotesAndCoordinates(
+        clef,
+        setNotesAndCoordinates,
+        newStave,
+        notesArray,
+        0,
+        -3,
+        -4
       );
     }
   }, []);
 
   useEffect(() => {
-    renderStavesAndChords();
+    const newStave: StaveType[] = renderStavesAndChords();
+    if (newStave) {
+      calculateNotesAndCoordinates(
+        clef,
+        setNotesAndCoordinates,
+        newStave,
+        notesArray,
+        0,
+        -3,
+        -4
+      );
+    }
     //this is the array to use for grading
     const chordsArray = chordData.keys;
     console.log(chordsArray);
   }, [chordData]);
+
+  const eraseChord = () => {
+    setChordData((): Chord => {
+      return initialChordData;
+    });
+    const newStave: any = renderStavesAndChords();
+    if (newStave) {
+      calculateNotesAndCoordinates(
+        clef,
+        setNotesAndCoordinates,
+        newStave,
+        notesArray,
+        0,
+        -3,
+        -4
+      );
+    }
+  };
 
   const handleChordsClick = (e: React.MouseEvent) => {
     setChords(chordData.keys);
@@ -149,7 +140,11 @@ const NotateChord = ({
   };
 
   const handleClick = (e: React.MouseEvent) => {
-    const { userClickY, userClickX } = getUserClickData(e, container);
+    const { userClickY, userClickX } = getUserClickInfo(
+      e,
+      container,
+      staves[0]
+    );
 
     let foundNoteData = notesAndCoordinates.find(
       ({ yCoordinateMin, yCoordinateMax }) =>
