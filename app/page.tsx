@@ -11,9 +11,12 @@ import { useEffect } from "react";
 export default function Home() {
   const { user } = useAuthContext();
   const router = useRouter();
-  if (user) {
-    router.push("/exam");
-  }
+
+  useEffect(() => {
+    if (user) {
+      router.push("/exam");
+    }
+  }, [router, user]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {

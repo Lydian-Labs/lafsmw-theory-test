@@ -7,7 +7,7 @@ export const checkProgressionAnswers = (
   let result = "";
   let numAnswers = correctAnswers.length;
   for (let i = 0; i < answers.length; i++) {
-    if (answers[i].toLowerCase() === correctAnswers[i].toLowerCase()) {
+    if (answers[i].toLowerCase() === correctAnswers[i]?.toLowerCase()) {
       score++;
     }
   }
@@ -29,7 +29,7 @@ export const checkAnswers = (
   let result = "";
   let numAnswers = correctAnswers.length;
   for (let i = 0; i < answers.length; i++) {
-    if (answers[i].toLowerCase() === correctAnswers[i].toLowerCase()) {
+    if (answers[i].toLowerCase() === correctAnswers[i]?.toLowerCase()) {
       score++;
     }
   }

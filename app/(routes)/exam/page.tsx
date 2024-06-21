@@ -259,6 +259,7 @@ export default function ExamHomePage() {
         throw new Error("No current user found.");
       }
       await setOrUpdateStudentData(currentUserData, userName);
+      updateAnswers();
 
       // Send email with results using API route
       const response = await fetch("/api/email", {
