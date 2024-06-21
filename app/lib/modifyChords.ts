@@ -16,11 +16,13 @@ const parseNote = (note: string) => {
 
 export const createStaveNoteFromChordData = (
   chordData: Chord,
+  chosenClef: string,
   updatedKeys?: string[]
 ) => {
   return new StaveNote({
     keys: updatedKeys ? updatedKeys : chordData.keys,
     duration: chordData.duration,
+    clef: chosenClef,
   });
 };
 
@@ -96,14 +98,15 @@ export const removeAccidentals = (note: string) => {
 
 export const removeAccidentalFromChord = (
   chordData: Chord,
-  foundNoteIndex: number
+  foundNoteIndex: number,
+  chosenClef: string
 ) => {
   chordData.keys[foundNoteIndex] = removeAccidentals(
     chordData.keys[foundNoteIndex]
   );
   return {
     ...chordData,
-    staveNotes: createStaveNoteFromChordData(chordData),
+    staveNotes: createStaveNoteFromChordData(chordData, chosenClef),
   };
 };
 
@@ -122,7 +125,8 @@ export const removeAccidentalFromNotesAndCoords = (
 export const addAccidentalToChordKeys = (
   state: ChordInteractionState,
   chordData: Chord,
-  foundNoteIndex: number
+  foundNoteIndex: number,
+  chosenClef: string
 ) => {
   const accidental = state.isSharpActive ? "#" : "b";
   chordData.keys[foundNoteIndex] = appendAccidentalToNote(
@@ -130,7 +134,7 @@ export const addAccidentalToChordKeys = (
     chordData.keys[foundNoteIndex]
   );
 
-  const newChord = createStaveNoteFromChordData(chordData);
+  const newChord = createStaveNoteFromChordData(chordData, chosenClef);
 
   addAccidentalsToStaveNotes(chordData.keys, newChord);
 
@@ -142,10 +146,11 @@ export const addAccidentalToChordKeys = (
 
 export const addNewNoteToChord = (
   chordData: Chord,
-  foundNoteData: NoteStringData
+  foundNoteData: NoteStringData,
+  chosenClef: string
 ) => {
   const updatedKeys = [...chordData.keys, foundNoteData.note];
-  const newChord = createStaveNoteFromChordData(chordData, updatedKeys);
+  const newChord = createStaveNoteFromChordData(chordData, chosenClef, updatedKeys);
 
   addAccidentalsToStaveNotes(updatedKeys, newChord);
 
@@ -156,8 +161,8 @@ export const addNewNoteToChord = (
   };
 };
 
-export const reconstructChord = (chordData: Chord) => {
-  const newChord = createStaveNoteFromChordData(chordData);
+export const reconstructChord = (chordData: Chord, chosenClef: string) => {
+  const newChord = createStaveNoteFromChordData(chordData, chosenClef);
   addAccidentalsToStaveNotes(chordData.keys, newChord);
 
   return {
@@ -168,11 +173,12 @@ export const reconstructChord = (chordData: Chord) => {
 
 export const removeNoteFromChord = (
   chordData: Chord,
-  foundNoteIndex: number
+  foundNoteIndex: number,
+  chosenClef: string
 ) => {
   if (chordData.keys[foundNoteIndex]) {
     chordData.keys.splice(foundNoteIndex, 1);
-    const newChord = createStaveNoteFromChordData(chordData);
+    const newChord = createStaveNoteFromChordData(chordData, chosenClef);
     return {
       ...chordData,
       staveNotes: newChord,

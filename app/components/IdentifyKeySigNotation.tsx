@@ -1,5 +1,6 @@
 "use client";
 import { ForwardedRef, forwardRef, useEffect, useMemo, useState } from "react";
+import { useClef } from "../context/ClefContext";
 import createInitialState from "../lib/createInitialState";
 import isCurrentDataFilled from "../lib/isCurrentDataFilled";
 import {
@@ -10,7 +11,6 @@ import {
 } from "../lib/typesAndInterfaces";
 import FormInput from "./FormInput";
 import KeySigStaff from "./KeySigStaff";
-
 interface TextInput {
   [key: string]: string;
 }
@@ -44,6 +44,8 @@ export default forwardRef(function IdentifyKeySigNotation(
     initialChordsInputState
   );
 
+  const { chosenClef } = useClef();
+
   useEffect(() => {
     if (!currentData || !isCurrentDataFilled(currentData)) {
       setTextInput(initialChordsInputState);
@@ -71,7 +73,8 @@ export default forwardRef(function IdentifyKeySigNotation(
   const gridInputInline = {
     display: "grid",
     gridTemplateColumns: `${widthOfFirstBar}px repeat(${remainingBarsString}, ${widthOfRemainingBars}px)`,
-    paddingLeft: evenbars ? "4.5rem" : "5.5rem",
+    paddingLeft: evenbars ? "1rem" : "5.5rem",
+    gap: "20px",
   };
 
   function handleInputSubmit(e: FormEvent) {
@@ -79,26 +82,45 @@ export default forwardRef(function IdentifyKeySigNotation(
     handleInput(textInput);
   }
 
+  const keySigs = [
+    { key: "Db", type: "major" },
+    { key: "A", type: "major" },
+    { key: "Ab", type: "minor" },
+    { key: "E", type: "minor" },
+  ];
+
   const renderTextInputs = () => {
-    return Object.keys(textInput).map((key) => (
-      <FormInput
-        key={key}
-        name={key}
-        type="text"
-        value={textInput[key] || ""}
-        width="65px"
-        onChange={(e: ChangeEvent) =>
-          setTextInput({ ...textInput, [key]: e.target.value })
-        }
-        required={false}
-      />
+    return keySigs.map((keySig, index) => (
+      <div
+        key={index}
+        style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}
+      >
+        <div
+          style={{
+            fontWeight: "lighter",
+            fontSize: "12px",
+            minWidth: "40px",
+            textAlign: "left",
+          }}
+        >{` ${keySig.type}`}</div>
+        <FormInput
+          name={keySig.key}
+          type="text"
+          value={textInput[keySig.key] || ""}
+          width="65px"
+          onChange={(e: ChangeEvent) =>
+            setTextInput({ ...textInput, [keySig.key]: e.target.value })
+          }
+          required={false}
+        />
+      </div>
     ));
   };
-  const keySignatures = ["Db", "A", "Ab", "E"];
   return (
     <div>
       <form ref={ref} id="submit-form-chords" onSubmit={handleInputSubmit}>
         <KeySigStaff
+          clef={chosenClef}
           evenbars={evenbars}
           addDoubleBarLine={true}
           numBars={numBars}
@@ -106,7 +128,7 @@ export default forwardRef(function IdentifyKeySigNotation(
           width={width}
           noTimeSignature
           allDoubleBarLines
-          keySig={keySignatures}
+          keySig={keySigs.map((keySig) => keySig.key)}
         />
         <div style={gridInputInline}>{renderTextInputs()}</div>
       </form>

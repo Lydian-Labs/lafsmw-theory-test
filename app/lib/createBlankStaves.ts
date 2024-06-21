@@ -12,7 +12,7 @@ const createBlankStaves = (
     x,
     y,
     regularStaveWidth,
-    clef,
+    chosenClef: clef,
     timeSig,
     keySig,
   } = params

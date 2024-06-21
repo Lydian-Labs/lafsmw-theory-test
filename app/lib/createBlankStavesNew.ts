@@ -12,7 +12,7 @@ const createBlankStavesNew = (
     x,
     y,
     regularStaveWidth,
-    clef,
+    chosenClef,
     timeSig,
     keySig,
   } = params
@@ -25,7 +25,7 @@ const createBlankStavesNew = (
     for (let i = 0; i < numStaves; i++) {
       let staveWidth = i === 0 ? firstStaveWidth : regularStaveWidth;
       let stave = new Stave(x, y, staveWidth, spaceAboveStaff);
-      i === 0 && clef ? stave.addClef(clef) : null;
+      i === 0 && chosenClef ? stave.addClef(chosenClef) : null;
       i === 0 && timeSig ? stave.addTimeSignature(timeSig) : null;
       i === 0 && keySig ? stave.addKeySignature(keySig) : null;
       i === numStaves - 1 ? stave.setEndBarType(3) : null;

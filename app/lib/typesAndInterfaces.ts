@@ -105,6 +105,10 @@ export interface StaveNoteData {
   staveNoteAbsoluteX: number;
   userClickY: number;
 }
+export interface chosenClef {
+  chosenClef: string;
+  setChosenClef: Dispatch<SetStateAction<string>>;
+}
 
 export interface ScaleData {
   keys: string[];
@@ -160,7 +164,7 @@ export interface RenderStavesAndNotesParams {
   rendererHeight: number;
   yPositionOfStaves: number;
   xPositionOfStaves: number;
-  clef: string;
+  chosenClef: string;
   timeSig?: string;
   keySig?: string;
   firstStaveWidth: number;
@@ -180,7 +184,7 @@ export interface RenderStaves {
   rendererHeight: number;
   yPositionOfStaves: number;
   xPositionOfStaves: number;
-  clef: string;
+  chosenClef: string;
   timeSig?: string;
   keySig?: string;
   firstStaveWidth: number;
@@ -197,7 +201,7 @@ export interface RenderStavesAndChordParams {
   rendererHeight: number;
   yPositionOfStaves: number;
   xPositionOfStaves: number;
-  clef: string;
+  chosenClef: string;
   timeSig?: string;
   keySig?: string;
   firstStaveWidth: number;
@@ -215,7 +219,7 @@ export interface CreateBlankStavesParams {
   x: number;
   y: number;
   regularStaveWidth: number;
-  clef?: string;
+  chosenClef?: string;
   timeSig?: string;
   keySig?: string;
 }

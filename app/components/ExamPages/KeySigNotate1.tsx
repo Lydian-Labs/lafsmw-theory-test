@@ -1,7 +1,7 @@
 "use client";
 import { keySigNotationInstructions } from "@/app/lib/data/instructions";
 import keySignaturesText from "@/app/lib/data/keySignaturesText";
-import { Level, MouseEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
+import { MouseEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import {
   Box,
   Container,
@@ -14,9 +14,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import CardFooter from "../CardFooter";
-import ClassPreferenceSelector from "../ClassPreferenceSelector";
 import NotateKeySignature from "../NotateKeySignature";
-import SnackbarToast from "../SnackbarToast";
 
 export default function KeySignaturesNotation1({
   currentUserData,
@@ -24,21 +22,14 @@ export default function KeySignaturesNotation1({
   nextViewState,
   page,
 }: UserDataProps) {
-  const [level, setLevel] = useState<Level>("select-here");
   const [keySignatureNotation, setKeySignatureNotation] = useState([]);
-  const [open, setOpen] = useState<boolean>(false);
-
   const keySigPropName = `keySignaturesNotation${page}`;
 
   const handleSubmit = async (e: MouseEvent) => {
     e.preventDefault();
-    if (level === "select-here") {
-      setOpen(true);
-      return;
-    }
+
     setCurrentUserData({
       ...currentUserData,
-      level: level,
       [keySigPropName]: keySignatureNotation,
     });
     nextViewState();
@@ -50,11 +41,6 @@ export default function KeySignaturesNotation1({
 
   return (
     <Container>
-      <SnackbarToast
-        open={open}
-        setOpen={setOpen}
-        message={"You must select level before moving on."}
-      />
       <Box
         component="main"
         width={1139}
@@ -70,10 +56,7 @@ export default function KeySignaturesNotation1({
               <Typography variant="h6" align="center">
                 Section 1: Notate Key Signatures
               </Typography>
-              <ClassPreferenceSelector
-                level={level}
-                setLevel={setLevel}
-              ></ClassPreferenceSelector>
+
               <Box
                 width={273}
                 height={456}
