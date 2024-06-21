@@ -2,7 +2,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { completeSignIn } from "@/firebase/authAPI";
-import { Button, Typography } from "@mui/material";
+import { Box, Grid, Stack, Typography } from "@mui/material";
+import Link from "next/link";
 
 const ConfirmSignIn = () => {
   const router = useRouter();
@@ -52,11 +53,20 @@ const ConfirmSignIn = () => {
         <Typography variant="h6" align="center" p={4}>
           {error}
         </Typography>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => router.push("/login")}
-        />
+        <Link href="/login">
+          <Stack alignItems={"center"}>
+            <Typography
+              variant="body1"
+              width={"180px"}
+              p={4}
+              sx={{
+                "&:hover": { color: "var(--primary40)" },
+              }}
+            >
+              Return to login
+            </Typography>
+          </Stack>
+        </Link>
       </>
     );
   }
