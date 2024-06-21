@@ -1,9 +1,12 @@
-"use client"
+"use client";
 
 import { createContext, useState, useContext, ReactNode } from "react";
 
 const ClefContext = createContext<
-  | { clef: string; setClef: React.Dispatch<React.SetStateAction<string>> }
+  | {
+      chosenClef: string;
+      setChosenClef: React.Dispatch<React.SetStateAction<string>>;
+    }
   | undefined
 >(undefined);
 
@@ -12,10 +15,12 @@ type ClefProviderProps = {
 };
 
 export const ClefProvider = ({ children }: ClefProviderProps) => {
-  const [clef, setClef] = useState<string>("treble");
+  const [chosenClef, setChosenClef] = useState<string>("treble");
 
   return (
-    <ClefContext.Provider value={{ clef, setClef }}>
+    <ClefContext.Provider
+      value={{ chosenClef: chosenClef, setChosenClef: setChosenClef }}
+    >
       {children}
     </ClefContext.Provider>
   );

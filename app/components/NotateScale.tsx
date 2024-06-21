@@ -57,7 +57,7 @@ const NotateScale = ({
   const [notesAndCoordinates, setNotesAndCoordinates] = useState<
     NotesAndCoordinatesData[]
   >([initialNotesAndCoordsState]);
-  const { clef } = useClef();
+  const { chosenClef } = useClef();
   const [state, dispatch] = useReducer(
     scaleReducer,
     noteInteractionInitialState
@@ -81,7 +81,7 @@ const NotateScale = ({
         setStaves,
         scaleDataMatrix,
         staves,
-        clef,
+        chosenClef,
       }),
     [rendererRef, setStaves, scaleDataMatrix, staves]
   );
@@ -91,10 +91,10 @@ const NotateScale = ({
     const newStave = renderStavesAndNotes();
     if (newStave)
       calculateNotesAndCoordinates(
-        clef,
+        chosenClef,
         setNotesAndCoordinates,
         newStave,
-        clef === "bass" ? bassClefNotesArray : trebleClefNotesArray,
+        chosenClef === "bass" ? bassClefNotesArray : trebleClefNotesArray,
         0,
         -3,
         -4,
@@ -110,10 +110,10 @@ const NotateScale = ({
     const newStave: StaveType[] = renderStavesAndNotes();
     if (newStave) {
       calculateNotesAndCoordinates(
-        clef,
+        chosenClef,
         setNotesAndCoordinates,
         newStave,
-        clef === "bass" ? bassClefNotesArray : trebleClefNotesArray,
+        chosenClef === "bass" ? bassClefNotesArray : trebleClefNotesArray,
         0,
         -3,
         -4,
@@ -134,10 +134,10 @@ const NotateScale = ({
     const newStave = renderStavesAndNotes();
     if (newStave) {
       calculateNotesAndCoordinates(
-        clef,
+        chosenClef,
         setNotesAndCoordinates,
         newStave,
-        clef === "bass" ? bassClefNotesArray : trebleClefNotesArray,
+        chosenClef === "bass" ? bassClefNotesArray : trebleClefNotesArray,
         0,
         -3,
         -4,
@@ -209,7 +209,7 @@ const NotateScale = ({
       userClickX,
       userClickY,
       barIndex,
-      clef
+      chosenClef
     );
     setNotesAndCoordinates(() => newNotesAndCoordinates);
     setScaleDataMatrix(() => newScaleDataMatrix);

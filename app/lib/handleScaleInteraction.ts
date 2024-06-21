@@ -30,7 +30,7 @@ export const HandleScaleInteraction = (
   userClickX: number,
   userClickY: number,
   barIndex: number,
-  clef: string
+  chosenClef: string
 ) => {
   if (state.isSharpActive || state.isFlatActive) {
     notesAndCoordinates = updateNotesAndCoordsWithAccidental(
@@ -43,7 +43,7 @@ export const HandleScaleInteraction = (
       state,
       barOfScaleData,
       userClickX,
-      clef
+      chosenClef
     );
     barOfScaleData[noteIndex] = updatedNoteObject;
     scaleDataMatrix[barIndex] = barOfScaleData;
@@ -55,7 +55,7 @@ export const HandleScaleInteraction = (
     const { updatedNoteObject, noteIndex } = removeAccidentalFromStaveNote(
       barOfScaleData,
       userClickX,
-      clef
+      chosenClef
     );
     console.log("remove accidental from note and coords", notesAndCoordinates);
     barOfScaleData[noteIndex] = updatedNoteObject;
@@ -79,7 +79,7 @@ export const HandleScaleInteraction = (
       userClickX,
       foundNoteData,
       userClickY,
-      clef
+      chosenClef
     );
     scaleDataMatrix[barIndex] = barOfScaleData;
   } else if (barOfScaleData && barOfScaleData.length >= BEATS_IN_MEASURE) {
@@ -88,7 +88,7 @@ export const HandleScaleInteraction = (
     const newStaveNote: StaveNoteType = new StaveNote({
       keys: [foundNoteData.note],
       duration: "q",
-      clef,
+      clef: chosenClef,
     });
     let newNoteObject = [
       ...barOfScaleData,

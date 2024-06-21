@@ -92,7 +92,7 @@ export default function ExamHomePage() {
   const [isPDFReady, setIsPDFReady] = useState(false);
   const [open, setOpen] = useState<boolean>(false);
   const [level, setLevel] = useState<Level>("select-here");
-  const { clef, setClef } = useClef();
+  const { chosenClef: clef, setChosenClef: setClef } = useClef();
 
   useEffect(() => {
     const fetchSnapshot = async () => {
@@ -355,7 +355,10 @@ export default function ExamHomePage() {
                   <Typography variant="h5" mb={2}>
                     Select Your Clef Preference
                   </Typography>
-                  <ClefPreferenceSelector clef={clef} setClef={setClef} />
+                  <ClefPreferenceSelector
+                    chosenClef={clef}
+                    setChosenClef={setClef}
+                  />
                 </Box>
               </Grid>
               <Grid item xs={12} md={4}>

@@ -44,7 +44,7 @@ export default forwardRef(function IdentifyKeySigNotation(
     initialChordsInputState
   );
 
-  const { clef } = useClef();
+  const { chosenClef } = useClef();
 
   useEffect(() => {
     if (!currentData || !isCurrentDataFilled(currentData)) {
@@ -74,7 +74,7 @@ export default forwardRef(function IdentifyKeySigNotation(
     display: "grid",
     gridTemplateColumns: `${widthOfFirstBar}px repeat(${remainingBarsString}, ${widthOfRemainingBars}px)`,
     paddingLeft: evenbars ? "1rem" : "5.5rem",
-    gap: "20px"
+    gap: "20px",
   };
 
   function handleInputSubmit(e: FormEvent) {
@@ -96,7 +96,12 @@ export default forwardRef(function IdentifyKeySigNotation(
         style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}
       >
         <div
-          style={{ fontWeight: "lighter", fontSize: "12px", minWidth: "40px", textAlign: "left" }}
+          style={{
+            fontWeight: "lighter",
+            fontSize: "12px",
+            minWidth: "40px",
+            textAlign: "left",
+          }}
         >{` ${keySig.type}`}</div>
         <FormInput
           name={keySig.key}
@@ -115,7 +120,7 @@ export default forwardRef(function IdentifyKeySigNotation(
     <div>
       <form ref={ref} id="submit-form-chords" onSubmit={handleInputSubmit}>
         <KeySigStaff
-          clef={clef}
+          clef={chosenClef}
           evenbars={evenbars}
           addDoubleBarLine={true}
           numBars={numBars}

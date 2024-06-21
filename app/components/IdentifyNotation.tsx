@@ -45,7 +45,7 @@ export default forwardRef(function IdentifyNotation(
     initialChordsInputState
   );
 
-  const { clef } = useClef();
+  const { chosenClef } = useClef();
 
   useEffect(() => {
     if (!currentData || !isCurrentDataFilled(currentData)) {
@@ -101,7 +101,7 @@ export default forwardRef(function IdentifyNotation(
     <div>
       <form ref={ref} id="submit-form-chords" onSubmit={handleInputSubmit}>
         <Staff
-          clef={clef}
+          chosenClef={chosenClef}
           evenbars={evenbars}
           addDoubleBarLine={true}
           numBars={numBars}

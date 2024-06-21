@@ -15,7 +15,7 @@ export const setupRendererAndDrawChords = (
     rendererHeight,
     yPositionOfStaves,
     xPositionOfStaves,
-    clef,
+    chosenClef: clef,
     firstStaveWidth,
     keySig,
     setStaves,
@@ -37,7 +37,7 @@ export const setupRendererAndDrawChords = (
       x: xPositionOfStaves,
       y: yPositionOfStaves,
       regularStaveWidth: 300,
-      clef,
+      chosenClef: clef,
       keySig,
     });
     setStaves(newStaves);

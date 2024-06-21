@@ -27,7 +27,7 @@ export default forwardRef(function IdentifyKeySignatures(
     initialKeysInputState
   );
 
-  const { clef } = useClef();
+  const { chosenClef } = useClef();
 
   // Gather needed width info.
   const { widthOfFirstBar, widthOfRemainingBars } = gatherWidthInfo(
@@ -68,7 +68,7 @@ export default forwardRef(function IdentifyKeySignatures(
     <div>
       <form ref={ref} id="submit-form-keys" onSubmit={handleKeysSubmit}>
         <Staff
-          clef={clef}
+          chosenClef={chosenClef}
           addDoubleBarLine={true}
           numBars={numBars}
           width={width}

@@ -59,7 +59,7 @@ const NotateChord = ({
   //not currently being used, but will be used in the future
   const [barIndex, setBarIndex] = useState<number>(0);
   const [chordData, setChordData] = useState<Chord>(initialChordData);
-  const { clef } = useClef();
+  const { chosenClef } = useClef();
   const [notesAndCoordinates, setNotesAndCoordinates] = useState<
     NotesAndCoordinatesData[]
   >([initialNotesAndCoordsState]);
@@ -80,7 +80,7 @@ const NotateChord = ({
         chordData,
         staves,
         barIndex,
-        clef: clef,
+        chosenClef,
       }),
     [rendererRef, setStaves, chordData, staves, barIndex]
   );
@@ -90,10 +90,10 @@ const NotateChord = ({
     const newStave: StaveType[] = renderStavesAndChords();
     if (newStave) {
       calculateNotesAndCoordinates(
-        clef,
+        chosenClef,
         setNotesAndCoordinates,
         newStave,
-        clef === "bass" ? bassClefNotesArray : trebleClefNotesArray,
+        chosenClef === "bass" ? bassClefNotesArray : trebleClefNotesArray,
         0,
         -3,
         -4,
@@ -106,10 +106,10 @@ const NotateChord = ({
     const newStave: StaveType[] = renderStavesAndChords();
     if (newStave) {
       calculateNotesAndCoordinates(
-        clef,
+        chosenClef,
         setNotesAndCoordinates,
         newStave,
-        clef === "bass" ? bassClefNotesArray : trebleClefNotesArray,
+        chosenClef === "bass" ? bassClefNotesArray : trebleClefNotesArray,
         0,
         -3,
         -4,
@@ -128,10 +128,10 @@ const NotateChord = ({
     const newStave: any = renderStavesAndChords();
     if (newStave) {
       calculateNotesAndCoordinates(
-        clef,
+        chosenClef,
         setNotesAndCoordinates,
         newStave,
-        clef === "bass" ? bassClefNotesArray : trebleClefNotesArray,
+        chosenClef === "bass" ? bassClefNotesArray : trebleClefNotesArray,
         0,
         -3,
         -4,
@@ -160,7 +160,7 @@ const NotateChord = ({
     let notesAndCoordinatesCopy = [...notesAndCoordinates];
     //not currently being used but will be used in the future
     const barIndex = findBarIndex(staves, userClickX);
-console.log(notesAndCoordinates)
+    console.log(notesAndCoordinates);
     const foundNoteIndex: number = chordData.keys.findIndex(
       (note) => note === foundNoteData?.note
     );
@@ -179,7 +179,7 @@ console.log(notesAndCoordinates)
       foundNoteData,
       chordDataCopy,
       foundNoteIndex,
-      clef
+      chosenClef
     );
 
     setNotesAndCoordinates(() => newNotesAndCoordinates);

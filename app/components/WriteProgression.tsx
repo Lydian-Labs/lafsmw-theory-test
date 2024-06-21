@@ -19,7 +19,7 @@ export default forwardRef(function WriteProgression(
     initialProgressionInputState
   );
 
-  const { clef } = useClef();
+  const { chosenClef } = useClef();
 
   useEffect(() => {
     if (currentData && isCurrentDataFilled(currentData)) {
@@ -98,7 +98,7 @@ export default forwardRef(function WriteProgression(
           >
             {renderKeyNames(0, 3)}
           </Stack>
-          <Staff clef={clef} numBars={6} width={width} />
+          <Staff chosenClef={chosenClef} numBars={6} width={width} />
           <Stack
             direction="row"
             spacing={chordGroupSpacing}
@@ -117,7 +117,7 @@ export default forwardRef(function WriteProgression(
             {renderKeyNames(3, 6)}
           </Stack>
           <Staff
-            clef={clef}
+            chosenClef={chosenClef}
             numBars={6}
             noTimeSignature
             width={width}

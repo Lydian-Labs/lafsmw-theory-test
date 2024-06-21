@@ -43,7 +43,7 @@ const NotateKeySignature = ({ handleNotes }: any) => {
   const [staves, setStaves] = useState<StaveType[]>([]);
   const [glyphs, setGlyphs] = useState<GlyphProps[]>([]);
   const [open, setOpen] = useState(false);
-  const { clef } = useClef();
+  const { chosenClef } = useClef();
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [state, dispatch] = useReducer(keySigReducer, keySigInitialState);
   const [keySig, setKeySig] = useState<string[]>([]);
@@ -65,7 +65,7 @@ const NotateKeySignature = ({ handleNotes }: any) => {
       setupRendererAndDrawStaves({
         rendererRef,
         ...staveData,
-        clef,
+        chosenClef,
         firstStaveWidth: 450,
         staves,
         setStaves,
@@ -78,7 +78,7 @@ const NotateKeySignature = ({ handleNotes }: any) => {
     const newStaves = renderStaves();
     if (newStaves)
       calculateNotesAndCoordinates(
-        clef,
+        chosenClef,
         setNotesAndCoordinates,
         newStaves,
         keySigArray,
@@ -107,7 +107,7 @@ const NotateKeySignature = ({ handleNotes }: any) => {
     if (newStaves) {
       if (newStaves)
         calculateNotesAndCoordinates(
-          clef,
+          chosenClef,
           setNotesAndCoordinates,
           newStaves,
           keySigArray,

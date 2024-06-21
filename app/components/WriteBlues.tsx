@@ -18,7 +18,7 @@ export default forwardRef(function WriteBlues(
     initialBluesInputState
   );
 
-  const { clef } = useClef();
+  const { chosenClef } = useClef();
 
   useEffect(() => {
     if (currentData && isCurrentDataFilled(currentData)) {
@@ -69,7 +69,7 @@ export default forwardRef(function WriteBlues(
     <div>
       <form ref={ref} id="submit-form-blues" onSubmit={handleNumeralSubmit}>
         <Stack direction="column">
-          <Staff clef={clef} numBars={4} width={width} />
+          <Staff chosenClef={chosenClef} numBars={4} width={width} />
           <Stack
             direction="row"
             spacing={chordGroupSpacing}
@@ -80,7 +80,12 @@ export default forwardRef(function WriteBlues(
             <div style={gridInputInline}>{renderNumeralInputs(8, 12)}</div>
             <div style={gridInputInline}>{renderNumeralInputs(12, 16)}</div>
           </Stack>
-          <Staff clef={clef} numBars={4} noTimeSignature={true} width={width} />
+          <Staff
+            chosenClef={chosenClef}
+            numBars={4}
+            noTimeSignature={true}
+            width={width}
+          />
           <Stack
             direction="row"
             spacing={chordGroupSpacing}
@@ -92,7 +97,7 @@ export default forwardRef(function WriteBlues(
             <div style={gridInputInline}>{renderNumeralInputs(28, 32)}</div>
           </Stack>
           <Staff
-            clef={clef}
+            chosenClef={chosenClef}
             numBars={4}
             noTimeSignature={true}
             addDoubleBarLine={true}

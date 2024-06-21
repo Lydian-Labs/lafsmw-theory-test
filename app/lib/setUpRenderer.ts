@@ -13,7 +13,7 @@ export const setupRendererAndDrawStaves = (
     rendererHeight,
     yPositionOfStaves,
     xPositionOfStaves,
-    clef,
+    chosenClef,
     firstStaveWidth,
     keySig,
     setStaves,
@@ -32,7 +32,7 @@ export const setupRendererAndDrawStaves = (
       x: xPositionOfStaves,
       y: yPositionOfStaves,
       regularStaveWidth: 300,
-      clef,
+      chosenClef,
       keySig,
     });
     setStaves(newStaves);

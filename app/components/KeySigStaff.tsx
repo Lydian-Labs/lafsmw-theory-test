@@ -32,7 +32,7 @@ export default function Staff({
 }: StaffProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const rendererRef = useRef<Flow.Renderer | null>(null);
-  const { clef } = useClef();
+  const { chosenClef} = useClef();
 
   // Gather needed width info - slightly different calculations than other components.
   const fullWidth = width * 0.97;
@@ -85,7 +85,7 @@ export default function Staff({
           i === 0 ? widthOfFirstBar : widthOfRemainingBars,
           spaceAboveStaff
         );
-        stave.addClef(clef);
+        stave.addClef(chosenClef);
 
         if (allDoubleBarLines) {
           stave.setEndBarType(2);
@@ -130,7 +130,7 @@ export default function Staff({
   }, [
     addDoubleBarLine,
     chords,
-    clef,
+    chosenClef,
     widthOfFirstBar,
     height,
     noTimeSignature,

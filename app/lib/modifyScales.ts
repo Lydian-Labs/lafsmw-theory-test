@@ -17,13 +17,13 @@ const { Accidental, StaveNote } = VexFlow.Flow;
 
 export const createStaveNoteFromScaleData = (
   noteObject: ScaleData,
-  clef: string,
+  chosenClef: string,
   updatedKeys?: string[]
 ) => {
   const newStaveNote = new StaveNote({
     keys: updatedKeys ? updatedKeys : noteObject.keys,
     duration: "q",
-    clef: clef,
+    clef: chosenClef,
   });
 
   return newStaveNote;
@@ -54,9 +54,9 @@ export const addAccidentalsToStaveNotes = (
 export const reconstructScale = (
   noteObject: ScaleData,
   foundNoteData: NotesAndCoordinatesData,
-  clef: string
+  chosenClef: string
 ) => {
-  const newStaveNote = createStaveNoteFromScaleData(noteObject, clef);
+  const newStaveNote = createStaveNoteFromScaleData(noteObject, chosenClef);
   addAccidentalsToStaveNotes([foundNoteData.note], newStaveNote);
   const newScale = {
     ...noteObject,
@@ -69,7 +69,7 @@ export const addAccidentalToStaveNoteAndKeys = (
   state: NoteInteractionState,
   scaleData: ScaleData[],
   userClickX: number,
-  clef: string
+  chosenClef: string
 ) => {
   let { noteDataObject, noteIndex } = getNoteData(scaleData, userClickX);
   const accidental = state.isSharpActive ? "#" : "b";
@@ -77,7 +77,7 @@ export const addAccidentalToStaveNoteAndKeys = (
     accidental,
     noteDataObject.keys[0]
   );
-  const newStaveNote = createStaveNoteFromScaleData(noteDataObject, clef);
+  const newStaveNote = createStaveNoteFromScaleData(noteDataObject, chosenClef);
   addAccidentalsToStaveNotes(noteDataObject.keys, newStaveNote);
   const updatedNoteObject = {
     ...noteDataObject,
@@ -90,7 +90,7 @@ export const addAccidentalToStaveNoteAndKeys = (
 export const removeAccidentalFromStaveNote = (
   scaleData: ScaleData[],
   userClickX: number,
-  clef: string
+  chosenClef: string
 ) => {
   const { noteDataObject, noteIndex } = getNoteData(scaleData, userClickX);
 
@@ -99,7 +99,7 @@ export const removeAccidentalFromStaveNote = (
   const updatedNoteObject = {
     ...noteDataObject,
     keys: [removeAccidentals(keys[0])],
-    staveNote: createStaveNoteFromScaleData(noteDataObject, clef),
+    staveNote: createStaveNoteFromScaleData(noteDataObject, chosenClef),
   };
   return { updatedNoteObject, noteIndex };
 };
@@ -109,10 +109,10 @@ export const addNewNoteToScale = (
   foundNoteData: NotesAndCoordinatesData,
   userClickX: number,
   userClickY: number,
-  clef: string
+  chosenClef: string
 ) => {
   let { noteDataObject } = getNoteData(scaleData, userClickX);
-  const newNote = createStaveNoteFromScaleData(noteDataObject, clef, [
+  const newNote = createStaveNoteFromScaleData(noteDataObject, chosenClef, [
     foundNoteData.note,
   ]);
   addAccidentalsToStaveNotes(noteDataObject.keys, newNote);
@@ -131,7 +131,7 @@ export const changeNotePosition = (
   userClickX: number,
   foundNoteData: NotesAndCoordinatesData,
   userClickY: number,
-  clef: string
+  chosenClef: string
 ) => {
   const { noteDataObject, noteIndex } = getNoteData(scaleData, userClickX);
   if (noteDataObject && noteDataObject.staveNote) {
@@ -141,7 +141,7 @@ export const changeNotePosition = (
       staveNote: new StaveNote({
         keys: [foundNoteData.note],
         duration: "q",
-        clef,
+        clef: chosenClef,
       }),
       keys: [foundNoteData.note],
       duration: "q",
