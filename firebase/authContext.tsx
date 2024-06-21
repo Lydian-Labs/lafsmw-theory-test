@@ -13,7 +13,7 @@ export default function AuthContextProvider({ children }: AuthContextType) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // useEffect hook to listen for changes in the authentication state of the user. onAuthStateChanged() is a function that takes an auth instance and a callback function as arguments. The callback function is called whenever the authentication state of the user changes. The callback function is also called when the user first signs in, so we can use it to set the initial state of the user. It returns the unsubscribe function for the observer, so when the component unmounts, we'll call the unsubscribe function to stop listening for changes in the authentication state of the user, and prevent memory leaks.
+  // This returns the unsubscribe function for the observer, so when the component unmounts, we'll call the unsubscribe function to stop listening for changes in the authentication state of the user, and prevent memory leaks.
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {

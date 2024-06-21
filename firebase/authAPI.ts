@@ -1,19 +1,18 @@
 import {
-  sendSignInLinkToEmail,
-  signInWithEmailLink,
-  isSignInWithEmailLink,
   createUserWithEmailAndPassword,
+  isSignInWithEmailLink,
+  sendPasswordResetEmail,
+  sendSignInLinkToEmail,
   signInWithEmailAndPassword,
+  signInWithEmailLink,
   signOut,
   updateProfile,
-  sendPasswordResetEmail,
 } from "firebase/auth";
 import { auth } from "./config";
 
 // Configuration for email link. This is the URL that the student will be redirected to after clicking the link in their email.
 const actionCodeSettings = {
   url: "https://lafsmw-backend--lafsmw-theory-test.us-central1.hosted.app/confirm",
-  // url: "http://localhost:3000/confirm",
   handleCodeInApp: true,
 };
 
@@ -21,7 +20,6 @@ export async function sendSignInEmail(email: string) {
   try {
     await sendSignInLinkToEmail(auth, email, actionCodeSettings);
     window.localStorage.setItem("emailForSignIn", email);
-    // alert("Verification email sent. Check your inbox.");
   } catch (err) {
     console.error("sendSignInLinkToEmail error:", err);
   }

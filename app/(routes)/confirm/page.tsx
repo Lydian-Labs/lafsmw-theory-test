@@ -1,9 +1,9 @@
 "use client";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { completeSignIn } from "@/firebase/authAPI";
 import { Stack, Typography } from "@mui/material";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function ConfirmSignIn() {
   const router = useRouter();

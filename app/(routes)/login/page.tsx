@@ -1,7 +1,7 @@
 "use client";
-import { useState } from "react";
 import { sendSignInEmail } from "@/firebase/authAPI";
 import { Button, Container, TextField, Typography } from "@mui/material";
+import { useState } from "react";
 
 export default function Login() {
   const [email, setEmail] = useState("");
