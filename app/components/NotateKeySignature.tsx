@@ -76,12 +76,22 @@ const NotateKeySignature = ({ handleNotes }: any) => {
   useEffect(() => {
     initializeRenderer(rendererRef, container);
     const newStaves = renderStaves();
+
     if (newStaves) {
-      const middleG = newStaves[0].getYForLine(0);
-      console.log("middle G: ", middleG);
-      setNotesAndCoordinates(() =>
-        generateYMinAndYMaxForKeySig(middleG - 7.5, keySigArray)
-      );
+      if (clef === "bass") {
+        setNotesAndCoordinates(() =>
+          generateYMinAndYMaxForKeySig(
+            newStaves[0].getYForLine(1) - 7.5,
+            keySigArray
+          )
+        );
+      } else if (clef === "treble")
+        setNotesAndCoordinates(() =>
+          generateYMinAndYMaxForKeySig(
+            newStaves[0].getYForLine(0) - 7.5,
+            keySigArray
+          )
+        );
     }
   }, []);
 
@@ -100,11 +110,22 @@ const NotateKeySignature = ({ handleNotes }: any) => {
   const clearKey = () => {
     clearKeySignature(setGlyphs, rendererRef, container), setKeySig(() => []);
     const newStaves = renderStaves();
+
     if (newStaves) {
-      const middleG = newStaves[0].getYForLine(0);
-      setNotesAndCoordinates(() =>
-        generateYMinAndYMaxForKeySig(middleG - 7.5, keySigArray)
-      );
+      if (clef === "bass") {
+        setNotesAndCoordinates(() =>
+          generateYMinAndYMaxForKeySig(
+            newStaves[0].getYForLine(1) - 7.5,
+            keySigArray
+          )
+        );
+      } else if (clef === "treble")
+        setNotesAndCoordinates(() =>
+          generateYMinAndYMaxForKeySig(
+            newStaves[0].getYForLine(0) - 7.5,
+            keySigArray
+          )
+        );
     }
     dispatch({ type: "" });
   };
