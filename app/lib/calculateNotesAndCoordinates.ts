@@ -6,13 +6,16 @@ const helperFunction = (
   newStaves: StaveType[],
   index: number,
   clefLineNumber: number,
-  tolerance: number = 2
+  tolerance: number = 2,
+  spacingBetweenLines?: number
 ) => {
-  const spacingBetweenLinesAndSpaces =
-    newStaves[index].getSpacingBetweenLines() / 2;
+  if (spacingBetweenLines) {
+    spacingBetweenLines = spacingBetweenLines / 2;
+    const topLineCoordinate = newStaves[index].getYForLine(clefLineNumber);
+    return topLineCoordinate - spacingBetweenLines - tolerance;
+  }
   const topLineCoordinate = newStaves[index].getYForLine(clefLineNumber);
-
-  return topLineCoordinate - spacingBetweenLinesAndSpaces - tolerance;
+  return topLineCoordinate - tolerance;
 };
 
 const calculateNotesAndCoordinates = (
@@ -24,24 +27,45 @@ const calculateNotesAndCoordinates = (
   notesArray: string[],
   index: number,
   bassClefLineNumber: number,
-  trebleClefLineNumber: number
+  trebleClefLineNumber: number,
+  isLine?: boolean
 ): void => {
   if (newStaves && newStaves.length > 0) {
-    if (clef === "bass") {
-      const minimumYCoordinate = helperFunction(
-        newStaves,
-        index,
-        bassClefLineNumber
-      );
+    if (!isLine) {
+      let minimumYCoordinate: number;
+      const spacingBetweenLines = newStaves[index].getSpacingBetweenLines();
+      if (clef === "bass") {
+        minimumYCoordinate = helperFunction(
+          newStaves,
+          index,
+          bassClefLineNumber,
+          spacingBetweenLines
+        );
+      } else if (clef === "treble") {
+        minimumYCoordinate = helperFunction(
+          newStaves,
+          index,
+          trebleClefLineNumber
+        );
+      }
       setNotesAndCoordinates(() =>
         generateYMinAndYMaxForKeySig(minimumYCoordinate, notesArray)
       );
-    } else if (clef === "treble") {
-      const minimumYCoordinate = helperFunction(
-        newStaves,
-        index,
-        trebleClefLineNumber
-      );
+    } else {
+      let minimumYCoordinate: number;
+      if (clef === "bass") {
+        minimumYCoordinate = helperFunction(
+          newStaves,
+          index,
+          bassClefLineNumber
+        );
+      } else if (clef === "treble") {
+        minimumYCoordinate = helperFunction(
+          newStaves,
+          index,
+          trebleClefLineNumber
+        );
+      }
       setNotesAndCoordinates(() =>
         generateYMinAndYMaxForKeySig(minimumYCoordinate, notesArray)
       );

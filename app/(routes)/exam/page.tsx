@@ -611,17 +611,20 @@ export default function ExamHomePage() {
         {viewState !== VIEW_STATES.SUBMIT_AND_EXIT &&
           viewState !== VIEW_STATES.START_TEST && (
             <Box sx={{ pl: 5 }}>
-              {/* <Button onClick={incrementViewState}>
+              <Button onClick={incrementViewState}>
                 <Typography variant="h4">{">"}</Typography>
               </Button>
               <Button onClick={() => setViewState(VIEW_STATES.TRIADS_NOTATE1)}>
                 <Typography>{"Go to Triads"}</Typography>
               </Button>
+              <Button onClick={() => setViewState(VIEW_STATES.SCALES_NOTATE1)}>
+                <Typography>{"Go to Scales"}</Typography>
+              </Button>
               <Button
                 onClick={() => setViewState(VIEW_STATES.WRITE_PROGRESSIONS)}
               >
                 <Typography>{"Go to Progressions"}</Typography>
-              </Button> */}
+              </Button>
             </Box>
           )}
       </Stack>
