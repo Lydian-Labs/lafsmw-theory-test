@@ -34,7 +34,6 @@ export async function completeSignIn(link: string) {
           "Please provide your email for confirmation"
         );
       }
-      console.log("emailForSignIn from authAPI:", emailForSignIn);
       if (!emailForSignIn) {
         throw new Error("Email is null.");
       }
