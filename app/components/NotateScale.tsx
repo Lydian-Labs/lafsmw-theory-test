@@ -104,9 +104,6 @@ const NotateScale = ({
 
   useEffect(() => {
     console.log("scale data for grading:", scaleDataForGrading);
-    console.log(
-      scaleDataMatrix.map((scale) => scale.map((note) => note.staveNote))
-    );
     const newStave: StaveType[] = renderStavesAndNotes();
     if (newStave) {
       calculateNotesAndCoordinates(

@@ -53,7 +53,11 @@ export const handleChordInteraction = (
     }
   } else if (state.isEraseNoteActive) {
     if (foundNoteIndex !== -1) {
-      updatedChordData = removeNoteFromChord(chordData, foundNoteIndex, chosenClef);
+      updatedChordData = removeNoteFromChord(
+        chordData,
+        foundNoteIndex,
+        chosenClef
+      );
       updatedNotesAndCoordinates = removeAccidentalFromNotesAndCoords(
         notesAndCoordinates,
         foundNoteData
