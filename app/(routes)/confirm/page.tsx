@@ -1,16 +1,18 @@
 "use client";
 import UpdateName from "@/app/components/UpdateName";
 import { completeSignIn } from "@/firebase/authAPI";
-import { Button, Container, Grid, Stack, Typography } from "@mui/material";
+import { Button, Container, Stack, Typography } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useAuthContext } from "@/firebase/authContext";
 
 export default function ConfirmSignIn() {
+  const { user } = useAuthContext();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [successBool, setSuccessBool] = useState(false);
+  const [updateName, setUpdateName] = useState(false);
 
   useEffect(() => {
     const handleSignIn = async () => {
@@ -18,8 +20,10 @@ export default function ConfirmSignIn() {
 
       try {
         const success = await completeSignIn(emailLink);
-        if (success) {
-          setSuccessBool(true);
+        if (success && user?.displayName === null) {
+          setUpdateName(true);
+        } else if (success) {
+          router.push("/exam");
         } else {
           setError("Sign-in failed. Please try again.");
         }
@@ -32,7 +36,7 @@ export default function ConfirmSignIn() {
     };
 
     handleSignIn();
-  }, [router]);
+  }, [router, user?.displayName]);
 
   if (loading) {
     return (
@@ -42,7 +46,7 @@ export default function ConfirmSignIn() {
     );
   }
 
-  if (successBool) {
+  if (updateName) {
     return <UpdateName />;
   }
 
@@ -55,7 +59,7 @@ export default function ConfirmSignIn() {
         <Stack spacing={4} alignItems={"center"}>
           <Link href="/login">
             <Button variant="text" sx={{ width: "250px" }}>
-              Try again
+              Try login again
             </Button>
           </Link>
           <Link href="/registration">

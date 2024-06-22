@@ -91,7 +91,9 @@ export default function WriteBluesChanges({
                     *Note: You can enter 1 to 4 chords per bar. You
                     <b> MUST</b> press <em>Save PDF </em>before moving on.
                   </Typography>
-                  <Button onClick={handlePDF}>Save PDF</Button>
+                  <Button onClick={handlePDF}>
+                    {isPDFReady ? "Save new" : "Save PDF"}
+                  </Button>
                 </Stack>
               </Grid>
             </Grid>
