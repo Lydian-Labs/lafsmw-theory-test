@@ -46,9 +46,11 @@ const { Renderer } = VexFlow.Flow;
 const NotateScale = ({
   setScales,
   setIsReady,
+  isReady,
 }: {
   setScales: Dispatch<SetStateAction<Array<string>>>;
   setIsReady: Dispatch<SetStateAction<boolean>>;
+  isReady: boolean;
 }) => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
@@ -256,7 +258,9 @@ const NotateScale = ({
           *Note: You
           <b> MUST</b> press <em>Save </em>before moving on.
         </Typography>
-        <Button onClick={handleScalesClick}>Save</Button>
+        <Button onClick={handleScalesClick} disabled={isReady}>
+          {isReady ? "Saved" : "Save"}
+        </Button>
       </Stack>
     </>
   );
