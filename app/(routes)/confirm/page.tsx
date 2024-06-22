@@ -13,15 +13,20 @@ export default function ConfirmSignIn() {
   useEffect(() => {
     const handleSignIn = async () => {
       const emailLink = window.location.href;
-      const emailForSignIn = window.localStorage.getItem("emailForSignIn");
+      let emailForSignIn = window.localStorage.getItem("emailForSignIn");
+      console.log("emailForSignIn from confirm:", emailForSignIn);
+      console.log("emailLink from confirm:", emailLink);
 
       if (!emailForSignIn) {
-        setError("No email found for sign-in.");
-        setLoading(false);
-        return;
+        emailForSignIn = window.prompt(
+          "Please provide your email for confirmation"
+        );
       }
 
       try {
+        if (!emailForSignIn) {
+          throw new Error("Email not found.");
+        }
         const success = await completeSignIn(emailForSignIn, emailLink);
         if (success) {
           router.push("/exam");
@@ -66,6 +71,22 @@ export default function ConfirmSignIn() {
               }}
             >
               Return to login
+            </Typography>
+          </Stack>
+        </Link>
+        <Link href="/registration">
+          <Stack alignItems={"center"}>
+            <Typography
+              variant="body1"
+              width={"190px"}
+              border={"1px solid"}
+              borderRadius={"12px"}
+              p={4}
+              sx={{
+                "&:hover": { color: "var(--primary40)", border: "none" },
+              }}
+            >
+              Or sign up here
             </Typography>
           </Stack>
         </Link>
