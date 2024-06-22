@@ -83,7 +83,11 @@ export default function ScalesNotation({
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <NotateScale setScales={setScales} setIsReady={setIsReady} />
+                  <NotateScale
+                    setScales={setScales}
+                    setIsReady={setIsReady}
+                    isReady={isReady}
+                  />
                 </Grid>
               </Grid>
               <CardFooter

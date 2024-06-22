@@ -98,7 +98,11 @@ export default function TriadsNotation({
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <NotateChord setChords={setChords} setIsReady={setIsReady} />
+                  <NotateChord
+                    setChords={setChords}
+                    setIsReady={setIsReady}
+                    isReady={isReady}
+                  />
                 </Grid>
               </Grid>
               <CardFooter
