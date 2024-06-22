@@ -39,7 +39,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { useClef } from "@/app/context/ClefContext";
 import SnackbarToast from "@/app/components/SnackbarToast";
-import CardFooter from "@/app/components/CardFooter";
+
 const VIEW_STATES = {
   START_TEST: 0,
   KEY_SIG_NOTATE1: 1,

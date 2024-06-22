@@ -4,32 +4,23 @@ import { Stack, Typography } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import UpdateName from "@/app/components/UpdateName";
 
 export default function ConfirmSignIn() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [successBool, setSuccessBool] = useState(false);
 
   useEffect(() => {
     const handleSignIn = async () => {
       const emailLink = window.location.href;
-      let emailForSignIn = window.localStorage.getItem("emailForSignIn");
-      console.log("emailForSignIn from confirm:", emailForSignIn);
       console.log("emailLink from confirm:", emailLink);
 
-      if (!emailForSignIn) {
-        emailForSignIn = window.prompt(
-          "Please provide your email for confirmation"
-        );
-      }
-
       try {
-        if (!emailForSignIn) {
-          throw new Error("Email not found.");
-        }
-        const success = await completeSignIn(emailForSignIn, emailLink);
+        const success = await completeSignIn(emailLink);
         if (success) {
-          router.push("/exam");
+          setSuccessBool(true);
         } else {
           setError("Sign-in failed. Please try again.");
         }
@@ -50,6 +41,10 @@ export default function ConfirmSignIn() {
         Loading...
       </Typography>
     );
+  }
+
+  if (successBool) {
+    return <UpdateName />;
   }
 
   if (error) {

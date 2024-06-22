@@ -25,22 +25,23 @@ export async function sendSignInEmail(email: string) {
   }
 }
 
-export async function completeSignIn(email: string, link: string) {
+export async function completeSignIn(link: string) {
   try {
     if (isSignInWithEmailLink(auth, link)) {
-      // const emailForSignIn = window.localStorage.getItem("emailForSignIn");
-      // if (!emailForSignIn) {
-      //   throw new Error("Email not found in local storage.");
-      // }
-
-      const result = await signInWithEmailLink(auth, email, link);
-      window.localStorage.removeItem("emailForSignIn");
-
-      if (result.user) {
-        console.log(
-          "Sign in successful! CurrentUser:",
-          result.user.displayName
+      let emailForSignIn = window.localStorage.getItem("emailForSignIn");
+      if (!emailForSignIn) {
+        emailForSignIn = window.prompt(
+          "Please provide your email for confirmation"
         );
+      }
+      console.log("emailForSignIn from authAPI:", emailForSignIn);
+      if (!emailForSignIn) {
+        throw new Error("Email is null.");
+      }
+      const result = await signInWithEmailLink(auth, emailForSignIn, link);
+      window.localStorage.removeItem("emailForSignIn");
+      if (result.user) {
+        console.log("Sign in successful! CurrentUser:", result.user);
         return true;
       }
     }
@@ -51,6 +52,18 @@ export async function completeSignIn(email: string, link: string) {
 
 export async function signOutOfApp() {
   return signOut(auth);
+}
+
+export async function updateDisplayName(displayName: string) {
+  try {
+    if (auth.currentUser !== null) {
+      await updateProfile(auth.currentUser, { displayName: displayName }).catch(
+        (err) => console.error("updateProfile error:", err)
+      );
+    }
+  } catch (err) {
+    console.error("updateDisplayName error:", err);
+  }
 }
 
 export async function signUp(
