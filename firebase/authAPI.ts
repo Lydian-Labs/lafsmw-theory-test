@@ -28,12 +28,12 @@ export async function sendSignInEmail(email: string) {
 export async function completeSignIn(email: string, link: string) {
   try {
     if (isSignInWithEmailLink(auth, link)) {
-      const emailForSignIn = window.localStorage.getItem("emailForSignIn");
-      if (!emailForSignIn) {
-        throw new Error("Email not found in local storage.");
-      }
+      // const emailForSignIn = window.localStorage.getItem("emailForSignIn");
+      // if (!emailForSignIn) {
+      //   throw new Error("Email not found in local storage.");
+      // }
 
-      const result = await signInWithEmailLink(auth, emailForSignIn, link);
+      const result = await signInWithEmailLink(auth, email, link);
       window.localStorage.removeItem("emailForSignIn");
 
       if (result.user) {
