@@ -39,7 +39,6 @@ import {
   NotesAndCoordinatesData,
   StaveType,
 } from "../lib/typesAndInterfaces";
-import { parseNote } from "../lib/modifyAccidentals";
 import CustomButton from "./CustomButton";
 const { Renderer } = VexFlow.Flow;
 
@@ -146,11 +145,9 @@ const NotateChord = ({
     );
 
     let chordDataCopy = { ...chordData };
-    console.log(chordData);
     let notesAndCoordinatesCopy = [...notesAndCoordinates];
     //not currently being used but will be used in the future
     const barIndex = findBarIndex(staves, userClickX);
-    console.log(notesAndCoordinates);
 
     const foundNoteIndex: number = chordData.keys.findIndex(
       (note) => note === foundNoteData?.note

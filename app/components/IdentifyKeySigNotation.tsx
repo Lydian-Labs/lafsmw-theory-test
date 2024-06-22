@@ -95,14 +95,6 @@ export default forwardRef(function IdentifyKeySigNotation(
         key={index}
         style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}
       >
-        <div
-          style={{
-            fontWeight: "lighter",
-            fontSize: "12px",
-            minWidth: "40px",
-            textAlign: "left",
-          }}
-        >{` ${keySig.type}`}</div>
         <FormInput
           name={keySig.key}
           type="text"
@@ -113,9 +105,19 @@ export default forwardRef(function IdentifyKeySigNotation(
           }
           required={false}
         />
+        <div
+          style={{
+            fontWeight: "lighter",
+            fontSize: "12px",
+            minWidth: "40px",
+            textAlign: "left",
+            marginLeft: "10px", // Add some margin for spacing
+          }}
+        >{` ${keySig.type}`}</div>
       </div>
     ));
   };
+
   return (
     <div>
       <form ref={ref} id="submit-form-chords" onSubmit={handleInputSubmit}>
