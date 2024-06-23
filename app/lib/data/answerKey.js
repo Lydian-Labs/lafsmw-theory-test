@@ -17,12 +17,13 @@ const keySignatureFSharp = ["f#", "c#", "g#", "d#"];
 const keySignatureGminor = ["bb", "eb"];
 const keySignatureGSharpMinor = ["f#", "c#", "g#", "d#", "a#"];
 
+//missing Db-7, D#-7
 const chordEmin7flat5 = ["e", "g", "bb", "d"];
 const chordGmin7 = ["g", "bb", "d", "f"];
 const chordDbdominant7 = ["db", "f", "ab", "c"];
 const chordDsharpdim7 = ["d#", "f#", "a", "c"];
 const chordDhalfdim7 = ["d", "f", "ab", "c"];
-const chordGbaug7 = ["g", "bb", "d#", "f#"];
+const chordGbaug7 = ["gb", "bb", "d", "e"];
 
 export const correctTriadAnswers = [
   triadDMajor,
@@ -82,3 +83,11 @@ export const correctProgressionAnswers = [
   "Dbmaj7",
   "Gbm7",
 ];
+
+
+const chordVariations = {
+  m7: /m7|mi7|min7|\-7/i,
+  maj7: /maj7|M7/i,
+  dom7: /7/i,
+  min7b5: ""
+};
