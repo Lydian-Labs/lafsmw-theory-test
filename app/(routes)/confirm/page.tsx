@@ -17,12 +17,11 @@ export default function ConfirmSignIn() {
   useEffect(() => {
     const handleSignIn = async () => {
       const emailLink = window.location.href;
-
       try {
         const success = await completeSignIn(emailLink);
         if (success && user?.displayName === null) {
           setUpdateName(true);
-        } else if (success) {
+        } else if (success && user?.displayName !== null) {
           router.push("/exam");
         } else {
           setError("Sign-in failed. Please try again.");
