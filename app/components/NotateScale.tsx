@@ -14,14 +14,14 @@ import React, {
 } from "react";
 import VexFlow from "vexflow";
 import CheckIfNoteFound from "../components/CheckIfNoteFound";
-import calculateNotesAndCoordinates from "../lib/calculateNotesAndCoordinates";
 import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
 import { useClef } from "../context/ClefContext";
 import { modifyNotesActionTypes } from "../lib/actionTypes";
 import { buttonGroup } from "../lib/buttonsAndButtonGroups";
+import calculateNotesAndCoordinates from "../lib/calculateNotesAndCoordinates";
 import {
-  trebleClefNotesArray,
   bassClefNotesArray,
+  trebleClefNotesArray,
 } from "../lib/data/noteArray";
 import { staveData } from "../lib/data/stavesData";
 import { findBarIndex } from "../lib/findBar";
@@ -106,9 +106,6 @@ const NotateScale = ({
 
   useEffect(() => {
     console.log("scale data for grading:", scaleDataForGrading);
-    console.log(
-      scaleDataMatrix.map((scale) => scale.map((note) => note.staveNote))
-    );
     const newStave: StaveType[] = renderStavesAndNotes();
     if (newStave) {
       calculateNotesAndCoordinates(

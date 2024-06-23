@@ -17,5 +17,5 @@ export const modifyChordsActionTypes = {
 export const modifyKeySigActionTypes = {
   isAddSharpActive: "add sharp",
   isAddFlatActive: "add flat",
-  //isRemoveAccidentalActive: "Delete Accidental",
+  // isRemoveAccidentalActive: "Delete Accidental",
 };

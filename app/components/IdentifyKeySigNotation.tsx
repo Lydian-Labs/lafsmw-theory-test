@@ -93,29 +93,32 @@ export default forwardRef(function IdentifyKeySigNotation(
     return keySigs.map((keySig, index) => (
       <div
         key={index}
-        style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}
+        style={{ display: "flex", alignItems: "center", marginBottom: "10px", font: "10px", marginLeft: "15px" }}
       >
-        <div
-          style={{
-            fontWeight: "lighter",
-            fontSize: "12px",
-            minWidth: "40px",
-            textAlign: "left",
-          }}
-        >{` ${keySig.type}`}</div>
         <FormInput
           name={keySig.key}
           type="text"
           value={textInput[keySig.key] || ""}
-          width="65px"
+          width="45px"
           onChange={(e: ChangeEvent) =>
             setTextInput({ ...textInput, [keySig.key]: e.target.value })
           }
           required={false}
         />
+        <div
+          style={{
+            fontWeight: "lighter",
+            marginBottom: "-5px",
+            fontSize: "12px",
+            minWidth: "30px",
+            marginLeft: "6px", // Add some margin for spacing
+            
+          }}
+        >{` ${keySig.type}`}</div>
       </div>
     ));
   };
+
   return (
     <div>
       <form ref={ref} id="submit-form-chords" onSubmit={handleInputSubmit}>

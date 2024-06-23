@@ -19,8 +19,8 @@ import { modifyChordsActionTypes } from "../lib/actionTypes";
 import { buttonGroup } from "../lib/buttonsAndButtonGroups";
 import calculateNotesAndCoordinates from "../lib/calculateNotesAndCoordinates";
 import {
-  trebleClefNotesArray,
   bassClefNotesArray,
+  trebleClefNotesArray,
 } from "../lib/data/noteArray";
 import { staveData } from "../lib/data/stavesData";
 import { findBarIndex } from "../lib/findBar";
@@ -105,19 +105,7 @@ const NotateChord = ({
   }, []);
 
   useEffect(() => {
-    const newStave: StaveType[] = renderStavesAndChords();
-    if (newStave) {
-      calculateNotesAndCoordinates(
-        chosenClef,
-        setNotesAndCoordinates,
-        newStave,
-        chosenClef === "bass" ? bassClefNotesArray : trebleClefNotesArray,
-        0,
-        -3,
-        -4,
-        true
-      );
-    }
+    renderStavesAndChords();
     //this is the array to use for grading
     const chordsArray = chordData.keys;
     console.log(chordsArray);
@@ -162,7 +150,7 @@ const NotateChord = ({
     let notesAndCoordinatesCopy = [...notesAndCoordinates];
     //not currently being used but will be used in the future
     const barIndex = findBarIndex(staves, userClickX);
-    console.log(notesAndCoordinates);
+
     const foundNoteIndex: number = chordData.keys.findIndex(
       (note) => note === foundNoteData?.note
     );

@@ -1,6 +1,6 @@
 import {
   removeAccidentalFromNotesAndCoords,
-  updateNotesAndCoordsWithAccidentalForKeySig,
+  updateNotesAndCoordsWithAccidental,
 } from "../lib/modifyNotesAndCoordinates";
 import {
   addGlyphs,
@@ -25,22 +25,21 @@ export const handleKeySigInteraction = (
   keySig: string[]
 ) => {
   if (state.isAddSharpActive || state.isAddFlatActive) {
-    notesAndCoordinates = updateNotesAndCoordsWithAccidentalForKeySig(
+    notesAndCoordinates = updateNotesAndCoordsWithAccidental(
       state,
       foundNoteData,
       notesAndCoordinates
     );
     addGlyphs(xClick, yClick, state, glyphState);
     updateKeySigArrayForGrading(foundNoteData, state, keySigState);
-  } 
-  // else if (state.isRemoveAccidentalActive) {
-  //   deleteGlyphFromStave(glyphState, xClick, yClick);
-  //   deleteAccidentalFromKeySigArray(foundNoteData, keySig, keySigState);
-  //   notesAndCoordinates = removeAccidentalFromNotesAndCoords(
-  //     notesAndCoordinates,
-  //     foundNoteData
-  //   );
-  // }
+  } else if (state.isRemoveAccidentalActive) {
+    deleteGlyphFromStave(glyphState, xClick, yClick);
+    deleteAccidentalFromKeySigArray(foundNoteData, keySig, keySigState);
+    notesAndCoordinates = removeAccidentalFromNotesAndCoords(
+      notesAndCoordinates,
+      foundNoteData
+    );
+  }
   return {
     notesAndCoordinates,
   };
