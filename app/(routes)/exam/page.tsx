@@ -232,23 +232,24 @@ export default function ExamHomePage() {
     setViewState(VIEW_STATES.SUBMIT_AND_EXIT);
   };
 
-  const handleSubmit = async (e: MouseEvent) => {
+  const handleLevelSubmit = async (e: MouseEvent) => {
     e.preventDefault();
-
     setCurrentUserData({
       ...currentUserData,
       level: level,
     });
   };
 
-  const handleStartTest = (handleSubmit: (e: MouseEvent) => Promise<void>) => {
+  const handleStartTest = (
+    handleLevelSubmit: (e: MouseEvent) => Promise<void>
+  ) => {
     return async (e: MouseEvent) => {
-      e.preventDefault();
       if (level === "select-here") {
         setOpen(true);
         return;
       }
-      await handleSubmit(e);
+      e.preventDefault();
+      await handleLevelSubmit(e);
       startTimer(1800, handleTimeUp);
       setViewState(VIEW_STATES.KEY_SIG_NOTATE1);
     };
@@ -305,7 +306,7 @@ export default function ExamHomePage() {
       return router.push("/sign-out");
     } catch (error) {
       setIsSubmitting(false);
-      console.error("handleSubmit error:", error);
+      console.error("handleFinalSubmit error:", error);
     }
   };
 
@@ -380,7 +381,7 @@ export default function ExamHomePage() {
               <Button
                 variant="contained"
                 size="large"
-                onClick={handleStartTest(handleSubmit)}
+                onClick={handleStartTest(handleLevelSubmit)}
                 sx={{ padding: "16px 32px", borderRadius: 8 }}
               >
                 <Typography variant="h5">Begin Test</Typography>
