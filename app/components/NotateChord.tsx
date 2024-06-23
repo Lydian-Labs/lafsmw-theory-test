@@ -45,9 +45,11 @@ const { Renderer } = VexFlow.Flow;
 const NotateChord = ({
   setChords,
   setIsReady,
+  isReady,
 }: {
   setChords: Dispatch<SetStateAction<Array<string>>>;
   setIsReady: Dispatch<SetStateAction<boolean>>;
+  isReady: boolean;
 }) => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
@@ -214,7 +216,9 @@ const NotateChord = ({
           *Note: You
           <b> MUST</b> press <em>Save </em>before moving on.
         </Typography>
-        <Button onClick={handleChordsClick}>Save</Button>
+        <Button onClick={handleChordsClick} disabled={isReady}>
+          {isReady ? "Saved" : "Save"}
+        </Button>
       </Stack>
     </>
   );
