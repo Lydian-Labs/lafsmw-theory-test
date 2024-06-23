@@ -9,11 +9,13 @@ export default function SignUpForm() {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [signingUp, setSigningUp] = useState(false);
 
   const router = useRouter();
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
+    setSigningUp(true);
     await signUp(email, password, `${firstName} ${lastName}`);
     router.push("/exam");
   };
@@ -64,8 +66,9 @@ export default function SignUpForm() {
           variant="contained"
           color="primary"
           sx={{ mt: 3 }}
+          disabled={signingUp}
         >
-          Sign Up
+          {signingUp ? "Signing up..." : "Sign Up"}
         </Button>
       </form>
     </Container>

@@ -8,13 +8,16 @@ import { FormEvent } from "../lib/typesAndInterfaces";
 export default function SignInForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [signingIn, setSigningIn] = useState(false);
 
   const router = useRouter();
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
+    setSigningIn(true);
     let success = await signIn(email, password);
     if (!success) {
+      setSigningIn(false);
       alert("Invalid email or password. Please try again.");
     } else {
       router.push("/exam");
@@ -51,8 +54,9 @@ export default function SignInForm() {
           variant="contained"
           color="primary"
           sx={{ mt: 3 }}
+          disabled={signingIn}
         >
-          Sign In
+          {signingIn ? "Signing in..." : "Sign In"}
         </Button>
       </form>
       <Box
