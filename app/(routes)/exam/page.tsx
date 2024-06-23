@@ -39,7 +39,8 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { useClef } from "@/app/context/ClefContext";
 import SnackbarToast from "@/app/components/SnackbarToast";
-import CardFooter from "@/app/components/CardFooter";
+import { set } from "firebase/database";
+
 const VIEW_STATES = {
   START_TEST: 0,
   KEY_SIG_NOTATE1: 1,
@@ -75,6 +76,7 @@ export default function ExamHomePage() {
   const { user } = useAuthContext();
   const { startTimer } = useTimer();
   const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const userName = user?.displayName;
   const userId = user?.uid;
@@ -112,7 +114,7 @@ export default function ExamHomePage() {
       }
     };
     if (user == null) {
-      return router.push("/registration");
+      return router.push("/");
     } else {
       fetchSnapshot();
     }
@@ -254,6 +256,7 @@ export default function ExamHomePage() {
 
   const handleFinalSubmit = async (e: MouseEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
     try {
       if (!userName) {
         throw new Error("No current user found.");
@@ -294,12 +297,14 @@ export default function ExamHomePage() {
       });
       if (!response.ok) {
         const errorData = await response.json();
+        setIsSubmitting(false);
         throw new Error(
           `Failed to send email: ${errorData.error}, Details: ${errorData.details}`
         );
       }
       return router.push("/sign-out");
     } catch (error) {
+      setIsSubmitting(false);
       console.error("handleSubmit error:", error);
     }
   };
@@ -603,8 +608,10 @@ export default function ExamHomePage() {
               click the button to go back to page 1.
             </Typography>
             <Stack direction={"column"} gap={4} p={4}>
-              <Button onClick={handleFinalSubmit}>
-                <Typography>Submit Final Answers</Typography>
+              <Button onClick={handleFinalSubmit} disabled={isSubmitting}>
+                <Typography>
+                  {isSubmitting ? "Submitting..." : "Submit Final Answers"}
+                </Typography>
               </Button>
               <Button onClick={goBackToPage1} disabled={timesUp ? true : false}>
                 <Typography>Back to page 1</Typography>

@@ -1,29 +1,28 @@
 "use client";
+import UpdateName from "@/app/components/UpdateName";
 import { completeSignIn } from "@/firebase/authAPI";
-import { Stack, Typography } from "@mui/material";
+import { Button, Container, Stack, Typography } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useAuthContext } from "@/firebase/authContext";
 
 export default function ConfirmSignIn() {
+  const { user } = useAuthContext();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [updateName, setUpdateName] = useState(false);
 
   useEffect(() => {
     const handleSignIn = async () => {
       const emailLink = window.location.href;
-      const emailForSignIn = window.localStorage.getItem("emailForSignIn");
-
-      if (!emailForSignIn) {
-        setError("No email found for sign-in.");
-        setLoading(false);
-        return;
-      }
 
       try {
-        const success = await completeSignIn(emailForSignIn, emailLink);
-        if (success) {
+        const success = await completeSignIn(emailLink);
+        if (success && user?.displayName === null) {
+          setUpdateName(true);
+        } else if (success) {
           router.push("/exam");
         } else {
           setError("Sign-in failed. Please try again.");
@@ -37,7 +36,7 @@ export default function ConfirmSignIn() {
     };
 
     handleSignIn();
-  }, [router]);
+  }, [router, user?.displayName]);
 
   if (loading) {
     return (
@@ -47,29 +46,29 @@ export default function ConfirmSignIn() {
     );
   }
 
+  if (updateName) {
+    return <UpdateName />;
+  }
+
   if (error) {
     return (
-      <>
+      <Container sx={{ paddingTop: "44px" }}>
         <Typography variant="h6" align="center" p={4}>
           {error}
         </Typography>
-        <Link href="/login">
-          <Stack alignItems={"center"}>
-            <Typography
-              variant="body1"
-              width={"190px"}
-              border={"1px solid"}
-              borderRadius={"12px"}
-              p={4}
-              sx={{
-                "&:hover": { color: "var(--primary40)", border: "none" },
-              }}
-            >
-              Return to login
-            </Typography>
-          </Stack>
-        </Link>
-      </>
+        <Stack spacing={4} alignItems={"center"}>
+          <Link href="/login">
+            <Button variant="text" sx={{ width: "250px" }}>
+              Try login again
+            </Button>
+          </Link>
+          <Link href="/registration">
+            <Button variant="text" sx={{ width: "250px" }}>
+              Or sign up here
+            </Button>
+          </Link>
+        </Stack>
+      </Container>
     );
   }
 
