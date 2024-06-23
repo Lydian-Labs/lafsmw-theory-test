@@ -89,5 +89,5 @@ const chordVariations = {
   m7: /m7|mi7|min7|\-7/i,
   maj7: /maj7|M7/i,
   dom7: /7/i,
-  min7b5: ""
+  min7b5: /-7b5|min7b7|m7b5|mi7b5/
 };
