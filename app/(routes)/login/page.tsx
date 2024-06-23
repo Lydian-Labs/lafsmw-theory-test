@@ -1,7 +1,14 @@
 "use client";
 import { sendSignInEmail } from "@/firebase/authAPI";
 import { useAuthContext } from "@/firebase/authContext";
-import { Box, Button, Container, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -39,12 +46,12 @@ export default function Login() {
   };
 
   return (
-    <Container
-      component="main"
+    <Stack
+      alignItems={"center"}
       sx={{ fontFamily: "Monospace", paddingTop: "4rem" }}
     >
       {message === "" && error === "" && (
-        <Box>
+        <Box width={"575px"}>
           <Typography variant="body1" align="center">
             Please enter your email address to receive a sign-in link.
           </Typography>
@@ -95,6 +102,6 @@ export default function Login() {
           {error}
         </Typography>
       )}
-    </Container>
+    </Stack>
   );
 }
