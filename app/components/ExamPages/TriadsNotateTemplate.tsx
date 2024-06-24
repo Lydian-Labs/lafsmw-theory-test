@@ -1,7 +1,11 @@
 "use client";
 import { chordsNotationInstructions } from "@/app/lib/data/instructions";
 import triadsText from "@/app/lib/data/triadsText";
-import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
+import {
+  FormEvent,
+  UserDataProps,
+  InputState,
+} from "@/app/lib/typesAndInterfaces";
 import { Box, Container, Grid, Typography } from "@mui/material";
 import { useCallback, useEffect, useRef, useState } from "react";
 import CardFooter from "../CardFooter";
@@ -23,7 +27,7 @@ export default function TriadsNotation({
   const triadsPropName = `triads${page - 11}`;
 
   const memoizedSetCurrentUserData = useCallback(
-    (data: any) => {
+    (data: InputState) => {
       setCurrentUserData(data);
     },
     [setCurrentUserData]

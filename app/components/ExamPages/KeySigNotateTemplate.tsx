@@ -14,7 +14,9 @@ export default function KeySignaturesNotation({
   nextViewState,
   page,
 }: UserDataProps) {
-  const [keySignatureNotation, setKeySignatureNotation] = useState([]);
+  const [keySignatureNotation, setKeySignatureNotation] = useState<string[]>(
+    []
+  );
 
   const keySigPropName = `keySignaturesNotation${page}`;
 
@@ -27,7 +29,7 @@ export default function KeySignaturesNotation({
     nextViewState();
   };
 
-  function handleKeySigNotation(input: any) {
+  function handleKeySigNotation(input: string[]) {
     setKeySignatureNotation(input);
   }
 

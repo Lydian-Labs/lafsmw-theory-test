@@ -1,3 +1,5 @@
+import { ChangeEventHandler } from "react";
+
 interface FormInputProps {
   labelText?: string;
   name: string;
@@ -7,7 +9,7 @@ interface FormInputProps {
   maxLength?: number;
   width?: string;
   height?: string;
-  onChange: any;
+  onChange: ChangeEventHandler<HTMLInputElement> | undefined;
   required?: boolean;
 }
 

@@ -1,7 +1,11 @@
 "use client";
 import { chordsNotationInstructions } from "@/app/lib/data/instructions";
 import seventhChordsText from "@/app/lib/data/seventhChordsText";
-import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
+import {
+  FormEvent,
+  UserDataProps,
+  InputState,
+} from "@/app/lib/typesAndInterfaces";
 import { Box, Container, Grid, Typography } from "@mui/material";
 import { useCallback, useEffect, useRef, useState } from "react";
 import CardFooter from "../CardFooter";
@@ -23,7 +27,7 @@ export default function NotateSeventhChords({
   const seventhChordsPropName = `seventhChords${page - 17}`;
 
   const memoizedSetCurrentUserData = useCallback(
-    (data: any) => {
+    (data: InputState) => {
       setCurrentUserData(data);
     },
     [setCurrentUserData]
