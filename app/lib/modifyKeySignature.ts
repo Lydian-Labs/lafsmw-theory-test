@@ -29,6 +29,7 @@ export const addGlyphs = (
   userClickX: number,
   userClickY: number,
   state: KeySigState,
+  glyphs: GlyphProps[],
   setGlyphState: (newState: React.SetStateAction<GlyphProps[]>) => void
 ) => {
   const newState = {
@@ -40,7 +41,9 @@ export const addGlyphs = (
       ? "accidentalFlat"
       : "",
   };
-
+  for (const glyph of glyphs) {
+    if (glyph.yPosition === newState.yPosition) return;
+  }
   setGlyphState((prevState: GlyphProps[]) => [...prevState, newState]);
 };
 
@@ -50,6 +53,9 @@ export const updateKeySigArrayForGrading = (
   setKeySigState: (newState: React.SetStateAction<string[]>) => void
 ) => {
   const noteBase = parseNote(foundNoteData.note).noteBase;
+  if (noteBase.length > 1) {
+    return;
+  }
   const noteWithAccidental = state.isSharpActive
     ? `${noteBase}` + "#"
     : `${noteBase}` + "b";

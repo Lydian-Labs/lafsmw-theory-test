@@ -31,7 +31,7 @@ export const handleKeySigInteraction = (
       foundNoteData,
       notesAndCoordinates
     );
-    addGlyphs(xClick, yClick, state, setGlyphState);
+    addGlyphs(xClick, yClick, state, glyphState, setGlyphState);
     updateKeySigArrayForGrading(foundNoteData, state, setKeySigState);
   } else if (state.isEraseAccidentalActive) {
     const glyphWasDeleted = deleteGlyphFromStave(
