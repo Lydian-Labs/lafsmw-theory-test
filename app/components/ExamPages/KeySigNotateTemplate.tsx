@@ -2,13 +2,11 @@
 import { keySigNotationInstructions } from "@/app/lib/data/instructions";
 import keySignaturesText from "@/app/lib/data/keySignaturesText";
 import { MouseEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
-import { Box, Button, Container, Grid, Modal, Typography } from "@mui/material";
+import { Box, Container, Grid, Typography } from "@mui/material";
 import { useState } from "react";
 import CardFooter from "../CardFooter";
 import NotateKeySignature from "../NotateKeySignature";
-import TutorialCard from "../TutorialCard";
 import TutorialModal from "../TutorialModal";
-import { display } from "html2canvas/dist/types/css/property-descriptors/display";
 
 export default function KeySignaturesNotation({
   currentUserData,

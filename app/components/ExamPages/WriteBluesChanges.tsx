@@ -32,8 +32,25 @@ export default function WriteBluesChanges({
     savePDF(userName, setCurrentUserData, currentUserData);
   }
 
+  const boxStyle = {
+    display: "flex",
+    justifyContent: "space-between",
+    flexDirection: "row",
+  };
+
   return (
-    <Box sx={{ display: "flex", justifyContent: "center" }}>
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        flexDirection: "column",
+      }}
+    >
+      <Box sx={boxStyle}>
+        <Typography variant="h5" align="center" pb={2}>
+          Section 8: Write Blues Chord Changes
+        </Typography>
+      </Box>
       <SnackbarToast
         open={open}
         setOpen={setOpen}
@@ -41,78 +58,77 @@ export default function WriteBluesChanges({
       />
       <Box
         component="main"
-        width={1450}
-        height={930}
+        width={1400}
+        height={870}
         bgcolor={"secondary.main"}
         borderRadius="var(--borderRadius)"
         p={2}
         boxShadow={"0px 4px 4px rgba(0, 0, 0, 0.25)"}
       >
-        <Stack gap={2}>
-          <Typography variant="h6" marginLeft={8}>
-            Section 8: Write Blues Chord Changes
-          </Typography>
-          <Box
-            className="write-blues-changes"
-            width={1300}
-            height={800}
-            bgcolor={"card.background"}
-            borderRadius="var(--borderRadius)"
-            margin={"auto"}
-            boxShadow="var(--cardShadow)"
-          >
-            <Grid
-              container
-              columns={1}
-              direction="column"
-              alignItems={"center"}
-              marginY={"auto"}
-              p={3}
-              spacing={2}
+        <Grid container spacing={4} p={2}>
+          <Grid item xs={12} margin={"auto"}>
+            <Box
+              className="write-blues-changes"
+              width={1300}
+              height={800}
+              bgcolor={"card.background"}
+              borderRadius="var(--borderRadius)"
+              margin={"auto"}
+              boxShadow="var(--cardShadow)"
             >
-              <Grid item>
-                <Typography variant="subtitle1">
-                  Write the changes to a Bb blues using ii-V7-I in the last 4
-                  measures (extra credit for hip reharms):
-                </Typography>
-              </Grid>
-              <Grid item>
-                <WriteBlues
-                  handleInput={handleBluesInput}
-                  currentData={currentUserData.blues}
-                  ref={writeBluesFormRef}
-                  width={1150}
-                />
-              </Grid>
-
-              <Grid item>
-                <Stack direction="row" spacing={2}>
-                  <Typography marginTop={2} align="left">
-                    *Note: You can enter 1 to 4 chords per bar. You
-                    <b> MUST</b> press <em>Save PDF </em>before moving on.
+              <Grid
+                container
+                columns={1}
+                direction="column"
+                alignItems={"center"}
+                marginY={"auto"}
+                p={3}
+                spacing={2}
+              >
+                <Grid item>
+                  <Typography variant="h6">
+                    Write the changes to a Bb blues using 2-5-1 in the last 4
+                    measures (extra credit for hip reharms):
                   </Typography>
-                  <Button onClick={handlePDF}>
-                    {isPDFReady ? "Save new" : "Save PDF"}
-                  </Button>
-                </Stack>
+                </Grid>
+                <Grid item>
+                  <WriteBlues
+                    handleInput={handleBluesInput}
+                    currentData={currentUserData.blues}
+                    ref={writeBluesFormRef}
+                    width={1150}
+                  />
+                </Grid>
+
+                <Grid item>
+                  <Stack direction="row" spacing={2}>
+                    <Typography marginTop={2} align="left">
+                      *Note: You can enter 1 to 4 chords per bar. You
+                      <b> MUST</b> press <em>Save PDF </em>before moving on.
+                    </Typography>
+                    <Button onClick={handlePDF}>
+                      {isPDFReady ? "Save new" : "Save PDF"}
+                    </Button>
+                  </Stack>
+                </Grid>
               </Grid>
-            </Grid>
-            <CardFooter
-              width={1100}
-              pageNumber={page}
-              buttonText="Continue >"
-              buttonForm="submit-form-blues"
-              handleSubmit={() => {
-                if (!isPDFReady) {
-                  setOpen(true);
-                } else {
-                  writeBluesFormRef.current?.requestSubmit();
-                  nextViewState();
-                }
-              }}
-            />
-          </Box>
-        </Stack>
+              <CardFooter
+                width={1100}
+                pageNumber={page}
+                buttonText="Continue >"
+                buttonForm="submit-form-blues"
+                handleSubmit={() => {
+                  if (!isPDFReady) {
+                    setOpen(true);
+                  } else {
+                    writeBluesFormRef.current?.requestSubmit();
+                    nextViewState();
+                  }
+                }}
+              />
+            </Box>
+          </Grid>
+        </Grid>
       </Box>
     </Box>
   );
