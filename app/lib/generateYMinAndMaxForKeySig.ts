@@ -9,7 +9,6 @@ const generateYMinAndYMaxForKeySig = (
     const originalNote = note;
     const yCoordinateMin = topNoteYCoordinate + index * 5;
     const yCoordinateMax = yCoordinateMin + tolerance;
-
     return { originalNote, note, yCoordinateMin, yCoordinateMax };
   });
 };

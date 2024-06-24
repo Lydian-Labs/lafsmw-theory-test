@@ -96,7 +96,6 @@ const NotateKeySignature = ({ handleNotes }: any) => {
 
   //this is where the we will get the array to grade
   useEffect(() => {
-    console.log("key signature: ", keySig);
     handleNotes(keySig);
   }, [keySig]);
 
@@ -134,12 +133,18 @@ const NotateKeySignature = ({ handleNotes }: any) => {
       ({ yCoordinateMin, yCoordinateMax }) =>
         userClickY >= yCoordinateMin && userClickY <= yCoordinateMax
     );
-    console.log("userClickY: ", userClickY);
+
     if (!foundNoteData) {
       setSnackbarMessage("Click outside of stave bounds.");
       setOpen(true);
       return;
+    } else {
+      foundNoteData = {
+        ...foundNoteData,
+        userClickX: userClickX,
+      };
     }
+
     const { maxRightClick, minLeftClick, minTopClick, maxBottomClick } =
       isClickWithinStaveBounds(staves[0], topStaveYCoord, bottomStaveYCoord);
 
@@ -154,7 +159,6 @@ const NotateKeySignature = ({ handleNotes }: any) => {
       setOpen(true);
       return;
     }
-
     let notesAndCoordinatesCopy = [...notesAndCoordinates];
 
     const { notesAndCoordinates: newNotesAndCoordinates } =
@@ -165,6 +169,7 @@ const NotateKeySignature = ({ handleNotes }: any) => {
         userClickX,
         userClickY,
         setGlyphs,
+        glyphs,
         setKeySig,
         keySig
       );
