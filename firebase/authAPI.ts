@@ -12,14 +12,14 @@ import { auth } from "./config";
 
 // Configuration for email link. This is the URL that the student will be redirected to after clicking the link in their email.
 const actionCodeSettings = {
-  url: "https://lafsmw-backend--lafsmw-theory-test.us-central1.hosted.app/confirm",
+  url: "https://bretteastmanstudio.com/confirm",
   handleCodeInApp: true,
 };
 
 export async function sendSignInEmail(email: string) {
   try {
-    await sendSignInLinkToEmail(auth, email, actionCodeSettings);
     window.localStorage.setItem("emailForSignIn", email);
+    await sendSignInLinkToEmail(auth, email, actionCodeSettings);
   } catch (err) {
     console.error("sendSignInLinkToEmail error:", err);
   }
@@ -29,6 +29,7 @@ export async function completeSignIn(link: string) {
   try {
     if (isSignInWithEmailLink(auth, link)) {
       let emailForSignIn = window.localStorage.getItem("emailForSignIn");
+      console.log("emailForSignIn:", emailForSignIn);
       if (!emailForSignIn) {
         emailForSignIn = window.prompt(
           "Please provide your email for confirmation"
