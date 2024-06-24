@@ -24,7 +24,7 @@ export const handleKeySigInteraction = (
   keySigState: (newState: React.SetStateAction<string[]>) => void,
   keySig: string[]
 ) => {
-  if (state.isAddSharpActive || state.isAddFlatActive) {
+  if (state.isSharpActive || state.isFlatActive) {
     notesAndCoordinates = updateNotesAndCoordsWithAccidental(
       state,
       foundNoteData,
@@ -32,7 +32,7 @@ export const handleKeySigInteraction = (
     );
     addGlyphs(xClick, yClick, state, glyphState);
     updateKeySigArrayForGrading(foundNoteData, state, keySigState);
-  } else if (state.isRemoveAccidentalActive) {
+  } else if (state.isEraseAccidentalActive) {
     deleteGlyphFromStave(glyphState, xClick, yClick);
     deleteAccidentalFromKeySigArray(foundNoteData, keySig, keySigState);
     notesAndCoordinates = removeAccidentalFromNotesAndCoords(

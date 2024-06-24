@@ -33,9 +33,9 @@ export const addGlyphs = (
   const newState = {
     xPosition: roundToNearest5(userClickX),
     yPosition: roundToNearest5(userClickY),
-    glyph: state.isAddSharpActive
+    glyph: state.isSharpActive
       ? "accidentalSharp"
-      : state.isAddFlatActive
+      : state.isFlatActive
       ? "accidentalFlat"
       : "",
   };
@@ -49,7 +49,7 @@ export const updateKeySigArrayForGrading = (
   keySigState: (newState: React.SetStateAction<string[]>) => void
 ) => {
   const noteBase = parseNote(foundNoteData.note).noteBase;
-  const noteWithAccidental = state.isAddSharpActive
+  const noteWithAccidental = state.isSharpActive
     ? `${noteBase}` + "#"
     : `${noteBase}` + "b";
   keySigState((prevState: string[]) => {

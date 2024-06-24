@@ -121,9 +121,9 @@ const NotateKeySignature = ({ handleNotes }: any) => {
 
   const handleClick = (e: React.MouseEvent) => {
     if (
-      !state.isAddSharpActive &&
-      !state.isAddFlatActive &&
-      !state.isRemoveAccidentalActive
+      !state.isSharpActive &&
+      !state.isFlatActive &&
+      !state.isEraseAccidentalActive
     )
       return;
 
