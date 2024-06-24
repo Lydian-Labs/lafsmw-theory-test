@@ -60,9 +60,9 @@ export type ChordInteractionState = {
 };
 
 export type KeySigState = {
-  isAddSharpActive: boolean;
-  isAddFlatActive: boolean;
-  isRemoveAccidentalActive: boolean;
+  isSharpActive: boolean;
+  isFlatActive: boolean;
+  isEraseAccidentalActive: boolean;
   isClearKeySigActive: boolean;
   [key: string]: boolean | undefined;
 };
@@ -76,13 +76,6 @@ export type BarMetrics = {
   xMaxCoordinate: number;
 };
 
-export type AccidentalStateType = {
-  isAddSharpActive: boolean;
-  isAddFlatActive: boolean;
-  isRemoveSharpActive: boolean;
-  isRemoveFlatActive: boolean;
-  isClearMeasuresActive: boolean;
-};
 export type StaveType = InstanceType<typeof Stave>;
 export type GlyphType = InstanceType<typeof Glyph>;
 export type StaveNoteType = InstanceType<typeof StaveNote>;

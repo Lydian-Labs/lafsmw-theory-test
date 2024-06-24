@@ -50,9 +50,9 @@ export const chordInteractionInitialState: ChordInteractionState = {
 };
 
 export const keySigInitialState: KeySigState = {
-  isAddSharpActive: false,
-  isAddFlatActive: false,
-  isRemoveAccidentalActive: false,
+  isSharpActive: false,
+  isFlatActive: false,
+  isEraseAccidentalActive: false,
   isClearKeySigActive: false,
 };
 
