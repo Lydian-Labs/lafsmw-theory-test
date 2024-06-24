@@ -7,11 +7,13 @@ import { FormEvent } from "../lib/typesAndInterfaces";
 export default function UpdateName() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [isSigningUp, setIsSigningUp] = useState(false);
 
   const router = useRouter();
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
+    setIsSigningUp(true);
     await updateDisplayName(`${firstName} ${lastName}`);
     router.push("/exam");
   };
@@ -44,8 +46,9 @@ export default function UpdateName() {
           variant="contained"
           color="primary"
           sx={{ mt: 3 }}
+          disabled={isSigningUp}
         >
-          Sign Up
+          {isSigningUp ? "Signing up..." : "Sign up"}
         </Button>
       </form>
     </Container>
