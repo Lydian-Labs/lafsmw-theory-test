@@ -1,17 +1,10 @@
 "use client";
 import { sendSignInEmail } from "@/firebase/authAPI";
 import { useAuthContext } from "@/firebase/authContext";
-import {
-  Box,
-  Button,
-  Container,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, FormEvent } from "react";
 
 export default function Login() {
   const { user } = useAuthContext();
@@ -27,7 +20,7 @@ export default function Login() {
     }
   }, [router, user]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setMessage("");
     setError("");

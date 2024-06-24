@@ -39,7 +39,6 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { useClef } from "@/app/context/ClefContext";
 import SnackbarToast from "@/app/components/SnackbarToast";
-import { set } from "firebase/database";
 
 const VIEW_STATES = {
   START_TEST: 0,

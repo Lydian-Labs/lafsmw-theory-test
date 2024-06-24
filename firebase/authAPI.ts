@@ -18,8 +18,8 @@ const actionCodeSettings = {
 
 export async function sendSignInEmail(email: string) {
   try {
-    await sendSignInLinkToEmail(auth, email, actionCodeSettings);
     window.localStorage.setItem("emailForSignIn", email);
+    await sendSignInLinkToEmail(auth, email, actionCodeSettings);
   } catch (err) {
     console.error("sendSignInLinkToEmail error:", err);
   }
@@ -29,6 +29,7 @@ export async function completeSignIn(link: string) {
   try {
     if (isSignInWithEmailLink(auth, link)) {
       let emailForSignIn = window.localStorage.getItem("emailForSignIn");
+      console.log("emailForSignIn:", emailForSignIn);
       if (!emailForSignIn) {
         emailForSignIn = window.prompt(
           "Please provide your email for confirmation"
