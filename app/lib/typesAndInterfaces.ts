@@ -125,6 +125,7 @@ export interface NotesAndCoordinatesData {
   yCoordinateMin: number;
   yCoordinateMax: number;
   userClickY?: number;
+  userClickX?: number;
 }
 
 export interface ModifyNoteData {
