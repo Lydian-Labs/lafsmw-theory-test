@@ -84,10 +84,19 @@ export const correctProgressionAnswers = [
   "Gbm7",
 ];
 
-
-const chordVariations = {
-  m7: /m7|mi7|min7|\-7/i,
-  maj7: /maj7|M7/i,
-  dom7: /7/i,
-  min7b5: /-7b5|min7b7|m7b5|mi7b5/
+const triads = {
+  min: /^(F#)minor$|min$|mi$|\-$/,
+  maj: /^(D|F#)(Major|Maj|\s)$/i,
+  dim: /^(Eb)dim$|diminished$|º$/i,
+  aug: /^(E)aug$|augmented$|\+/i,
 };
+
+/* D major, F#maj, Dbmaj,  F#-
+  Ebdim, E+ */
+
+// const chordVariations = {
+//   m7: /m7|mi7|min7|\-7/i,
+//   maj7: /maj7|M7/i,
+//   dom7: /7/i,
+//   min7b5: /-7b5|min7b7|m7b5|mi7b5/
+// };
