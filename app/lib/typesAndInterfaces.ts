@@ -274,8 +274,6 @@ export interface TextInput {
 }
 
 export type WriteProps = {
-  numBars?: number;
-  chords?: Chord[];
   width: number;
   currentData?: TextInput;
   handleInput: (data: InputData) => void;

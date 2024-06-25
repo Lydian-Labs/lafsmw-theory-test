@@ -1,5 +1,5 @@
 const keyNames = [
-  "C Major",
+  "C Major (example)",
   "E minor",
   "Db Major",
   "C# minor",
