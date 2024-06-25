@@ -1,10 +1,59 @@
+//regex patterns for 'identify the following 7th chords'
+export const correctSeventhChordAnswers = [
+  /^(E#)(?:dim7|º7)$/i,
+  /^(F)(?:∆|∆7|[Mm]aj7|[Mm]a7)$/i,
+  /^(G)(?:-∆7|-∆|m∆|m∆7|min[Mm]aj7|mi[Mm]aj7|m[Mm]aj7)$/,
+  /^(B7)$/,
+  /^(F#)(?:ø|ø7|-7b5|m7b5|min7b5|mi7b5)$/,
+  /^(Ab)(?:-7|min7|mi7|m7)$/,
+  /^(D)(?:\+7|7#5|7\(#5\)|[Aa]ug7|)$/,
+];
+
 const triadDMajor = ["d", "f#", "a"];
 const triadFsharpMajor = ["f#", "a#", "c#"];
-const triadDbMinor = ["db", "f", "ab"];
+const triadDbMinor = ["db", "fb", "ab"];
 const triadFsharpMinor = ["f#", "a", "c#"];
 const triadEbDiminished = ["eb", "gb", "bbb"];
-const triadEAugmented = ["e", "g#", "b#"];
+const triadEAugmented = ["e", "g#", "b#", "c"];
 
+//regex patterns for 'write the following triads'
+const correctDMajorTriad = /^df#a$/;
+const correctFSharpMajorTriad = /^f#a#c#$/;
+const correctDbMinorTriad = /^db(?:e|fb)ab$/;
+const correctFSharpMinorTriad = /^f#ac#$/;
+const correctEbDiminishedTriad = /^ebgb(?:a|bbb)$/;
+const correctEAugmentedTriad = /^eg#(?:b#|c)$/;
+
+export const correctTriads: RegExp[] = [
+  /^df#a$/,
+  /^f#a#c#$/,
+  /^db(?:e|fb)ab$/,
+  /^f#ac#$/,
+  /^ebgb(?:a|bbb)$/,
+  /^eg#(?:b#|c)$/,
+];
+
+//regex patterns for 'write the following 7th chords'
+const correctEMajor7 = /^(E)(?:∆|∆7|Maj7|Ma7)$/;
+const correctGMinor7 = /^(G)(?:-7|min7|mi7|m7)$/;
+const correctDb7 = /^Db7$/;
+const correctDSharpdim7 = /^(D#)(?:dim7|º7)$/;
+const correctDHalfDim7 = /^(D)(?:ø|ø7|-7b5|m7b5|min7b5|mi7b5)$/;
+const correctGbAug7 = /^(Gb)(?:\+7|7#5|7\(#5\)|[Aa]ug7|)$/;
+const correctEbMinMaj7 =
+  /^(Eb)(?:-∆7|-∆|m∆|m∆7|min[Mm]aj7|mi[Mm]aj7|m[Mm]aj7)$/;
+
+export const correct7thChords = [
+  /^(E)(?:∆|∆7|Maj7|Ma7)$/,
+  /^(G)(?:-7|min7|mi7|m7)$/,
+  /^Db7$/,
+  /^(D#)(?:dim7|º7)$/,
+  /^(D)(?:ø|ø7|-7b5|m7b5|min7b5|mi7b5)$/,
+  /^(Gb)(?:\+7|7#5|7\(#5\)|[Aa]ug7|)$/,
+  /^(Eb)(?:-∆7|-∆|m∆|m∆7|min[Mm]aj7|mi[Mm]aj7|m[Mm]aj7)$/,
+];
+
+//need to update the logic to allow for either 7 or 8 notes
 const scaleDbMajor = ["db", "eb", "f", "gb", "ab", "bb", "c"];
 const scaleBMajor = ["b", "c#", "d#", "e", "f#", "g#", "a#"];
 const scaleFSharpDorian = ["f#", "g#", "a", "b", "c#", "d#", "e"];
@@ -13,7 +62,7 @@ const scaleBbMixolydian = ["bb", "c", "d", "eb", "f", "g", "ab"];
 const scaleCSharpMixolydian = ["c#", "d#", "e#", "f#", "g#", "a#", "b"];
 
 const keySignatureDbMajor = ["bb", "eb", "ab", "db", "gb"];
-const keySignatureFSharp = ["f#", "c#", "g#", "d#"];
+const keySignatureFSharp = ["f#", "c#", "g#", "d#", "a", "e"];
 const keySignatureGminor = ["bb", "eb"];
 const keySignatureGSharpMinor = ["f#", "c#", "g#", "d#", "a#"];
 
@@ -59,15 +108,6 @@ export const correctSeventhChordNotationAnswers = [
   chordGbaug7,
 ];
 
-export const correctSeventhChordAnswers = [
-  /^(E#)(?:dim7|º7)$/i,
-  /^(F)(?:∆|∆7|Maj7|Ma7)$/i,
-  /^(G)(?:-∆7|-∆|m∆|m∆7|min[Mm]aj7|mi[Mm]aj7|m[Mm]aj7)$/,
-  /^(B)7/,
-  /^(F#)(?:ø|ø7|-7b5|m7b5|min7b5|mi7b5)$/,
-  /^(Ab)(?:-7|min7|mi7|m7)$/,
-  /^(D)\s*(?:\+7|7#5|7\(#5\)|[Aa]ug7|)$/,
-];
 export const correctKeySigAnswers = ["db", "a", "f-", "c#-"];
 
 export const correctProgressionAnswers = [
@@ -90,20 +130,3 @@ export const correctProgressionAnswers = [
   "Dbmaj7",
   "Gbm7",
 ];
-
-const triads = {
-  min: /^(F#)minor$|min$|mi$|\-$/,
-  maj: /^(D|F#)(Major|Maj|\s)$/i,
-  dim: /^(Eb)dim$|diminished$|º$/i,
-  aug: /^(E)aug$|augmented$|\+/i,
-};
-
-/* D major, F#maj, Dbmaj,  F#-
-  Ebdim, E+ */
-
-// const chordVariations = {
-//   m7: /m7|mi7|min7|\-7/i,
-//   maj7: /maj7|M7/i,
-//   dom7: /7/i,
-//   min7b5: /-7b5|min7b7|m7b5|mi7b5/
-// };

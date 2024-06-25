@@ -14,6 +14,7 @@ import { useTimer } from "@/app/context/TimerContext";
 import {
   checkAnswers,
   checkArrOfArrsAnswer,
+  checkArrOfArrsRegexAnswer,
   checkProgressionAnswers,
   checkRegexAnswers,
 } from "@/app/lib/calculateAnswers";
@@ -27,6 +28,7 @@ import {
   correctSeventhChordAnswers,
   correctSeventhChordNotationAnswers,
   correctTriadAnswers,
+  correctTriads,
 } from "@/app/lib/data/answerKey";
 import { initialFormInputState } from "@/app/lib/initialStates";
 import { InputState, MouseEvent, Level } from "@/app/lib/typesAndInterfaces";
@@ -181,6 +183,11 @@ export default function ExamHomePage() {
       correctTriadAnswers,
       "Triads"
     );
+    let regexTriadAnswers = checkArrOfArrsRegexAnswer(
+      userTriads,
+      correctTriads,
+      "Triads"
+    );
     let seventhNotationAnswers = checkArrOfArrsAnswer(
       userSeventhChordAnswers,
       correctSeventhChordNotationAnswers,
@@ -203,7 +210,8 @@ export default function ExamHomePage() {
       keySigNotationAnswers,
       keySigAnswers,
       scalesAnswers,
-      triadsAnswers,
+      regexTriadAnswers,
+      //triadsAnswers,
       seventhNotationAnswers,
       seventhAnswers,
       progressionAnswers,

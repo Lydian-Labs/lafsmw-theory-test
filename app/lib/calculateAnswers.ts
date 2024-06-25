@@ -29,12 +29,6 @@ export const checkProgressionAnswers = (
     </ul>`;
   return result;
 };
-const regexTest = (studentAnswers: string[], regexCorrectAnswers: any) => {
-  studentAnswers.forEach((chord): boolean => {
-    const result = regexCorrectAnswers.test(chord);
-    return result;
-  });
-};
 
 export const checkAnswers = (
   answers: string[],
@@ -53,12 +47,13 @@ export const checkAnswers = (
     <ul>Actual student answers:
       <li>${answers}</li>
     </ul>`;
+  console.log("result: ", result);
   return result;
 };
 
 export const checkRegexAnswers = (
   studentAnswers: string[],
-  regexCorrectAnswers: any,
+  regexCorrectAnswers: RegExp[],
   questionType: string
 ): string => {
   let score = 0;
@@ -90,7 +85,6 @@ export const checkArrOfArrsAnswer = (
   let result = "";
   let numAnswers = correctAnswers.length;
   let actualStudentAnswers = prepareArrOfArrsAnswer(userAnswers);
-
   for (let i = 0; i < userAnswers.length; i++) {
     if (!userAnswers[i].length) {
       continue;
@@ -101,6 +95,35 @@ export const checkArrOfArrsAnswer = (
   }
   result = `${score}/${numAnswers} on the ${questionType} section.
     <ul>Actual student answers:${actualStudentAnswers}</ul>`;
+  console.log("result: ", result);
+  return result;
+};
+
+export const checkArrOfArrsRegexAnswer = (
+  studentAnswers: string[][],
+  correctRegexAnswers: RegExp[],
+  questionType: string
+): string => {
+  let score = 0;
+  let result = "";
+  let numAnswers = correctRegexAnswers.length;
+  let actualStudentAnswers = prepareArrOfArrsAnswer(studentAnswers);
+  for (let i = 0; i < studentAnswers.length; i++) {
+    let triad = studentAnswers[i].join("");
+    let isTrue = correctRegexAnswers[i].test(triad);
+    if (!studentAnswers[i].length) {
+      continue;
+    }
+    if (isTrue) {
+      console.log("regex test passed");
+      score++;
+    } else {
+      console.log("regex test did not pass");
+    }
+  }
+  result = `${score}/${numAnswers} on the ${questionType} section.
+    <ul>Actual student answers:${actualStudentAnswers}</ul>`;
+  console.log("result: ", result);
   return result;
 };
 
