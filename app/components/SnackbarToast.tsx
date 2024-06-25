@@ -47,13 +47,13 @@ export default function SimpleSnackbar({
     >
       <SnackbarContent
         style={{
-          backgroundColor: "var(--colorFilledProgressBarColor)",
+          backgroundColor: "var(--primary110)",
           textAlign: "center",
           fontSize: "1rem",
           color: "var(--primary10)",
           width: "100%",
           padding: "1rem",
-          border: "1px solid var(--primary10)",
+          border: "1px solid var(--colorEnabledButtonColor)",
           borderRadius: "var(--borderRadius)",
         }}
         message={message}

@@ -1,4 +1,3 @@
-import { set } from "firebase/database";
 import { Dispatch, RefObject, SetStateAction } from "react";
 import VexFlow, { IRenderContext } from "vexflow";
 const VF = VexFlow.Flow;
