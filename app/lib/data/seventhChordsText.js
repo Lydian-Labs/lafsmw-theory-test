@@ -1,10 +1,11 @@
 const seventhChordsText = [
-  "E-7b5",
+  "EMaj7",
   "G-7",
-  "Db-7",
-  "D#-7",
+  "Db7",
+  "D#º7",
   "D-7b5",
   "Gb+7",
+  "Eb-∆",
 ];
 
 export default seventhChordsText;

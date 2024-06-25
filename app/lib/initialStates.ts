@@ -50,9 +50,9 @@ export const chordInteractionInitialState: ChordInteractionState = {
 };
 
 export const keySigInitialState: KeySigState = {
-  isAddSharpActive: false,
-  isAddFlatActive: false,
-  isRemoveAccidentalActive: false,
+  isSharpActive: false,
+  isFlatActive: false,
+  isEraseAccidentalActive: false,
   isClearKeySigActive: false,
 };
 
@@ -83,8 +83,30 @@ export const initialFormInputState: InputState = {
   seventhChords4: [],
   seventhChords5: [],
   seventhChords6: [],
+  seventhChords7: [],
   chords: {},
   progressions: {},
   blues: {},
   bluesUrl: "",
+};
+
+export const initialProgressionInputState = {
+  1: "Dm7",
+  2: "G7",
+  3: "Cmaj7",
+  4: "",
+  5: "",
+  6: "",
+  7: "",
+  8: "",
+  9: "",
+  10: "",
+  11: "",
+  12: "",
+  13: "",
+  14: "",
+  15: "",
+  16: "",
+  17: "",
+  18: "",
 };

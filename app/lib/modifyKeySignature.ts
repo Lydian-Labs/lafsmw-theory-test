@@ -9,50 +9,57 @@ import { roundToNearest5 } from "./roundToNearest5";
 const tolerance = 5;
 
 export const deleteGlyphFromStave = (
-  glyphState: (newState: React.SetStateAction<GlyphProps[]>) => void,
+  setGlyphState: (newState: React.SetStateAction<GlyphProps[]>) => void,
+  glyphState: GlyphProps[],
   xClick: number,
   yClick: number
 ) => {
-  glyphState((prevState: GlyphProps[]) =>
-    prevState.filter(
-      (glyph) =>
-        !(
-          Math.abs(glyph.xPosition - xClick) <= tolerance &&
-          Math.abs(glyph.yPosition - yClick) <= tolerance
-        )
-    )
+  const newState = glyphState.filter(
+    (glyph) =>
+      !(
+        Math.abs(glyph.xPosition + 5 - xClick) <= tolerance &&
+        Math.abs(glyph.yPosition - yClick) <= tolerance
+      )
   );
+  setGlyphState(newState);
+  return newState.length < glyphState.length;
 };
 
 export const addGlyphs = (
   userClickX: number,
   userClickY: number,
   state: KeySigState,
-  glyphState: (newState: React.SetStateAction<GlyphProps[]>) => void
+  glyphs: GlyphProps[],
+  setGlyphState: (newState: React.SetStateAction<GlyphProps[]>) => void
 ) => {
   const newState = {
     xPosition: roundToNearest5(userClickX),
     yPosition: roundToNearest5(userClickY),
-    glyph: state.isAddSharpActive
+    glyph: state.isSharpActive
       ? "accidentalSharp"
-      : state.isAddFlatActive
+      : state.isFlatActive
       ? "accidentalFlat"
       : "",
   };
-console.log('glyphData: ', newState)
-  glyphState((prevState: GlyphProps[]) => [...prevState, newState]);
+  for (const glyph of glyphs) {
+    if (glyph.yPosition === newState.yPosition) return;
+  }
+  setGlyphState((prevState: GlyphProps[]) => [...prevState, newState]);
 };
 
 export const updateKeySigArrayForGrading = (
   foundNoteData: NotesAndCoordinatesData,
   state: KeySigState,
-  keySigState: (newState: React.SetStateAction<string[]>) => void
+  setKeySigState: (newState: React.SetStateAction<string[]>) => void
 ) => {
   const noteBase = parseNote(foundNoteData.note).noteBase;
-  const noteWithAccidental = state.isAddSharpActive
+  if (noteBase.length > 1) {
+    return;
+  }
+  const noteWithAccidental = state.isSharpActive
     ? `${noteBase}` + "#"
     : `${noteBase}` + "b";
-  keySigState((prevState: string[]) => {
+  setKeySigState((prevState: string[]) => {
     const newKeySig = [...prevState];
     if (!newKeySig.includes(noteWithAccidental)) {
       newKeySig.push(noteWithAccidental);
@@ -64,14 +71,14 @@ export const updateKeySigArrayForGrading = (
 export const deleteAccidentalFromKeySigArray = (
   foundNoteData: NotesAndCoordinatesData,
   keySigArray: string[],
-  keySigState: (newState: React.SetStateAction<string[]>) => void
+  setKeySigState: (newState: React.SetStateAction<string[]>) => void
 ) => {
-  console.log('foundNoteData: ', foundNoteData.note)
+  console.log("foundNoteData: ", foundNoteData.note);
   const noteBase = parseNote(foundNoteData.note).noteBase;
   const newKeySig = [...keySigArray];
   if (newKeySig.includes(noteBase)) {
     const index = newKeySig.findIndex((note) => note === noteBase);
     newKeySig.splice(index, 1);
   }
-  keySigState(() => newKeySig);
+  setKeySigState(() => newKeySig);
 };

@@ -20,25 +20,33 @@ export const handleKeySigInteraction = (
   foundNoteData: NotesAndCoordinatesData,
   xClick: number,
   yClick: number,
-  glyphState: (newState: React.SetStateAction<GlyphProps[]>) => void,
-  keySigState: (newState: React.SetStateAction<string[]>) => void,
+  setGlyphState: (newState: React.SetStateAction<GlyphProps[]>) => void,
+  glyphState: GlyphProps[],
+  setKeySigState: (newState: React.SetStateAction<string[]>) => void,
   keySig: string[]
 ) => {
-  if (state.isAddSharpActive || state.isAddFlatActive) {
+  if (state.isSharpActive || state.isFlatActive) {
     notesAndCoordinates = updateNotesAndCoordsWithAccidental(
       state,
       foundNoteData,
       notesAndCoordinates
     );
-    addGlyphs(xClick, yClick, state, glyphState);
-    updateKeySigArrayForGrading(foundNoteData, state, keySigState);
-  } else if (state.isRemoveAccidentalActive) {
-    deleteGlyphFromStave(glyphState, xClick, yClick);
-    deleteAccidentalFromKeySigArray(foundNoteData, keySig, keySigState);
-    notesAndCoordinates = removeAccidentalFromNotesAndCoords(
-      notesAndCoordinates,
-      foundNoteData
+    addGlyphs(xClick, yClick, state, glyphState, setGlyphState);
+    updateKeySigArrayForGrading(foundNoteData, state, setKeySigState);
+  } else if (state.isEraseAccidentalActive) {
+    const glyphWasDeleted = deleteGlyphFromStave(
+      setGlyphState,
+      glyphState,
+      xClick,
+      yClick
     );
+    if (glyphWasDeleted) {
+      deleteAccidentalFromKeySigArray(foundNoteData, keySig, setKeySigState);
+      notesAndCoordinates = removeAccidentalFromNotesAndCoords(
+        notesAndCoordinates,
+        foundNoteData
+      );
+    }
   }
   return {
     notesAndCoordinates,

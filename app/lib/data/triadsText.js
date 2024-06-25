@@ -1,10 +1,10 @@
 const triadsText = [
   "D Major",
   "F# Major",
-  "Db Minor",
-  "F# Minor",
-  "Eb Diminished",
-  "E Augmented",
+  "Db minor",
+  "F# minor",
+  "Eb dim",
+  "E aug",
 ];
 
 export default triadsText;

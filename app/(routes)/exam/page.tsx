@@ -11,9 +11,11 @@ import ClassPreferenceSelector from "@/app/components/ClassPreferenceSelector";
 import ClefPreferenceSelector from "@/app/components/ClefPreferenceSelector";
 import { useTimer } from "@/app/context/TimerContext";
 import {
-  checkAnswers,
+  checkKeySigIdentifyAnswers,
   checkArrOfArrsAnswer,
-  checkProgressionAnswers,
+  checkChordsAnswers,
+  check251Answers,
+  checkChordIdentifyAnswers,
 } from "@/app/lib/calculateAnswers";
 import convertObjectToArray from "@/app/lib/convertObjectToArray";
 import convertObjectToChordChart from "@/app/lib/convertObjectToChordChart";
@@ -23,8 +25,8 @@ import {
   correctProgressionAnswers,
   correctScalesAnswers,
   correctSeventhChordAnswers,
-  correctSeventhChordNotationAnswers,
-  correctTriadAnswers,
+  correctTriads,
+  correct7thChordNotationAnswers,
 } from "@/app/lib/data/answerKey";
 import { initialFormInputState } from "@/app/lib/initialStates";
 import { InputState, MouseEvent, Level } from "@/app/lib/typesAndInterfaces";
@@ -64,10 +66,11 @@ const VIEW_STATES = {
   SEVENTH_CHORDS_NOTATE4: 21,
   SEVENTH_CHORDS_NOTATE5: 22,
   SEVENTH_CHORDS_NOTATE6: 23,
-  CHORDS_IDENTIFY: 24,
-  WRITE_PROGRESSIONS: 25,
-  WRITE_BLUES_CHANGES: 26,
-  SUBMIT_AND_EXIT: 27,
+  SEVENTH_CHORDS_NOTATE7: 24,
+  CHORDS_IDENTIFY: 25,
+  WRITE_PROGRESSIONS: 26,
+  WRITE_BLUES_CHANGES: 27,
+  SUBMIT_AND_EXIT: 28,
 };
 
 export default function ExamHomePage() {
@@ -151,6 +154,7 @@ export default function ExamHomePage() {
       currentUserData.seventhChords4,
       currentUserData.seventhChords5,
       currentUserData.seventhChords6,
+      currentUserData.seventhChords7,
     ];
     const userChordAnswers = convertObjectToArray(currentUserData.chords);
 
@@ -163,7 +167,7 @@ export default function ExamHomePage() {
       correctKeySigNotationAnswers,
       "Key Signature Notation"
     );
-    let keySigAnswers = checkAnswers(
+    let keySigAnswers = checkKeySigIdentifyAnswers(
       userKeySigAnswers,
       correctKeySigAnswers,
       "Key Signatures"
@@ -173,22 +177,20 @@ export default function ExamHomePage() {
       correctScalesAnswers,
       "Scales"
     );
-    let triadsAnswers = checkArrOfArrsAnswer(
-      userTriads,
-      correctTriadAnswers,
-      "Triads"
-    );
-    let seventhNotationAnswers = checkArrOfArrsAnswer(
+
+    let triadsAnswers = checkChordsAnswers(userTriads, correctTriads, "Triads");
+
+    let seventhNotationAnswers = checkChordsAnswers(
       userSeventhChordAnswers,
-      correctSeventhChordNotationAnswers,
+      correct7thChordNotationAnswers,
       "Seventh Chord Notation"
     );
-    let seventhAnswers = checkAnswers(
+    let seventhAnswers = checkChordIdentifyAnswers(
       userChordAnswers,
       correctSeventhChordAnswers,
       "Seventh Chords"
     );
-    let progressionAnswers = checkProgressionAnswers(
+    let progressionAnswers = check251Answers(
       userProgressionAnswers,
       correctProgressionAnswers,
       "2-5-1 Progressions"
@@ -570,12 +572,20 @@ export default function ExamHomePage() {
             page={23}
           />
         )}
+        {viewState === VIEW_STATES.SEVENTH_CHORDS_NOTATE7 && (
+          <SeventhChordsNotation
+            currentUserData={currentUserData}
+            setCurrentUserData={setCurrentUserData}
+            nextViewState={incrementViewState}
+            page={24}
+          />
+        )}
         {viewState === VIEW_STATES.CHORDS_IDENTIFY && (
           <ChordsIdentify
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
-            page={24}
+            page={25}
           />
         )}
         {viewState === VIEW_STATES.WRITE_PROGRESSIONS && (
@@ -583,7 +593,7 @@ export default function ExamHomePage() {
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
-            page={25}
+            page={26}
           />
         )}
         {viewState === VIEW_STATES.WRITE_BLUES_CHANGES && (
@@ -593,7 +603,7 @@ export default function ExamHomePage() {
             nextViewState={incrementViewState}
             isPDFReady={isPDFReady}
             setIsPDFReady={setIsPDFReady}
-            page={26}
+            page={27}
           />
         )}
         {viewState === VIEW_STATES.SUBMIT_AND_EXIT && (

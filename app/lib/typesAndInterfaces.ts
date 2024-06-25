@@ -59,9 +59,9 @@ export type ChordInteractionState = {
 };
 
 export type KeySigState = {
-  isAddSharpActive: boolean;
-  isAddFlatActive: boolean;
-  isRemoveAccidentalActive: boolean;
+  isSharpActive: boolean;
+  isFlatActive: boolean;
+  isEraseAccidentalActive: boolean;
   isClearKeySigActive: boolean;
   [key: string]: boolean | undefined;
 };
@@ -75,13 +75,6 @@ export type BarMetrics = {
   xMaxCoordinate: number;
 };
 
-export type AccidentalStateType = {
-  isAddSharpActive: boolean;
-  isAddFlatActive: boolean;
-  isRemoveSharpActive: boolean;
-  isRemoveFlatActive: boolean;
-  isClearMeasuresActive: boolean;
-};
 export type StaveType = InstanceType<typeof Stave>;
 export type GlyphType = InstanceType<typeof Glyph>;
 export type StaveNoteType = InstanceType<typeof StaveNote>;
@@ -131,6 +124,7 @@ export interface NotesAndCoordinatesData {
   yCoordinateMin: number;
   yCoordinateMax: number;
   userClickY?: number;
+  userClickX?: number;
 }
 
 export interface ModifyNoteData {
@@ -256,6 +250,7 @@ export interface InputState {
   seventhChords4: string[];
   seventhChords5: string[];
   seventhChords6: string[];
+  seventhChords7: string[];
   chords: InputData;
   progressions: InputData;
   blues: InputData;
@@ -279,8 +274,6 @@ export interface TextInput {
 }
 
 export type WriteProps = {
-  numBars?: number;
-  chords?: Chord[];
   width: number;
   currentData?: TextInput;
   handleInput: (data: InputData) => void;

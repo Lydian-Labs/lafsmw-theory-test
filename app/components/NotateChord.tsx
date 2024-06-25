@@ -108,7 +108,6 @@ const NotateChord = ({
     renderStavesAndChords();
     //this is the array to use for grading
     const chordsArray = chordData.keys;
-    console.log(chordsArray);
   }, [chordData]);
 
   const eraseChord = () => {
