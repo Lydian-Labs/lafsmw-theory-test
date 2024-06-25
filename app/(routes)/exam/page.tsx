@@ -16,6 +16,7 @@ import {
   checkArrOfArrsAnswer,
   checkArrOfArrsRegexAnswer,
   checkProgressionAnswers,
+  checkProgressionRegexAnswers,
   checkRegexAnswers,
 } from "@/app/lib/calculateAnswers";
 import convertObjectToArray from "@/app/lib/convertObjectToArray";
@@ -207,7 +208,7 @@ export default function ExamHomePage() {
       correctSeventhChordAnswers,
       "Seventh Chords"
     );
-    let progressionAnswers = checkProgressionAnswers(
+    let progressionAnswers = checkProgressionRegexAnswers(
       userProgressionAnswers,
       correctProgressionAnswers,
       "2-5-1 Progressions"

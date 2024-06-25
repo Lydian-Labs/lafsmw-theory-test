@@ -21,6 +21,7 @@ export const checkProgressionAnswers = (
     </ul>`;
   return result;
 };
+
 export const checkProgressionRegexAnswers = (
   studentAnswers: string[],
   regexCorrectAnswers: RegExp[],
@@ -28,12 +29,15 @@ export const checkProgressionRegexAnswers = (
 ): string => {
   let score = 0;
   let result = "";
-  let numAnswers = regexCorrectAnswers.length;
+  let numAnswers = studentAnswers.length;
   for (let i = 0; i < studentAnswers.length; i++) {
-    if (
-      studentAnswers[i].toLowerCase() === regexCorrectAnswers[i]?.toLowerCase()
-    ) {
+    let chord = studentAnswers[i];
+    let isTrue = regexCorrectAnswers[i].test(chord);
+    if (isTrue) {
+      console.log("regex test passed");
       score++;
+    } else {
+      console.log("regex test did not pass");
     }
   }
   result = `${score}/${numAnswers} on the ${questionType} section.
