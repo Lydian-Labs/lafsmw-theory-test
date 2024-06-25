@@ -1,25 +1,3 @@
-export const checkProgressionAnswers = (
-  studentAnswers: string[],
-  correctAnswers: string[],
-  questionType: string
-): string => {
-  let score = 0;
-  let result = "";
-  let numAnswers = correctAnswers.length;
-  for (let i = 0; i < studentAnswers.length; i++) {
-    if (studentAnswers[i].toLowerCase() === correctAnswers[i]?.toLowerCase()) {
-      score++;
-    }
-  }
-  result = `${score}/${numAnswers} on the ${questionType} section.
-    <ul>Actual student answers:
-      <li>${studentAnswers.slice(0, 3)}</li>
-      <li>${studentAnswers.slice(3, 6)}</li>
-      <li>${studentAnswers.slice(6, 9)}</li>
-    </ul>`;
-  return result;
-};
-
 export const checkProgressionRegexAnswers = (
   studentAnswers: string[],
   regexCorrectAnswers: RegExp[],

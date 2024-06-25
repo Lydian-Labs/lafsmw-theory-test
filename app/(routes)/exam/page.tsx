@@ -15,7 +15,6 @@ import {
   checkAnswers,
   checkArrOfArrsAnswer,
   checkArrOfArrsRegexAnswer,
-  checkProgressionAnswers,
   checkProgressionRegexAnswers,
   checkRegexAnswers,
 } from "@/app/lib/calculateAnswers";
@@ -27,8 +26,6 @@ import {
   correctProgressionAnswers,
   correctScalesAnswers,
   correctSeventhChordAnswers,
-  correctSeventhChordNotationAnswers,
-  correctTriadAnswers,
   correctTriads,
   correct7thChordNotationAnswers,
 } from "@/app/lib/data/answerKey";
