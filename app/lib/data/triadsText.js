@@ -1,8 +1,8 @@
 const triadsText = [
   "D Major",
   "F# Major",
-  "Db Minor",
-  "F# Minor",
+  "Db minor",
+  "F# minor",
   "Eb dim",
   "E aug",
 ];
