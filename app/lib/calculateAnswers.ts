@@ -7,7 +7,7 @@ export const checkProgressionRegexAnswers = (
   let result = "";
   let numAnswers = studentAnswers.length;
   for (let i = 0; i < studentAnswers.length; i++) {
-    let chord = studentAnswers[i];
+    let chord = studentAnswers[i]; // add toUpperCase() here?
     let isTrue = regexCorrectAnswers[i].test(chord);
     if (isTrue) {
       console.log("checkProgressionRegexAnswers passed");
