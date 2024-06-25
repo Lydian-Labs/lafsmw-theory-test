@@ -24,7 +24,7 @@ export default function TutorialModal({
 
   return (
     <div>
-      <Button variant={"contained"} onClick={handleOpen}>
+      <Button variant={"contained"} onClick={handleOpen} size="large">
         Need Help?
       </Button>
       <Modal open={open} onClose={handleClose}>
