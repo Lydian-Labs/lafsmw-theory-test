@@ -1,6 +1,6 @@
 "use client";
 import { chordsNotationInstructions } from "@/app/lib/data/instructions";
-import seventhChordsText from "@/app/lib/data/seventhChordsText";
+import { seventhChordsText } from "@/app/lib/data/seventhChordsText";
 import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import { Box, Container, Grid, Typography } from "@mui/material";
 import { useCallback, useEffect, useRef, useState } from "react";

@@ -1,9 +1,10 @@
 "use client";
 import { sendSignInEmail } from "@/firebase/authAPI";
-import { Box, Button, Container, TextField, Typography } from "@mui/material";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { useAuthContext } from "@/firebase/authContext";
+import { Box, Button, Stack, TextField, Typography } from "@mui/material";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useState, FormEvent } from "react";
 
 export default function Login() {
   const { user } = useAuthContext();
@@ -19,7 +20,7 @@ export default function Login() {
     }
   }, [router, user]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setMessage("");
     setError("");
@@ -38,13 +39,12 @@ export default function Login() {
   };
 
   return (
-    <Container
-      component="main"
-      maxWidth="xs"
+    <Stack
+      alignItems={"center"}
       sx={{ fontFamily: "Monospace", paddingTop: "4rem" }}
     >
       {message === "" && error === "" && (
-        <Box>
+        <Box width={"575px"}>
           <Typography variant="body1" align="center">
             Please enter your email address to receive a sign-in link.
           </Typography>
@@ -72,9 +72,17 @@ export default function Login() {
         </Box>
       )}
       {message && (
-        <Typography variant="body1" align="center" fontSize="16px" mt={5}>
-          {message}
-        </Typography>
+        <>
+          <Typography variant="body1" align="center" fontSize="16px" mt={5}>
+            {message}
+          </Typography>
+          <Typography variant="body1" align="center" fontSize="16px" mt={5}>
+            If you did not receive an email after a few moments, please click{" "}
+            <Link href="/registration">
+              <b>here.</b>
+            </Link>
+          </Typography>
+        </>
       )}
       {error && (
         <Typography
@@ -87,6 +95,6 @@ export default function Login() {
           {error}
         </Typography>
       )}
-    </Container>
+    </Stack>
   );
 }

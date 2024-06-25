@@ -5,10 +5,8 @@ import { Button, Container, Stack, Typography } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useAuthContext } from "@/firebase/authContext";
 
 export default function ConfirmSignIn() {
-  const { user } = useAuthContext();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -17,13 +15,11 @@ export default function ConfirmSignIn() {
   useEffect(() => {
     const handleSignIn = async () => {
       const emailLink = window.location.href;
-
+      console.log("emailLink:", emailLink);
       try {
         const success = await completeSignIn(emailLink);
-        if (success && user?.displayName === null) {
+        if (success) {
           setUpdateName(true);
-        } else if (success) {
-          router.push("/exam");
         } else {
           setError("Sign-in failed. Please try again.");
         }
@@ -36,7 +32,7 @@ export default function ConfirmSignIn() {
     };
 
     handleSignIn();
-  }, [router, user?.displayName]);
+  }, [router]);
 
   if (loading) {
     return (

@@ -251,6 +251,7 @@ export interface InputState {
   seventhChords4: string[];
   seventhChords5: string[];
   seventhChords6: string[];
+  seventhChords7: string[];
   chords: InputData;
   progressions: InputData;
   blues: InputData;
