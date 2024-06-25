@@ -1,4 +1,6 @@
-export default function convertObjectToChordChart(inputObject: any) {
+import { InputData } from "./typesAndInterfaces";
+
+export default function convertObjectToChordChart(inputObject: InputData) {
   const numBars = 12;
   const beatsPerBar = 4;
   const totalNumBeats = 48;

@@ -6,13 +6,14 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 import { Level } from "../lib/typesAndInterfaces";
+import { Dispatch, SetStateAction } from "react";
 
 export default function ClassPreferenceSelector({
   setLevel,
   level,
 }: {
-  setLevel: any;
-  level: any;
+  setLevel: Dispatch<SetStateAction<Level>>;
+  level: Level;
 }) {
   function handleLevel(event: SelectChangeEvent) {
     const selectedLevel = event.target.value as Level;

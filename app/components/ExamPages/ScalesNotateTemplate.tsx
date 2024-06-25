@@ -7,7 +7,7 @@ import { useState } from "react";
 import CardFooter from "../CardFooter";
 import NotateScale from "../NotateScale";
 import SnackbarToast from "../SnackbarToast";
-import TutorialCard from "../TutorialCard";
+import TutorialModal from "../TutorialModal";
 
 export default function ScalesNotation({
   currentUserData,
@@ -35,6 +35,12 @@ export default function ScalesNotation({
     }
   };
 
+  const boxStyle = {
+    display: "flex",
+    justifyContent: "space-between",
+    flexDirection: "row",
+  };
+
   return (
     <Container>
       <SnackbarToast
@@ -42,6 +48,12 @@ export default function ScalesNotation({
         setOpen={setOpen}
         message={"You must press Save before moving on."}
       />
+      <Box sx={boxStyle}>
+        <Typography variant="h5" align="center" pb={2}>
+          Section 3: Notate Scales
+        </Typography>
+        <TutorialModal tutorialInstructions={scalesNotationInstructions} />
+      </Box>
       <Box
         component="main"
         width={1139}
@@ -52,16 +64,9 @@ export default function ScalesNotation({
         boxShadow={"0px 4px 4px rgba(0, 0, 0, 0.25)"}
       >
         <Grid container spacing={4} p={2}>
-          <Grid item xs={4}>
-            <TutorialCard
-              tutorialInstructions={scalesNotationInstructions}
-              firstPage={page === 6}
-              title={"Section 3: Notate Scales"}
-            />
-          </Grid>
-          <Grid item xs={8} margin={"auto"}>
+          <Grid item xs={12} margin={"auto"}>
             <Box
-              width={569}
+              width={750}
               height={540}
               bgcolor={"card.background"}
               borderRadius="var(--borderRadius)"

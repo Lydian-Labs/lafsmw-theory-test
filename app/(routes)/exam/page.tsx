@@ -1,7 +1,6 @@
 "use client";
 import ChordsIdentify from "@/app/components/ExamPages/ChordsIdentify";
 import KeySigIdentify from "@/app/components/ExamPages/KeySigIdentify";
-import KeySigNotate1 from "@/app/components/ExamPages/KeySigNotate1";
 import KeySignaturesNotation from "@/app/components/ExamPages/KeySigNotateTemplate";
 import ScalesNotation from "@/app/components/ExamPages/ScalesNotateTemplate";
 import SeventhChordsNotation from "@/app/components/ExamPages/SeventhChordsNotateTemplate";
@@ -340,8 +339,7 @@ export default function ExamHomePage() {
         }}
         p={4}
       >
-        {viewState !== VIEW_STATES.KEY_SIG_NOTATE1 &&
-          viewState !== VIEW_STATES.SUBMIT_AND_EXIT &&
+        {viewState !== VIEW_STATES.SUBMIT_AND_EXIT &&
           viewState !== VIEW_STATES.START_TEST && (
             <Box>
               <Button onClick={decrementViewState}>
@@ -395,7 +393,7 @@ export default function ExamHomePage() {
           </Container>
         )}
         {viewState === VIEW_STATES.KEY_SIG_NOTATE1 && (
-          <KeySigNotate1
+          <KeySignaturesNotation
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
@@ -633,25 +631,22 @@ export default function ExamHomePage() {
             </Stack>
           </main>
         )}
-        {/* {viewState !== VIEW_STATES.SUBMIT_AND_EXIT &&
+        {viewState !== VIEW_STATES.SUBMIT_AND_EXIT &&
           viewState !== VIEW_STATES.START_TEST && (
-            <Box sx={{ pl: 5 }}>
+            <Stack spacing={4}>
               <Button onClick={incrementViewState}>
                 <Typography variant="h4">{">"}</Typography>
               </Button>
               <Button onClick={() => setViewState(VIEW_STATES.TRIADS_NOTATE1)}>
                 <Typography>{"Go to Triads"}</Typography>
               </Button>
-              <Button onClick={() => setViewState(VIEW_STATES.SCALES_NOTATE1)}>
-                <Typography>{"Go to Scales"}</Typography>
-              </Button>
               <Button
                 onClick={() => setViewState(VIEW_STATES.WRITE_PROGRESSIONS)}
               >
                 <Typography>{"Go to Progressions"}</Typography>
               </Button>
-            </Box>
-          )} */}
+            </Stack>
+          )}
       </Stack>
     </Box>
   );

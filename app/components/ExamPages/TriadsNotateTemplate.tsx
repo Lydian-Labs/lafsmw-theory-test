@@ -1,13 +1,17 @@
 "use client";
 import { chordsNotationInstructions } from "@/app/lib/data/instructions";
 import triadsText from "@/app/lib/data/triadsText";
-import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
+import {
+  FormEvent,
+  UserDataProps,
+  InputState,
+} from "@/app/lib/typesAndInterfaces";
 import { Box, Container, Grid, Typography } from "@mui/material";
 import { useCallback, useEffect, useRef, useState } from "react";
 import CardFooter from "../CardFooter";
 import NotateChord from "../NotateChord";
 import SnackbarToast from "../SnackbarToast";
-import TutorialCard from "../TutorialCard";
+import TutorialModal from "../TutorialModal";
 
 export default function TriadsNotation({
   currentUserData,
@@ -23,7 +27,7 @@ export default function TriadsNotation({
   const triadsPropName = `triads${page - 11}`;
 
   const memoizedSetCurrentUserData = useCallback(
-    (data: any) => {
+    (data: InputState) => {
       setCurrentUserData(data);
     },
     [setCurrentUserData]
@@ -50,6 +54,12 @@ export default function TriadsNotation({
     }
   };
 
+  const boxStyle = {
+    display: "flex",
+    justifyContent: "space-between",
+    flexDirection: "row",
+  };
+
   return (
     <Container>
       <SnackbarToast
@@ -57,6 +67,12 @@ export default function TriadsNotation({
         setOpen={setOpen}
         message={"You must press Save before moving on."}
       />
+      <Box sx={boxStyle}>
+        <Typography variant="h5" align="center" pb={2}>
+          Section 4: Notate Triads
+        </Typography>
+        <TutorialModal tutorialInstructions={chordsNotationInstructions} />
+      </Box>
       <Box
         component="main"
         width={1139}
@@ -67,16 +83,9 @@ export default function TriadsNotation({
         boxShadow={"0px 4px 4px rgba(0, 0, 0, 0.25)"}
       >
         <Grid container spacing={4} p={2}>
-          <Grid item xs={4}>
-            <TutorialCard
-              tutorialInstructions={chordsNotationInstructions}
-              firstPage={page === 12}
-              title={"Section 4: Triads"}
-            />
-          </Grid>
-          <Grid item xs={8} margin={"auto"}>
+          <Grid item xs={12} margin={"auto"}>
             <Box
-              width={569}
+              width={750}
               height={540}
               bgcolor={"card.background"}
               borderRadius="var(--borderRadius)"

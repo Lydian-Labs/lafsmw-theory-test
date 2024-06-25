@@ -5,7 +5,7 @@ import { Box, Container, Grid, Typography } from "@mui/material";
 import { useRef } from "react";
 import CardFooter from "../CardFooter";
 import IdentifyKeySigNotation from "../IdentifyKeySigNotation";
-import TutorialCard from "../TutorialCard";
+import TutorialModal from "../TutorialModal";
 
 export default function KeySignaturesIdentification({
   currentUserData,
@@ -19,8 +19,20 @@ export default function KeySignaturesIdentification({
     setCurrentUserData({ ...currentUserData, keySignatures: input });
   }
 
+  const boxStyle = {
+    display: "flex",
+    justifyContent: "space-between",
+    flexDirection: "row",
+  };
+
   return (
     <Container>
+      <Box sx={boxStyle}>
+        <Typography variant="h5" align="center" pb={2}>
+          Section 2: Identify Key Signatures
+        </Typography>
+        <TutorialModal tutorialInstructions={keySigInputInstructions} />
+      </Box>
       <Box
         component="main"
         width={1139}
@@ -31,15 +43,7 @@ export default function KeySignaturesIdentification({
         boxShadow={"0px 4px 4px rgba(0, 0, 0, 0.25)"}
       >
         <Grid container spacing={4} p={2}>
-          <Grid item xs={4}>
-            <TutorialCard
-              tutorialInstructions={keySigInputInstructions}
-              firstPage={page === 5}
-              title={"Section 2: Identify Key Signatures"}
-              height={400}
-            />
-          </Grid>
-          <Grid item xs={8} margin={"auto"}>
+          <Grid item xs={12} margin={"auto"}>
             <Box
               width={569}
               height={480}

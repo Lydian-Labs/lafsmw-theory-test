@@ -17,63 +17,73 @@ export default function WriteProgressions({
     setCurrentUserData({ ...currentUserData, progressions: input });
   }
 
+  const boxStyle = {
+    display: "flex",
+    justifyContent: "space-between",
+    flexDirection: "row",
+  };
+
   return (
     <Container>
+      <Box sx={boxStyle}>
+        <Typography variant="h5" align="center" pb={2}>
+          Section 7: Write Progressions
+        </Typography>
+      </Box>
       <Box
         component="main"
         width={1139}
-        height={780}
+        height={710}
         bgcolor={"secondary.main"}
         borderRadius="var(--borderRadius)"
         p={2}
         boxShadow={"0px 4px 4px rgba(0, 0, 0, 0.25)"}
       >
-        <Stack gap={2}>
-          <Typography variant="h6" marginLeft={8} marginY={1}>
-            Section 7: Write Progressions
-          </Typography>
-          <Box
-            width={1000}
-            height={630}
-            bgcolor={"card.background"}
-            borderRadius="var(--borderRadius)"
-            margin={"auto"}
-            boxShadow="var(--cardShadow)"
-          >
-            <Grid
-              container
-              columns={1}
-              direction="column"
-              alignItems={"center"}
-              marginY={"auto"}
-              p={3}
-              spacing={2}
+        <Grid container spacing={4} p={2}>
+          <Grid item xs={12} margin={"auto"}>
+            <Box
+              width={1000}
+              height={640}
+              bgcolor={"card.background"}
+              borderRadius="var(--borderRadius)"
+              margin={"auto"}
+              boxShadow="var(--cardShadow)"
             >
-              <Grid item>
-                <Typography variant="h6" marginBottom={2}>
-                  Write 2-5-1 Progressions in the following keys:
-                </Typography>
+              <Grid
+                container
+                columns={1}
+                direction="column"
+                alignItems={"center"}
+                marginY={"auto"}
+                p={3}
+                spacing={2}
+              >
+                <Grid item>
+                  <Typography variant="h6" marginBottom={2}>
+                    Write 2-5-1 Progressions in the following keys:
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <WriteProgression
+                    handleInput={handleProgressions}
+                    currentData={currentUserData.progressions}
+                    ref={writeProgressionsFormRef}
+                    width={950}
+                  />
+                </Grid>
               </Grid>
-              <Grid item>
-                <WriteProgression
-                  handleInput={handleProgressions}
-                  currentData={currentUserData.progressions}
-                  ref={writeProgressionsFormRef}
-                  width={950}
-                />
-              </Grid>
-            </Grid>
-            <CardFooter
-              width={900}
-              height={100}
-              pageNumber={page}
-              handleSubmit={() => {
-                writeProgressionsFormRef.current?.requestSubmit();
-                nextViewState();
-              }}
-            />
-          </Box>
-        </Stack>
+              <CardFooter
+                width={900}
+                height={100}
+                pageNumber={page}
+                handleSubmit={() => {
+                  writeProgressionsFormRef.current?.requestSubmit();
+                  nextViewState();
+                }}
+              />
+            </Box>
+          </Grid>
+        </Grid>
       </Box>
     </Container>
   );
