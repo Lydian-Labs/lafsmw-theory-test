@@ -132,18 +132,10 @@ const NotateChord = ({
     }
   };
 
-  const triadsPatterns = {
-    min: /^minor$|^min$|^mi$|^\-$/,
-    maj: /^Major$|^Maj$|^\s$/i,
-    dim: /^dim$|^diminished$|^º$/i,
-    aug: /^aug$|^augmented$|\+/i,
-  };
-
   const handleChordsClick = (e: React.MouseEvent) => {
     setChords(chordData.keys);
     setIsReady(true);
   };
-  const match = triadsPatterns.min.test("minor");
 
   const handleClick = (e: React.MouseEvent) => {
     const { userClickY, userClickX } = getUserClickInfo(
@@ -155,7 +147,7 @@ const NotateChord = ({
       ({ yCoordinateMin, yCoordinateMax }) =>
         userClickY >= yCoordinateMin && userClickY <= yCoordinateMax
     );
-    console.log("triad match: ", match);
+
     let chordDataCopy = { ...chordData };
     let notesAndCoordinatesCopy = [...notesAndCoordinates];
     //not currently being used but will be used in the future

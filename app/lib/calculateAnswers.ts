@@ -1,21 +1,46 @@
 export const checkProgressionAnswers = (
-  answers: string[],
-  correctAnswers: string[],
+  studentAnswers: string[],
+  regexCorrectAnswers: string[],
   questionType: string
 ): string => {
   let score = 0;
   let result = "";
-  let numAnswers = correctAnswers.length;
-  for (let i = 0; i < answers.length; i++) {
-    if (answers[i].toLowerCase() === correctAnswers[i]?.toLowerCase()) {
+  let numAnswers = regexCorrectAnswers.length;
+  for (let i = 0; i < studentAnswers.length; i++) {
+    if (
+      studentAnswers[i].toLowerCase() === regexCorrectAnswers[i]?.toLowerCase()
+    ) {
       score++;
     }
   }
   result = `${score}/${numAnswers} on the ${questionType} section.
     <ul>Actual student answers:
-      <li>${answers.slice(0, 3)}</li>
-      <li>${answers.slice(3, 6)}</li>
-      <li>${answers.slice(6, 9)}</li>
+      <li>${studentAnswers.slice(0, 3)}</li>
+      <li>${studentAnswers.slice(3, 6)}</li>
+      <li>${studentAnswers.slice(6, 9)}</li>
+    </ul>`;
+  return result;
+};
+export const checkProgressionRegexAnswers = (
+  studentAnswers: string[],
+  regexCorrectAnswers: RegExp[],
+  questionType: string
+): string => {
+  let score = 0;
+  let result = "";
+  let numAnswers = regexCorrectAnswers.length;
+  for (let i = 0; i < studentAnswers.length; i++) {
+    if (
+      studentAnswers[i].toLowerCase() === regexCorrectAnswers[i]?.toLowerCase()
+    ) {
+      score++;
+    }
+  }
+  result = `${score}/${numAnswers} on the ${questionType} section.
+    <ul>Actual student answers:
+      <li>${studentAnswers.slice(0, 3)}</li>
+      <li>${studentAnswers.slice(3, 6)}</li>
+      <li>${studentAnswers.slice(6, 9)}</li>
     </ul>`;
   return result;
 };
@@ -53,10 +78,10 @@ export const checkRegexAnswers = (
     let chord = studentAnswers[i];
     let isTrue = regexCorrectAnswers[i].test(chord);
     if (isTrue) {
-      console.log("answer correct");
+      console.log("regex test passed");
       score++;
     } else {
-      console.log("not a correct answer");
+      console.log("regex test did not pass");
     }
   }
   result = `${score}/${numAnswers} on the ${questionType} section.
@@ -100,9 +125,6 @@ export const checkArrOfArrsRegexAnswer = (
   let actualStudentAnswers = prepareArrOfArrsAnswer(studentAnswers);
   for (let i = 0; i < studentAnswers.length; i++) {
     let chord = studentAnswers[i].join("");
-    console.log('student answers: ', studentAnswers[0])
-    console.log('chord: ', chord)
-    console.log('correct regex answers: ', correctRegexAnswers[0])
     let isTrue = correctRegexAnswers[i].test(chord);
     if (!studentAnswers[i].length) {
       continue;
