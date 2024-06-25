@@ -1,4 +1,4 @@
-export const checkProgressionRegexAnswers = (
+export const check251Answers = (
   studentAnswers: string[],
   regexCorrectAnswers: RegExp[],
   questionType: string
@@ -7,13 +7,10 @@ export const checkProgressionRegexAnswers = (
   let result = "";
   let numAnswers = studentAnswers.length;
   for (let i = 0; i < studentAnswers.length; i++) {
-    let chord = studentAnswers[i]; // add toUpperCase() here?
+    let chord = studentAnswers[i]; // do not add toUpperCase() here - student must get the case right
     let isTrue = regexCorrectAnswers[i].test(chord);
     if (isTrue) {
-      console.log("checkProgressionRegexAnswers passed");
       score++;
-    } else {
-      console.log("checkProgressionRegexAnswers did not pass");
     }
   }
   result = `${score}/${numAnswers} on the ${questionType} section.
@@ -25,7 +22,7 @@ export const checkProgressionRegexAnswers = (
   return result;
 };
 
-export const checkAnswers = (
+export const checkKeySigIdentifyAnswers = (
   answers: string[],
   correctAnswers: string[],
   questionType: string
@@ -45,7 +42,7 @@ export const checkAnswers = (
   return result;
 };
 
-export const checkRegexAnswers = (
+export const checkChordIdentifyAnswers = (
   studentAnswers: string[],
   regexCorrectAnswers: RegExp[],
   questionType: string
@@ -57,10 +54,7 @@ export const checkRegexAnswers = (
     let chord = studentAnswers[i];
     let isTrue = regexCorrectAnswers[i].test(chord);
     if (isTrue) {
-      console.log("regex test passed");
       score++;
-    } else {
-      console.log("regex test did not pass");
     }
   }
   result = `${score}/${numAnswers} on the ${questionType} section.
@@ -78,7 +72,7 @@ export const checkArrOfArrsAnswer = (
   let score = 0;
   let result = "";
   let numAnswers = correctAnswers.length;
-  let actualStudentAnswers = prepareArrOfArrsAnswer(userAnswers);
+  let actualStudentAnswers = convertStudentAnswersToHTML(userAnswers);
   for (let i = 0; i < userAnswers.length; i++) {
     if (!userAnswers[i].length) {
       continue;
@@ -93,7 +87,7 @@ export const checkArrOfArrsAnswer = (
   return result;
 };
 
-export const checkArrOfArrsRegexAnswer = (
+export const checkChordsAnswers = (
   userAnswers: string[][],
   correctAnswers: RegExp[],
   questionType: string
@@ -101,7 +95,7 @@ export const checkArrOfArrsRegexAnswer = (
   let score = 0;
   let result = "";
   let numAnswers = correctAnswers.length;
-  let actualStudentAnswers = prepareArrOfArrsAnswer(userAnswers);
+  let actualStudentAnswers = convertStudentAnswersToHTML(userAnswers);
   for (let i = 0; i < userAnswers.length; i++) {
     if (!userAnswers[i].length) {
       continue;
@@ -140,7 +134,7 @@ function checkChordNotesRegexTrue(
   return correctChordNotes.test(answerString);
 }
 
-function prepareArrOfArrsAnswer(userAnswers: string[][]): string {
+function convertStudentAnswersToHTML(userAnswers: string[][]): string {
   let result = "";
   for (let i = 0; i < userAnswers.length; i++) {
     for (let j = 0; j < userAnswers[i].length; j++) {

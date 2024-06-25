@@ -11,11 +11,11 @@ import ClassPreferenceSelector from "@/app/components/ClassPreferenceSelector";
 import ClefPreferenceSelector from "@/app/components/ClefPreferenceSelector";
 import { useTimer } from "@/app/context/TimerContext";
 import {
-  checkAnswers,
+  checkKeySigIdentifyAnswers,
   checkArrOfArrsAnswer,
-  checkArrOfArrsRegexAnswer,
-  checkProgressionRegexAnswers,
-  checkRegexAnswers,
+  checkChordsAnswers,
+  check251Answers,
+  checkChordIdentifyAnswers,
 } from "@/app/lib/calculateAnswers";
 import convertObjectToArray from "@/app/lib/convertObjectToArray";
 import convertObjectToChordChart from "@/app/lib/convertObjectToChordChart";
@@ -167,7 +167,7 @@ export default function ExamHomePage() {
       correctKeySigNotationAnswers,
       "Key Signature Notation"
     );
-    let keySigAnswers = checkAnswers(
+    let keySigAnswers = checkKeySigIdentifyAnswers(
       userKeySigAnswers,
       correctKeySigAnswers,
       "Key Signatures"
@@ -178,23 +178,19 @@ export default function ExamHomePage() {
       "Scales"
     );
 
-    let triadsAnswers = checkArrOfArrsRegexAnswer(
-      userTriads,
-      correctTriads,
-      "Triads"
-    );
+    let triadsAnswers = checkChordsAnswers(userTriads, correctTriads, "Triads");
 
-    let seventhNotationAnswers = checkArrOfArrsRegexAnswer(
+    let seventhNotationAnswers = checkChordsAnswers(
       userSeventhChordAnswers,
       correct7thChordNotationAnswers,
       "Seventh Chord Notation"
     );
-    let seventhAnswers = checkRegexAnswers(
+    let seventhAnswers = checkChordIdentifyAnswers(
       userChordAnswers,
       correctSeventhChordAnswers,
       "Seventh Chords"
     );
-    let progressionAnswers = checkProgressionRegexAnswers(
+    let progressionAnswers = check251Answers(
       userProgressionAnswers,
       correctProgressionAnswers,
       "2-5-1 Progressions"
