@@ -16,14 +16,6 @@ const triadFsharpMinor = ["f#", "a", "c#"];
 const triadEbDiminished = ["eb", "gb", "bbb"];
 const triadEAugmented = ["e", "g#", "b#", "c"];
 
-//regex patterns for 'write the following triads'
-const correctDMajorTriad = /^df#a$/;
-const correctFSharpMajorTriad = /^f#a#c#$/;
-const correctDbMinorTriad = /^db(?:e|fb)ab$/;
-const correctFSharpMinorTriad = /^f#ac#$/;
-const correctEbDiminishedTriad = /^ebgb(?:a|bbb)$/;
-const correctEAugmentedTriad = /^eg#(?:b#|c)$/;
-
 export const correctTriads: RegExp[] = [
   /^df#a$/,
   /^f#a#c#$/,
@@ -33,24 +25,14 @@ export const correctTriads: RegExp[] = [
   /^eg#(?:b#|c)$/,
 ];
 
-//regex patterns for 'write the following 7th chords'
-const correctEMajor7 = /^(E)(?:∆|∆7|Maj7|Ma7)$/;
-const correctGMinor7 = /^(G)(?:-7|min7|mi7|m7)$/;
-const correctDb7 = /^Db7$/;
-const correctDSharpdim7 = /^(D#)(?:dim7|º7)$/;
-const correctDHalfDim7 = /^(D)(?:ø|ø7|-7b5|m7b5|min7b5|mi7b5)$/;
-const correctGbAug7 = /^(Gb)(?:\+7|7#5|7\(#5\)|[Aa]ug7|)$/;
-const correctEbMinMaj7 =
-  /^(Eb)(?:-∆7|-∆|m∆|m∆7|min[Mm]aj7|mi[Mm]aj7|m[Mm]aj7)$/;
-
-export const correct7thChords = [
-  /^(E)(?:∆|∆7|Maj7|Ma7)$/,
-  /^(G)(?:-7|min7|mi7|m7)$/,
-  /^Db7$/,
-  /^(D#)(?:dim7|º7)$/,
-  /^(D)(?:ø|ø7|-7b5|m7b5|min7b5|mi7b5)$/,
-  /^(Gb)(?:\+7|7#5|7\(#5\)|[Aa]ug7|)$/,
-  /^(Eb)(?:-∆7|-∆|m∆|m∆7|min[Mm]aj7|mi[Mm]aj7|m[Mm]aj7)$/,
+export const correct7thChordNotationAnswers = [
+  /^eg#bd#$/,
+  /^gbbdf$/,
+  /^dbfab(?:b|cb)$/,
+  /^d#f#ac$/,
+  /^dfabc$/,
+  /^gbbbd(?:fb|e)$/,
+  /^ebgbbbd$/,
 ];
 
 //need to update the logic to allow for either 7 or 8 notes

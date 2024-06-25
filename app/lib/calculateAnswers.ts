@@ -1,13 +1,3 @@
-const seventhChords = {
-  major7th: /^(F)(?:∆|∆7|Maj7|Ma7)$/i,
-  diminished7th: /^(E#)(?:dim7|º7)$/i,
-  minorMajor7th: /^(G)(?:-∆7|-∆|m∆|m∆7|min[Mm]aj7|mi[Mm]aj7|m[Mm]aj7)$/,
-  dominant7th: /^(B)7/,
-  halfDim7: /^(F#)(?:ø|ø7|-7b5|m7b5|min7b5|mi7b5)$/,
-  min7th: /^(Ab)(?:-7|min7|mi7|m7)$/,
-  aug7th: /^(D)\s*(?:\+7|7#5|7\(#5\)|[Aa]ug7|)$/,
-};
-
 export const checkProgressionAnswers = (
   answers: string[],
   correctAnswers: string[],
@@ -109,8 +99,11 @@ export const checkArrOfArrsRegexAnswer = (
   let numAnswers = correctRegexAnswers.length;
   let actualStudentAnswers = prepareArrOfArrsAnswer(studentAnswers);
   for (let i = 0; i < studentAnswers.length; i++) {
-    let triad = studentAnswers[i].join("");
-    let isTrue = correctRegexAnswers[i].test(triad);
+    let chord = studentAnswers[i].join("");
+    console.log('student answers: ', studentAnswers[0])
+    console.log('chord: ', chord)
+    console.log('correct regex answers: ', correctRegexAnswers[0])
+    let isTrue = correctRegexAnswers[i].test(chord);
     if (!studentAnswers[i].length) {
       continue;
     }
