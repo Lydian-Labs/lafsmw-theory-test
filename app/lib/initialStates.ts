@@ -83,6 +83,7 @@ export const initialFormInputState: InputState = {
   seventhChords4: [],
   seventhChords5: [],
   seventhChords6: [],
+  seventhChords7: [],
   chords: {},
   progressions: {},
   blues: {},
