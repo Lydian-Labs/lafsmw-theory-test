@@ -181,24 +181,14 @@ export default function ExamHomePage() {
       correctScalesAnswers,
       "Scales"
     );
-    //triad answers
-    let triadsAnswers = checkArrOfArrsAnswer(
-      userTriads,
-      correctTriadAnswers,
-      "Triads"
-    );
-    let regexTriadAnswers = checkArrOfArrsRegexAnswer(
+
+    let triadsAnswers = checkArrOfArrsRegexAnswer(
       userTriads,
       correctTriads,
       "Triads"
     );
-    // let seventhNotationAnswers = checkArrOfArrsRegexAnswer(
-    //   userSeventhChordAnswers,
-    //   correct7thChordNotationAnswers,
-    //   "Seventh Chord Notation"
-    // );
 
-    let regexSeventhChordNotationAnswers = checkArrOfArrsRegexAnswer(
+    let seventhNotationAnswers = checkArrOfArrsRegexAnswer(
       userSeventhChordAnswers,
       correct7thChordNotationAnswers,
       "Seventh Chord Notation"
@@ -220,9 +210,8 @@ export default function ExamHomePage() {
       keySigNotationAnswers,
       keySigAnswers,
       scalesAnswers,
-      regexTriadAnswers,
-      //triadsAnswers,
-      regexSeventhChordNotationAnswers,
+      triadsAnswers,
+      seventhNotationAnswers,
       seventhAnswers,
       progressionAnswers,
       currentUserData.bluesUrl,

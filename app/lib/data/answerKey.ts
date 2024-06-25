@@ -14,16 +14,6 @@ export const correctTriads: RegExp[] = [
   /^eg#(?:b#|c)$/,
 ];
 
-export const correct7thChordNotationAnswers = [
-  /^eg#bd#$/,
-  /^gbbdf$/,
-  /^dbfab(?:b|cb)$/,
-  /^d#f#ac$/,
-  /^dfabc$/,
-  /^gbbbd(?:fb|e)$/,
-  /^ebgbbbd$/,
-];
-
 //need to update the logic to allow for either 7 or 8 notes
 const scaleDbMajor = ["db", "eb", "f", "gb", "ab", "bb", "c"];
 const scaleBMajor = ["b", "c#", "d#", "e", "f#", "g#", "a#"];
@@ -44,6 +34,16 @@ const chordDbdominant7 = ["db", "f", "ab", "c"];
 const chordDsharpdim7 = ["d#", "f#", "a", "c"];
 const chordDhalfdim7 = ["d", "f", "ab", "c"];
 const chordGbaug7 = ["gb", "bb", "d", "e"];
+
+export const correct7thChordNotationAnswers = [
+  /^eg#bd#$/,
+  /^gbbdf$/,
+  /^dbfab(?:b|cb)$/,
+  /^d#f#ac$/,
+  /^dfabc$/,
+  /^gbbbd(?:fb|e)$/,
+  /^ebgbbbd$/,
+];
 
 export const correctTriadAnswers = [
   triadDMajor,
