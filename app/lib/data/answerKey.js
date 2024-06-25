@@ -59,8 +59,15 @@ export const correctSeventhChordNotationAnswers = [
   chordGbaug7,
 ];
 
-export const correctSeventhChordAnswers = ["A", "B", "C", "D", "E", "F", "G"];
-
+export const correctSeventhChordAnswers = [
+  /^(E#)(?:dim7|º7)$/i,
+  /^(F)(?:∆|∆7|Maj7|Ma7)$/i,
+  /^(G)(?:-∆7|-∆|m∆|m∆7|min[Mm]aj7|mi[Mm]aj7|m[Mm]aj7)$/,
+  /^(B)7/,
+  /^(F#)(?:ø|ø7|-7b5|m7b5|min7b5|mi7b5)$/,
+  /^(Ab)(?:-7|min7|mi7|m7)$/,
+  /^(D)\s*(?:\+7|7#5|7\(#5\)|[Aa]ug7|)$/,
+];
 export const correctKeySigAnswers = ["db", "a", "f-", "c#-"];
 
 export const correctProgressionAnswers = [

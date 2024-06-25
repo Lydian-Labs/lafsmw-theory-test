@@ -1,3 +1,13 @@
+const seventhChords = {
+  major7th: /^(F)(?:∆|∆7|Maj7|Ma7)$/i,
+  diminished7th: /^(E#)(?:dim7|º7)$/i,
+  minorMajor7th: /^(G)(?:-∆7|-∆|m∆|m∆7|min[Mm]aj7|mi[Mm]aj7|m[Mm]aj7)$/,
+  dominant7th: /^(B)7/,
+  halfDim7: /^(F#)(?:ø|ø7|-7b5|m7b5|min7b5|mi7b5)$/,
+  min7th: /^(Ab)(?:-7|min7|mi7|m7)$/,
+  aug7th: /^(D)\s*(?:\+7|7#5|7\(#5\)|[Aa]ug7|)$/,
+};
+
 export const checkProgressionAnswers = (
   answers: string[],
   correctAnswers: string[],
@@ -19,6 +29,12 @@ export const checkProgressionAnswers = (
     </ul>`;
   return result;
 };
+const regexTest = (studentAnswers: string[], regexCorrectAnswers: any) => {
+  studentAnswers.forEach((chord): boolean => {
+    const result = regexCorrectAnswers.test(chord);
+    return result;
+  });
+};
 
 export const checkAnswers = (
   answers: string[],
@@ -36,6 +52,31 @@ export const checkAnswers = (
   result = `${score}/${numAnswers} on the ${questionType} section.
     <ul>Actual student answers:
       <li>${answers}</li>
+    </ul>`;
+  return result;
+};
+
+export const checkRegexAnswers = (
+  studentAnswers: string[],
+  regexCorrectAnswers: any,
+  questionType: string
+): string => {
+  let score = 0;
+  let result = "";
+  let numAnswers = studentAnswers.length;
+  for (let i = 0; i < studentAnswers.length; i++) {
+    let chord = studentAnswers[i];
+    let isTrue = regexCorrectAnswers[i].test(chord);
+    if (isTrue) {
+      console.log("answer correct");
+      score++;
+    } else {
+      console.log("not a correct answer");
+    }
+  }
+  result = `${score}/${numAnswers} on the ${questionType} section.
+    <ul>Actual student answers:
+      <li>${studentAnswers}</li>
     </ul>`;
   return result;
 };

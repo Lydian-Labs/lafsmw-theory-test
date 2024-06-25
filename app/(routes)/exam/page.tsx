@@ -15,6 +15,7 @@ import {
   checkAnswers,
   checkArrOfArrsAnswer,
   checkProgressionAnswers,
+  checkRegexAnswers,
 } from "@/app/lib/calculateAnswers";
 import convertObjectToArray from "@/app/lib/convertObjectToArray";
 import convertObjectToChordChart from "@/app/lib/convertObjectToChordChart";
@@ -174,6 +175,7 @@ export default function ExamHomePage() {
       correctScalesAnswers,
       "Scales"
     );
+    //triad answers
     let triadsAnswers = checkArrOfArrsAnswer(
       userTriads,
       correctTriadAnswers,
@@ -184,7 +186,7 @@ export default function ExamHomePage() {
       correctSeventhChordNotationAnswers,
       "Seventh Chord Notation"
     );
-    let seventhAnswers = checkAnswers(
+    let seventhAnswers = checkRegexAnswers(
       userChordAnswers,
       correctSeventhChordAnswers,
       "Seventh Chords"
@@ -619,7 +621,7 @@ export default function ExamHomePage() {
             </Stack>
           </main>
         )}
-        {/* {viewState !== VIEW_STATES.SUBMIT_AND_EXIT &&
+        {viewState !== VIEW_STATES.SUBMIT_AND_EXIT &&
           viewState !== VIEW_STATES.START_TEST && (
             <Box sx={{ pl: 5 }}>
               <Button onClick={incrementViewState}>
@@ -637,7 +639,7 @@ export default function ExamHomePage() {
                 <Typography>{"Go to Progressions"}</Typography>
               </Button>
             </Box>
-          )} */}
+          )}
       </Stack>
     </Box>
   );

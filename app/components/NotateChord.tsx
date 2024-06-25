@@ -22,6 +22,7 @@ import {
   bassClefNotesArray,
   trebleClefNotesArray,
 } from "../lib/data/noteArray";
+import { printRegexResults } from "@/regex/regexPatterns";
 import { staveData } from "../lib/data/stavesData";
 import { findBarIndex } from "../lib/findBar";
 import getUserClickInfo from "../lib/getUserClickInfo";
@@ -109,6 +110,7 @@ const NotateChord = ({
     //this is the array to use for grading
     const chordsArray = chordData.keys;
     console.log(chordsArray);
+    printRegexResults();
   }, [chordData]);
 
   const eraseChord = () => {
