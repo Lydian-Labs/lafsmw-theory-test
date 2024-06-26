@@ -91,9 +91,10 @@ export const initialFormInputState: InputState = {
 };
 
 export const initialProgressionInputState = {
-  1: "Dm7",
-  2: "G7",
-  3: "Cmaj7",
+  0: "Dm7",
+  1: "G7",
+  2: "Cmaj7",
+  3: "",
   4: "",
   5: "",
   6: "",
@@ -108,5 +109,4 @@ export const initialProgressionInputState = {
   15: "",
   16: "",
   17: "",
-  18: "",
 };

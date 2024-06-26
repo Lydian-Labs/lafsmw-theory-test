@@ -131,7 +131,6 @@ export default function ExamHomePage() {
     const userKeySigAnswers = convertObjectToArray(
       currentUserData.keySignatures
     );
-    console.log("userKeySigAnswers from updateAnswers: ", userKeySigAnswers);
     const userScales = [
       currentUserData.scales1,
       currentUserData.scales2,
@@ -161,6 +160,10 @@ export default function ExamHomePage() {
 
     const userProgressionAnswers = convertObjectToArray(
       currentUserData.progressions
+    );
+    console.log(
+      "userProgressionAnswers from updateAnswers: ",
+      userProgressionAnswers
     );
 
     let keySigNotationAnswers = checkArrOfArrsAnswer(
@@ -259,12 +262,12 @@ export default function ExamHomePage() {
   const handleFinalSubmit = async (e: MouseEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    updateAnswers();
     try {
       if (!userName) {
         throw new Error("No current user found.");
       }
       await setOrUpdateStudentData(currentUserData, userName);
-      updateAnswers();
 
       // Send email with results using API route
       const response = await fetch("/api/email", {
@@ -288,10 +291,10 @@ export default function ExamHomePage() {
             <li>Seventh Chords (identify): ${correctedAnswers[6]}</li>
             <li>2-5-1 Progressions: ${correctedAnswers[7]}</li>
             <li>Link to blues progression pdf: ${correctedAnswers[8]}</li>
-            // <li>
-            //   <p>Blues progression backup chart:</p>
-            //   <p>${correctedAnswers[9]}</p>
-            // </li>
+            <li>
+              <p>Blues progression backup chart:</p>
+              <p>${correctedAnswers[9]}</p>
+            </li>
           </ul>
 
           <p>Thank you,<br>Team at Lydian Labs Technology.</p>`,

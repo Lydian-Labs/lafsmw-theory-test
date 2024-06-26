@@ -7,7 +7,12 @@ export const check251Answers = (
   let result = "";
   let numAnswers = studentAnswers.length;
   for (let i = 0; i < studentAnswers.length; i++) {
-    let chord = studentAnswers[i]; // do not add toUpperCase() here - student must get the case right
+    let chord = studentAnswers[i];
+    // console.log(`chord${i} from check251Answers:`, chord);
+    // console.log(
+    //   `regexCorrectAnswers[${i}] from check251Answers:`,
+    //   regexCorrectAnswers[i]
+    // );
     let isTrue = regexCorrectAnswers[i].test(chord);
     if (isTrue) {
       score++;
@@ -18,7 +23,11 @@ export const check251Answers = (
       <li>${studentAnswers.slice(0, 3)}</li>
       <li>${studentAnswers.slice(3, 6)}</li>
       <li>${studentAnswers.slice(6, 9)}</li>
+      <li>${studentAnswers.slice(9, 12)}</li>
+      <li>${studentAnswers.slice(12, 15)}</li>
+      <li>${studentAnswers.slice(15, 18)}</li>
     </ul>`;
+  console.log("studentAnswers from check251Answers:", studentAnswers);
   return result;
 };
 
@@ -39,7 +48,6 @@ export const checkKeySigIdentifyAnswers = (
     <ul>Actual student answers:
       <li>${answers}</li>
     </ul>`;
-  console.log("result of checkKeySigIdentifyAnswers: ", result);
   return result;
 };
 
