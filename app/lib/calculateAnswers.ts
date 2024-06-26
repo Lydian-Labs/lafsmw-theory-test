@@ -8,11 +8,6 @@ export const check251Answers = (
   let numAnswers = studentAnswers.length;
   for (let i = 0; i < studentAnswers.length; i++) {
     let chord = studentAnswers[i];
-    // console.log(`chord${i} from check251Answers:`, chord);
-    // console.log(
-    //   `regexCorrectAnswers[${i}] from check251Answers:`,
-    //   regexCorrectAnswers[i]
-    // );
     let isTrue = regexCorrectAnswers[i].test(chord);
     if (isTrue) {
       score++;
