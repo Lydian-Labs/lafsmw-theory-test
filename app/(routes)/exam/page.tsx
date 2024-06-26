@@ -1,4 +1,6 @@
 "use client";
+import ClassPreferenceSelector from "@/app/components/ClassPreferenceSelector";
+import ClefPreferenceSelector from "@/app/components/ClefPreferenceSelector";
 import ChordsIdentify from "@/app/components/ExamPages/ChordsIdentify";
 import KeySigIdentify from "@/app/components/ExamPages/KeySigIdentify";
 import KeySignaturesNotation from "@/app/components/ExamPages/KeySigNotateTemplate";
@@ -7,39 +9,37 @@ import SeventhChordsNotation from "@/app/components/ExamPages/SeventhChordsNotat
 import TriadsNotation from "@/app/components/ExamPages/TriadsNotateTemplate";
 import WriteBluesChanges from "@/app/components/ExamPages/WriteBluesChanges";
 import WriteProgressions from "@/app/components/ExamPages/WriteProgressions";
-import ClassPreferenceSelector from "@/app/components/ClassPreferenceSelector";
-import ClefPreferenceSelector from "@/app/components/ClefPreferenceSelector";
+import SnackbarToast from "@/app/components/SnackbarToast";
+import { useClef } from "@/app/context/ClefContext";
 import { useTimer } from "@/app/context/TimerContext";
 import {
-  checkKeySigIdentifyAnswers,
-  checkArrOfArrsAnswer,
-  checkChordsAnswers,
   check251Answers,
+  checkArrOfArrsAnswer,
   checkChordIdentifyAnswers,
+  checkChordsAnswers,
+  checkKeySigIdentifyAnswers,
 } from "@/app/lib/calculateAnswers";
 import convertObjectToArray from "@/app/lib/convertObjectToArray";
 import convertObjectToChordChart from "@/app/lib/convertObjectToChordChart";
 import {
+  correct7thChordNotationAnswers,
   correctKeySigAnswers,
   correctKeySigNotationAnswers,
   correctProgressionAnswers,
   correctScalesAnswers,
   correctSeventhChordAnswers,
   correctTriads,
-  correct7thChordNotationAnswers,
 } from "@/app/lib/data/answerKey";
 import { initialFormInputState } from "@/app/lib/initialStates";
-import { InputState, MouseEvent, Level } from "@/app/lib/typesAndInterfaces";
+import { InputState, Level, MouseEvent } from "@/app/lib/typesAndInterfaces";
 import { useAuthContext } from "@/firebase/authContext";
 import {
   getUserSnapshot,
   setOrUpdateStudentData,
 } from "@/firebase/firestore/model";
-import { Box, Button, Stack, Typography, Container, Grid } from "@mui/material";
+import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
-import { useClef } from "@/app/context/ClefContext";
-import SnackbarToast from "@/app/components/SnackbarToast";
 
 const VIEW_STATES = {
   START_TEST: 0,
@@ -131,6 +131,7 @@ export default function ExamHomePage() {
     const userKeySigAnswers = convertObjectToArray(
       currentUserData.keySignatures
     );
+    console.log("userKeySigAnswers from updateAnswers: ", userKeySigAnswers);
     const userScales = [
       currentUserData.scales1,
       currentUserData.scales2,
@@ -287,10 +288,10 @@ export default function ExamHomePage() {
             <li>Seventh Chords (identify): ${correctedAnswers[6]}</li>
             <li>2-5-1 Progressions: ${correctedAnswers[7]}</li>
             <li>Link to blues progression pdf: ${correctedAnswers[8]}</li>
-            <li>
-              <p>Blues progression backup chart:</p>
-              <p>${correctedAnswers[9]}</p>
-            </li>
+            // <li>
+            //   <p>Blues progression backup chart:</p>
+            //   <p>${correctedAnswers[9]}</p>
+            // </li>
           </ul>
 
           <p>Thank you,<br>Team at Lydian Labs Technology.</p>`,

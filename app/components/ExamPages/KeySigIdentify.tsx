@@ -4,7 +4,7 @@ import { InputData, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import { Box, Container, Grid, Typography } from "@mui/material";
 import { useRef } from "react";
 import CardFooter from "../CardFooter";
-import IdentifyKeySigNotation from "../IdentifyKeySigNotation";
+import IdentifyKeySigs from "../IdentifyKeySigs";
 import TutorialModal from "../TutorialModal";
 
 export default function KeySignaturesIdentification({
@@ -67,7 +67,7 @@ export default function KeySignaturesIdentification({
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <IdentifyKeySigNotation
+                  <IdentifyKeySigs
                     currentData={currentUserData.keySignatures}
                     evenbars
                     handleInput={handleKeySignatures}

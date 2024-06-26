@@ -31,7 +31,7 @@ export const checkKeySigIdentifyAnswers = (
   let result = "";
   let numAnswers = correctAnswers.length;
   for (let i = 0; i < answers.length; i++) {
-    if (answers[i].toLowerCase() === correctAnswers[i]?.toLowerCase()) {
+    if (answers[i].toLowerCase() === correctAnswers[i]) {
       score++;
     }
   }
@@ -39,6 +39,7 @@ export const checkKeySigIdentifyAnswers = (
     <ul>Actual student answers:
       <li>${answers}</li>
     </ul>`;
+  console.log("result of checkKeySigIdentifyAnswers: ", result);
   return result;
 };
 
@@ -83,7 +84,6 @@ export const checkArrOfArrsAnswer = (
   }
   result = `${score}/${numAnswers} on the ${questionType} section.
     <ul>Actual student answers:${actualStudentAnswers}</ul>`;
-  console.log("result: ", result);
   return result;
 };
 
@@ -106,7 +106,6 @@ export const checkChordsAnswers = (
   }
   result = `${score}/${numAnswers} on the ${questionType} section.
     <ul>Actual student answers:${actualStudentAnswers}</ul>`;
-  console.log("result: ", result);
   return result;
 };
 

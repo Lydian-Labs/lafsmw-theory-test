@@ -10,7 +10,7 @@ export const correctKeySigNotationAnswers = [
   keySignatureGSharpMinor,
 ];
 
-export const correctKeySigAnswers = ["db", "a", "f-", "c#-"];
+export const correctKeySigAnswers = ["db", "a", "f", "c#"];
 
 //need to update the logic to allow for either 7 or 8 notes
 const scaleDbMajor = ["db", "eb", "f", "gb", "ab", "bb", "c"];
