@@ -24,7 +24,7 @@ type IdentifyNotationProps = {
   handleInput: (input: InputData) => void;
 };
 
-export default forwardRef(function IdentifyKeySigNotation(
+export default forwardRef(function IdentifyKeySigs(
   {
     numBars = 4,
     evenbars = false,
@@ -79,6 +79,7 @@ export default forwardRef(function IdentifyKeySigNotation(
 
   function handleInputSubmit(e: FormEvent) {
     e.preventDefault();
+    console.log("textInput from handleInputSubmit: ", textInput);
     handleInput(textInput);
   }
 
@@ -93,15 +94,21 @@ export default forwardRef(function IdentifyKeySigNotation(
     return keySigs.map((keySig, index) => (
       <div
         key={index}
-        style={{ display: "flex", alignItems: "center", marginBottom: "10px", font: "10px", marginLeft: "15px" }}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          marginBottom: "10px",
+          font: "10px",
+          marginLeft: "15px",
+        }}
       >
         <FormInput
           name={keySig.key}
           type="text"
-          value={textInput[keySig.key] || ""}
+          value={textInput[index] || ""}
           width="45px"
           onChange={(e: ChangeEvent) =>
-            setTextInput({ ...textInput, [keySig.key]: e.target.value })
+            setTextInput({ ...textInput, [index]: e.target.value })
           }
           required={false}
         />
@@ -112,7 +119,6 @@ export default forwardRef(function IdentifyKeySigNotation(
             fontSize: "12px",
             minWidth: "30px",
             marginLeft: "6px", // Add some margin for spacing
-            
           }}
         >{` ${keySig.type}`}</div>
       </div>

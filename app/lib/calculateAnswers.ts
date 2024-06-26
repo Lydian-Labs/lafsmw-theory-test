@@ -7,7 +7,7 @@ export const check251Answers = (
   let result = "";
   let numAnswers = studentAnswers.length;
   for (let i = 0; i < studentAnswers.length; i++) {
-    let chord = studentAnswers[i]; // do not add toUpperCase() here - student must get the case right
+    let chord = studentAnswers[i];
     let isTrue = regexCorrectAnswers[i].test(chord);
     if (isTrue) {
       score++;
@@ -18,7 +18,11 @@ export const check251Answers = (
       <li>${studentAnswers.slice(0, 3)}</li>
       <li>${studentAnswers.slice(3, 6)}</li>
       <li>${studentAnswers.slice(6, 9)}</li>
+      <li>${studentAnswers.slice(9, 12)}</li>
+      <li>${studentAnswers.slice(12, 15)}</li>
+      <li>${studentAnswers.slice(15, 18)}</li>
     </ul>`;
+  console.log("studentAnswers from check251Answers:", studentAnswers);
   return result;
 };
 
@@ -31,7 +35,7 @@ export const checkKeySigIdentifyAnswers = (
   let result = "";
   let numAnswers = correctAnswers.length;
   for (let i = 0; i < answers.length; i++) {
-    if (answers[i].toLowerCase() === correctAnswers[i]?.toLowerCase()) {
+    if (answers[i].toLowerCase() === correctAnswers[i]) {
       score++;
     }
   }
@@ -83,7 +87,6 @@ export const checkArrOfArrsAnswer = (
   }
   result = `${score}/${numAnswers} on the ${questionType} section.
     <ul>Actual student answers:${actualStudentAnswers}</ul>`;
-  console.log("result: ", result);
   return result;
 };
 
@@ -106,7 +109,6 @@ export const checkChordsAnswers = (
   }
   result = `${score}/${numAnswers} on the ${questionType} section.
     <ul>Actual student answers:${actualStudentAnswers}</ul>`;
-  console.log("result: ", result);
   return result;
 };
 
