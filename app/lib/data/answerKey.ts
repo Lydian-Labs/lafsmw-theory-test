@@ -1,5 +1,5 @@
 const keySignatureDbMajor = ["bb", "eb", "ab", "db", "gb"];
-const keySignatureFSharp = ["f#", "c#", "g#", "d#", "a", "e"];
+const keySignatureFSharp = ["f#", "c#", "g#", "d#", "a#", "e#"];
 const keySignatureGminor = ["bb", "eb"];
 const keySignatureGSharpMinor = ["f#", "c#", "g#", "d#", "a#"];
 
