@@ -238,6 +238,8 @@ export interface InputState {
   scales4: string[];
   scales5: string[];
   scales6: string[];
+  scaleDataMatrix1: any;
+  staves1: any;
   triads1: string[];
   triads2: string[];
   triads3: string[];

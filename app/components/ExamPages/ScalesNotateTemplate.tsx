@@ -1,9 +1,14 @@
 "use client";
 import { scalesNotationInstructions } from "@/app/lib/data/instructions";
 import scalesText from "@/app/lib/data/scalesText";
-import { FormEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
+import {
+  FormEvent,
+  UserDataProps,
+  ScaleData,
+  StaveType,
+} from "@/app/lib/typesAndInterfaces";
 import { Box, Container, Grid, Typography } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CardFooter from "../CardFooter";
 import NotateScale from "../NotateScale";
 import SnackbarToast from "../SnackbarToast";
@@ -18,8 +23,15 @@ export default function ScalesNotation({
   const [scales, setScales] = useState<Array<string>>([]);
   const [open, setOpen] = useState<boolean>(false);
   const [isReady, setIsReady] = useState<boolean>(false);
-
+  const [scaleDataMatrix, setScaleDataMatrix] = useState<ScaleData[][]>(
+    currentUserData[`scaleDataMatrix${page - 5}`] || [[]]
+  );
+  const [staves, setStaves] = useState<StaveType[]>(
+    currentUserData[`Staves${page - 5}`] || []
+  );
   const scalesPropName = `scales${page - 5}`;
+  const scaleDataMatrixPropName = `scaleDataMatrix${page - 5}`;
+  const stavesPropName = `Staves${page - 5}`;
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -30,10 +42,15 @@ export default function ScalesNotation({
       setCurrentUserData({
         ...currentUserData,
         [scalesPropName]: scales,
+        [scaleDataMatrixPropName]: scaleDataMatrix,
+        [stavesPropName]: staves,
       });
       nextViewState();
     }
   };
+  useEffect(() => {
+    console.log(currentUserData);
+  }, [currentUserData]);
 
   const boxStyle = {
     display: "flex",
@@ -89,7 +106,12 @@ export default function ScalesNotation({
                 </Grid>
                 <Grid item>
                   <NotateScale
+                    scales={scales}
                     setScales={setScales}
+                    scaleDataMatrix={scaleDataMatrix}
+                    setScaleDataMatrix={setScaleDataMatrix}
+                    staves={staves}
+                    setStaves={setStaves}
                     setIsReady={setIsReady}
                     isReady={isReady}
                   />

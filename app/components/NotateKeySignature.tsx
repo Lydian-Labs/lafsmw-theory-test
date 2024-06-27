@@ -37,7 +37,11 @@ import CustomButton from "./CustomButton";
 const VF = VexFlow.Flow;
 const { Renderer } = VF;
 
-const NotateKeySignature = ({ handleNotes }: any) => {
+const NotateKeySignature = ({
+  handleNotes,
+  keySignatureData,
+  setKeySignatureData,
+}: any) => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
   const [staves, setStaves] = useState<StaveType[]>([]);
@@ -97,8 +101,8 @@ const NotateKeySignature = ({ handleNotes }: any) => {
   //this is where the we will get the array to grade
   useEffect(() => {
     handleNotes(keySig);
-    console.log('key sig: ', keySig)
-    console.log('glyphs: ', glyphs)
+    console.log("key sig: ", keySig);
+    console.log("glyphs: ", glyphs);
   }, [keySig]);
 
   const clearKey = () => {
