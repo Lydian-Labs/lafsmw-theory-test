@@ -21,3 +21,5 @@ env:
     secret: email-pass
   - variable: NEXT_PUBLIC_EMAIL_CAMP_DIRECTOR
     secret: email-camp-director
+  - variable: NEXT_PUBLIC_EMAIL_DEVELOPER
+    secret: email-developer

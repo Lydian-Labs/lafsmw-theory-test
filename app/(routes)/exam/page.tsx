@@ -20,7 +20,6 @@ import {
   checkKeySigIdentifyAnswers,
 } from "@/app/lib/calculateAnswers";
 import convertObjectToArray from "@/app/lib/convertObjectToArray";
-import convertObjectToChordChart from "@/app/lib/convertObjectToChordChart";
 import {
   correct7thChordNotationAnswers,
   correctKeySigAnswers,
@@ -270,7 +269,7 @@ export default function ExamHomePage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: process.env.NEXT_PUBLIC_EMAIL_CAMP_DIRECTOR,
+          email: `${process.env.NEXT_PUBLIC_EMAIL_CAMP_DIRECTOR}, ${process.env.NEXT_PUBLIC_EMAIL_DEVELOPER}`,
           subject: `Exam Results for ${userName}`,
           text: `<p>Hello Kyle,</p>
 
@@ -621,7 +620,7 @@ export default function ExamHomePage() {
             </Stack>
           </main>
         )}
-        {/* {viewState !== VIEW_STATES.SUBMIT_AND_EXIT &&
+        {viewState !== VIEW_STATES.SUBMIT_AND_EXIT &&
           viewState !== VIEW_STATES.START_TEST && (
             <Stack spacing={4}>
               <Button onClick={incrementViewState}>
@@ -636,7 +635,7 @@ export default function ExamHomePage() {
                 <Typography>{"Go to Progressions"}</Typography>
               </Button>
             </Stack>
-          )} */}
+          )}
       </Stack>
     </Box>
   );
