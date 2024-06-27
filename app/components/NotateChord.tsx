@@ -207,7 +207,7 @@ const NotateChord = ({
           );
         })}
         <Button onClick={eraseChord} sx={{ m: 0.5 }}>
-          Erase Chord
+          Erase Measure
         </Button>
       </Container>
       <Stack direction="row" spacing={2} mt={2}>

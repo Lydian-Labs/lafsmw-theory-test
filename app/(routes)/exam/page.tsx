@@ -161,10 +161,6 @@ export default function ExamHomePage() {
     const userProgressionAnswers = convertObjectToArray(
       currentUserData.progressions
     );
-    console.log(
-      "userProgressionAnswers from updateAnswers: ",
-      userProgressionAnswers
-    );
 
     let keySigNotationAnswers = checkArrOfArrsAnswer(
       userKeySigNotationAnswers,
@@ -200,7 +196,6 @@ export default function ExamHomePage() {
       "2-5-1 Progressions"
     );
 
-    const chordChart = convertObjectToChordChart(currentUserData.blues);
     setCorrectedAnswers([
       currentUserData.level,
       keySigNotationAnswers,
@@ -211,7 +206,6 @@ export default function ExamHomePage() {
       seventhAnswers,
       progressionAnswers,
       currentUserData.bluesUrl,
-      chordChart,
     ]);
   }, [currentUserData]);
 
@@ -291,10 +285,6 @@ export default function ExamHomePage() {
             <li>Seventh Chords (identify): ${correctedAnswers[6]}</li>
             <li>2-5-1 Progressions: ${correctedAnswers[7]}</li>
             <li>Link to blues progression pdf: ${correctedAnswers[8]}</li>
-            <li>
-              <p>Blues progression backup chart:</p>
-              <p>${correctedAnswers[9]}</p>
-            </li>
           </ul>
 
           <p>Thank you,<br>Team at Lydian Labs Technology.</p>`,
@@ -631,7 +621,7 @@ export default function ExamHomePage() {
             </Stack>
           </main>
         )}
-        {viewState !== VIEW_STATES.SUBMIT_AND_EXIT &&
+        {/* {viewState !== VIEW_STATES.SUBMIT_AND_EXIT &&
           viewState !== VIEW_STATES.START_TEST && (
             <Stack spacing={4}>
               <Button onClick={incrementViewState}>
@@ -646,7 +636,7 @@ export default function ExamHomePage() {
                 <Typography>{"Go to Progressions"}</Typography>
               </Button>
             </Stack>
-          )}
+          )} */}
       </Stack>
     </Box>
   );

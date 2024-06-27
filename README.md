@@ -15,6 +15,7 @@
 
 - Note input/erase and sharp and flat input via mouse click
 - Firebase authentication with student info stored on Firestore database
+- Firebase Cloud Storage for saving student PDFs
 
 ## Tech Stack
 
