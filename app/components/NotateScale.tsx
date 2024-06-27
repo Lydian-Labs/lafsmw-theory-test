@@ -44,18 +44,28 @@ import CustomButton from "./CustomButton";
 const { Renderer } = VexFlow.Flow;
 
 const NotateScale = ({
+  scales,
   setScales,
+  scaleDataMatrix,
+  setScaleDataMatrix,
+  staves,
+  setStaves,
   setIsReady,
   isReady,
 }: {
+  scales: string[];
   setScales: Dispatch<SetStateAction<Array<string>>>;
+  scaleDataMatrix: ScaleData[][];
+  setScaleDataMatrix: Dispatch<SetStateAction<ScaleData[][]>>;
+  staves: StaveType[];
+  setStaves: Dispatch<SetStateAction<StaveType[]>>;
   setIsReady: Dispatch<SetStateAction<boolean>>;
   isReady: boolean;
 }) => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
-  const [staves, setStaves] = useState<StaveType[]>([]);
-  const [scaleDataMatrix, setScaleDataMatrix] = useState<ScaleData[][]>([[]]);
+  //const [staves, setStaves] = useState<StaveType[]>([]);
+  //const [scaleDataMatrix, setScaleDataMatrix] = useState<ScaleData[][]>([[]]);
   const [notesAndCoordinates, setNotesAndCoordinates] = useState<
     NotesAndCoordinatesData[]
   >([initialNotesAndCoordsState]);
@@ -75,18 +85,16 @@ const NotateScale = ({
     [dispatch, state]
   );
 
-  const renderStavesAndNotes = useCallback(
-    (): StaveType[] =>
-      setupRendererAndDrawNotes({
-        rendererRef,
-        ...staveData,
-        setStaves,
-        scaleDataMatrix,
-        staves,
-        chosenClef,
-      }),
-    [rendererRef, setStaves, scaleDataMatrix, staves]
-  );
+  const renderStavesAndNotes = useCallback(() => {
+    return setupRendererAndDrawNotes({
+      rendererRef,
+      ...staveData,
+      setStaves,
+      scaleDataMatrix,
+      staves,
+      chosenClef,
+    });
+  }, [rendererRef, setStaves, scaleDataMatrix, staves]);
 
   useEffect(() => {
     initializeRenderer(rendererRef, container);
@@ -127,9 +135,7 @@ const NotateScale = ({
   );
 
   const eraseMeasures = () => {
-    setScaleDataMatrix((): ScaleData[][] => {
-      return [[]];
-    });
+    setScaleDataMatrix([[]]);
     const newStave = renderStavesAndNotes();
     if (newStave) {
       calculateNotesAndCoordinates(
