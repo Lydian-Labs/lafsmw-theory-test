@@ -22,7 +22,6 @@ export const check251Answers = (
       <li>${studentAnswers.slice(12, 15)}</li>
       <li>${studentAnswers.slice(15, 18)}</li>
     </ul>`;
-  console.log("studentAnswers from check251Answers:", studentAnswers);
   return result;
 };
 
