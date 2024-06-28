@@ -1,6 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import React, {
+  Dispatch,
+  SetStateAction,
   useCallback,
   useEffect,
   useMemo,
@@ -33,19 +35,26 @@ import {
   StaveType,
 } from "../lib/typesAndInterfaces";
 import CustomButton from "./CustomButton";
+import { Button, Stack, Typography } from "@mui/material";
 
 const VF = VexFlow.Flow;
 const { Renderer } = VF;
 
 const NotateKeySignature = ({
   handleNotes,
-  keySignatureData,
-  setKeySignatureData,
-}: any) => {
+  glyphs,
+  setGlyphs,
+  keySigStaves,
+  setKeySigStaves,
+}: {
+  handleNotes: any;
+  glyphs: GlyphProps[];
+  setGlyphs: Dispatch<SetStateAction<GlyphProps[]>>;
+  keySigStaves: StaveType[];
+  setKeySigStaves: Dispatch<SetStateAction<StaveType[]>>;
+}) => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
-  const [staves, setStaves] = useState<StaveType[]>([]);
-  const [glyphs, setGlyphs] = useState<GlyphProps[]>([]);
   const [open, setOpen] = useState(false);
   const { chosenClef } = useClef();
   const [snackbarMessage, setSnackbarMessage] = useState("");
@@ -64,18 +73,16 @@ const NotateKeySignature = ({
 
   const context = rendererRef.current?.getContext();
 
-  const renderStaves = useCallback(
-    (): StaveType[] | undefined =>
-      setupRendererAndDrawStaves({
-        rendererRef,
-        ...staveData,
-        chosenClef,
-        firstStaveWidth: 450,
-        staves,
-        setStaves,
-      }),
-    [staves, setStaves]
-  );
+  const renderStaves = useCallback((): StaveType[] | undefined => {
+    return setupRendererAndDrawStaves({
+      rendererRef,
+      ...staveData,
+      chosenClef,
+      firstStaveWidth: 450,
+      staves: keySigStaves,
+      setStaves: setKeySigStaves,
+    });
+  }, [rendererRef, keySigStaves, setKeySigStaves, glyphs]);
 
   useEffect(() => {
     initializeRenderer(rendererRef, container);
@@ -95,14 +102,12 @@ const NotateKeySignature = ({
   useEffect(() => {
     initializeRenderer(rendererRef, container);
     renderStaves();
-    context && buildKeySignature(glyphs, 40, context, staves[0]);
+    context && buildKeySignature(glyphs, 40, context, keySigStaves[0]);
   }, [glyphs]);
 
   //this is where the we will get the array to grade
   useEffect(() => {
     handleNotes(keySig);
-    console.log("key sig: ", keySig);
-    console.log("glyphs: ", glyphs);
   }, [keySig]);
 
   const clearKey = () => {
@@ -133,7 +138,7 @@ const NotateKeySignature = ({
       return;
 
     const { userClickY, userClickX, topStaveYCoord, bottomStaveYCoord } =
-      getUserClickInfo(e, container, staves[0]);
+      getUserClickInfo(e, container, keySigStaves[0]);
 
     let foundNoteData = notesAndCoordinates.find(
       ({ yCoordinateMin, yCoordinateMax }) =>
@@ -152,7 +157,11 @@ const NotateKeySignature = ({
     }
 
     const { maxRightClick, minLeftClick, minTopClick, maxBottomClick } =
-      isClickWithinStaveBounds(staves[0], topStaveYCoord, bottomStaveYCoord);
+      isClickWithinStaveBounds(
+        keySigStaves[0],
+        topStaveYCoord,
+        bottomStaveYCoord
+      );
 
     if (
       typeof maxBottomClick === "undefined" ||
@@ -202,6 +211,12 @@ const NotateKeySignature = ({
         <CustomButton onClick={clearKey}>Erase Key Signature</CustomButton>
       </div>
       <SnackbarToast open={open} setOpen={setOpen} message={snackbarMessage} />
+      <Stack direction="row" spacing={2} mt={2}>
+        <Typography marginTop={2} align="left">
+          *Note: You
+          <b> MUST</b> press <em>Save </em>before moving on.
+        </Typography>
+      </Stack>
     </>
   );
 };

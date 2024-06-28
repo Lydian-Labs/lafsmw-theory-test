@@ -239,7 +239,9 @@ export interface InputState {
   scales5: string[];
   scales6: string[];
   [key: `scaleDataMatrix${number}`]: ScaleData[][];
-  [key: `Staves${number}`]: StaveType[];
+  [key: `scaleStaves${number}`]: StaveType[];
+  [key: `keySigStaves${number}`]: StaveType[];
+  [key: `glyphs${number}`]: GlyphProps[];
   triads1: string[];
   triads2: string[];
   triads3: string[];

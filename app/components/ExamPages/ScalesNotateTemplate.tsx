@@ -26,12 +26,12 @@ export default function ScalesNotation({
   const [scaleDataMatrix, setScaleDataMatrix] = useState<ScaleData[][]>(
     currentUserData[`scaleDataMatrix${page - 5}`] || [[]]
   );
-  const [staves, setStaves] = useState<StaveType[]>(
-    currentUserData[`Staves${page - 5}`] || []
+  const [scaleStaves, setScaleStaves] = useState<StaveType[]>(
+    currentUserData[`scaleStaves${page - 5}`] || []
   );
   const scalesPropName = `scales${page - 5}`;
   const scaleDataMatrixPropName = `scaleDataMatrix${page - 5}`;
-  const stavesPropName = `Staves${page - 5}`;
+  const stavesPropName = `scaleStaves${page - 5}`;
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -43,11 +43,12 @@ export default function ScalesNotation({
         ...currentUserData,
         [scalesPropName]: scales,
         [scaleDataMatrixPropName]: scaleDataMatrix,
-        [stavesPropName]: staves,
+        [stavesPropName]: scaleStaves,
       });
       nextViewState();
     }
   };
+
   useEffect(() => {
     console.log(currentUserData);
   }, [currentUserData]);
@@ -110,8 +111,8 @@ export default function ScalesNotation({
                     setScales={setScales}
                     scaleDataMatrix={scaleDataMatrix}
                     setScaleDataMatrix={setScaleDataMatrix}
-                    staves={staves}
-                    setStaves={setStaves}
+                    scaleStaves={scaleStaves}
+                    setScaleStaves={setScaleStaves}
                     setIsReady={setIsReady}
                     isReady={isReady}
                   />

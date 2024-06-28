@@ -48,8 +48,9 @@ const NotateScale = ({
   setScales,
   scaleDataMatrix,
   setScaleDataMatrix,
-  staves,
-  setStaves,
+
+  scaleStaves,
+  setScaleStaves,
   setIsReady,
   isReady,
 }: {
@@ -57,15 +58,13 @@ const NotateScale = ({
   setScales: Dispatch<SetStateAction<Array<string>>>;
   scaleDataMatrix: ScaleData[][];
   setScaleDataMatrix: Dispatch<SetStateAction<ScaleData[][]>>;
-  staves: StaveType[];
-  setStaves: Dispatch<SetStateAction<StaveType[]>>;
+  scaleStaves: StaveType[];
+  setScaleStaves: Dispatch<SetStateAction<StaveType[]>>;
   setIsReady: Dispatch<SetStateAction<boolean>>;
   isReady: boolean;
 }) => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
-  //const [staves, setStaves] = useState<StaveType[]>([]);
-  //const [scaleDataMatrix, setScaleDataMatrix] = useState<ScaleData[][]>([[]]);
   const [notesAndCoordinates, setNotesAndCoordinates] = useState<
     NotesAndCoordinatesData[]
   >([initialNotesAndCoordsState]);
@@ -89,12 +88,12 @@ const NotateScale = ({
     return setupRendererAndDrawNotes({
       rendererRef,
       ...staveData,
-      setStaves,
+      setStaves: setScaleStaves,
       scaleDataMatrix,
-      staves,
+      staves: scaleStaves,
       chosenClef,
     });
-  }, [rendererRef, setStaves, scaleDataMatrix, staves]);
+  }, [rendererRef, setScaleStaves, scaleDataMatrix, scaleStaves]);
 
   useEffect(() => {
     initializeRenderer(rendererRef, container);
@@ -160,7 +159,7 @@ const NotateScale = ({
     const { userClickY, userClickX } = getUserClickInfo(
       e,
       container,
-      staves[0]
+      scaleStaves[0]
     );
 
     let foundNoteData = notesAndCoordinates.find(
@@ -178,7 +177,7 @@ const NotateScale = ({
         userClickY: userClickY,
       };
 
-    const barIndex = findBarIndex(staves, userClickX);
+    const barIndex = findBarIndex(scaleStaves, userClickX);
 
     if (!foundNoteData) {
       noNoteFound();

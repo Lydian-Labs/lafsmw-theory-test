@@ -1,9 +1,14 @@
 "use client";
 import { keySigNotationInstructions } from "@/app/lib/data/instructions";
 import keySignaturesText from "@/app/lib/data/keySignaturesText";
-import { MouseEvent, UserDataProps } from "@/app/lib/typesAndInterfaces";
+import {
+  MouseEvent,
+  UserDataProps,
+  StaveType,
+  GlyphProps,
+} from "@/app/lib/typesAndInterfaces";
 import { Box, Container, Grid, Typography } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CardFooter from "../CardFooter";
 import NotateKeySignature from "../NotateKeySignature";
 import TutorialModal from "../TutorialModal";
@@ -18,16 +23,30 @@ export default function KeySignaturesNotation({
     []
   );
 
+  const [keySigStaves, setKeySigStaves] = useState<StaveType[]>(
+    currentUserData[`keySigStaves${page - 1}`] || []
+  );
+  const [glyphs, setGlyphs] = useState<GlyphProps[]>(
+    currentUserData[`glyphs${page - 1}`] || []
+  );
   const keySigPropName = `keySignaturesNotation${page}`;
+  const keySigStavesPropName = `keySigStaves${page}`;
+  const glyphsPropName = `glyphs${page}`;
 
   const handleSubmit = async (e: MouseEvent) => {
     e.preventDefault();
     setCurrentUserData({
       ...currentUserData,
       [keySigPropName]: keySignatureNotation,
+      [keySigStavesPropName]: keySigStaves,
+      [glyphsPropName]: glyphs,
     });
     nextViewState();
   };
+
+  useEffect(() => {
+    console.log(currentUserData);
+  }, [currentUserData]);
 
   function handleKeySigNotation(input: string[]) {
     setKeySignatureNotation(input);
@@ -83,7 +102,13 @@ export default function KeySignaturesNotation({
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <NotateKeySignature handleNotes={handleKeySigNotation} />
+                  <NotateKeySignature
+                    handleNotes={handleKeySigNotation}
+                    glyphs={glyphs}
+                    setGlyphs={setGlyphs}
+                    keySigStaves={keySigStaves}
+                    setKeySigStaves={setKeySigStaves}
+                  />
                 </Grid>
               </Grid>
               <CardFooter pageNumber={page} handleSubmit={handleSubmit} />
