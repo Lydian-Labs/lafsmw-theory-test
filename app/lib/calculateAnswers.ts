@@ -13,7 +13,7 @@ export const check251Answers = (
       score++;
     }
   }
-  result = `<b>${score}</b>/${numAnswers} on the ${questionType} section.
+  result = `<b>${score}/${numAnswers}</b> on the ${questionType} section.
     <ul>Actual student answers:
       <li>${studentAnswers.slice(0, 3)}</li>
       <li>${studentAnswers.slice(3, 6)}</li>
