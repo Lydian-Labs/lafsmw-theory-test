@@ -9,6 +9,7 @@ import {
   changeNotePosition,
   removeAccidentalFromStaveNote,
   removeNoteFromScale,
+  getNoteData,
 } from "./modifyScales";
 import {
   NoteInteractionAction,
@@ -39,27 +40,38 @@ export const HandleScaleInteraction = (
       notesAndCoordinates
     );
     console.log("add accidental to note and coords", notesAndCoordinates);
-    const { updatedNoteObject, noteIndex } = addAccidentalToStaveNoteAndKeys(
+    const result = addAccidentalToStaveNoteAndKeys(
       state,
       barOfScaleData,
       userClickX,
       chosenClef
     );
-    barOfScaleData[noteIndex] = updatedNoteObject;
-    scaleDataMatrix[barIndex] = barOfScaleData;
+
+    if (result) {
+      const { updatedNoteObject, noteIndex } = result;
+      barOfScaleData[noteIndex] = updatedNoteObject;
+      scaleDataMatrix[barIndex] = barOfScaleData;
+    }
   } else if (state.isEraseAccidentalActive) {
     notesAndCoordinates = removeAccidentalFromNotesAndCoords(
       notesAndCoordinates,
       foundNoteData
     );
-    const { updatedNoteObject, noteIndex } = removeAccidentalFromStaveNote(
+    const result = removeAccidentalFromStaveNote(
       barOfScaleData,
       userClickX,
       chosenClef
     );
-    console.log("remove accidental from note and coords", notesAndCoordinates);
-    barOfScaleData[noteIndex] = updatedNoteObject;
-    scaleDataMatrix[barIndex] = barOfScaleData;
+
+    if (result) {
+      const { updatedNoteObject, noteIndex } = result;
+      console.log(
+        "remove accidental from note and coords",
+        notesAndCoordinates
+      );
+      barOfScaleData[noteIndex] = updatedNoteObject;
+      scaleDataMatrix[barIndex] = barOfScaleData;
+    }
   } else if (state.isEraseNoteActive) {
     notesAndCoordinates = removeAccidentalFromNotesAndCoords(
       notesAndCoordinates,

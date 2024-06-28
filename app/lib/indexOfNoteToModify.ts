@@ -7,5 +7,5 @@ export const indexOfNoteToModify = (
   const index: number = scaleData?.findIndex(
     (note) => Math.abs(note.staveNoteAbsoluteX - userClickX) <= 10
   );
-  return index;
+  return index !== -1 ? index : -1;
 };
