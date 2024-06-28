@@ -15,7 +15,6 @@ export default function ConfirmSignIn() {
   useEffect(() => {
     const handleSignIn = async () => {
       const emailLink = window.location.href;
-      console.log("emailLink:", emailLink);
       try {
         const success = await completeSignIn(emailLink);
         if (success) {

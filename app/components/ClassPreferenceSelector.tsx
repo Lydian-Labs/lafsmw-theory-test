@@ -22,7 +22,9 @@ export default function ClassPreferenceSelector({
 
   return (
     <FormControl size="small" fullWidth>
-      <InputLabel id="class-preference-label">Class Preference</InputLabel>
+      <InputLabel id="class-preference-label" color="info">
+        Class Preference
+      </InputLabel>
       <Select
         labelId="class-preference-label"
         id="class-preference-select"

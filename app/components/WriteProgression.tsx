@@ -45,10 +45,6 @@ export default forwardRef(function WriteProgression(
 
   function handleNumeralSubmit(e: FormEvent) {
     e.preventDefault();
-    console.log(
-      "numeralInput from handleNumeralSubmit in WriteProgression:",
-      numeralInput
-    );
     handleInput(numeralInput);
   }
 

@@ -13,7 +13,7 @@ export const check251Answers = (
       score++;
     }
   }
-  result = `<b>${score}</b>/${numAnswers} on the ${questionType} section.
+  result = `<b>${score}/${numAnswers}</b> on the ${questionType} section.
     <ul>Actual student answers:
       <li>${studentAnswers.slice(0, 3)}</li>
       <li>${studentAnswers.slice(3, 6)}</li>
@@ -22,7 +22,6 @@ export const check251Answers = (
       <li>${studentAnswers.slice(12, 15)}</li>
       <li>${studentAnswers.slice(15, 18)}</li>
     </ul>`;
-  console.log("studentAnswers from check251Answers:", studentAnswers);
   return result;
 };
 
@@ -39,7 +38,7 @@ export const checkKeySigIdentifyAnswers = (
       score++;
     }
   }
-  result = `<b>${score}</b>/${numAnswers} on the ${questionType} section.
+  result = `<b>${score}/${numAnswers}</b> on the ${questionType} section.
     <ul>Actual student answers:
       <li>${answers}</li>
     </ul>`;
@@ -61,7 +60,7 @@ export const checkChordIdentifyAnswers = (
       score++;
     }
   }
-  result = `<b>${score}</b>/${numAnswers} on the ${questionType} section.
+  result = `<b>${score}/${numAnswers}</b> on the ${questionType} section.
     <ul>Actual student answers:
       <li>${studentAnswers}</li>
     </ul>`;
@@ -85,7 +84,7 @@ export const checkArrOfArrsAnswer = (
       score++;
     }
   }
-  result = `<b>${score}</b>/${numAnswers} on the ${questionType} section.
+  result = `<b>${score}/${numAnswers}</b> on the ${questionType} section.
     <ul>Actual student answers:${actualStudentAnswers}</ul>`;
   return result;
 };
@@ -107,7 +106,7 @@ export const checkChordsAnswers = (
       score++;
     }
   }
-  result = `<b>${score}</b>/${numAnswers} on the ${questionType} section.
+  result = `<b>${score}/${numAnswers}</b> on the ${questionType} section.
     <ul>Actual student answers:${actualStudentAnswers}</ul>`;
   return result;
 };
