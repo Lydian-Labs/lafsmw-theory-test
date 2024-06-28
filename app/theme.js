@@ -10,6 +10,15 @@ const theme = createTheme({
     secondary: {
       main: tokens.global.md.sys.color["pressed-button-color"].value,
     },
+    info: {
+      main: "#696969",
+    },
+    success: {
+      main: "#00FF00",
+    },
+    warning: {
+      main: "#ff7f7f",
+    },
     background: {
       main: tokens.global.md.sys.color["main-background-color"].value,
       card: tokens.global.md.sys.color["card-background-color"].value,

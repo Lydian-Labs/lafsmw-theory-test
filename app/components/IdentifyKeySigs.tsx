@@ -79,7 +79,6 @@ export default forwardRef(function IdentifyKeySigs(
 
   function handleInputSubmit(e: FormEvent) {
     e.preventDefault();
-    console.log("textInput from handleInputSubmit: ", textInput);
     handleInput(textInput);
   }
 
