@@ -5,6 +5,8 @@ import {
   FormEvent,
   UserDataProps,
   InputState,
+  Chord,
+  StaveType,
 } from "@/app/lib/typesAndInterfaces";
 import { Box, Container, Grid, Typography } from "@mui/material";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -12,6 +14,7 @@ import CardFooter from "../CardFooter";
 import NotateChord from "../NotateChord";
 import SnackbarToast from "../SnackbarToast";
 import TutorialModal from "../TutorialModal";
+import { initialChordData } from "@/app/lib/initialStates";
 
 export default function TriadsNotation({
   currentUserData,
@@ -19,13 +22,20 @@ export default function TriadsNotation({
   nextViewState,
   page,
 }: UserDataProps) {
+  const [chordData, setChordData] = useState<Chord>(
+    currentUserData[`chordData${page - 11}`] || {}
+  );
+  const [chordStaves, setChordStaves] = useState<StaveType[]>(
+    currentUserData[`chordStaves${page - 11}`] || []
+  );
   const [chords, setChords] = useState<string[]>([]);
   const currentUserDataRef = useRef(currentUserData);
   const [open, setOpen] = useState<boolean>(false);
   const [isReady, setIsReady] = useState<boolean>(false);
 
   const triadsPropName = `triads${page - 11}`;
-
+  const chordDataPropName = `chordData${page - 11}`;
+  const chordStavesPropName = `chordStaves${page - 11}`;
   const memoizedSetCurrentUserData = useCallback(
     (data: InputState) => {
       setCurrentUserData(data);
@@ -35,12 +45,15 @@ export default function TriadsNotation({
 
   useEffect(() => {
     currentUserDataRef.current = currentUserData;
+    console.log(currentUserData);
   }, [currentUserData]);
 
   useEffect(() => {
     memoizedSetCurrentUserData({
       ...currentUserDataRef.current,
       [triadsPropName]: chords,
+      [chordDataPropName]: chordData,
+      [chordStavesPropName]: chordStaves,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chords, memoizedSetCurrentUserData]);
@@ -108,6 +121,10 @@ export default function TriadsNotation({
                 </Grid>
                 <Grid item>
                   <NotateChord
+                    chordData={chordData}
+                    setChordData={setChordData}
+                    setChordStaves={setChordStaves}
+                    chordStaves={chordStaves}
                     setChords={setChords}
                     setIsReady={setIsReady}
                     isReady={isReady}

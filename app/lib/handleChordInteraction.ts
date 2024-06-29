@@ -65,7 +65,7 @@ export const handleChordInteraction = (
       updatedChordData = reconstructChord(chordData, chosenClef);
     }
   } else {
-    if (updatedChordData.keys.length >= 4)
+    if (updatedChordData.keys && updatedChordData.keys.length >= 4)
       return { chordData, notesAndCoordinates };
 
     updatedChordData = addNewNoteToChord(chordData, foundNoteData, chosenClef);

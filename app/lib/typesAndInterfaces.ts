@@ -242,6 +242,8 @@ export interface InputState {
   [key: `scaleStaves${number}`]: StaveType[];
   [key: `keySigStaves${number}`]: StaveType[];
   [key: `glyphs${number}`]: GlyphProps[];
+  [key: `chordStaves${number}`]: StaveType[];
+  [key: `chordData${number}`]: Chord;
   triads1: string[];
   triads2: string[];
   triads3: string[];

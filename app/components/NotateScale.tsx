@@ -48,7 +48,6 @@ const NotateScale = ({
   setScales,
   scaleDataMatrix,
   setScaleDataMatrix,
-
   scaleStaves,
   setScaleStaves,
   setIsReady,

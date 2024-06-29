@@ -82,7 +82,7 @@ const NotateKeySignature = ({
       staves: keySigStaves,
       setStaves: setKeySigStaves,
     });
-  }, [rendererRef, keySigStaves, setKeySigStaves, glyphs]);
+  }, [rendererRef, keySigStaves]);
 
   useEffect(() => {
     initializeRenderer(rendererRef, container);
@@ -97,13 +97,18 @@ const NotateKeySignature = ({
         1,
         0
       );
-  }, []);
-
-  useEffect(() => {
-    initializeRenderer(rendererRef, container);
-    renderStaves();
-    context && buildKeySignature(glyphs, 40, context, keySigStaves[0]);
+    if (context && glyphs.length > 0) {
+      buildKeySignature(glyphs, 40, context, keySigStaves[0]);
+    }
   }, [glyphs]);
+
+  // useEffect(() => {
+  //   //initializeRenderer(rendererRef, container);
+  //   renderStaves();
+  //    if (context && keySigStaves.length > 0) {
+  //   buildKeySignature(glyphs, 40, context, keySigStaves[0]);
+  // }
+  // }, [glyphs]);
 
   //this is where the we will get the array to grade
   useEffect(() => {
@@ -211,12 +216,6 @@ const NotateKeySignature = ({
         <CustomButton onClick={clearKey}>Erase Key Signature</CustomButton>
       </div>
       <SnackbarToast open={open} setOpen={setOpen} message={snackbarMessage} />
-      <Stack direction="row" spacing={2} mt={2}>
-        <Typography marginTop={2} align="left">
-          *Note: You
-          <b> MUST</b> press <em>Save </em>before moving on.
-        </Typography>
-      </Stack>
     </>
   );
 };

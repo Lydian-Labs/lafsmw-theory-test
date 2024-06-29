@@ -43,24 +43,32 @@ import CustomButton from "./CustomButton";
 const { Renderer } = VexFlow.Flow;
 
 const NotateChord = ({
+  chordData,
+  setChordData,
+  chordStaves,
+  setChordStaves,
   setChords,
   setIsReady,
   isReady,
 }: {
+  chordData: Chord;
+  setChordData: Dispatch<SetStateAction<Chord>>;
+  chordStaves: StaveType[];
+  setChordStaves: Dispatch<SetStateAction<StaveType[]>>;
   setChords: Dispatch<SetStateAction<Array<string>>>;
   setIsReady: Dispatch<SetStateAction<boolean>>;
   isReady: boolean;
 }) => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
-  const [staves, setStaves] = useState<StaveType[]>([]);
+  //const [staves, setStaves] = useState<StaveType[]>([]);
   const [state, dispatch] = useReducer(
     chordReducer,
     chordInteractionInitialState
   );
   //not currently being used, but will be used in the future
   const [barIndex, setBarIndex] = useState<number>(0);
-  const [chordData, setChordData] = useState<Chord>(initialChordData);
+  //const [chordData, setChordData] = useState<Chord>(initialChordData);
   const { chosenClef } = useClef();
   const [notesAndCoordinates, setNotesAndCoordinates] = useState<
     NotesAndCoordinatesData[]
@@ -78,13 +86,13 @@ const NotateChord = ({
       setupRendererAndDrawChords({
         rendererRef,
         ...staveData,
-        setStaves,
+        setStaves: setChordStaves,
         chordData,
-        staves,
+        staves: chordStaves,
         barIndex,
         chosenClef,
       }),
-    [rendererRef, setStaves, chordData, staves, barIndex]
+    [rendererRef, setChordStaves, chordData, setChordStaves, barIndex]
   );
 
   useEffect(() => {
@@ -138,7 +146,7 @@ const NotateChord = ({
     const { userClickY, userClickX } = getUserClickInfo(
       e,
       container,
-      staves[0]
+      chordStaves[0]
     );
     let foundNoteData = notesAndCoordinates.find(
       ({ yCoordinateMin, yCoordinateMax }) =>
@@ -148,11 +156,15 @@ const NotateChord = ({
     let chordDataCopy = { ...chordData };
     let notesAndCoordinatesCopy = [...notesAndCoordinates];
     //not currently being used but will be used in the future
-    const barIndex = findBarIndex(staves, userClickX);
+    const barIndex = findBarIndex(chordStaves, userClickX);
 
-    const foundNoteIndex: number = chordData.keys.findIndex(
-      (note) => note === foundNoteData?.note
-    );
+    let foundNoteIndex: number = -1;
+
+    if (chordData.keys) {
+      foundNoteIndex = chordData.keys.findIndex(
+        (note) => note === foundNoteData?.note
+      );
+    }
 
     if (!foundNoteData) {
       noNoteFound();
@@ -167,7 +179,7 @@ const NotateChord = ({
       state,
       foundNoteData,
       chordDataCopy,
-      foundNoteIndex,
+      foundNoteIndex ? foundNoteIndex : 0,
       chosenClef
     );
 
