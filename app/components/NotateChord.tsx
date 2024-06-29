@@ -92,7 +92,7 @@ const NotateChord = ({
         barIndex,
         chosenClef,
       }),
-    [rendererRef, setChordStaves, chordData, setChordStaves, barIndex]
+    [rendererRef, chordStaves, chordData, setChordStaves, barIndex]
   );
 
   useEffect(() => {
@@ -111,6 +111,8 @@ const NotateChord = ({
       );
     }
   }, []);
+
+  
 
   useEffect(() => {
     renderStavesAndChords();

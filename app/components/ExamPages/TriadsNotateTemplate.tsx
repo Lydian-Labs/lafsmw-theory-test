@@ -34,8 +34,9 @@ export default function TriadsNotation({
   const [isReady, setIsReady] = useState<boolean>(false);
 
   const triadsPropName = `triads${page - 11}`;
-  const chordDataPropName = `chordData${page - 11}`;
-  const chordStavesPropName = `chordStaves${page - 11}`;
+  const triadsDataPropName = `chordData${page - 11}`;
+  const triadStavesPropName = `chordStaves${page - 11}`;
+
   const memoizedSetCurrentUserData = useCallback(
     (data: InputState) => {
       setCurrentUserData(data);
@@ -52,11 +53,11 @@ export default function TriadsNotation({
     memoizedSetCurrentUserData({
       ...currentUserDataRef.current,
       [triadsPropName]: chords,
-      [chordDataPropName]: chordData,
-      [chordStavesPropName]: chordStaves,
+      [triadsDataPropName]: chordData,
+      [triadStavesPropName]: chordStaves,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chords, memoizedSetCurrentUserData]);
+  }, [chords, chordData, chordStaves, memoizedSetCurrentUserData]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
