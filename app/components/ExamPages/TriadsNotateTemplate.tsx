@@ -23,7 +23,7 @@ export default function TriadsNotation({
   page,
 }: UserDataProps) {
   const [chordData, setChordData] = useState<Chord>(
-    currentUserData[`chordData${page - 11}`] || {}
+    currentUserData[`chordData${page - 11}`] || initialChordData
   );
   const [chordStaves, setChordStaves] = useState<StaveType[]>(
     currentUserData[`chordStaves${page - 11}`] || []

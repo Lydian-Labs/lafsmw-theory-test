@@ -110,7 +110,7 @@ const NotateChord = ({
         true
       );
     }
-  }, []);
+  }, [chordData]);
 
   
 
@@ -185,8 +185,8 @@ const NotateChord = ({
       chosenClef
     );
 
-    setNotesAndCoordinates(() => newNotesAndCoordinates);
-    setChordData(() => newChordData);
+    setNotesAndCoordinates(newNotesAndCoordinates);
+    setChordData(newChordData);
   };
 
   return (
