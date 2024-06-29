@@ -102,14 +102,6 @@ const NotateKeySignature = ({
     }
   }, [glyphs]);
 
-  // useEffect(() => {
-  //   //initializeRenderer(rendererRef, container);
-  //   renderStaves();
-  //    if (context && keySigStaves.length > 0) {
-  //   buildKeySignature(glyphs, 40, context, keySigStaves[0]);
-  // }
-  // }, [glyphs]);
-
   //this is where the we will get the array to grade
   useEffect(() => {
     handleNotes(keySig);

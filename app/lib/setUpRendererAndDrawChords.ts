@@ -44,7 +44,9 @@ export const setupRendererAndDrawChords = (
   }
   if (!chordData.staveNotes || chordData.keys.length === 0) return newStaves;
   if (renderer && context) {
-    Formatter.FormatAndDraw(context, staves[barIndex], [chordData.staveNotes]);
+    Formatter.FormatAndDraw(context, barIndex ? staves[barIndex] : staves[0], [
+      chordData.staveNotes,
+    ]);
   }
   return newStaves;
 };

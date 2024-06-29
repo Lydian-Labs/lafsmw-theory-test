@@ -112,8 +112,6 @@ const NotateChord = ({
     }
   }, [chordData]);
 
-  
-
   useEffect(() => {
     renderStavesAndChords();
     //this is the array to use for grading
