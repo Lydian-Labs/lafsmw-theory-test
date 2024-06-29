@@ -47,7 +47,6 @@ This web application was contracted to Lydian Labs Technology by Lafayette Summe
 <img width="1705" alt="Screenshot 2024-06-26 at 5 24 51 PM" src="https://github.com/Lydian-Labs/lafsmw-theory-test/assets/76603041/a5db8928-e493-4fa4-9c77-1b1b0e960d59">
 <img width="1703" alt="Screenshot 2024-06-26 at 5 25 37 PM" src="https://github.com/Lydian-Labs/lafsmw-theory-test/assets/76603041/6029ace0-bf6c-465b-9798-031eb695e76a">
 <img width="1703" alt="Screenshot 2024-06-26 at 5 26 13 PM" src="https://github.com/Lydian-Labs/lafsmw-theory-test/assets/76603041/d2f87f39-184a-47a5-8be6-0897df417193">
-<img width="1685" alt="Screenshot 2024-06-26 at 5 27 39 PM" src="https://github.com/Lydian-Labs/lafsmw-theory-test/assets/76603041/2a22bc1d-23dd-47ea-815a-e7376bead555">
 <img width="1684" alt="Screenshot 2024-06-26 at 5 29 18 PM" src="https://github.com/Lydian-Labs/lafsmw-theory-test/assets/76603041/340546bc-3107-44ae-b01f-baff0191d870">
 
 <br />
