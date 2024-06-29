@@ -43,6 +43,7 @@ import CustomButton from "./CustomButton";
 const { Renderer } = VexFlow.Flow;
 
 const NotateChord = ({
+  chords,
   chordData,
   setChordData,
   chordStaves,
@@ -51,6 +52,7 @@ const NotateChord = ({
   setIsReady,
   isReady,
 }: {
+  chords: string[],
   chordData: Chord;
   setChordData: Dispatch<SetStateAction<Chord>>;
   chordStaves: StaveType[];
