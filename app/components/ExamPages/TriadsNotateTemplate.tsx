@@ -46,7 +46,7 @@ export default function TriadsNotation({
 
   useEffect(() => {
     currentUserDataRef.current = currentUserData;
-    console.log(currentUserData);
+   // console.log(currentUserData);
   }, [currentUserData]);
 
   useEffect(() => {

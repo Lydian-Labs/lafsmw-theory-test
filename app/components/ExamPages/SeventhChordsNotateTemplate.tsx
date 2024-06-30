@@ -46,7 +46,7 @@ export default function NotateSeventhChords({
 
   useEffect(() => {
     currentUserDataRef.current = currentUserData;
-    console.log("cuurentUserData: ", currentUserData);
+   // console.log("currentUserData: ", currentUserData);
   }, [currentUserData]);
 
   useEffect(() => {

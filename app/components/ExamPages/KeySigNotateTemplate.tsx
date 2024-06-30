@@ -45,7 +45,7 @@ export default function KeySignaturesNotation({
   };
 
   useEffect(() => {
-    console.log(currentUserData);
+   // console.log(currentUserData);
   }, [currentUserData]);
 
   function handleKeySigNotation(input: string[]) {

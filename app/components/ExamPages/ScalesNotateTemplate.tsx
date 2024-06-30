@@ -50,7 +50,7 @@ export default function ScalesNotation({
   };
 
   useEffect(() => {
-    console.log(currentUserData);
+    //console.log(currentUserData);
   }, [currentUserData]);
 
   const boxStyle = {

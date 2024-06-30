@@ -2,6 +2,7 @@ import {
   NoteInteractionState,
   KeySigState,
   NotesAndCoordinatesData,
+  ChordInteractionState,
 } from "./typesAndInterfaces";
 
 export const parseNote = (note: string) => {
@@ -30,7 +31,7 @@ export const appendAccidentalToNote = (accidental: string, note: string) => {
 };
 
 export const updateNotesAndCoordsWithAccidental = (
-  state: NoteInteractionState | KeySigState,
+  state: NoteInteractionState | KeySigState | ChordInteractionState,
   foundNoteData: NotesAndCoordinatesData,
   notesAndCoordinates: NotesAndCoordinatesData[]
 ) => {

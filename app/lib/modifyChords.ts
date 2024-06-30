@@ -69,12 +69,38 @@ export const updateNoteWithAccidental = (
   notesAndCoordinates: NotesAndCoordinatesData[]
 ) => {
   const accidental = state.isSharpActive ? "#" : "b";
+  console.log("accidental: ", accidental);
   const updatedNote = appendAccidentalToNote(accidental, foundNoteData.note);
-  return notesAndCoordinates.map((noteData) =>
+  console.log("updated note: ", updatedNote);
+  const newNotesAndCoords = notesAndCoordinates.map((noteData) =>
     noteData.note === foundNoteData.note
       ? { ...noteData, note: updatedNote }
       : noteData
   );
+  console.log("new notes and coords: ", newNotesAndCoords);
+  return newNotesAndCoords;
+};
+
+export const addAccidentalToChordKeys = (
+  state: ChordInteractionState,
+  chordData: Chord,
+  foundNoteIndex: number,
+  chosenClef: string
+) => {
+  const accidental = state.isSharpActive ? "#" : "b";
+  chordData.keys[foundNoteIndex] = appendAccidentalToNote(
+    accidental,
+    chordData.keys[foundNoteIndex]
+  );
+
+  const newChord = createStaveNoteFromChordData(chordData, chosenClef);
+
+  addAccidentalsToStaveNotes(chordData.keys, newChord);
+
+  return {
+    ...chordData,
+    staveNotes: newChord,
+  };
 };
 
 export const removeAccidentals = (note: string) => {
@@ -120,28 +146,6 @@ export const removeAccidentalFromNotesAndCoords = (
       ? { ...noteData, note: foundNoteData.note }
       : noteData
   );
-};
-
-export const addAccidentalToChordKeys = (
-  state: ChordInteractionState,
-  chordData: Chord,
-  foundNoteIndex: number,
-  chosenClef: string
-) => {
-  const accidental = state.isSharpActive ? "#" : "b";
-  chordData.keys[foundNoteIndex] = appendAccidentalToNote(
-    accidental,
-    chordData.keys[foundNoteIndex]
-  );
-
-  const newChord = createStaveNoteFromChordData(chordData, chosenClef);
-
-  addAccidentalsToStaveNotes(chordData.keys, newChord);
-
-  return {
-    ...chordData,
-    staveNotes: newChord,
-  };
 };
 
 export const addNewNoteToChord = (

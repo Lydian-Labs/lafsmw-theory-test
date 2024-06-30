@@ -15,7 +15,6 @@ import React, {
 import VexFlow from "vexflow";
 import SimpleSnackbar from "./SnackbarToast";
 import CheckIfNoteFound from "../components/CheckIfNoteFound";
-import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
 import { useClef } from "../context/ClefContext";
 import { modifyNotesActionTypes } from "../lib/actionTypes";
 import { buttonGroup } from "../lib/buttonsAndButtonGroups";

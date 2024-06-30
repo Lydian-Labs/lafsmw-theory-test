@@ -12,6 +12,7 @@ import {
   ChordInteractionState,
   NotesAndCoordinatesData,
 } from "./typesAndInterfaces";
+import { updateNotesAndCoordsWithAccidental } from "./modifyNotesAndCoordinates";
 
 export const handleChordInteraction = (
   notesAndCoordinates: NotesAndCoordinatesData[],
@@ -26,11 +27,12 @@ export const handleChordInteraction = (
 
   if (state.isSharpActive || state.isFlatActive) {
     if (foundNoteIndex !== -1) {
-      updatedNotesAndCoordinates = updateNoteWithAccidental(
+      updatedNotesAndCoordinates = updateNotesAndCoordsWithAccidental(
         state,
         foundNoteData,
         notesAndCoordinates
       );
+
       updatedChordData = addAccidentalToChordKeys(
         state,
         chordData,
