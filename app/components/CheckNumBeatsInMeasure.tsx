@@ -14,7 +14,7 @@ const CheckNumBeatsInMeasure: React.FC<CheckNumBeatsInMeasureProps> = ({
         anchorOrigin={{ vertical: "top", horizontal: "left" }}
       >
         <Alert variant="filled" severity="error">
-          {"You've entered too many beats in this measure"}
+          {"You only need to write 7 notes for the major scale. Do not repeat the 1st note an octave above."}
         </Alert>
       </Snackbar>
     </div>

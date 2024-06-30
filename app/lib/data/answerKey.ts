@@ -38,7 +38,7 @@ export const correctTriads: RegExp[] = [
   /^eg#(?:b#|c)$/,
 ];
 
-export const correct7thChordNotationAnswers = [
+export const correct7thChordNotationAnswers: RegExp[] = [
   /^eg#bd#$/,
   /^gbbdf$/,
   /^dbfab(?:b|cb)$/,
@@ -48,7 +48,7 @@ export const correct7thChordNotationAnswers = [
   /^ebgbbbd$/,
 ];
 
-export const correctSeventhChordAnswers = [
+export const correctSeventhChordAnswers: RegExp[] = [
   /^(E#)(?:dim7|º7|o7)$/,
   /^(F)(?:∆|∆7|[Mm]aj7|[Mm]a7)$/,
   /^(G)(?:-∆|m∆|m∆7|min[Mm]aj7|mi[Mm]aj7|m[Mm]aj7)$/,
@@ -58,7 +58,7 @@ export const correctSeventhChordAnswers = [
   /^(D)(?:\+7|7#5|7\(#5\)|[Aa]ug7|)$/,
 ];
 
-export const correctProgressionAnswers = [
+export const correctProgressionAnswers: RegExp[] = [
   //1
   /^(D)(?:-7|min7|mi7|m7)$/,
   /^(G7)$/,

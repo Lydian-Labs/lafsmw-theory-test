@@ -1,4 +1,4 @@
-const TIME_SIG = "8/4";
+const TIME_SIG = "7/4";
 export const NUM_STAVES = 1;
 const Y_POSITION_OF_STAVES = 150;
 const X_POSITION_OF_STAVES = 10;

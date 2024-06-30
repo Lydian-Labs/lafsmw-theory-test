@@ -13,6 +13,7 @@ import React, {
   useState,
 } from "react";
 import VexFlow from "vexflow";
+import SimpleSnackbar from "./SnackbarToast";
 import CheckIfNoteFound from "../components/CheckIfNoteFound";
 import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
 import { useClef } from "../context/ClefContext";
@@ -62,6 +63,7 @@ const NotateScale = ({
   setIsReady: Dispatch<SetStateAction<boolean>>;
   isReady: boolean;
 }) => {
+  const [open, setOpen] = useState<boolean>(false);
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
   const [notesAndCoordinates, setNotesAndCoordinates] = useState<
@@ -155,6 +157,9 @@ const NotateScale = ({
   };
 
   const handleClick = (e: React.MouseEvent) => {
+    if (state.isEnterNoteActive && scaleDataForGrading.length === 7) {
+      setOpen(true);
+    }
     const { userClickY, userClickX } = getUserClickInfo(
       e,
       container,
@@ -221,13 +226,15 @@ const NotateScale = ({
   return (
     <>
       <div ref={container} onClick={handleClick} />
-      <CheckNumBeatsInMeasure
-        tooManyBeatsInMeasure={state.tooManyBeatsInMeasure}
-        openEnterNotes={dispatch}
-      />
+
       <CheckIfNoteFound
         noNoteFound={state.noNoteFound || false}
         openEnterNotes={dispatch}
+      />
+      <SimpleSnackbar
+        open={open}
+        setOpen={setOpen}
+        message="You only need to write 7 notes for the major scale. Do not repeat the 1st note an octave above."
       />
 
       <Container
