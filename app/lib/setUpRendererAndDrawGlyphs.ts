@@ -1,8 +1,16 @@
 import createBlankStaves from "./createBlankStavesNew";
-import { BlankStaves, RenderStaves } from "./typesAndInterfaces";
+import {
+  BlankStaves,
+  RenderStavesAndGlyphs,
+  StaveType,
+} from "./typesAndInterfaces";
+import { roundToNearest5 } from "./roundToNearest5";
+import VexFlow from "vexflow";
+const VF = VexFlow.Flow;
+const { Glyph } = VF;
 
-export const setupRendererAndDrawStaves = (
-  params: RenderStaves
+export const setupRendererAndDrawGlyphs = (
+  params: RenderStavesAndGlyphs
 ): BlankStaves | undefined => {
   const {
     rendererRef,
@@ -17,13 +25,16 @@ export const setupRendererAndDrawStaves = (
     firstStaveWidth,
     keySig,
     setStaves,
+    glyphs,
+    sizeOfGlyph,
+    staves,
   } = params;
   const renderer = rendererRef?.current;
   renderer?.resize(rendererWidth, rendererHeight);
   const context = renderer && renderer.getContext();
   context?.setFont(font, fontSize);
   context?.clear();
-  let newStaves;
+  let newStaves: StaveType[] = [];
   if (context && rendererRef) {
     newStaves = createBlankStaves({
       numStaves,
@@ -37,5 +48,15 @@ export const setupRendererAndDrawStaves = (
     });
     setStaves(newStaves);
   }
-  return newStaves;
+  glyphs &&
+    glyphs.forEach((glyphInfo) => {
+      const adjustedYPosition = roundToNearest5(glyphInfo.yPosition);
+      const glyph = new Glyph(glyphInfo.glyph, sizeOfGlyph);
+      if (context)
+        glyph
+          .setContext(context)
+          .setStave(staves[0])
+          .render(context, glyphInfo.xPosition, adjustedYPosition);
+    });
+  if (context && rendererRef) return newStaves;
 };

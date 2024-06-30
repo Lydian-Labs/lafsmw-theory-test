@@ -168,7 +168,7 @@ export interface RenderStavesAndNotesParams {
   staves: BlankStaves;
 }
 
-export interface RenderStaves {
+export interface RenderStavesAndGlyphs {
   rendererRef: RendererRef | null;
   font: string;
   fontSize: number;
@@ -183,6 +183,8 @@ export interface RenderStaves {
   firstStaveWidth: number;
   regularStaveWidth?: number | null;
   setStaves: SetStaves;
+  glyphs: GlyphProps[];
+  sizeOfGlyph: number;
   staves: BlankStaves;
 }
 export interface RenderStavesAndChordParams {

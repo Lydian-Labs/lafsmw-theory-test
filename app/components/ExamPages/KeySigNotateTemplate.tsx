@@ -29,9 +29,9 @@ export default function KeySignaturesNotation({
   const [glyphs, setGlyphs] = useState<GlyphProps[]>(
     currentUserData[`glyphs${page - 1}`] || []
   );
-  const keySigPropName = `keySignaturesNotation${page}`;
-  const keySigStavesPropName = `keySigStaves${page}`;
-  const glyphsPropName = `glyphs${page}`;
+  const keySigPropName = `keySignaturesNotation${page - 1}`;
+  const keySigStavesPropName = `keySigStaves${page - 1}`;
+  const glyphsPropName = `glyphs${page - 1}`;
 
   const handleSubmit = async (e: MouseEvent) => {
     e.preventDefault();

@@ -29,6 +29,7 @@ import { initializeRenderer } from "../lib/initializeRenderer";
 import isClickWithinStaveBounds from "../lib/isClickWithinStaveBounds";
 import { keySigReducer } from "../lib/reducer";
 import { setupRendererAndDrawStaves } from "../lib/setUpRenderer";
+import { setupRendererAndDrawGlyphs } from "../lib/setUpRendererAndDrawGlyphs";
 import {
   GlyphProps,
   NotesAndCoordinatesData,
@@ -71,22 +72,24 @@ const NotateKeySignature = ({
   const renderer = rendererRef.current;
   renderer?.resize(470, 200);
 
-  const context = rendererRef.current?.getContext();
+  //const context = rendererRef.current?.getContext();
 
-  const renderStaves = useCallback((): StaveType[] | undefined => {
-    return setupRendererAndDrawStaves({
+  const renderStavesAndGlyphs = useCallback((): StaveType[] | undefined => {
+    return setupRendererAndDrawGlyphs({
       rendererRef,
       ...staveData,
       chosenClef,
       firstStaveWidth: 450,
-      staves: keySigStaves,
       setStaves: setKeySigStaves,
+      glyphs,
+      sizeOfGlyph: 40,
+      staves: keySigStaves,
     });
-  }, [rendererRef, keySigStaves]);
+  }, [keySigStaves, glyphs, setKeySigStaves, chosenClef]);
 
   useEffect(() => {
     initializeRenderer(rendererRef, container);
-    const newStaves = renderStaves();
+    const newStaves = renderStavesAndGlyphs();
     if (newStaves)
       calculateNotesAndCoordinates(
         chosenClef,
@@ -97,9 +100,6 @@ const NotateKeySignature = ({
         1,
         0
       );
-    if (context && glyphs.length > 0) {
-      buildKeySignature(glyphs, 40, context, keySigStaves[0]);
-    }
   }, [glyphs]);
 
   //this is where the we will get the array to grade
@@ -109,7 +109,7 @@ const NotateKeySignature = ({
 
   const clearKey = () => {
     clearKeySignature(setGlyphs, rendererRef, container), setKeySig(() => []);
-    const newStaves = renderStaves();
+    const newStaves = renderStavesAndGlyphs();
 
     if (newStaves) {
       if (newStaves)
