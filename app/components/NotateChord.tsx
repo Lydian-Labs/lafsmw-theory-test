@@ -43,7 +43,6 @@ import CustomButton from "./CustomButton";
 const { Renderer } = VexFlow.Flow;
 
 const NotateChord = ({
-  chords,
   chordData,
   setChordData,
   chordStaves,
@@ -52,7 +51,7 @@ const NotateChord = ({
   setIsReady,
   isReady,
 }: {
-  chords: string[],
+  chords: string[];
   chordData: Chord;
   setChordData: Dispatch<SetStateAction<Chord>>;
   chordStaves: StaveType[];
@@ -63,24 +62,24 @@ const NotateChord = ({
 }) => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
-  //const [staves, setStaves] = useState<StaveType[]>([]);
   const [state, dispatch] = useReducer(
     chordReducer,
     chordInteractionInitialState
   );
-  //not currently being used, but will be used in the future
   const [barIndex, setBarIndex] = useState<number>(0);
   const { chosenClef } = useClef();
   const [notesAndCoordinates, setNotesAndCoordinates] = useState<
     NotesAndCoordinatesData[]
   >([initialNotesAndCoordsState]);
-
   const noNoteFound = () => dispatch({ type: "noNoteFound" });
 
   const modifyChordsButtonGroup = useMemo(
     () => buttonGroup(dispatch, state, modifyChordsActionTypes),
     [dispatch, state]
   );
+  const handleEnableSave = () => {
+    setIsReady(false);
+  };
 
   const renderStavesAndChords = useCallback(
     (): StaveType[] =>
@@ -123,6 +122,7 @@ const NotateChord = ({
     setChordData((): Chord => {
       return initialChordData;
     });
+    handleEnableSave();
     const newStave: any = renderStavesAndChords();
     if (newStave) {
       calculateNotesAndCoordinates(
@@ -159,13 +159,9 @@ const NotateChord = ({
     //not currently being used but will be used in the future
     const barIndex = findBarIndex(chordStaves, userClickX);
 
-    let foundNoteIndex: number = -1;
-
-    if (chordData.keys) {
-      foundNoteIndex = chordData.keys.findIndex(
-        (note) => note === foundNoteData?.note
-      );
-    }
+    const foundNoteIndex = chordData.keys.findIndex(
+      (note) => note === foundNoteData?.note
+    );
 
     if (!foundNoteData) {
       noNoteFound();
@@ -180,7 +176,7 @@ const NotateChord = ({
       state,
       foundNoteData,
       chordDataCopy,
-      foundNoteIndex ? foundNoteIndex : 0,
+      foundNoteIndex,
       chosenClef
     );
 
@@ -212,7 +208,10 @@ const NotateChord = ({
           return (
             <CustomButton
               key={button.text}
-              onClick={button.action}
+              onClick={() => {
+                button.action();
+                handleEnableSave();
+              }}
               isEnabled={button.isEnabled}
             >
               {button.text}

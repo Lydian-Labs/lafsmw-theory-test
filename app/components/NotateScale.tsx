@@ -84,6 +84,9 @@ const NotateScale = ({
     () => buttonGroup(dispatch, state, modifyNotesActionTypes),
     [dispatch, state]
   );
+  const handleEnableSave = () => {
+    setIsReady(false);
+  };
 
   const renderStavesAndNotes = useCallback(() => {
     return setupRendererAndDrawNotes({
@@ -136,6 +139,7 @@ const NotateScale = ({
 
   const eraseMeasures = () => {
     setScaleDataMatrix([[]]);
+    handleEnableSave();
     const newStave = renderStavesAndNotes();
     if (newStave) {
       calculateNotesAndCoordinates(
@@ -250,7 +254,10 @@ const NotateScale = ({
           return (
             <CustomButton
               key={button.text}
-              onClick={button.action}
+              onClick={() => {
+                button.action();
+                handleEnableSave();
+              }}
               isEnabled={button.isEnabled}
             >
               {button.text}
