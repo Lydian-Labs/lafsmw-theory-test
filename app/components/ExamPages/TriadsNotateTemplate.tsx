@@ -122,13 +122,14 @@ export default function TriadsNotation({
                 </Grid>
                 <Grid item>
                   <NotateChord
+                    chords={chords}
+                    setChords={setChords}
                     chordData={chordData}
                     setChordData={setChordData}
-                    setChordStaves={setChordStaves}
                     chordStaves={chordStaves}
-                    setChords={setChords}
-                    setIsReady={setIsReady}
+                    setChordStaves={setChordStaves}
                     isReady={isReady}
+                    setIsReady={setIsReady}
                   />
                 </Grid>
               </Grid>
