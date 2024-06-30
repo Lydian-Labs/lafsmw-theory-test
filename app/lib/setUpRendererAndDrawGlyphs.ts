@@ -1,4 +1,4 @@
-import createBlankStaves from "./createBlankStavesNew";
+import createBlankStaves from "./createBlankStaves";
 import {
   BlankStaves,
   RenderStavesAndGlyphs,

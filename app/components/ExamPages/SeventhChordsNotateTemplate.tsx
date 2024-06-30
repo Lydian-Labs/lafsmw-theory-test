@@ -22,20 +22,20 @@ export default function NotateSeventhChords({
   nextViewState,
   page,
 }: UserDataProps) {
-  const [chords, setChords] = useState<string[]>([]);
+  const [seventhChords, setSeventhChords] = useState<string[]>([]);
   const currentUserDataRef = useRef(currentUserData);
   const [open, setOpen] = useState<boolean>(false);
   const [isReady, setIsReady] = useState<boolean>(false);
-  const [chordData, setChordData] = useState<Chord>(
-    currentUserData[`chordData${page - 17}`] || initialChordData
+  const [seventhChordData, setSeventhChordData] = useState<Chord>(
+    currentUserData[`seventhChordData${page - 17}`] || initialChordData
   );
-  const [chordStaves, setChordStaves] = useState<StaveType[]>(
-    currentUserData[`chordStaves${page - 17}`] || []
+  const [seventhChordStaves, setSeventhChordStaves] = useState<StaveType[]>(
+    currentUserData[`seventhChordStaves${page - 17}`] || []
   );
 
   const seventhChordsPropName = `seventhChords${page - 17}`;
-  const seventhChordDataPropName = `chordData${page - 17}`;
-  const seventhChordStavesPropName = `chordStaves${page - 17}`;
+  const seventhChordDataPropName = `seventhChordData${page - 17}`;
+  const seventhChordStavesPropName = `seventhChordStaves${page - 17}`;
 
   const memoizedSetCurrentUserData = useCallback(
     (data: InputState) => {
@@ -46,18 +46,23 @@ export default function NotateSeventhChords({
 
   useEffect(() => {
     currentUserDataRef.current = currentUserData;
-    console.log('cuurentUserData: ', currentUserData)
+    console.log("cuurentUserData: ", currentUserData);
   }, [currentUserData]);
 
   useEffect(() => {
     memoizedSetCurrentUserData({
       ...currentUserDataRef.current,
-      [seventhChordsPropName]: chords,
-      [seventhChordDataPropName]: chordData,
-      [seventhChordStavesPropName]: chordStaves,
+      [seventhChordsPropName]: seventhChords,
+      [seventhChordDataPropName]: seventhChordData,
+      [seventhChordStavesPropName]: seventhChordStaves,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chords, chordData, chordStaves, memoizedSetCurrentUserData]);
+  }, [
+    seventhChords,
+    seventhChordData,
+    seventhChordStaves,
+    memoizedSetCurrentUserData,
+  ]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -124,12 +129,12 @@ export default function NotateSeventhChords({
                 </Grid>
                 <Grid item>
                   <NotateChord
-                    chords={chords}
-                    chordData={chordData}
-                    setChordData={setChordData}
-                    setChordStaves={setChordStaves}
-                    chordStaves={chordStaves}
-                    setChords={setChords}
+                    chords={seventhChords}
+                    chordData={seventhChordData}
+                    setChordData={setSeventhChordData}
+                    setChordStaves={setSeventhChordStaves}
+                    chordStaves={seventhChordStaves}
+                    setChords={setSeventhChords}
                     setIsReady={setIsReady}
                     isReady={isReady}
                   />

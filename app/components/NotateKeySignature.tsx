@@ -14,7 +14,6 @@ import VexFlow from "vexflow";
 import SnackbarToast from "../components/SnackbarToast";
 import { useClef } from "../context/ClefContext";
 import { modifyKeySigActionTypes } from "../lib/actionTypes";
-import { buildKeySignature } from "../lib/buildKeySignature";
 import { buttonGroup, clearKeySignature } from "../lib/buttonsAndButtonGroups";
 import calculateNotesAndCoordinates from "../lib/calculateNotesAndCoordinates";
 import { keySigArray } from "../lib/data/keySigArray";
@@ -28,7 +27,6 @@ import {
 import { initializeRenderer } from "../lib/initializeRenderer";
 import isClickWithinStaveBounds from "../lib/isClickWithinStaveBounds";
 import { keySigReducer } from "../lib/reducer";
-import { setupRendererAndDrawStaves } from "../lib/setUpRenderer";
 import { setupRendererAndDrawGlyphs } from "../lib/setUpRendererAndDrawGlyphs";
 import {
   GlyphProps,
@@ -71,8 +69,6 @@ const NotateKeySignature = ({
 
   const renderer = rendererRef.current;
   renderer?.resize(470, 200);
-
-  //const context = rendererRef.current?.getContext();
 
   const renderStavesAndGlyphs = useCallback((): StaveType[] | undefined => {
     return setupRendererAndDrawGlyphs({

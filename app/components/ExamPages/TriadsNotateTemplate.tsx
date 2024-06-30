@@ -22,20 +22,20 @@ export default function TriadsNotation({
   nextViewState,
   page,
 }: UserDataProps) {
-  const [chordData, setChordData] = useState<Chord>(
-    currentUserData[`chordData${page - 11}`] || initialChordData
+  const [triadData, setTriadData] = useState<Chord>(
+    currentUserData[`triadData${page - 11}`] || initialChordData
   );
-  const [chordStaves, setChordStaves] = useState<StaveType[]>(
-    currentUserData[`chordStaves${page - 11}`] || []
+  const [triadStaves, setTriadStaves] = useState<StaveType[]>(
+    currentUserData[`triadStaves${page - 11}`] || []
   );
-  const [chords, setChords] = useState<string[]>([]);
+  const [triads, setTriads] = useState<string[]>([]);
   const currentUserDataRef = useRef(currentUserData);
   const [open, setOpen] = useState<boolean>(false);
   const [isReady, setIsReady] = useState<boolean>(false);
 
   const triadsPropName = `triads${page - 11}`;
-  const triadsDataPropName = `chordData${page - 11}`;
-  const triadStavesPropName = `chordStaves${page - 11}`;
+  const triadsDataPropName = `triadData${page - 11}`;
+  const triadStavesPropName = `triadStaves${page - 11}`;
 
   const memoizedSetCurrentUserData = useCallback(
     (data: InputState) => {
@@ -52,12 +52,12 @@ export default function TriadsNotation({
   useEffect(() => {
     memoizedSetCurrentUserData({
       ...currentUserDataRef.current,
-      [triadsPropName]: chords,
-      [triadsDataPropName]: chordData,
-      [triadStavesPropName]: chordStaves,
+      [triadsPropName]: triads,
+      [triadsDataPropName]: triadData,
+      [triadStavesPropName]: triadStaves,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chords, chordData, chordStaves, memoizedSetCurrentUserData]);
+  }, [triads, triadData, triadStaves, memoizedSetCurrentUserData]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -122,12 +122,12 @@ export default function TriadsNotation({
                 </Grid>
                 <Grid item>
                   <NotateChord
-                    chords={chords}
-                    setChords={setChords}
-                    chordData={chordData}
-                    setChordData={setChordData}
-                    chordStaves={chordStaves}
-                    setChordStaves={setChordStaves}
+                    chords={triads}
+                    setChords={setTriads}
+                    chordData={triadData}
+                    setChordData={setTriadData}
+                    chordStaves={triadStaves}
+                    setChordStaves={setTriadStaves}
                     isReady={isReady}
                     setIsReady={setIsReady}
                   />
