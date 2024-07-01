@@ -3,6 +3,8 @@ import { User, onAuthStateChanged } from "firebase/auth";
 import React, { useContext, useEffect, useState, ReactNode } from "react";
 import { auth } from "../firebase/config";
 import CreateAuthContext from "./createAuthContext";
+import Box from "@mui/material/Box";
+import { Stack } from "@mui/material";
 
 type AuthContextType = {
   children: ReactNode;
@@ -30,7 +32,14 @@ export default function AuthContextProvider({ children }: AuthContextType) {
   // to enable the components to consume the values from this auth user context, we need to create an auth context provider to return a provider for the context we just created. The value prop will contain the data we want to make available to our component tree
   return (
     <CreateAuthContext.Provider value={{ user, setUser }}>
-      {loading ? <div>Loading...</div> : children}
+      {loading ? (
+        <Stack gap={4} alignItems={"center"} paddingTop={16}>
+          <Box>{"Loading..."}</Box>
+          <Box>{"(if taking too long, please refresh the page)"}</Box>
+        </Stack>
+      ) : (
+        children
+      )}
     </CreateAuthContext.Provider>
   );
 }
