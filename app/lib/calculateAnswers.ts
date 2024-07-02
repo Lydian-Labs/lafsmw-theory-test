@@ -38,19 +38,15 @@ export const checkKeySigIdentifyAnswers = (
   let result = "";
   let numAnswers = correctAnswers.length;
   let keySigTextString = arrToString(keySigText);
-  let answersString = arrToString(answers);
+  let answersHTML = convertArrStringsToHTML(answers);
   for (let i = 0; i < answers.length; i++) {
     if (answers[i].toLowerCase() === correctAnswers[i]) {
       score++;
     }
   }
   result = `<b>${score}/${numAnswers}</b> on the ${questionType} section.
-    <ul>Actual student answers:
-      <li>${answersString}</li>
-    </ul>
-    <ul>Correct answers:
-      <li>${keySigTextString}</li>
-    </ul>`;
+    <ol>Actual student answers: ${answersHTML}</ol>
+    <ul>Correct answers: ${keySigTextString}</ul>`;
   return result;
 };
 
@@ -64,7 +60,7 @@ export const checkChordIdentifyAnswers = (
   let result = "";
   let numAnswers = studentAnswers.length;
   let correctAnswers = arrToString(nonRegexCorrectAnswers);
-  let studentAnswersString = arrToString(studentAnswers);
+  let studentAnswersHTML = convertArrStringsToHTML(studentAnswers);
   for (let i = 0; i < studentAnswers.length; i++) {
     let chord = studentAnswers[i];
     let isTrue = regexCorrectAnswers[i].test(chord);
@@ -73,12 +69,8 @@ export const checkChordIdentifyAnswers = (
     }
   }
   result = `<b>${score}/${numAnswers}</b> on the ${questionType} section.
-    <ul>Actual student answers:
-      <li>${studentAnswersString}</li>
-    </ul>
-    <ul>Correct answers:
-      <li>${correctAnswers}</li>
-    </ul>`;
+    <ol>Actual student answers:${studentAnswersHTML}</ol>
+    <ul>Correct answers: ${correctAnswers}</ul>`;
   return result;
 };
 
@@ -101,8 +93,8 @@ export const checkArrOfArrsAnswer = (
     }
   }
   result = `<b>${score}/${numAnswers}</b> on the ${questionType} section.
-    <ul>Actual student answers:${actualStudentAnswers}</ul>
-    <ul>Correct answers:${correctHTMLAnswers}</ul>`;
+    <ol>Actual student answers:${actualStudentAnswers}</ol>
+    <ol>Correct answers:${correctHTMLAnswers}</ol>`;
   return result;
 };
 
@@ -126,8 +118,8 @@ export const checkChordsAnswers = (
     }
   }
   result = `<b>${score}/${numAnswers}</b> on the ${questionType} section.
-    <ul>Actual student answers:${actualStudentAnswers}</ul>
-    <ul>Correct answers: ${correctAnswersString}</ul>`;
+    <ol>Actual student answers:${actualStudentAnswers}</ol>
+    <ol>Correct answers: ${correctAnswersString}</ol>`;
   return result;
 };
 
@@ -162,7 +154,15 @@ function convertStudentAnswersToHTML(userAnswers: string[][]): string {
       userAnswers[i][j] = userAnswers[i][j].split("/")[0];
     }
     let current = arrToString(userAnswers[i]);
-    result += `<span>${i + 1}. ${current}</span>`;
+    result += `<li>${current}</li>`;
+  }
+  return result;
+}
+
+function convertArrStringsToHTML(userAnswers: string[]): string {
+  let result = "";
+  for (let i = 0; i < userAnswers.length; i++) {
+    result += `<li>${userAnswers[i]}</li>`;
   }
   return result;
 }
