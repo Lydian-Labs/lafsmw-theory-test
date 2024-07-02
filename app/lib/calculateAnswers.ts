@@ -7,7 +7,7 @@ export const check251Answers = (
   let score = 0;
   let result = "";
   let numAnswers = studentAnswers.length;
-  let keyNamesString = keyNames.join(", ");
+  let keyNamesString = arrToString(keyNames);
   for (let i = 0; i < studentAnswers.length; i++) {
     let chord = studentAnswers[i];
     let isTrue = regexCorrectAnswers[i].test(chord);
@@ -17,12 +17,12 @@ export const check251Answers = (
   }
   result = `<b>${score}/${numAnswers}</b> on the ${questionType} section.
     <ul>Actual student answers:
-      <li>${studentAnswers.slice(0, 3)}</li>
-      <li>${studentAnswers.slice(3, 6)}</li>
-      <li>${studentAnswers.slice(6, 9)}</li>
-      <li>${studentAnswers.slice(9, 12)}</li>
-      <li>${studentAnswers.slice(12, 15)}</li>
-      <li>${studentAnswers.slice(15, 18)}</li>
+      <li>${arrToString(studentAnswers.slice(0, 3))}</li>
+      <li>${arrToString(studentAnswers.slice(3, 6))}</li>
+      <li>${arrToString(studentAnswers.slice(6, 9))}</li>
+      <li>${arrToString(studentAnswers.slice(9, 12))}</li>
+      <li>${arrToString(studentAnswers.slice(12, 15))}</li>
+      <li>${arrToString(studentAnswers.slice(15, 18))}</li>
     </ul>
     <ul>Correct answers: ${keyNamesString}</ul>`;
   return result;
@@ -37,7 +37,8 @@ export const checkKeySigIdentifyAnswers = (
   let score = 0;
   let result = "";
   let numAnswers = correctAnswers.length;
-  let keySigTextString = keySigText.join(", ");
+  let keySigTextString = arrToString(keySigText);
+  let answersString = arrToString(answers);
   for (let i = 0; i < answers.length; i++) {
     if (answers[i].toLowerCase() === correctAnswers[i]) {
       score++;
@@ -45,7 +46,7 @@ export const checkKeySigIdentifyAnswers = (
   }
   result = `<b>${score}/${numAnswers}</b> on the ${questionType} section.
     <ul>Actual student answers:
-      <li>${answers}</li>
+      <li>${answersString}</li>
     </ul>
     <ul>Correct answers:
       <li>${keySigTextString}</li>
@@ -62,7 +63,8 @@ export const checkChordIdentifyAnswers = (
   let score = 0;
   let result = "";
   let numAnswers = studentAnswers.length;
-  let correctAnswers = nonRegexCorrectAnswers.join(", ");
+  let correctAnswers = arrToString(nonRegexCorrectAnswers);
+  let studentAnswersString = arrToString(studentAnswers);
   for (let i = 0; i < studentAnswers.length; i++) {
     let chord = studentAnswers[i];
     let isTrue = regexCorrectAnswers[i].test(chord);
@@ -72,7 +74,7 @@ export const checkChordIdentifyAnswers = (
   }
   result = `<b>${score}/${numAnswers}</b> on the ${questionType} section.
     <ul>Actual student answers:
-      <li>${studentAnswers}</li>
+      <li>${studentAnswersString}</li>
     </ul>
     <ul>Correct answers:
       <li>${correctAnswers}</li>
@@ -113,7 +115,7 @@ export const checkChordsAnswers = (
   let score = 0;
   let result = "";
   let numAnswers = correctAnswers.length;
-  let correctAnswersString = correctAnswersText.join(", ");
+  let correctAnswersString = arrToString(correctAnswersText);
   let actualStudentAnswers = convertStudentAnswersToHTML(userAnswers);
   for (let i = 0; i < userAnswers.length; i++) {
     if (!userAnswers[i].length) {
@@ -159,8 +161,12 @@ function convertStudentAnswersToHTML(userAnswers: string[][]): string {
     for (let j = 0; j < userAnswers[i].length; j++) {
       userAnswers[i][j] = userAnswers[i][j].split("/")[0];
     }
-    let current = userAnswers[i].join(", ");
-    result += `<li>${i + 1}. ${current}</li>`;
+    let current = arrToString(userAnswers[i]);
+    result += `<span>${i + 1}. ${current}</span>`;
   }
   return result;
+}
+
+function arrToString(arr: string[]): string {
+  return arr.join(", ");
 }
