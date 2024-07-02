@@ -1,6 +1,6 @@
-import { useTimer } from "../context/TimerContext";
-import { Box } from "@mui/system";
 import { Typography } from "@mui/material";
+import { Box } from "@mui/system";
+import { useTimer } from "../context/TimerContext";
 
 const CountdownTimer = () => {
   const { timeLeft } = useTimer();

@@ -5,8 +5,8 @@ import { useAuthContext } from "@/firebase/authContext";
 import { Box, Button, Grid, Stack, Typography } from "@mui/material";
 import { useRef, useState } from "react";
 import CardFooter from "../CardFooter";
-import WriteBlues from "../WriteBlues";
 import SnackbarToast from "../SnackbarToast";
+import WriteBlues from "../WriteBlues";
 
 export default function WriteBluesChanges({
   currentUserData,

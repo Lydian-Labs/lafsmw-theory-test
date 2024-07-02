@@ -27,8 +27,13 @@ import {
   correctProgressionAnswers,
   correctScalesAnswers,
   correctSeventhChordAnswers,
+  correctSeventhChordNonRegexAnswers,
   correctTriads,
 } from "@/app/lib/data/answerKey";
+import keyNamesText from "@/app/lib/data/keyNamesText";
+import keySignaturesText from "@/app/lib/data/keySignaturesText";
+import seventhChordsText from "@/app/lib/data/seventhChordsText";
+import triadsText from "@/app/lib/data/triadsText";
 import { initialFormInputState } from "@/app/lib/initialStates";
 import { InputState, Level, MouseEvent } from "@/app/lib/typesAndInterfaces";
 import { useAuthContext } from "@/firebase/authContext";
@@ -169,6 +174,7 @@ export default function ExamHomePage() {
     let keySigAnswers = checkKeySigIdentifyAnswers(
       userKeySigAnswers,
       correctKeySigAnswers,
+      keySignaturesText,
       "Key Signatures"
     );
     let scalesAnswers = checkArrOfArrsAnswer(
@@ -177,21 +183,29 @@ export default function ExamHomePage() {
       "Scales"
     );
 
-    let triadsAnswers = checkChordsAnswers(userTriads, correctTriads, "Triads");
+    let triadsAnswers = checkChordsAnswers(
+      userTriads,
+      correctTriads,
+      triadsText,
+      "Triads"
+    );
 
     let seventhNotationAnswers = checkChordsAnswers(
       userSeventhChordAnswers,
       correct7thChordNotationAnswers,
+      seventhChordsText,
       "Seventh Chord Notation"
     );
     let seventhAnswers = checkChordIdentifyAnswers(
       userChordAnswers,
       correctSeventhChordAnswers,
+      correctSeventhChordNonRegexAnswers,
       "Seventh Chords"
     );
     let progressionAnswers = check251Answers(
       userProgressionAnswers,
       correctProgressionAnswers,
+      keyNamesText,
       "2-5-1 Progressions"
     );
 
@@ -247,7 +261,7 @@ export default function ExamHomePage() {
       }
       e.preventDefault();
       await handleLevelSubmit(e);
-      startTimer(1800, handleTimeUp);
+      startTimer(3600, handleTimeUp);
       setViewState(VIEW_STATES.KEY_SIG_NOTATE1);
     };
   };
