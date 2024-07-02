@@ -27,13 +27,13 @@ import {
   correctProgressionAnswers,
   correctScalesAnswers,
   correctSeventhChordAnswers,
-  correctTriads,
   correctSeventhChordNonRegexAnswers,
+  correctTriads,
 } from "@/app/lib/data/answerKey";
-import triadsText from "@/app/lib/data/triadsText";
-import seventhChordsText from "@/app/lib/data/seventhChordsText";
-import keySignaturesText from "@/app/lib/data/keySignaturesText";
 import keyNamesText from "@/app/lib/data/keyNamesText";
+import keySignaturesText from "@/app/lib/data/keySignaturesText";
+import seventhChordsText from "@/app/lib/data/seventhChordsText";
+import triadsText from "@/app/lib/data/triadsText";
 import { initialFormInputState } from "@/app/lib/initialStates";
 import { InputState, Level, MouseEvent } from "@/app/lib/typesAndInterfaces";
 import { useAuthContext } from "@/firebase/authContext";

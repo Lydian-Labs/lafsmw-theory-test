@@ -3,11 +3,11 @@ import Stack from "@mui/material/Stack";
 import { ForwardedRef, forwardRef, useEffect, useState } from "react";
 import { useClef } from "../context/ClefContext";
 import keyNames from "../lib/data/keyNamesText";
+import { initialProgressionInputState } from "../lib/initialStates";
 import isCurrentDataFilled from "../lib/isCurrentDataFilled";
 import { ChangeEvent, FormEvent, WriteProps } from "../lib/typesAndInterfaces";
 import FormInput from "./FormInput";
 import Staff from "./Staff";
-import { initialProgressionInputState } from "../lib/initialStates";
 
 export default forwardRef(function WriteProgression(
   { width, handleInput, currentData }: WriteProps,

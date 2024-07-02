@@ -1,10 +1,10 @@
 "use client";
+import { List, ListItem, ListItemText, Stack } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
+import Typography from "@mui/material/Typography";
 import { useState } from "react";
-import { Stack, List, ListItem, ListItemText } from "@mui/material";
 
 type TutorialInstructions = {
   instructionTitle: string;
