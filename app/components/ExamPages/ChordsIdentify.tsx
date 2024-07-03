@@ -1,4 +1,5 @@
 "use client";
+import { seventhChordIdentifyInstructions } from "@/app/lib/data/instructions";
 import { InputData, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import { Box, Container, Grid, Typography } from "@mui/material";
 import { useRef } from "react";
@@ -9,6 +10,7 @@ import {
 import CardFooter from "../CardFooter";
 import IdentifyNotation from "../IdentifyNotation";
 import { useClef } from "../../context/ClefContext";
+import TutorialModal from "../TutorialModal";
 
 export default function ChordsIdentification({
   currentUserData,
@@ -39,6 +41,9 @@ export default function ChordsIdentification({
         <Typography variant="h5" align="center" pb={2}>
           Section 6: Identify Chords
         </Typography>
+        <TutorialModal
+          tutorialInstructions={seventhChordIdentifyInstructions}
+        />
       </Box>
       <Box
         component="main"
