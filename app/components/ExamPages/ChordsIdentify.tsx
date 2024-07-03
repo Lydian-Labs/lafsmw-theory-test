@@ -2,9 +2,13 @@
 import { InputData, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import { Box, Container, Grid, Typography } from "@mui/material";
 import { useRef } from "react";
-import seventhChords from "../../lib/data/seventhChords";
+import {
+  seventhChordsTreble,
+  seventhChordsBass,
+} from "../../lib/data/seventhChords";
 import CardFooter from "../CardFooter";
 import IdentifyNotation from "../IdentifyNotation";
+import { useClef } from "../../context/ClefContext";
 
 export default function ChordsIdentification({
   currentUserData,
@@ -17,6 +21,11 @@ export default function ChordsIdentification({
   function handleChords(input: InputData) {
     setCurrentUserData({ ...currentUserData, chords: input });
   }
+
+  const { chosenClef } = useClef();
+
+  let seventhChords =
+    chosenClef === "treble" ? seventhChordsTreble : seventhChordsBass;
 
   const boxStyle = {
     display: "flex",
