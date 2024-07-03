@@ -31,7 +31,6 @@ import {
   correctTriads,
 } from "@/app/lib/data/answerKey";
 import keyNamesText from "@/app/lib/data/keyNamesText";
-import keySignaturesText from "@/app/lib/data/keySignaturesText";
 import seventhChordsText from "@/app/lib/data/seventhChordsText";
 import triadsText from "@/app/lib/data/triadsText";
 import { initialFormInputState } from "@/app/lib/initialStates";
@@ -174,7 +173,6 @@ export default function ExamHomePage() {
     let keySigAnswers = checkAndFormatKeySigIdentifyAnswers(
       userKeySigAnswers,
       correctKeySigAnswers,
-      keySignaturesText,
       "Key Signatures"
     );
     let scalesAnswers = checkAndFormatArrOfArrsAnswers(
@@ -283,7 +281,8 @@ export default function ExamHomePage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: `${process.env.NEXT_PUBLIC_EMAIL_CAMP_DIRECTOR}, ${process.env.NEXT_PUBLIC_EMAIL_DEVELOPER}`,
+          email: `${process.env.NEXT_PUBLIC_EMAIL_DEVELOPER}`,
+          // email: `${process.env.NEXT_PUBLIC_EMAIL_CAMP_DIRECTOR}, ${process.env.NEXT_PUBLIC_EMAIL_DEVELOPER}`,
           subject: `Exam Results for ${userName}`,
           text: `<p>Hello Kyle,</p>
 

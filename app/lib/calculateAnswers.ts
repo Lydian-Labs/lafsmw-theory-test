@@ -39,12 +39,11 @@ export const checkAndFormat251Answers = (
 export const checkAndFormatKeySigIdentifyAnswers = (
   answers: string[],
   correctAnswers: string[],
-  keySigText: string[],
   questionType: string
 ): string => {
   let score = 0;
   let answersHTML = "";
-  let keySigTextString = keySigText.join(", ");
+  let keySigTextString = correctAnswers.join(", ");
 
   for (let i = 0; i < correctAnswers.length; i++) {
     let studentAnswer = answers[i] || "";
