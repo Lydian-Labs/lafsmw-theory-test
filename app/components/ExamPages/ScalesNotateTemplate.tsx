@@ -20,15 +20,17 @@ export default function ScalesNotation({
   nextViewState,
   page,
 }: UserDataProps) {
-  const [scales, setScales] = useState<Array<string>>([]);
-  const [open, setOpen] = useState<boolean>(false);
-  const [isReady, setIsReady] = useState<boolean>(false);
   const [scaleDataMatrix, setScaleDataMatrix] = useState<ScaleData[][]>(
     currentUserData[`scaleDataMatrix${page - 5}`] || [[]]
   );
   const [scaleStaves, setScaleStaves] = useState<StaveType[]>(
     currentUserData[`scaleStaves${page - 5}`] || []
   );
+  const [scales, setScales] = useState<Array<string>>([]);
+  
+  const [open, setOpen] = useState<boolean>(false);
+  const [isReady, setIsReady] = useState<boolean>(false);
+
   const scalesPropName = `scales${page - 5}`;
   const scaleDataMatrixPropName = `scaleDataMatrix${page - 5}`;
   const stavesPropName = `scaleStaves${page - 5}`;
@@ -50,7 +52,7 @@ export default function ScalesNotation({
   };
 
   useEffect(() => {
-    //console.log(currentUserData);
+    console.log(currentUserData);
   }, [currentUserData]);
 
   const boxStyle = {

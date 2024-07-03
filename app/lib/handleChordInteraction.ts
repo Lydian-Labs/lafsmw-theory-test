@@ -19,21 +19,19 @@ export const handleChordInteraction = (
   state: ChordInteractionState,
   foundNoteData: NotesAndCoordinatesData,
   chordData: Chord,
+
   foundNoteIndex: number,
   chosenClef: string
 ) => {
-  let updatedChordData = { ...chordData };
-  let updatedNotesAndCoordinates = [...notesAndCoordinates];
-
   if (state.isSharpActive || state.isFlatActive) {
     if (foundNoteIndex !== -1) {
-      updatedNotesAndCoordinates = updateNotesAndCoordsWithAccidental(
+      notesAndCoordinates = updateNotesAndCoordsWithAccidental(
         state,
         foundNoteData,
         notesAndCoordinates
       );
 
-      updatedChordData = addAccidentalToChordKeys(
+      chordData = addAccidentalToChordKeys(
         state,
         chordData,
         foundNoteIndex,
@@ -42,43 +40,37 @@ export const handleChordInteraction = (
     }
   } else if (state.isEraseAccidentalActive) {
     if (foundNoteIndex !== -1) {
-      updatedNotesAndCoordinates = removeAccidentalFromNotesAndCoords(
+      notesAndCoordinates = removeAccidentalFromNotesAndCoords(
         notesAndCoordinates,
         foundNoteData
       );
-      updatedChordData = removeAccidentalFromChord(
+      chordData = removeAccidentalFromChord(
         chordData,
         foundNoteIndex,
         chosenClef
       );
-      updatedChordData = reconstructChord(chordData, chosenClef);
+
+      chordData = reconstructChord(chordData, chosenClef);
     }
   } else if (state.isEraseNoteActive) {
     if (foundNoteIndex !== -1) {
-      updatedChordData = removeNoteFromChord(
-        chordData,
-        foundNoteIndex,
-        chosenClef
-      );
-      updatedNotesAndCoordinates = removeAccidentalFromNotesAndCoords(
+      chordData = removeNoteFromChord(chordData, foundNoteIndex, chosenClef);
+      notesAndCoordinates = removeAccidentalFromNotesAndCoords(
         notesAndCoordinates,
         foundNoteData
       );
-      updatedChordData = reconstructChord(chordData, chosenClef);
+
+      chordData = reconstructChord(chordData, chosenClef);
     }
   } else {
-    if (updatedChordData.keys && updatedChordData.keys.length >= 4)
+    if (chordData.keys && chordData.keys.length >= 4)
       return { chordData, notesAndCoordinates };
 
     if (chordData.keys)
-      updatedChordData = addNewNoteToChord(
-        chordData,
-        foundNoteData,
-        chosenClef
-      );
+      chordData = addNewNoteToChord(chordData, foundNoteData, chosenClef);
   }
   return {
-    chordData: updatedChordData,
-    notesAndCoordinates: updatedNotesAndCoordinates,
+    chordData,
+    notesAndCoordinates,
   };
 };

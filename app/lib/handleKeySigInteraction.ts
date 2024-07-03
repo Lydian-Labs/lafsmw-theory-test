@@ -40,6 +40,7 @@ export const handleKeySigInteraction = (
       xClick,
       yClick
     );
+    console.log(glyphWasDeleted);
     if (glyphWasDeleted) {
       deleteAccidentalFromKeySigArray(foundNoteData, keySig, setKeySigState);
       notesAndCoordinates = removeAccidentalFromNotesAndCoords(

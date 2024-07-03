@@ -62,17 +62,18 @@ const NotateScale = ({
   setIsReady: Dispatch<SetStateAction<boolean>>;
   isReady: boolean;
 }) => {
-  const [open, setOpen] = useState<boolean>(false);
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
-  const [notesAndCoordinates, setNotesAndCoordinates] = useState<
-    NotesAndCoordinatesData[]
-  >([initialNotesAndCoordsState]);
-  const { chosenClef } = useClef();
   const [state, dispatch] = useReducer(
     scaleReducer,
     noteInteractionInitialState
   );
+  const [open, setOpen] = useState<boolean>(false);
+
+  const [notesAndCoordinates, setNotesAndCoordinates] = useState<
+    NotesAndCoordinatesData[]
+  >([initialNotesAndCoordsState]);
+  const { chosenClef } = useClef();
 
   const noNoteFound = () => dispatch({ type: "noNoteFound" });
 
@@ -112,10 +113,14 @@ const NotateScale = ({
         -4,
         true
       );
+      
   }, []);
+  //this is the array we will use for grading
+  const scaleDataForGrading = scaleDataMatrix[0].map((scaleDataMatrix) =>
+    scaleDataMatrix.keys.join(", ")
+  );
 
   useEffect(() => {
-    console.log("scale data for grading:", scaleDataForGrading);
     const newStave: StaveType[] = renderStavesAndNotes();
     if (newStave) {
       calculateNotesAndCoordinates(
@@ -130,11 +135,6 @@ const NotateScale = ({
       );
     }
   }, [scaleDataMatrix]);
-
-  //this is the array we will use for grading
-  const scaleDataForGrading = scaleDataMatrix[0].map((scaleDataMatrix) =>
-    scaleDataMatrix.keys.join(", ")
-  );
 
   const eraseMeasures = () => {
     setScaleDataMatrix([[]]);
@@ -173,7 +173,6 @@ const NotateScale = ({
       ({ yCoordinateMin, yCoordinateMax }) =>
         userClickY >= yCoordinateMin && userClickY <= yCoordinateMax
     );
-    console.log("userClickY: ", userClickY);
     if (!foundNoteData) {
       return;
     }

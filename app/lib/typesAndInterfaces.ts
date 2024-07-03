@@ -248,6 +248,8 @@ export interface InputState {
   [key: `triadData${number}`]: Chord;
   [key: `seventhChordData${number}`]: Chord;
   [key: `seventhChordStaves${number}`]: StaveType[];
+  [key: `triadDataWithOctave${number}`]: Chord | {};
+  [key: `notesAndCoordinates${number}`]: NotesAndCoordinatesData[];
   triads1: string[];
   triads2: string[];
   triads3: string[];

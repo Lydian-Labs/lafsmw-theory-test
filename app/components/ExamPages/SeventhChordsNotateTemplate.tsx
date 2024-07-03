@@ -130,11 +130,11 @@ export default function NotateSeventhChords({
                 <Grid item>
                   <NotateChord
                     chords={seventhChords}
+                    setChords={setSeventhChords}
                     chordData={seventhChordData}
                     setChordData={setSeventhChordData}
                     setChordStaves={setSeventhChordStaves}
                     chordStaves={seventhChordStaves}
-                    setChords={setSeventhChords}
                     setIsReady={setIsReady}
                     isReady={isReady}
                   />

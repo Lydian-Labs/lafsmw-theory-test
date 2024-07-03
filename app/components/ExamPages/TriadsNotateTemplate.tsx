@@ -14,7 +14,10 @@ import CardFooter from "../CardFooter";
 import NotateChord from "../NotateChord";
 import SnackbarToast from "../SnackbarToast";
 import TutorialModal from "../TutorialModal";
-import { initialChordData } from "@/app/lib/initialStates";
+import {
+  initialChordData,
+  initialNotesAndCoordsState,
+} from "@/app/lib/initialStates";
 
 export default function TriadsNotation({
   currentUserData,
@@ -25,48 +28,61 @@ export default function TriadsNotation({
   const [triadData, setTriadData] = useState<Chord>(
     currentUserData[`triadData${page - 11}`] || initialChordData
   );
+  const [triadDataWithOctave, setTriadDataWithOctave] = useState<Chord | {}>(
+    currentUserData[`triadDataWithOctave${page - 11}`] || {}
+  );
   const [triadStaves, setTriadStaves] = useState<StaveType[]>(
     currentUserData[`triadStaves${page - 11}`] || []
   );
   const [triads, setTriads] = useState<string[]>([]);
-  const currentUserDataRef = useRef(currentUserData);
+  const [notesAndCoordinates, setNotesAndCoordinates] = useState(
+    currentUserData[`notesAndCoordinates${page - 11}`] ||
+      initialNotesAndCoordsState
+  );
+  const [initialRun, setInitialRun] = useState<boolean>(true);
+
   const [open, setOpen] = useState<boolean>(false);
   const [isReady, setIsReady] = useState<boolean>(false);
 
   const triadsPropName = `triads${page - 11}`;
   const triadsDataPropName = `triadData${page - 11}`;
   const triadStavesPropName = `triadStaves${page - 11}`;
-
-  const memoizedSetCurrentUserData = useCallback(
-    (data: InputState) => {
-      setCurrentUserData(data);
-    },
-    [setCurrentUserData]
-  );
+  const triadDataWithOctavePropName = `triadDataWithOctave${page - 11}`;
+  const notesAndCoordinatesPropName = `notesAndCoordinates${page - 11}`;
 
   useEffect(() => {
-    currentUserDataRef.current = currentUserData;
-   // console.log(currentUserData);
-  }, [currentUserData]);
-
-  useEffect(() => {
-    memoizedSetCurrentUserData({
-      ...currentUserDataRef.current,
-      [triadsPropName]: triads,
-      [triadsDataPropName]: triadData,
-      [triadStavesPropName]: triadStaves,
+    const newTriadDataWithOctave = triadData.keys.map((key) => {
+      const [note, octave] = key.split("/");
+      // console.log(`note: ${note}, octave: ${octave}`);
+      return octave ? key : `${note}/4`;
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [triads, triadData, triadStaves, memoizedSetCurrentUserData]);
+    setTriadDataWithOctave({ ...triadData, keys: newTriadDataWithOctave });
+  }, [triadData]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!isReady) {
       setOpen(true);
+      return;
     } else {
+      setCurrentUserData({
+        ...currentUserData,
+        [triadsPropName]: triads,
+        [triadsDataPropName]: triadData,
+        [triadStavesPropName]: triadStaves,
+        [triadDataWithOctavePropName]: triadDataWithOctave,
+        [notesAndCoordinatesPropName]: notesAndCoordinates,
+      });
       nextViewState();
     }
   };
+  useEffect(() => {
+    //console.log(currentUserData);
+    // console.log(
+    //   "notes and coordinates inside parent component, ",
+    //   notesAndCoordinates
+    // );
+  }, [currentUserData, notesAndCoordinates]);
 
   const boxStyle = {
     display: "flex",
@@ -123,13 +139,17 @@ export default function TriadsNotation({
                 <Grid item>
                   <NotateChord
                     chords={triads}
-                    setChords={setTriads}
-                    chordData={triadData}
+                    chordData={triadDataWithOctave}
                     setChordData={setTriadData}
                     chordStaves={triadStaves}
                     setChordStaves={setTriadStaves}
-                    isReady={isReady}
+                    setChords={setTriads}
+                    notesAndCoordinates={notesAndCoordinates}
+                    setNotesAndCoordinates={setNotesAndCoordinates}
                     setIsReady={setIsReady}
+                    isReady={isReady}
+                    initialRun={initialRun}
+                    setInitialRun={setInitialRun}
                   />
                 </Grid>
               </Grid>

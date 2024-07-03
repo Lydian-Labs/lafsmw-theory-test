@@ -42,31 +42,27 @@ import {
 import CustomButton from "./CustomButton";
 const { Renderer } = VexFlow.Flow;
 
-const NotateChord = ({
-  chordData,
-  setChordData,
-  chordStaves,
-  setChordStaves,
-  setChords,
-  notesAndCoordinates,
-  setNotesAndCoordinates,
+const NotateTriad = ({
+  triadData,
+  setTriadData,
+  triadDataWithOctave,
+  setTriadDataWithOctave,
+  triadStaves,
+  setTriadStaves,
+  setTriads,
   setIsReady,
   isReady,
-  initialRun,
-  setInitialRun,
 }: {
   chords: string[];
-  chordData: Chord;
-  setChordData: Dispatch<SetStateAction<Chord>>;
-  chordStaves: StaveType[];
-  setChordStaves: Dispatch<SetStateAction<StaveType[]>>;
-  setChords: Dispatch<SetStateAction<Array<string>>>;
-  notesAndCoordinates: NotesAndCoordinatesData[];
-  setNotesAndCoordinates: Dispatch<SetStateAction<NotesAndCoordinatesData[]>>;
+  triadData: Chord;
+  setTriadData: Dispatch<SetStateAction<Chord>>;
+  triadDataWithOctave: Chord;
+  setTriadDataWithOctave: Dispatch<SetStateAction<Chord>>;
+  triadStaves: StaveType[];
+  setTriadStaves: Dispatch<SetStateAction<StaveType[]>>;
+  setTriads: Dispatch<SetStateAction<Array<string>>>;
   setIsReady: Dispatch<SetStateAction<boolean>>;
   isReady: boolean;
-  initialRun: boolean;
-  setInitialRun: Dispatch<SetStateAction<boolean>>;
 }) => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
@@ -76,6 +72,9 @@ const NotateChord = ({
   );
   const [barIndex, setBarIndex] = useState<number>(0);
   const { chosenClef } = useClef();
+  const [notesAndCoordinates, setNotesAndCoordinates] = useState<
+    NotesAndCoordinatesData[]
+  >([initialNotesAndCoordsState]);
   const noNoteFound = () => dispatch({ type: "noNoteFound" });
 
   const modifyChordsButtonGroup = useMemo(
@@ -91,22 +90,19 @@ const NotateChord = ({
       setupRendererAndDrawChords({
         rendererRef,
         ...staveData,
-        setStaves: setChordStaves,
-        chordData,
-        staves: chordStaves,
+        setStaves: setTriadStaves,
+        chordData: triadDataWithOctave,
+        staves: triadStaves,
         barIndex,
         chosenClef,
       }),
-    [rendererRef, setChordStaves, chordData, chordStaves]
+    [rendererRef, setTriadStaves, triadDataWithOctave, triadStaves]
   );
 
   useEffect(() => {
-    //console.log("Component mounted");
-    //console.log("initial notes and coordinates: ", notesAndCoordinates);
     initializeRenderer(rendererRef, container);
     const newStave: StaveType[] = renderStavesAndChords();
-    if (newStave && initialRun) {
-      console.log("calculate notes and coords running...");
+    if (newStave) {
       calculateNotesAndCoordinates(
         chosenClef,
         setNotesAndCoordinates,
@@ -117,21 +113,17 @@ const NotateChord = ({
         -4,
         true
       );
-      setInitialRun(false);
     }
-  }, [initialRun]);
+  }, []);
 
   useEffect(() => {
-    // console.log("chordData or state changed", { chordData, state });
     renderStavesAndChords();
-    console.log("initial run? ", initialRun);
     //this is the array to use for grading
-    const chordsArray = chordData.keys;
-  }, [chordData]);
+    const chordsArray = triadData.keys;
+  }, [triadData]);
 
   const eraseChord = () => {
-    console.log("Erasing chord");
-    setChordData((): Chord => {
+    setTriadData((): Chord => {
       return initialChordData;
     });
     handleEnableSave();
@@ -150,9 +142,10 @@ const NotateChord = ({
     }
   };
 
+  const triadDataForGrading = triadData.keys;
+
   const handleChordsClick = (e: React.MouseEvent) => {
-    //console.log("Saving chords", chordData.keys);
-    setChords(chordData.keys);
+    setTriads(triadDataForGrading);
     setIsReady(true);
   };
 
@@ -160,17 +153,17 @@ const NotateChord = ({
     const { userClickY, userClickX } = getUserClickInfo(
       e,
       container,
-      chordStaves[0]
+      triadStaves[0]
     );
 
     let foundNoteData = notesAndCoordinates.find(
       ({ yCoordinateMin, yCoordinateMax }) =>
         userClickY >= yCoordinateMin && userClickY <= yCoordinateMax
     );
-    let chordDataCopy = { ...chordData };
+    let triadDataWithOctaveCopy = { ...triadDataWithOctave };
     let notesAndCoordinatesCopy = [...notesAndCoordinates];
 
-    const foundNoteIndex = chordData.keys.findIndex(
+    const foundNoteIndex = triadData.keys.findIndex(
       (note) => note === foundNoteData?.note
     );
 
@@ -180,20 +173,19 @@ const NotateChord = ({
     }
 
     const {
-      chordData: newChordData,
+      chordData: newTriadDataWithOctave,
       notesAndCoordinates: newNotesAndCoordinates,
     } = handleChordInteraction(
       notesAndCoordinatesCopy,
       state,
       foundNoteData,
-      chordDataCopy,
+      triadDataWithOctaveCopy,
       foundNoteIndex,
       chosenClef
     );
 
     setNotesAndCoordinates(newNotesAndCoordinates);
-    setChordData(newChordData);
-    //console.log("New notes and coordinates", newNotesAndCoordinates);
+    setTriadData(newTriadDataWithOctave);
   };
 
   return (
@@ -247,4 +239,4 @@ const NotateChord = ({
   );
 };
 
-export default NotateChord;
+export default NotateTriad;

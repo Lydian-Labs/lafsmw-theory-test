@@ -94,9 +94,7 @@ export const addAccidentalToChordKeys = (
   );
 
   const newChord = createStaveNoteFromChordData(chordData, chosenClef);
-
   addAccidentalsToStaveNotes(chordData.keys, newChord);
-
   return {
     ...chordData,
     staveNotes: newChord,

@@ -74,11 +74,14 @@ export const deleteAccidentalFromKeySigArray = (
   setKeySigState: (newState: React.SetStateAction<string[]>) => void
 ) => {
   console.log("foundNoteData: ", foundNoteData.note);
+  console.log("keySigArray: ", keySigArray);
   const noteBase = parseNote(foundNoteData.note).noteBase;
+  console.log("note base, ", noteBase);
   const newKeySig = [...keySigArray];
-  if (newKeySig.includes(noteBase)) {
-    const index = newKeySig.findIndex((note) => note === noteBase);
-    newKeySig.splice(index, 1);
-  }
+
+  const index = newKeySig.findIndex((note) => note[0] === noteBase);
+  if (index > -1) newKeySig.splice(index, 1);
+
+  console.log("newkeySig ", newKeySig);
   setKeySigState(() => newKeySig);
 };
