@@ -66,7 +66,7 @@ export const keySigInputInstructions = [
   },
 ];
 
-export const seventhChordIdentifyInstructions = [
+export const chordTextInstructions = [
   {
     instructionTitle: "Write the name of the following chords:",
     instructionText:
@@ -74,7 +74,7 @@ export const seventhChordIdentifyInstructions = [
   },
   {
     instructionTitle: "Accidentals:",
-    instructionText: `Use the following format: # for sharp, b for flat, and x for double-sharp.`,
+    instructionText: `Use the following format: # for sharp, b for flat, x for double-sharp, and bb for double flat.`,
   },
   {
     instructionTitle: "Methods of writing chord name:",

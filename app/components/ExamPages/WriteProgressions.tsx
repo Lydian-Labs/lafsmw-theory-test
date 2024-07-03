@@ -4,6 +4,8 @@ import { Box, Container, Grid, Typography } from "@mui/material";
 import { useRef } from "react";
 import CardFooter from "../CardFooter";
 import WriteProgression from "../WriteProgression";
+import TutorialModal from "../TutorialModal";
+import { chordTextInstructions } from "@/app/lib/data/instructions";
 
 export default function WriteProgressions({
   currentUserData,
@@ -29,6 +31,7 @@ export default function WriteProgressions({
         <Typography variant="h5" align="center" pb={2}>
           Section 7: Write Progressions
         </Typography>
+        <TutorialModal tutorialInstructions={chordTextInstructions} />
       </Box>
       <Box
         component="main"

@@ -7,6 +7,8 @@ import { useRef, useState } from "react";
 import CardFooter from "../CardFooter";
 import SnackbarToast from "../SnackbarToast";
 import WriteBlues from "../WriteBlues";
+import TutorialModal from "../TutorialModal";
+import { chordTextInstructions } from "@/app/lib/data/instructions";
 
 export default function WriteBluesChanges({
   currentUserData,
@@ -50,6 +52,7 @@ export default function WriteBluesChanges({
         <Typography variant="h5" align="center" pb={2}>
           Section 8: Write Blues Chord Changes
         </Typography>
+        <TutorialModal tutorialInstructions={chordTextInstructions} />
       </Box>
       <SnackbarToast
         open={open}

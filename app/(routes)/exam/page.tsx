@@ -13,7 +13,7 @@ import SnackbarToast from "@/app/components/SnackbarToast";
 import { useClef } from "@/app/context/ClefContext";
 import { useTimer } from "@/app/context/TimerContext";
 import {
-  check251Answers,
+  checkAndFormat251Answers,
   checkAndFormatArrOfArrsAnswers,
   checkAndFormatChordIdentifyAnswers,
   checkAndFormatChordAnswers,
@@ -202,7 +202,7 @@ export default function ExamHomePage() {
       correctSeventhChordNonRegexAnswers,
       "Seventh Chords"
     );
-    let progressionAnswers = check251Answers(
+    let progressionAnswers = checkAndFormat251Answers(
       userProgressionAnswers,
       correctProgressionAnswers,
       keyNamesText,
@@ -634,7 +634,7 @@ export default function ExamHomePage() {
             </Stack>
           </main>
         )}
-        {viewState !== VIEW_STATES.SUBMIT_AND_EXIT &&
+        {/* {viewState !== VIEW_STATES.SUBMIT_AND_EXIT &&
           viewState !== VIEW_STATES.START_TEST && (
             <Stack spacing={4}>
               <Button onClick={incrementViewState}>
@@ -649,7 +649,7 @@ export default function ExamHomePage() {
                 <Typography>{"Go to Progressions"}</Typography>
               </Button>
             </Stack>
-          )}
+          )} */}
       </Stack>
     </Box>
   );

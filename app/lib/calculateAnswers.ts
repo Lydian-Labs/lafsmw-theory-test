@@ -1,30 +1,38 @@
-export const check251Answers = (
+export const checkAndFormat251Answers = (
   studentAnswers: string[],
   regexCorrectAnswers: RegExp[],
   keyNames: string[],
   questionType: string
 ): string => {
   let score = 0;
-  let result = "";
-  let numAnswers = studentAnswers.length;
-  let keyNamesString = arrToString(keyNames);
-  for (let i = 0; i < studentAnswers.length; i++) {
-    let chord = studentAnswers[i];
-    let isTrue = regexCorrectAnswers[i].test(chord);
-    if (isTrue) {
+  let formattedAnswers = "";
+  let keyNamesString = keyNames.join(", ");
+
+  for (let i = 0; i < regexCorrectAnswers.length; i++) {
+    let chord = studentAnswers[i] || "";
+    let isCorrect = regexCorrectAnswers[i].test(chord);
+
+    if (isCorrect) {
       score++;
     }
+
+    if (i % 3 === 0) {
+      if (i !== 0) formattedAnswers += "</li>";
+      formattedAnswers += "<li>";
+    }
+
+    formattedAnswers += isCorrect ? chord : `<b>${chord || "(No answer)"}</b>`;
+
+    if (i % 3 !== 2) formattedAnswers += ", ";
   }
-  result = `<b>${score}/${numAnswers}</b> on the ${questionType} section.
+  formattedAnswers += "</li>";
+
+  const result = `<b>${score}/${regexCorrectAnswers.length}</b> on the ${questionType} section.
     <ul>Actual student answers:
-      <li>${arrToString(studentAnswers.slice(0, 3))}</li>
-      <li>${arrToString(studentAnswers.slice(3, 6))}</li>
-      <li>${arrToString(studentAnswers.slice(6, 9))}</li>
-      <li>${arrToString(studentAnswers.slice(9, 12))}</li>
-      <li>${arrToString(studentAnswers.slice(12, 15))}</li>
-      <li>${arrToString(studentAnswers.slice(15, 18))}</li>
+      ${formattedAnswers}
     </ul>
     <ul>Correct answers: ${keyNamesString}</ul>`;
+
   return result;
 };
 
@@ -165,7 +173,3 @@ export const checkAndFormatChordAnswers = (
 
   return result;
 };
-
-function arrToString(arr: string[]): string {
-  return arr.join(", ");
-}

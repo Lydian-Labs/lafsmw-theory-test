@@ -1,5 +1,5 @@
 "use client";
-import { seventhChordIdentifyInstructions } from "@/app/lib/data/instructions";
+import { chordTextInstructions } from "@/app/lib/data/instructions";
 import { InputData, UserDataProps } from "@/app/lib/typesAndInterfaces";
 import { Box, Container, Grid, Typography } from "@mui/material";
 import { useRef } from "react";
@@ -41,9 +41,7 @@ export default function ChordsIdentification({
         <Typography variant="h5" align="center" pb={2}>
           Section 6: Identify Chords
         </Typography>
-        <TutorialModal
-          tutorialInstructions={seventhChordIdentifyInstructions}
-        />
+        <TutorialModal tutorialInstructions={chordTextInstructions} />
       </Box>
       <Box
         component="main"
