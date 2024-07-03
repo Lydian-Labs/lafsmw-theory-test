@@ -15,8 +15,8 @@ export const correctKeySigAnswers = ["db", "a", "f", "c#"];
 //need to update the logic to allow for either 7 or 8 notes
 const scaleDbMajor = ["db", "eb", "f", "gb", "ab", "bb", "c"];
 const scaleBMajor = ["b", "c#", "d#", "e", "f#", "g#", "a#"];
-const scaleFSharpDorian = ["f#", "g#", "a", "b", "c#", "d#", "e"];
 const scaleCDorian = ["c", "d", "eb", "f", "g", "a", "bb"];
+const scaleFSharpDorian = ["f#", "g#", "a", "b", "c#", "d#", "e"];
 const scaleBbMixolydian = ["bb", "c", "d", "eb", "f", "g", "ab"];
 const scaleCSharpMixolydian = ["c#", "d#", "e#", "f#", "g#", "a#", "b"];
 

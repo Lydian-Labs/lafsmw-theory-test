@@ -13,11 +13,11 @@ import SnackbarToast from "@/app/components/SnackbarToast";
 import { useClef } from "@/app/context/ClefContext";
 import { useTimer } from "@/app/context/TimerContext";
 import {
-  check251Answers,
-  checkArrOfArrsAnswer,
-  checkChordIdentifyAnswers,
-  checkChordsAnswers,
-  checkKeySigIdentifyAnswers,
+  checkAndFormat251Answers,
+  checkAndFormatArrOfArrsAnswers,
+  checkAndFormatChordIdentifyAnswers,
+  checkAndFormatChordAnswers,
+  checkAndFormatKeySigIdentifyAnswers,
 } from "@/app/lib/calculateAnswers";
 import convertObjectToArray from "@/app/lib/convertObjectToArray";
 import {
@@ -166,43 +166,43 @@ export default function ExamHomePage() {
       currentUserData.progressions
     );
 
-    let keySigNotationAnswers = checkArrOfArrsAnswer(
+    let keySigNotationAnswers = checkAndFormatArrOfArrsAnswers(
       userKeySigNotationAnswers,
       correctKeySigNotationAnswers,
       "Key Signature Notation"
     );
-    let keySigAnswers = checkKeySigIdentifyAnswers(
+    let keySigAnswers = checkAndFormatKeySigIdentifyAnswers(
       userKeySigAnswers,
       correctKeySigAnswers,
       keySignaturesText,
       "Key Signatures"
     );
-    let scalesAnswers = checkArrOfArrsAnswer(
+    let scalesAnswers = checkAndFormatArrOfArrsAnswers(
       userScales,
       correctScalesAnswers,
       "Scales"
     );
 
-    let triadsAnswers = checkChordsAnswers(
+    let triadsAnswers = checkAndFormatChordAnswers(
       userTriads,
       correctTriads,
       triadsText,
       "Triads"
     );
 
-    let seventhNotationAnswers = checkChordsAnswers(
+    let seventhNotationAnswers = checkAndFormatChordAnswers(
       userSeventhChordAnswers,
       correct7thChordNotationAnswers,
       seventhChordsText,
       "Seventh Chord Notation"
     );
-    let seventhAnswers = checkChordIdentifyAnswers(
+    let seventhIdentifyAnswers = checkAndFormatChordIdentifyAnswers(
       userChordAnswers,
       correctSeventhChordAnswers,
       correctSeventhChordNonRegexAnswers,
       "Seventh Chords"
     );
-    let progressionAnswers = check251Answers(
+    let progressionAnswers = checkAndFormat251Answers(
       userProgressionAnswers,
       correctProgressionAnswers,
       keyNamesText,
@@ -216,7 +216,7 @@ export default function ExamHomePage() {
       scalesAnswers,
       triadsAnswers,
       seventhNotationAnswers,
-      seventhAnswers,
+      seventhIdentifyAnswers,
       progressionAnswers,
       currentUserData.bluesUrl,
     ]);
@@ -287,7 +287,7 @@ export default function ExamHomePage() {
           subject: `Exam Results for ${userName}`,
           text: `<p>Hello Kyle,</p>
 
-          <p>Here are the results for ${userName}:</p>
+          <p>Here are the results for ${userName} (${clef} clef):</p>
           <ul>
             <li>Level:${correctedAnswers[0]}</li>
             <li>Key Signatures (notate): ${correctedAnswers[1]}</li>
