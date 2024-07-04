@@ -6,6 +6,7 @@ import { Poppins } from "next/font/google";
 import Header from "./components/Header";
 import { TimerProvider } from "./context/TimerContext";
 import { ClefProvider } from "../app/context/ClefContext";
+import { InitialRunProvider } from "./context/initialNotesAndCoordsContext";
 import "./styles/globals.css";
 import theme from "./theme";
 
@@ -34,8 +35,10 @@ export default function RootLayout({
           <ThemeProvider theme={theme}>
             <TimerProvider>
               <ClefProvider>
-                <Header />
-                {children}
+                <InitialRunProvider>
+                  <Header />
+                  {children}
+                </InitialRunProvider>
               </ClefProvider>
             </TimerProvider>
           </ThemeProvider>

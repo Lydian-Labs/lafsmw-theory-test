@@ -40,6 +40,7 @@ import {
   StaveType,
 } from "../lib/typesAndInterfaces";
 import CustomButton from "./CustomButton";
+import { useInitialRun } from "../context/initialNotesAndCoordsContext";
 const { Renderer } = VexFlow.Flow;
 
 const NotateChord = ({
@@ -52,8 +53,6 @@ const NotateChord = ({
   setNotesAndCoordinates,
   setIsReady,
   isReady,
-  initialRun,
-  setInitialRun,
 }: {
   chords: string[];
   chordData: Chord;
@@ -65,8 +64,6 @@ const NotateChord = ({
   setNotesAndCoordinates: Dispatch<SetStateAction<NotesAndCoordinatesData[]>>;
   setIsReady: Dispatch<SetStateAction<boolean>>;
   isReady: boolean;
-  initialRun: boolean;
-  setInitialRun: Dispatch<SetStateAction<boolean>>;
 }) => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
@@ -76,6 +73,7 @@ const NotateChord = ({
   );
   const [barIndex, setBarIndex] = useState<number>(0);
   const { chosenClef } = useClef();
+  const { initialRun, setInitialRun } = useInitialRun();
   const noNoteFound = () => dispatch({ type: "noNoteFound" });
 
   const modifyChordsButtonGroup = useMemo(
@@ -101,12 +99,10 @@ const NotateChord = ({
   );
 
   useEffect(() => {
-    //console.log("Component mounted");
-    //console.log("initial notes and coordinates: ", notesAndCoordinates);
     initializeRenderer(rendererRef, container);
     const newStave: StaveType[] = renderStavesAndChords();
     if (newStave && initialRun) {
-      console.log("calculate notes and coords running...");
+      console.log("initial notes and chords running...");
       calculateNotesAndCoordinates(
         chosenClef,
         setNotesAndCoordinates,
@@ -117,37 +113,28 @@ const NotateChord = ({
         -4,
         true
       );
-      setInitialRun(false);
     }
-  }, [initialRun]);
+    setInitialRun(false);
+  }, []);
 
   useEffect(() => {
-    // console.log("chordData or state changed", { chordData, state });
     renderStavesAndChords();
-    console.log("initial run? ", initialRun);
-    //this is the array to use for grading
-    const chordsArray = chordData.keys;
   }, [chordData]);
 
   const eraseChord = () => {
-    console.log("Erasing chord");
-    setChordData((): Chord => {
-      return initialChordData;
-    });
-    handleEnableSave();
-    const newStave: any = renderStavesAndChords();
-    if (newStave) {
-      calculateNotesAndCoordinates(
-        chosenClef,
-        setNotesAndCoordinates,
-        newStave,
-        chosenClef === "bass" ? bassClefNotesArray : trebleClefNotesArray,
-        0,
-        -3,
-        -4,
-        true
-      );
-    }
+    setChordData(initialChordData);
+    const newStave: StaveType[] = renderStavesAndChords();
+    calculateNotesAndCoordinates(
+      chosenClef,
+      setNotesAndCoordinates,
+      newStave,
+      chosenClef === "bass" ? bassClefNotesArray : trebleClefNotesArray,
+      0,
+      -3,
+      -4,
+      true
+    );
+    setInitialRun(false);
   };
 
   const handleChordsClick = (e: React.MouseEvent) => {
@@ -162,7 +149,7 @@ const NotateChord = ({
       container,
       chordStaves[0]
     );
-
+    console.log("notes and coords on click: ", notesAndCoordinates);
     let foundNoteData = notesAndCoordinates.find(
       ({ yCoordinateMin, yCoordinateMax }) =>
         userClickY >= yCoordinateMin && userClickY <= yCoordinateMax
@@ -230,7 +217,10 @@ const NotateChord = ({
             </CustomButton>
           );
         })}
-        <Button onClick={eraseChord} sx={{ m: 0.5 }}>
+        <Button
+          onClick={eraseChord}
+          sx={{ m: 0.5 }}
+        >
           Erase Measure
         </Button>
       </Container>

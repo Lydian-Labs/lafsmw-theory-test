@@ -73,6 +73,7 @@ const NotateScale = ({
   const [notesAndCoordinates, setNotesAndCoordinates] = useState<
     NotesAndCoordinatesData[]
   >([initialNotesAndCoordsState]);
+  
   const { chosenClef } = useClef();
 
   const noNoteFound = () => dispatch({ type: "noNoteFound" });

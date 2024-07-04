@@ -35,11 +35,10 @@ export default function TriadsNotation({
     currentUserData[`triadStaves${page - 11}`] || []
   );
   const [triads, setTriads] = useState<string[]>([]);
-  const [notesAndCoordinates, setNotesAndCoordinates] = useState(
+  const [notesAndCoordinatesParent, setNotesAndCoordinatesParent] = useState(
     currentUserData[`notesAndCoordinates${page - 11}`] ||
       initialNotesAndCoordsState
   );
-  const [initialRun, setInitialRun] = useState<boolean>(true);
 
   const [open, setOpen] = useState<boolean>(false);
   const [isReady, setIsReady] = useState<boolean>(false);
@@ -53,11 +52,13 @@ export default function TriadsNotation({
   useEffect(() => {
     const newTriadDataWithOctave = triadData.keys.map((key) => {
       const [note, octave] = key.split("/");
-      // console.log(`note: ${note}, octave: ${octave}`);
+      console.log(`note: ${note}, octave: ${octave}`);
       return octave ? key : `${note}/4`;
     });
     setTriadDataWithOctave({ ...triadData, keys: newTriadDataWithOctave });
-  }, [triadData]);
+    console.log(currentUserData);
+  
+  }, [triadData, currentUserData]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -71,18 +72,11 @@ export default function TriadsNotation({
         [triadsDataPropName]: triadData,
         [triadStavesPropName]: triadStaves,
         [triadDataWithOctavePropName]: triadDataWithOctave,
-        [notesAndCoordinatesPropName]: notesAndCoordinates,
+        [notesAndCoordinatesPropName]: notesAndCoordinatesParent,
       });
       nextViewState();
     }
   };
-  useEffect(() => {
-    //console.log(currentUserData);
-    // console.log(
-    //   "notes and coordinates inside parent component, ",
-    //   notesAndCoordinates
-    // );
-  }, [currentUserData, notesAndCoordinates]);
 
   const boxStyle = {
     display: "flex",
@@ -144,12 +138,10 @@ export default function TriadsNotation({
                     chordStaves={triadStaves}
                     setChordStaves={setTriadStaves}
                     setChords={setTriads}
-                    notesAndCoordinates={notesAndCoordinates}
-                    setNotesAndCoordinates={setNotesAndCoordinates}
+                    notesAndCoordinates={notesAndCoordinatesParent}
+                    setNotesAndCoordinates={setNotesAndCoordinatesParent}
                     setIsReady={setIsReady}
                     isReady={isReady}
-                    initialRun={initialRun}
-                    setInitialRun={setInitialRun}
                   />
                 </Grid>
               </Grid>
