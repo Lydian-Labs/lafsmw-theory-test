@@ -4,12 +4,9 @@ import seventhChordsText from "@/app/lib/data/seventhChordsText";
 import {
   FormEvent,
   InputState,
-<<<<<<< HEAD
   Chord,
   StaveType,
-=======
   UserDataProps,
->>>>>>> main
 } from "@/app/lib/typesAndInterfaces";
 import { Box, Container, Grid, Typography } from "@mui/material";
 import { useCallback, useEffect, useRef, useState } from "react";
