@@ -51,4 +51,4 @@ This web application was contracted to Lydian Labs Technology by Lafayette Summe
 
 <br />
 
-Copyright© Lost Lanes Music Education Technology, 2024
+Copyright© Lydian Labs Music Education Technology, 2024

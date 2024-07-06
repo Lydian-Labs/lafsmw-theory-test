@@ -15,8 +15,8 @@ export const correctKeySigAnswers = ["db", "a", "f", "c#"];
 //need to update the logic to allow for either 7 or 8 notes
 const scaleDbMajor = ["db", "eb", "f", "gb", "ab", "bb", "c"];
 const scaleBMajor = ["b", "c#", "d#", "e", "f#", "g#", "a#"];
-const scaleFSharpDorian = ["f#", "g#", "a", "b", "c#", "d#", "e"];
 const scaleCDorian = ["c", "d", "eb", "f", "g", "a", "bb"];
+const scaleFSharpDorian = ["f#", "g#", "a", "b", "c#", "d#", "e"];
 const scaleBbMixolydian = ["bb", "c", "d", "eb", "f", "g", "ab"];
 const scaleCSharpMixolydian = ["c#", "d#", "e#", "f#", "g#", "a#", "b"];
 
@@ -38,7 +38,20 @@ export const correctTriads: RegExp[] = [
   /^eg#(?:b#|c)$/,
 ];
 
+<<<<<<< HEAD
 export const correct7thChordNotationAnswers: RegExp[] = [
+=======
+export const correctNonRegexTriads = [
+  "Dmaj",
+  "F#maj",
+  "Bbm",
+  "F#maj",
+  "Ebm",
+  "Em",
+];
+
+export const correct7thChordNotationAnswers = [
+>>>>>>> main
   /^eg#bd#$/,
   /^gbbdf$/,
   /^dbfab(?:b|cb)$/,
@@ -58,7 +71,21 @@ export const correctSeventhChordAnswers: RegExp[] = [
   /^(D)(?:\+7|7#5|7\(#5\)|[Aa]ug7|)$/,
 ];
 
+<<<<<<< HEAD
 export const correctProgressionAnswers: RegExp[] = [
+=======
+export const correctSeventhChordNonRegexAnswers: string[] = [
+  "E#dim7", // E# diminished 7
+  "F∆", // F major 7
+  "G-∆", // G minor major 7
+  "B7", // B dominant 7
+  "F#ø", // F# half-diminished 7
+  "Ab-7", // Ab minor 7
+  "D+7", // D augmented 7
+];
+
+export const correctProgressionAnswers = [
+>>>>>>> main
   //1
   /^(D)(?:-7|min7|mi7|m7)$/,
   /^(G7)$/,
