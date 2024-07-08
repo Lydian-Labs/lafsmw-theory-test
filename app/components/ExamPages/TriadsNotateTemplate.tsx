@@ -57,8 +57,9 @@ export default function TriadsNotation({
     });
     setTriadDataWithOctave({ ...triadData, keys: newTriadDataWithOctave });
     console.log(currentUserData);
-  
+
   }, [triadData, currentUserData]);
+
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
