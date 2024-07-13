@@ -35,6 +35,7 @@ export default function TriadsNotation({
     currentUserData[`triadStaves${page - 11}`] || []
   );
   const [triads, setTriads] = useState<string[]>([]);
+  
   const [notesAndCoordinatesParent, setNotesAndCoordinatesParent] = useState(
     currentUserData[`notesAndCoordinates${page - 11}`] ||
       initialNotesAndCoordsState
