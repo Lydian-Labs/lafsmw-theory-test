@@ -131,5 +131,5 @@ export default function Staff({
     evenbars,
   ]);
 
-  return <div ref={containerRef} />;
+  return <div role="presentation" ref={containerRef} />;
 }
