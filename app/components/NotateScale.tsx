@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-import { Button, Stack, Typography } from "@mui/material";
+import { Button } from "@mui/material";
 import Container from "@mui/material/Container";
 import React, {
   Dispatch,
@@ -45,12 +45,8 @@ const { Renderer } = VexFlow.Flow;
 
 const NotateScale = ({
   setScales,
-  setIsReady,
-  isReady,
 }: {
   setScales: Dispatch<SetStateAction<Array<string>>>;
-  setIsReady: Dispatch<SetStateAction<boolean>>;
-  isReady: boolean;
 }) => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
@@ -105,7 +101,6 @@ const NotateScale = ({
   }, []);
 
   useEffect(() => {
-    console.log("scale data for grading:", scaleDataForGrading);
     const newStave: StaveType[] = renderStavesAndNotes();
     if (newStave) {
       calculateNotesAndCoordinates(
@@ -120,11 +115,6 @@ const NotateScale = ({
       );
     }
   }, [scaleDataMatrix]);
-
-  //this is the array we will use for grading
-  const scaleDataForGrading = scaleDataMatrix[0].map((scaleDataMatrix) =>
-    scaleDataMatrix.keys.join(", ")
-  );
 
   const eraseMeasures = () => {
     setScaleDataMatrix((): ScaleData[][] => {
@@ -145,74 +135,77 @@ const NotateScale = ({
     }
   };
 
-  const handleScalesClick = (e: React.MouseEvent) => {
-    setScales(scaleDataForGrading);
-    setIsReady(true);
-  };
+  const handleClick = useCallback(
+    (e: React.MouseEvent) => {
+      const { userClickY, userClickX } = getUserClickInfo(
+        e,
+        container,
+        staves[0]
+      );
 
-  const handleClick = (e: React.MouseEvent) => {
-    const { userClickY, userClickX } = getUserClickInfo(
-      e,
-      container,
-      staves[0]
-    );
+      let foundNoteData = notesAndCoordinates.find(
+        ({ yCoordinateMin, yCoordinateMax }) =>
+          userClickY >= yCoordinateMin && userClickY <= yCoordinateMax
+      );
+      console.log("userClickY: ", userClickY);
+      if (!foundNoteData) {
+        return;
+      }
 
-    let foundNoteData = notesAndCoordinates.find(
-      ({ yCoordinateMin, yCoordinateMax }) =>
-        userClickY >= yCoordinateMin && userClickY <= yCoordinateMax
-    );
-    console.log("userClickY: ", userClickY);
-    if (!foundNoteData) {
-      return;
-    }
+      if (foundNoteData)
+        foundNoteData = {
+          ...foundNoteData,
+          userClickY: userClickY,
+        };
 
-    if (foundNoteData)
-      foundNoteData = {
-        ...foundNoteData,
-        userClickY: userClickY,
-      };
+      const barIndex = findBarIndex(staves, userClickX);
 
-    const barIndex = findBarIndex(staves, userClickX);
+      if (!foundNoteData) {
+        noNoteFound();
+        return;
+      }
 
-    if (!foundNoteData) {
-      noNoteFound();
-      return;
-    }
-
-    let scaleDataMatrixCopy = scaleDataMatrix.map((scaleData) => [
-      ...scaleData,
-    ]);
-
-    let notesAndCoordinatesCopy = [...notesAndCoordinates];
-
-    const barOfScaleData = scaleDataMatrixCopy[barIndex].map(
-      (scaleData: ScaleData) => ({
+      let scaleDataMatrixCopy = scaleDataMatrix.map((scaleData) => [
         ...scaleData,
-        staveNoteAbsoluteX: scaleData.staveNote
-          ? scaleData.staveNote.getAbsoluteX()
-          : 0,
-      })
-    );
+      ]);
 
-    const {
-      scaleDataMatrix: newScaleDataMatrix,
-      notesAndCoordinates: newNotesAndCoordinates,
-    } = HandleScaleInteraction(
-      foundNoteData,
-      tooManyBeatsInMeasure,
-      notesAndCoordinatesCopy,
-      "tooManyBeatsInMeasure",
-      barOfScaleData,
-      scaleDataMatrixCopy,
-      state,
-      userClickX,
-      userClickY,
-      barIndex,
-      chosenClef
-    );
-    setNotesAndCoordinates(() => newNotesAndCoordinates);
-    setScaleDataMatrix(() => newScaleDataMatrix);
-  };
+      let notesAndCoordinatesCopy = [...notesAndCoordinates];
+
+      const barOfScaleData = scaleDataMatrixCopy[barIndex].map(
+        (scaleData: ScaleData) => ({
+          ...scaleData,
+          staveNoteAbsoluteX: scaleData.staveNote
+            ? scaleData.staveNote.getAbsoluteX()
+            : 0,
+        })
+      );
+
+      const {
+        scaleDataMatrix: newScaleDataMatrix,
+        notesAndCoordinates: newNotesAndCoordinates,
+      } = HandleScaleInteraction(
+        foundNoteData,
+        tooManyBeatsInMeasure,
+        notesAndCoordinatesCopy,
+        "tooManyBeatsInMeasure",
+        barOfScaleData,
+        scaleDataMatrixCopy,
+        state,
+        userClickX,
+        userClickY,
+        barIndex,
+        chosenClef
+      );
+      setNotesAndCoordinates(() => newNotesAndCoordinates);
+      setScaleDataMatrix(() => newScaleDataMatrix);
+      setScales(
+        newScaleDataMatrix[0].map((scaleDataMatrix) =>
+          scaleDataMatrix.keys.join(", ")
+        )
+      );
+    },
+    [scaleDataMatrix, notesAndCoordinates, staves, chosenClef]
+  );
 
   return (
     <>
@@ -250,15 +243,6 @@ const NotateScale = ({
           Erase Measure
         </Button>
       </Container>
-      <Stack direction="row" spacing={2} mt={2}>
-        <Typography marginTop={2} align="left">
-          *Note: You
-          <b> MUST</b> press <em>Save </em>before moving on.
-        </Typography>
-        <Button onClick={handleScalesClick} disabled={isReady}>
-          {isReady ? "Saved" : "Save"}
-        </Button>
-      </Stack>
     </>
   );
 };

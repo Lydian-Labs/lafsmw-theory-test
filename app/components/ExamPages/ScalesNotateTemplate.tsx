@@ -17,22 +17,20 @@ export default function ScalesNotation({
 }: UserDataProps) {
   const [scales, setScales] = useState<Array<string>>([]);
   const [open, setOpen] = useState<boolean>(false);
-  const [isReady, setIsReady] = useState<boolean>(false);
 
   const scalesPropName = `scales${page - 5}`;
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (!isReady) {
-      setOpen(true);
-      return;
-    } else {
-      setCurrentUserData({
-        ...currentUserData,
-        [scalesPropName]: scales,
-      });
-      nextViewState();
-    }
+    setCurrentUserData({
+      ...currentUserData,
+      [scalesPropName]: scales,
+    });
+    // console.log({
+    //   ...currentUserData,
+    //   [scalesPropName]: scales,
+    // });
+    nextViewState();
   };
 
   const boxStyle = {
@@ -88,15 +86,11 @@ export default function ScalesNotation({
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <NotateScale
-                    setScales={setScales}
-                    setIsReady={setIsReady}
-                    isReady={isReady}
-                  />
+                  <NotateScale setScales={setScales} />
                 </Grid>
               </Grid>
               <CardFooter
-                buttonText={"Continue >"}
+                buttonText={"Save and Continue >"}
                 pageNumber={page}
                 handleSubmit={handleSubmit}
               />
