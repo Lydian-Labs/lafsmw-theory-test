@@ -78,6 +78,10 @@ export const chordTextInstructions = [
   },
   {
     instructionTitle: "Methods of writing chord name:",
-    instructionText: `For example, the chord Cdim7 can be written as C°7 or Co7. The chord Cmaj7 can be written as CM7 or C∆7.`,
+    instructionText: `For example, the chord Cdim7 can also be written as C°7 or Co7. The chord Cmaj7 can also be written as CM7 or C∆7. The chord Caug7 can also be written as C+7.`,
+  },
+  {
+    instructionTitle: "Key commands for symbols:",
+    instructionText: `∆ = option-j, ° = shift-option-8, ø = option-o.`,
   },
 ];

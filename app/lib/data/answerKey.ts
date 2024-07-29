@@ -58,7 +58,7 @@ export const correct7thChordNotationAnswers = [
 ];
 
 export const correctSeventhChordAnswers = [
-  /^(E#)(?:dim7|º7|o7)$/,
+  /^(E#)(?:dim7|°7|o7)$/,
   /^(F)(?:∆|∆7|[Mm]aj7|[Mm]a7)$/,
   /^(G)(?:-∆|m∆|m∆7|min[Mm]aj7|mi[Mm]aj7|m[Mm]aj7)$/,
   /^(B7)$/,
