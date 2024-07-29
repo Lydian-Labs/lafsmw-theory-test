@@ -26,7 +26,7 @@ export default function KeySignaturesNotation({
       ...currentUserData,
       [keySigPropName]: keySignatureNotation,
     });
-    console.log({ ...currentUserData, [keySigPropName]: keySignatureNotation });
+    // console.log({ ...currentUserData, [keySigPropName]: keySignatureNotation });
     nextViewState();
   };
 

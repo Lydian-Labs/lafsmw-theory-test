@@ -97,8 +97,8 @@ const NotateKeySignature = ({ handleNotes }: any) => {
   //this is where the we will get the array to grade
   useEffect(() => {
     handleNotes(keySig);
-    console.log("key sig: ", keySig);
-    console.log("glyphs: ", glyphs);
+    // console.log("key sig: ", keySig);
+    // console.log("glyphs: ", glyphs);
   }, [keySig]);
 
   const clearKey = () => {
