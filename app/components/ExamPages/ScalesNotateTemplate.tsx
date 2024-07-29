@@ -6,7 +6,6 @@ import { Box, Container, Grid, Typography } from "@mui/material";
 import { useState } from "react";
 import CardFooter from "../CardFooter";
 import NotateScale from "../NotateScale";
-import SnackbarToast from "../SnackbarToast";
 import TutorialModal from "../TutorialModal";
 
 export default function ScalesNotation({
@@ -16,7 +15,6 @@ export default function ScalesNotation({
   page,
 }: UserDataProps) {
   const [scales, setScales] = useState<Array<string>>([]);
-  const [open, setOpen] = useState<boolean>(false);
 
   const scalesPropName = `scales${page - 5}`;
 
@@ -41,11 +39,6 @@ export default function ScalesNotation({
 
   return (
     <Container>
-      <SnackbarToast
-        open={open}
-        setOpen={setOpen}
-        message={"You must press Save before moving on."}
-      />
       <Box sx={boxStyle}>
         <Typography variant="h5" align="center" pb={2}>
           Section 3: Notate Scales

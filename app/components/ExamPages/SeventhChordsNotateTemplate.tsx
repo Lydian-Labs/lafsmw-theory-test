@@ -10,7 +10,6 @@ import { Box, Container, Grid, Typography } from "@mui/material";
 import { useCallback, useEffect, useRef, useState } from "react";
 import CardFooter from "../CardFooter";
 import NotateChord from "../NotateChord";
-import SnackbarToast from "../SnackbarToast";
 import TutorialModal from "../TutorialModal";
 
 export default function NotateSeventhChords({
@@ -21,8 +20,6 @@ export default function NotateSeventhChords({
 }: UserDataProps) {
   const [chords, setChords] = useState<string[]>([]);
   const currentUserDataRef = useRef(currentUserData);
-  const [open, setOpen] = useState<boolean>(false);
-  const [isReady, setIsReady] = useState<boolean>(false);
 
   const seventhChordsPropName = `seventhChords${page - 17}`;
 
@@ -37,21 +34,17 @@ export default function NotateSeventhChords({
     currentUserDataRef.current = currentUserData;
   }, [currentUserData]);
 
-  useEffect(() => {
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
     memoizedSetCurrentUserData({
       ...currentUserDataRef.current,
       [seventhChordsPropName]: chords,
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chords, memoizedSetCurrentUserData]);
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    if (!isReady) {
-      setOpen(true);
-    } else {
-      nextViewState();
-    }
+    console.log({
+      ...currentUserDataRef.current,
+      [seventhChordsPropName]: chords,
+    });
+    nextViewState();
   };
 
   const boxStyle = {
@@ -62,11 +55,6 @@ export default function NotateSeventhChords({
 
   return (
     <Container>
-      <SnackbarToast
-        open={open}
-        setOpen={setOpen}
-        message={"You must press Save before moving on."}
-      />
       <Box sx={boxStyle}>
         <Typography variant="h5" align="center" pb={2}>
           Section 5: Notate Seventh Chords
@@ -109,11 +97,7 @@ export default function NotateSeventhChords({
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <NotateChord
-                    setChords={setChords}
-                    setIsReady={setIsReady}
-                    isReady={isReady}
-                  />
+                  <NotateChord setChords={setChords} />
                 </Grid>
               </Grid>
               <CardFooter

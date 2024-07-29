@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-import { Button, Container, Stack, Typography } from "@mui/material";
+import { Button, Container } from "@mui/material";
 import React, {
   Dispatch,
   SetStateAction,
@@ -44,12 +44,8 @@ const { Renderer } = VexFlow.Flow;
 
 const NotateChord = ({
   setChords,
-  setIsReady,
-  isReady,
 }: {
   setChords: Dispatch<SetStateAction<Array<string>>>;
-  setIsReady: Dispatch<SetStateAction<boolean>>;
-  isReady: boolean;
 }) => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
@@ -129,11 +125,6 @@ const NotateChord = ({
     }
   };
 
-  const handleChordsClick = (e: React.MouseEvent) => {
-    setChords(chordData.keys);
-    setIsReady(true);
-  };
-
   const handleClick = (e: React.MouseEvent) => {
     const { userClickY, userClickX } = getUserClickInfo(
       e,
@@ -173,6 +164,7 @@ const NotateChord = ({
 
     setNotesAndCoordinates(() => newNotesAndCoordinates);
     setChordData(() => newChordData);
+    setChords(newChordData.keys);
   };
 
   return (
@@ -210,15 +202,6 @@ const NotateChord = ({
           Erase Measure
         </Button>
       </Container>
-      <Stack direction="row" spacing={2} mt={2}>
-        <Typography marginTop={2} align="left">
-          *Note: You
-          <b> MUST</b> press <em>Save </em>before moving on.
-        </Typography>
-        <Button onClick={handleChordsClick} disabled={isReady}>
-          {isReady ? "Saved" : "Save"}
-        </Button>
-      </Stack>
     </>
   );
 };
