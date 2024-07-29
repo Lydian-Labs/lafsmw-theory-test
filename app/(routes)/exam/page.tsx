@@ -15,8 +15,8 @@ import { useTimer } from "@/app/context/TimerContext";
 import {
   checkAndFormat251Answers,
   checkAndFormatArrOfArrsAnswers,
-  checkAndFormatChordIdentifyAnswers,
   checkAndFormatChordAnswers,
+  checkAndFormatChordIdentifyAnswers,
   checkAndFormatKeySigIdentifyAnswers,
 } from "@/app/lib/calculateAnswers";
 import convertObjectToArray from "@/app/lib/convertObjectToArray";
@@ -25,12 +25,12 @@ import {
   correctKeySigAnswers,
   correctKeySigNotationAnswers,
   correctProgressionAnswers,
+  correctProgressionNonRegexAnswers,
   correctScalesAnswers,
   correctSeventhChordAnswers,
   correctSeventhChordNonRegexAnswers,
   correctTriads,
 } from "@/app/lib/data/answerKey";
-import keyNamesText from "@/app/lib/data/keyNamesText";
 import seventhChordsText from "@/app/lib/data/seventhChordsText";
 import triadsText from "@/app/lib/data/triadsText";
 import { initialFormInputState } from "@/app/lib/initialStates";
@@ -203,7 +203,7 @@ export default function ExamHomePage() {
     let progressionAnswers = checkAndFormat251Answers(
       userProgressionAnswers,
       correctProgressionAnswers,
-      keyNamesText,
+      correctProgressionNonRegexAnswers,
       "2-5-1 Progressions"
     );
 

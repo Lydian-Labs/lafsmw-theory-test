@@ -1,37 +1,33 @@
 export const checkAndFormat251Answers = (
   studentAnswers: string[],
   regexCorrectAnswers: RegExp[],
-  keyNames: string[],
+  nonRegexCorrectAnswers: string[],
   questionType: string
 ): string => {
   let score = 0;
   let formattedAnswers = "";
-  let keyNamesString = keyNames.join(", ");
 
   for (let i = 0; i < regexCorrectAnswers.length; i++) {
     let chord = studentAnswers[i] || "";
     let isCorrect = regexCorrectAnswers[i].test(chord);
-
     if (isCorrect) {
       score++;
     }
-
     if (i % 3 === 0) {
       if (i !== 0) formattedAnswers += "</li>";
       formattedAnswers += "<li>";
     }
-
     formattedAnswers += isCorrect ? chord : `<b>${chord || "(No answer)"}</b>`;
-
     if (i % 3 !== 2) formattedAnswers += ", ";
   }
+
   formattedAnswers += "</li>";
 
   const result = `<b>${score}/${regexCorrectAnswers.length}</b> on the ${questionType} section.
     <ul>Actual student answers:
       ${formattedAnswers}
     </ul>
-    <ul>Correct answers: ${keyNamesString}</ul>`;
+    <ul>Correct answers: ${nonRegexCorrectAnswers}</ul>`;
 
   return result;
 };

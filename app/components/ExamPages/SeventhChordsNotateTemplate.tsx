@@ -100,11 +100,7 @@ export default function NotateSeventhChords({
                   <NotateChord setChords={setChords} />
                 </Grid>
               </Grid>
-              <CardFooter
-                buttonText={"Continue >"}
-                pageNumber={page}
-                handleSubmit={handleSubmit}
-              />
+              <CardFooter pageNumber={page} handleSubmit={handleSubmit} />
             </Box>
           </Grid>
         </Grid>

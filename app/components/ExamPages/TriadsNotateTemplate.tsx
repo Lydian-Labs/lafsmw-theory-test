@@ -98,11 +98,7 @@ export default function TriadsNotation({
                   <NotateChord setChords={setChords} />
                 </Grid>
               </Grid>
-              <CardFooter
-                buttonText={"Continue >"}
-                pageNumber={13}
-                handleSubmit={handleSubmit}
-              />
+              <CardFooter pageNumber={13} handleSubmit={handleSubmit} />
             </Box>
           </Grid>
         </Grid>
