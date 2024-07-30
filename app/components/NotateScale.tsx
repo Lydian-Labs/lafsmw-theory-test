@@ -280,4 +280,6 @@ const NotateScale = ({
   );
 };
 
+
 export default NotateScale;
+

@@ -43,6 +43,9 @@ import CustomButton from "./CustomButton";
 import { useInitialRun } from "../context/initialNotesAndCoordsContext";
 const { Renderer } = VexFlow.Flow;
 
+//dim is shit-option-8
+//fix regex G-maj7
+
 const NotateChord = ({
   chordData,
   setChordData,
