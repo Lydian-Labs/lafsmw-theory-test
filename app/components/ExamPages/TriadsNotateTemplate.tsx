@@ -3,8 +3,9 @@ import { chordsNotationInstructions } from "@/app/lib/data/instructions";
 import triadsText from "@/app/lib/data/triadsText";
 import {
   FormEvent,
-  UserDataProps,
   InputState,
+ 
+  UserDataProps,
   Chord,
   StaveType,
 } from "@/app/lib/typesAndInterfaces";

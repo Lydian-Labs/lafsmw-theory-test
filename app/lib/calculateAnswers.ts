@@ -1,148 +1,174 @@
-export const check251Answers = (
+export const checkAndFormat251Answers = (
   studentAnswers: string[],
   regexCorrectAnswers: RegExp[],
+  keyNames: string[],
   questionType: string
 ): string => {
   let score = 0;
-  let result = "";
-  let numAnswers = studentAnswers.length;
-  for (let i = 0; i < studentAnswers.length; i++) {
-    let chord = studentAnswers[i];
-    let isTrue = regexCorrectAnswers[i].test(chord);
-    if (isTrue) {
+  let formattedAnswers = "";
+  let keyNamesString = keyNames.join(", ");
+
+  for (let i = 0; i < regexCorrectAnswers.length; i++) {
+    let chord = studentAnswers[i] || "";
+    let isCorrect = regexCorrectAnswers[i].test(chord);
+
+    if (isCorrect) {
       score++;
     }
+
+    if (i % 3 === 0) {
+      if (i !== 0) formattedAnswers += "</li>";
+      formattedAnswers += "<li>";
+    }
+
+    formattedAnswers += isCorrect ? chord : `<b>${chord || "(No answer)"}</b>`;
+
+    if (i % 3 !== 2) formattedAnswers += ", ";
   }
-  result = `<b>${score}/${numAnswers}</b> on the ${questionType} section.
+  formattedAnswers += "</li>";
+
+  const result = `<b>${score}/${regexCorrectAnswers.length}</b> on the ${questionType} section.
     <ul>Actual student answers:
-      <li>${studentAnswers.slice(0, 3)}</li>
-      <li>${studentAnswers.slice(3, 6)}</li>
-      <li>${studentAnswers.slice(6, 9)}</li>
-      <li>${studentAnswers.slice(9, 12)}</li>
-      <li>${studentAnswers.slice(12, 15)}</li>
-      <li>${studentAnswers.slice(15, 18)}</li>
-    </ul>`;
+      ${formattedAnswers}
+    </ul>
+    <ul>Correct answers: ${keyNamesString}</ul>`;
+
   return result;
 };
 
-export const checkKeySigIdentifyAnswers = (
+export const checkAndFormatKeySigIdentifyAnswers = (
   answers: string[],
   correctAnswers: string[],
   questionType: string
 ): string => {
   let score = 0;
-  let result = "";
-  let numAnswers = correctAnswers.length;
-  for (let i = 0; i < answers.length; i++) {
-    if (answers[i].toLowerCase() === correctAnswers[i]) {
+  let answersHTML = "";
+  let keySigTextString = correctAnswers.join(", ");
+
+  for (let i = 0; i < correctAnswers.length; i++) {
+    let studentAnswer = answers[i] || "";
+    let isCorrect =
+      studentAnswer.toLowerCase() === correctAnswers[i].toLowerCase();
+
+    if (isCorrect) {
       score++;
+      answersHTML += `<li>${studentAnswer}</li>`;
+    } else {
+      answersHTML += `<li><b>${
+        studentAnswer || "(No answer provided)"
+      }</b></li>`;
     }
   }
-  result = `<b>${score}/${numAnswers}</b> on the ${questionType} section.
-    <ul>Actual student answers:
-      <li>${answers}</li>
-    </ul>`;
+
+  const result = `<b>${score}/${correctAnswers.length}</b> on the ${questionType} section.
+    <ol>Actual student answers: ${answersHTML}</ol>
+    <ul>Correct answers: ${keySigTextString}</ul>`;
+
   return result;
 };
 
-export const checkChordIdentifyAnswers = (
+export const checkAndFormatChordIdentifyAnswers = (
   studentAnswers: string[],
   regexCorrectAnswers: RegExp[],
+  nonRegexCorrectAnswers: string[],
   questionType: string
 ): string => {
   let score = 0;
-  let result = "";
-  let numAnswers = studentAnswers.length;
-  for (let i = 0; i < studentAnswers.length; i++) {
-    let chord = studentAnswers[i];
-    let isTrue = regexCorrectAnswers[i].test(chord);
-    if (isTrue) {
+  let studentAnswersHTML = "";
+  let correctAnswers = nonRegexCorrectAnswers.join(", ");
+
+  for (let i = 0; i < regexCorrectAnswers.length; i++) {
+    let chord = studentAnswers[i] || "";
+    let isCorrect = regexCorrectAnswers[i].test(chord);
+
+    if (isCorrect) {
       score++;
+      studentAnswersHTML += `<li>${chord}</li>`;
+    } else {
+      studentAnswersHTML += `<li><b>${
+        chord || "(No answer provided)"
+      }</b></li>`;
     }
   }
-  result = `<b>${score}/${numAnswers}</b> on the ${questionType} section.
-    <ul>Actual student answers:
-      <li>${studentAnswers}</li>
-    </ul>`;
+
+  const result = `<b>${score}/${regexCorrectAnswers.length}</b> on the ${questionType} section.
+    <ol>Actual student answers:${studentAnswersHTML}</ol>
+    <ul>Correct answers: ${correctAnswers}</ul>`;
+
   return result;
 };
 
-export const checkArrOfArrsAnswer = (
+export const checkAndFormatArrOfArrsAnswers = (
   userAnswers: string[][],
   correctAnswers: string[][],
   questionType: string
 ): string => {
   let score = 0;
-  let result = "";
-  let numAnswers = correctAnswers.length;
-  let actualStudentAnswers = convertStudentAnswersToHTML(userAnswers);
-  for (let i = 0; i < userAnswers.length; i++) {
-    if (!userAnswers[i].length) {
-      continue;
+  let actualStudentAnswers = "";
+  let correctHTMLAnswers = "";
+
+  for (let i = 0; i < correctAnswers.length; i++) {
+    if (!userAnswers[i] || !userAnswers[i].length) {
+      actualStudentAnswers += `<li><b>(No answer provided)</b></li>`;
+    } else {
+      let isCorrect = true;
+      let formattedUserAnswer = userAnswers[i]
+        .map((answer, j) => {
+          const userNote = answer.split("/")[0];
+          const correctNote = correctAnswers[i][j];
+          if (userNote !== correctNote) {
+            isCorrect = false;
+            return `<b>${userNote}</b>`;
+          }
+          return userNote;
+        })
+        .join(", ");
+
+      if (isCorrect) score++;
+      actualStudentAnswers += `<li>${formattedUserAnswer}</li>`;
     }
-    if (checkArrNotesTrue(userAnswers[i], correctAnswers[i])) {
-      score++;
-    }
+
+    correctHTMLAnswers += `<li>${correctAnswers[i].join(", ")}</li>`;
   }
-  result = `<b>${score}/${numAnswers}</b> on the ${questionType} section.
-    <ul>Actual student answers:${actualStudentAnswers}</ul>`;
+
+  const result = `<b>${score}/${correctAnswers.length}</b> on the ${questionType} section.
+    <ol>Actual student answers:${actualStudentAnswers}</ol>
+    <ol>Correct answers:${correctHTMLAnswers}</ol>`;
+
   return result;
 };
 
-export const checkChordsAnswers = (
+export const checkAndFormatChordAnswers = (
   userAnswers: string[][],
   correctAnswers: RegExp[],
+  correctAnswersText: string[],
   questionType: string
 ): string => {
   let score = 0;
-  let result = "";
-  let numAnswers = correctAnswers.length;
-  let actualStudentAnswers = convertStudentAnswersToHTML(userAnswers);
-  for (let i = 0; i < userAnswers.length; i++) {
-    if (!userAnswers[i].length) {
-      continue;
-    }
-    if (checkChordNotesRegexTrue(userAnswers[i], correctAnswers[i])) {
-      score++;
+  let actualStudentAnswers = "";
+  let correctAnswersString = correctAnswersText.join(", ");
+
+  for (let i = 0; i < correctAnswers.length; i++) {
+    if (!userAnswers[i] || !userAnswers[i].length) {
+      actualStudentAnswers += `<li><b>(No answer provided)</b></li>`;
+    } else {
+      let answerString = userAnswers[i]
+        .map((note) => note.split("/")[0])
+        .join("");
+      let isCorrect = correctAnswers[i].test(answerString);
+
+      if (isCorrect) {
+        score++;
+        actualStudentAnswers += `<li>${answerString}</li>`;
+      } else {
+        actualStudentAnswers += `<li><b>${answerString}</b></li>`;
+      }
     }
   }
-  result = `<b>${score}/${numAnswers}</b> on the ${questionType} section.
-    <ul>Actual student answers:${actualStudentAnswers}</ul>`;
+
+  const result = `<b>${score}/${correctAnswers.length}</b> on the ${questionType} section.
+    <ol>Actual student answers:${actualStudentAnswers}</ol>
+    <ol>Correct answers: ${correctAnswersString}</ol>`;
+
   return result;
 };
-
-function checkArrNotesTrue(
-  answers: string[],
-  correctAnswers: string[]
-): boolean {
-  for (let i = 0; i < answers.length; i++) {
-    let currentAnswer = answers[i].split("/")[0];
-    if (currentAnswer !== correctAnswers[i]) {
-      return false;
-    }
-  }
-  return true;
-}
-
-function checkChordNotesRegexTrue(
-  chordNotes: string[],
-  correctChordNotes: RegExp
-): boolean {
-  let answerString = "";
-  for (let i = 0; i < chordNotes.length; i++) {
-    answerString += chordNotes[i].split("/")[0];
-  }
-  return correctChordNotes.test(answerString);
-}
-
-function convertStudentAnswersToHTML(userAnswers: string[][]): string {
-  let result = "";
-  for (let i = 0; i < userAnswers.length; i++) {
-    for (let j = 0; j < userAnswers[i].length; j++) {
-      userAnswers[i][j] = userAnswers[i][j].split("/")[0];
-    }
-    let current = userAnswers[i].join(", ");
-    result += `<li>${i + 1}. ${current}</li>`;
-  }
-  return result;
-}

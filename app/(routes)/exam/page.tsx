@@ -13,11 +13,11 @@ import SnackbarToast from "@/app/components/SnackbarToast";
 import { useClef } from "@/app/context/ClefContext";
 import { useTimer } from "@/app/context/TimerContext";
 import {
-  check251Answers,
-  checkArrOfArrsAnswer,
-  checkChordIdentifyAnswers,
-  checkChordsAnswers,
-  checkKeySigIdentifyAnswers,
+  checkAndFormat251Answers,
+  checkAndFormatArrOfArrsAnswers,
+  checkAndFormatChordIdentifyAnswers,
+  checkAndFormatChordAnswers,
+  checkAndFormatKeySigIdentifyAnswers,
 } from "@/app/lib/calculateAnswers";
 import convertObjectToArray from "@/app/lib/convertObjectToArray";
 import {
@@ -27,8 +27,12 @@ import {
   correctProgressionAnswers,
   correctScalesAnswers,
   correctSeventhChordAnswers,
+  correctSeventhChordNonRegexAnswers,
   correctTriads,
 } from "@/app/lib/data/answerKey";
+import keyNamesText from "@/app/lib/data/keyNamesText";
+import seventhChordsText from "@/app/lib/data/seventhChordsText";
+import triadsText from "@/app/lib/data/triadsText";
 import { initialFormInputState } from "@/app/lib/initialStates";
 import { InputState, Level, MouseEvent } from "@/app/lib/typesAndInterfaces";
 import { useAuthContext } from "@/firebase/authContext";
@@ -161,37 +165,45 @@ export default function ExamHomePage() {
       currentUserData.progressions
     );
 
-    let keySigNotationAnswers = checkArrOfArrsAnswer(
+    let keySigNotationAnswers = checkAndFormatArrOfArrsAnswers(
       userKeySigNotationAnswers,
       correctKeySigNotationAnswers,
       "Key Signature Notation"
     );
-    let keySigAnswers = checkKeySigIdentifyAnswers(
+    let keySigAnswers = checkAndFormatKeySigIdentifyAnswers(
       userKeySigAnswers,
       correctKeySigAnswers,
       "Key Signatures"
     );
-    let scalesAnswers = checkArrOfArrsAnswer(
+    let scalesAnswers = checkAndFormatArrOfArrsAnswers(
       userScales,
       correctScalesAnswers,
       "Scales"
     );
 
-    let triadsAnswers = checkChordsAnswers(userTriads, correctTriads, "Triads");
+    let triadsAnswers = checkAndFormatChordAnswers(
+      userTriads,
+      correctTriads,
+      triadsText,
+      "Triads"
+    );
 
-    let seventhNotationAnswers = checkChordsAnswers(
+    let seventhNotationAnswers = checkAndFormatChordAnswers(
       userSeventhChordAnswers,
       correct7thChordNotationAnswers,
+      seventhChordsText,
       "Seventh Chord Notation"
     );
-    let seventhAnswers = checkChordIdentifyAnswers(
+    let seventhIdentifyAnswers = checkAndFormatChordIdentifyAnswers(
       userChordAnswers,
       correctSeventhChordAnswers,
+      correctSeventhChordNonRegexAnswers,
       "Seventh Chords"
     );
-    let progressionAnswers = check251Answers(
+    let progressionAnswers = checkAndFormat251Answers(
       userProgressionAnswers,
       correctProgressionAnswers,
+      keyNamesText,
       "2-5-1 Progressions"
     );
 
@@ -202,7 +214,7 @@ export default function ExamHomePage() {
       scalesAnswers,
       triadsAnswers,
       seventhNotationAnswers,
-      seventhAnswers,
+      seventhIdentifyAnswers,
       progressionAnswers,
       currentUserData.bluesUrl,
     ]);
@@ -247,7 +259,7 @@ export default function ExamHomePage() {
       }
       e.preventDefault();
       await handleLevelSubmit(e);
-      startTimer(1800, handleTimeUp);
+      startTimer(3600, handleTimeUp);
       setViewState(VIEW_STATES.KEY_SIG_NOTATE1);
     };
   };
@@ -269,11 +281,12 @@ export default function ExamHomePage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: `${process.env.NEXT_PUBLIC_EMAIL_CAMP_DIRECTOR}, ${process.env.NEXT_PUBLIC_EMAIL_DEVELOPER}`,
+          email: `${process.env.NEXT_PUBLIC_EMAIL_DEVELOPER}`,
+          // email: `${process.env.NEXT_PUBLIC_EMAIL_CAMP_DIRECTOR}, ${process.env.NEXT_PUBLIC_EMAIL_DEVELOPER}`,
           subject: `Exam Results for ${userName}`,
           text: `<p>Hello Kyle,</p>
 
-          <p>Here are the results for ${userName}:</p>
+          <p>Here are the results for ${userName} (${clef} clef):</p>
           <ul>
             <li>Level:${correctedAnswers[0]}</li>
             <li>Key Signatures (notate): ${correctedAnswers[1]}</li>

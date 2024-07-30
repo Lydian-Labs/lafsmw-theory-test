@@ -1,4 +1,4 @@
-const seventhChords = [
+export const seventhChordsTreble = [
   {
     keys: ["e#/4", "g#/4", "b/4", "d/5"],
     duration: "w",
@@ -29,4 +29,40 @@ const seventhChords = [
   },
 ];
 
-export default seventhChords;
+export const seventhChordsBass = [
+  {
+    keys: ["e#/2", "g#/2", "b/2", "d/3"],
+    duration: "w",
+    clef: "bass",
+  },
+  {
+    keys: ["f/2", "a/2", "c/3", "e/3"],
+    duration: "w",
+    clef: "bass",
+  },
+  {
+    keys: ["g/2", "bb/2", "d/3", "f#/3"],
+    duration: "w",
+    clef: "bass",
+  },
+  {
+    keys: ["b/2", "d#/3", "f#/3", "a/3"],
+    duration: "w",
+    clef: "bass",
+  },
+  {
+    keys: ["f#/2", "a/2", "c/3", "e/3"],
+    duration: "w",
+    clef: "bass",
+  },
+  {
+    keys: ["ab/2", "cb/3", "eb/3", "gb/3"],
+    duration: "w",
+    clef: "bass",
+  },
+  {
+    keys: ["d/2", "f#/2", "a#/2", "c/3"],
+    duration: "w",
+    clef: "bass",
+  },
+];

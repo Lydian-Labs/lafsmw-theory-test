@@ -12,7 +12,7 @@ import { auth } from "./config";
 
 // Configuration for email link. This is the URL that the student will be redirected to after clicking the link in their email.
 const actionCodeSettings = {
-  url: "https://bretteastmanstudio.com/confirm",
+  url: "https://lafsmwtheoryexam.com/confirm",
   handleCodeInApp: true,
 };
 
