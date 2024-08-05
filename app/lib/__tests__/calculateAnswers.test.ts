@@ -166,7 +166,7 @@ describe("checkAndFormatChordAnswers", () => {
     );
 
     expect(result).toContain("<b>2/2</b>");
-    expect(result).toContain("<li>CEG</li><li>DFA</li>");
+    expect(result).toContain("<li>C, E, G</li><li>D, F, A</li>");
     expect(result).toContain("<ol>Correct answers: C, E, G, D, F, A</ol>");
   });
 
@@ -187,7 +187,7 @@ describe("checkAndFormatChordAnswers", () => {
     );
 
     expect(result).toContain("<b>1/2</b>");
-    expect(result).toContain("<li>CEG</li><li><b>DF#A</b></li>");
+    expect(result).toContain("<li>C, E, G</li><li><b>D, F#, A</b></li>");
     expect(result).toContain("<ol>Correct answers: C, E, G, D, F, A</ol>");
   });
 });
