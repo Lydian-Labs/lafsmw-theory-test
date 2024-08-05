@@ -38,9 +38,6 @@ export const correctTriads: RegExp[] = [
   /^eg#(?:b#|c)$/,
 ];
 
-<<<<<<< HEAD
-export const correct7thChordNotationAnswers: RegExp[] = [
-=======
 export const correctNonRegexTriads = [
   "Dmaj",
   "F#maj",
@@ -51,7 +48,6 @@ export const correctNonRegexTriads = [
 ];
 
 export const correct7thChordNotationAnswers = [
->>>>>>> main
   /^eg#bd#$/,
   /^gbbdf$/,
   /^dbfab(?:b|cb)$/,
@@ -71,9 +67,6 @@ export const correctSeventhChordAnswers: RegExp[] = [
   /^(D)(?:\+7|7#5|7\(#5\)|[Aa]ug7|)$/,
 ];
 
-<<<<<<< HEAD
-export const correctProgressionAnswers: RegExp[] = [
-=======
 export const correctSeventhChordNonRegexAnswers: string[] = [
   "E#dim7", // E# diminished 7
   "F∆", // F major 7
@@ -85,7 +78,6 @@ export const correctSeventhChordNonRegexAnswers: string[] = [
 ];
 
 export const correctProgressionAnswers = [
->>>>>>> main
   //1
   /^(D)(?:-7|min7|mi7|m7)$/,
   /^(G7)$/,
