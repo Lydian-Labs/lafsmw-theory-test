@@ -57,8 +57,8 @@ export const correct7thChordNotationAnswers = [
   /^ebgbbbd$/,
 ];
 
-export const correctSeventhChordAnswers: RegExp[] = [
-  /^(E#)(?:dim7|º7|o7)$/,
+export const correctSeventhChordAnswers = [
+  /^(E#)(?:dim7|°7|o7)$/,
   /^(F)(?:∆|∆7|[Mm]aj7|[Mm]a7)$/,
   /^(G)(?:-∆|m∆|m∆7|min[Mm]aj7|mi[Mm]aj7|m[Mm]aj7)$/,
   /^(B7)$/,
@@ -102,4 +102,13 @@ export const correctProgressionAnswers = [
   /^(Ab)(?:ø|ø7|-7b5|m7b5|min7b5|mi7b5)$/,
   /^(Db7)(?:\(?b9\)?|\(?#9b9\)?|\(?b9#9\)?|\(?b13\)?|\(?alt\)?|\(?b13b9\)?|\(?b9b13\)?|\(?b13#9b9\)?||\(?b13b9#9\)?|\(?#9b9b13\)?|\(?b9#9b13\)?|\(?#9b13\)?)$/,
   /^(Gb)(?:-7|min7|mi7|m7|m6|mi6|min6|-6)$/,
+];
+
+export const correctProgressionNonRegexAnswers = [
+  "D-7 G7 C∆",
+  "F#ø B7 E-7",
+  "Eb-7 Ab7 Db∆",
+  "D#ø G#7 C#-7",
+  "E#-7 A#7 D#∆",
+  "Abø Db7 Gb-7",
 ];

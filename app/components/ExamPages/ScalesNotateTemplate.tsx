@@ -11,7 +11,6 @@ import { Box, Container, Grid, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import CardFooter from "../CardFooter";
 import NotateScale from "../NotateScale";
-import SnackbarToast from "../SnackbarToast";
 import TutorialModal from "../TutorialModal";
 
 export default function ScalesNotation({
@@ -27,9 +26,6 @@ export default function ScalesNotation({
     currentUserData[`scaleStaves${page - 5}`] || []
   );
   const [scales, setScales] = useState<Array<string>>([]);
-  
-  const [open, setOpen] = useState<boolean>(false);
-  const [isReady, setIsReady] = useState<boolean>(false);
 
   const scalesPropName = `scales${page - 5}`;
   const scaleDataMatrixPropName = `scaleDataMatrix${page - 5}`;
@@ -37,18 +33,15 @@ export default function ScalesNotation({
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (!isReady) {
-      setOpen(true);
-      return;
-    } else {
-      setCurrentUserData({
-        ...currentUserData,
-        [scalesPropName]: scales,
-        [scaleDataMatrixPropName]: scaleDataMatrix,
-        [stavesPropName]: scaleStaves,
-      });
-      nextViewState();
-    }
+    setCurrentUserData({
+      ...currentUserData,
+      [scalesPropName]: scales,
+    });
+    // console.log({
+    //   ...currentUserData,
+    //   [scalesPropName]: scales,
+    // });
+    nextViewState();
   };
 
   useEffect(() => {
@@ -63,11 +56,6 @@ export default function ScalesNotation({
 
   return (
     <Container>
-      <SnackbarToast
-        open={open}
-        setOpen={setOpen}
-        message={"You must press Save before moving on."}
-      />
       <Box sx={boxStyle}>
         <Typography variant="h5" align="center" pb={2}>
           Section 3: Notate Scales
@@ -108,23 +96,10 @@ export default function ScalesNotation({
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <NotateScale
-                    scales={scales}
-                    setScales={setScales}
-                    scaleDataMatrix={scaleDataMatrix}
-                    setScaleDataMatrix={setScaleDataMatrix}
-                    scaleStaves={scaleStaves}
-                    setScaleStaves={setScaleStaves}
-                    setIsReady={setIsReady}
-                    isReady={isReady}
-                  />
+                  <NotateScale setScales={setScales} />
                 </Grid>
               </Grid>
-              <CardFooter
-                buttonText={"Continue >"}
-                pageNumber={page}
-                handleSubmit={handleSubmit}
-              />
+              <CardFooter pageNumber={page} handleSubmit={handleSubmit} />
             </Box>
           </Grid>
         </Grid>

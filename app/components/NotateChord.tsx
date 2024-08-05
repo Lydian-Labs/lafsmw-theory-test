@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-import { Button, Container, Stack, Typography } from "@mui/material";
+import { Button, Container } from "@mui/material";
 import React, {
   Dispatch,
   SetStateAction,
@@ -47,15 +47,9 @@ const { Renderer } = VexFlow.Flow;
 //fix regex G-maj7
 
 const NotateChord = ({
-  chordData,
-  setChordData,
   chordStaves,
   setChordStaves,
   setChords,
-  notesAndCoordinates,
-  setNotesAndCoordinates,
-  setIsReady,
-  isReady,
 }: {
   chords: string[];
   chordData: Chord;
@@ -63,19 +57,20 @@ const NotateChord = ({
   chordStaves: StaveType[];
   setChordStaves: Dispatch<SetStateAction<StaveType[]>>;
   setChords: Dispatch<SetStateAction<Array<string>>>;
-  notesAndCoordinates: NotesAndCoordinatesData[];
-  setNotesAndCoordinates: Dispatch<SetStateAction<NotesAndCoordinatesData[]>>;
-  setIsReady: Dispatch<SetStateAction<boolean>>;
-  isReady: boolean;
 }) => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
+  const [staves, setStaves] = useState<StaveType[]>([]);
   const [state, dispatch] = useReducer(
     chordReducer,
     chordInteractionInitialState
   );
   const [barIndex, setBarIndex] = useState<number>(0);
+  const [chordData, setChordData] = useState<Chord>(initialChordData);
   const { chosenClef } = useClef();
+  const [notesAndCoordinates, setNotesAndCoordinates] = useState<
+    NotesAndCoordinatesData[]
+  >([initialNotesAndCoordsState]);
   const { initialRun, setInitialRun } = useInitialRun();
   const noNoteFound = () => dispatch({ type: "noNoteFound" });
 
@@ -83,9 +78,6 @@ const NotateChord = ({
     () => buttonGroup(dispatch, state, modifyChordsActionTypes),
     [dispatch, state]
   );
-  const handleEnableSave = () => {
-    setIsReady(false);
-  };
 
   const renderStavesAndChords = useCallback(
     (): StaveType[] =>
@@ -140,12 +132,6 @@ const NotateChord = ({
     setInitialRun(false);
   };
 
-  const handleChordsClick = (e: React.MouseEvent) => {
-    //console.log("Saving chords", chordData.keys);
-    setChords(chordData.keys);
-    setIsReady(true);
-  };
-
   const handleClick = (e: React.MouseEvent) => {
     const { userClickY, userClickX } = getUserClickInfo(
       e,
@@ -181,9 +167,9 @@ const NotateChord = ({
       chosenClef
     );
 
-    setNotesAndCoordinates(newNotesAndCoordinates);
-    setChordData(newChordData);
-    //console.log("New notes and coordinates", newNotesAndCoordinates);
+    setNotesAndCoordinates(() => newNotesAndCoordinates);
+    setChordData(() => newChordData);
+    setChords(newChordData.keys);
   };
 
   return (
@@ -212,7 +198,6 @@ const NotateChord = ({
               key={button.text}
               onClick={() => {
                 button.action();
-                handleEnableSave();
               }}
               isEnabled={button.isEnabled}
             >
@@ -220,22 +205,10 @@ const NotateChord = ({
             </CustomButton>
           );
         })}
-        <Button
-          onClick={eraseChord}
-          sx={{ m: 0.5 }}
-        >
+        <Button onClick={eraseChord} sx={{ m: 0.5 }}>
           Erase Measure
         </Button>
       </Container>
-      <Stack direction="row" spacing={2} mt={2}>
-        <Typography marginTop={2} align="left">
-          *Note: You
-          <b> MUST</b> press <em>Save </em>before moving on.
-        </Typography>
-        <Button onClick={handleChordsClick} disabled={isReady}>
-          {isReady ? "Saved" : "Save"}
-        </Button>
-      </Stack>
     </>
   );
 };

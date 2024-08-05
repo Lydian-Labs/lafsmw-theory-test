@@ -12,7 +12,6 @@ import { Box, Container, Grid, Typography } from "@mui/material";
 import { useCallback, useEffect, useRef, useState } from "react";
 import CardFooter from "../CardFooter";
 import NotateChord from "../NotateChord";
-import SnackbarToast from "../SnackbarToast";
 import TutorialModal from "../TutorialModal";
 import { initialChordData } from "@/app/lib/initialStates";
 
@@ -24,14 +23,6 @@ export default function NotateSeventhChords({
 }: UserDataProps) {
   const [seventhChords, setSeventhChords] = useState<string[]>([]);
   const currentUserDataRef = useRef(currentUserData);
-  const [open, setOpen] = useState<boolean>(false);
-  const [isReady, setIsReady] = useState<boolean>(false);
-  const [seventhChordData, setSeventhChordData] = useState<Chord>(
-    currentUserData[`seventhChordData${page - 17}`] || initialChordData
-  );
-  const [seventhChordStaves, setSeventhChordStaves] = useState<StaveType[]>(
-    currentUserData[`seventhChordStaves${page - 17}`] || []
-  );
 
   const seventhChordsPropName = `seventhChords${page - 17}`;
   const seventhChordDataPropName = `seventhChordData${page - 17}`;
@@ -49,28 +40,19 @@ export default function NotateSeventhChords({
    // console.log("currentUserData: ", currentUserData);
   }, [currentUserData]);
 
-  useEffect(() => {
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
     memoizedSetCurrentUserData({
       ...currentUserDataRef.current,
       [seventhChordsPropName]: seventhChords,
       [seventhChordDataPropName]: seventhChordData,
       [seventhChordStavesPropName]: seventhChordStaves,
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    seventhChords,
-    seventhChordData,
-    seventhChordStaves,
-    memoizedSetCurrentUserData,
-  ]);
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    if (!isReady) {
-      setOpen(true);
-    } else {
-      nextViewState();
-    }
+    // console.log({
+    //   ...currentUserDataRef.current,
+    //   [seventhChordsPropName]: chords,
+    // });
+    nextViewState();
   };
 
   const boxStyle = {
@@ -81,11 +63,6 @@ export default function NotateSeventhChords({
 
   return (
     <Container>
-      <SnackbarToast
-        open={open}
-        setOpen={setOpen}
-        message={"You must press Save before moving on."}
-      />
       <Box sx={boxStyle}>
         <Typography variant="h5" align="center" pb={2}>
           Section 5: Notate Seventh Chords
@@ -128,23 +105,10 @@ export default function NotateSeventhChords({
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <NotateChord
-                    chords={seventhChords}
-                    setChords={setSeventhChords}
-                    chordData={seventhChordData}
-                    setChordData={setSeventhChordData}
-                    setChordStaves={setSeventhChordStaves}
-                    chordStaves={seventhChordStaves}
-                    setIsReady={setIsReady}
-                    isReady={isReady}
-                  />
+                  <NotateChord setChords={setChords} />
                 </Grid>
               </Grid>
-              <CardFooter
-                buttonText={"Continue >"}
-                pageNumber={page}
-                handleSubmit={handleSubmit}
-              />
+              <CardFooter pageNumber={page} handleSubmit={handleSubmit} />
             </Box>
           </Grid>
         </Grid>

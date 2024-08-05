@@ -4,7 +4,6 @@ import triadsText from "@/app/lib/data/triadsText";
 import {
   FormEvent,
   InputState,
- 
   UserDataProps,
   Chord,
   StaveType,
@@ -13,7 +12,6 @@ import { Box, Container, Grid, Typography } from "@mui/material";
 import { useCallback, useEffect, useRef, useState } from "react";
 import CardFooter from "../CardFooter";
 import NotateChord from "../NotateChord";
-import SnackbarToast from "../SnackbarToast";
 import TutorialModal from "../TutorialModal";
 import {
   initialChordData,
@@ -41,8 +39,8 @@ export default function TriadsNotation({
       initialNotesAndCoordsState
   );
 
-  const [open, setOpen] = useState<boolean>(false);
-  const [isReady, setIsReady] = useState<boolean>(false);
+  const [chords, setChords] = useState<string[]>([]);
+  const currentUserDataRef = useRef(currentUserData);
 
   const triadsPropName = `triads${page - 11}`;
   const triadsDataPropName = `triadData${page - 11}`;
@@ -58,26 +56,19 @@ export default function TriadsNotation({
     });
     setTriadDataWithOctave({ ...triadData, keys: newTriadDataWithOctave });
     console.log(currentUserData);
-
   }, [triadData, currentUserData]);
-
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (!isReady) {
-      setOpen(true);
-      return;
-    } else {
-      setCurrentUserData({
-        ...currentUserData,
-        [triadsPropName]: triads,
-        [triadsDataPropName]: triadData,
-        [triadStavesPropName]: triadStaves,
-        [triadDataWithOctavePropName]: triadDataWithOctave,
-        [notesAndCoordinatesPropName]: notesAndCoordinatesParent,
-      });
-      nextViewState();
-    }
+    memoizedSetCurrentUserData({
+      ...currentUserDataRef.current,
+      [triadsPropName]: chords,
+    });
+    // console.log("object from TriadsNotateTemplate.tsx:", {
+    //   ...currentUserDataRef.current,
+    //   [triadsPropName]: chords,
+    // });
+    nextViewState();
   };
 
   const boxStyle = {
@@ -88,11 +79,6 @@ export default function TriadsNotation({
 
   return (
     <Container>
-      <SnackbarToast
-        open={open}
-        setOpen={setOpen}
-        message={"You must press Save before moving on."}
-      />
       <Box sx={boxStyle}>
         <Typography variant="h5" align="center" pb={2}>
           Section 4: Notate Triads
@@ -133,25 +119,10 @@ export default function TriadsNotation({
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <NotateChord
-                    chords={triads}
-                    chordData={triadDataWithOctave}
-                    setChordData={setTriadData}
-                    chordStaves={triadStaves}
-                    setChordStaves={setTriadStaves}
-                    setChords={setTriads}
-                    notesAndCoordinates={notesAndCoordinatesParent}
-                    setNotesAndCoordinates={setNotesAndCoordinatesParent}
-                    setIsReady={setIsReady}
-                    isReady={isReady}
-                  />
+                  <NotateChord setChords={setChords} />
                 </Grid>
               </Grid>
-              <CardFooter
-                buttonText={"Continue >"}
-                pageNumber={13}
-                handleSubmit={handleSubmit}
-              />
+              <CardFooter pageNumber={13} handleSubmit={handleSubmit} />
             </Box>
           </Grid>
         </Grid>

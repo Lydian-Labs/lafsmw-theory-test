@@ -41,6 +41,7 @@ export default function KeySignaturesNotation({
       [keySigStavesPropName]: keySigStaves,
       [glyphsPropName]: glyphs,
     });
+    // console.log({ ...currentUserData, [keySigPropName]: keySignatureNotation });
     nextViewState();
   };
 
