@@ -6,6 +6,7 @@ export const checkAndFormat251Answers = (
 ): string => {
   let score = 0;
   let formattedAnswers = "";
+  let correctAnswers = nonRegexCorrectAnswers.join(", ");
 
   for (let i = 0; i < regexCorrectAnswers.length; i++) {
     let chord = studentAnswers[i] || "";
@@ -27,7 +28,7 @@ export const checkAndFormat251Answers = (
     <ul>Actual student answers:
       ${formattedAnswers}
     </ul>
-    <ul>Correct answers: ${nonRegexCorrectAnswers}</ul>`;
+    <ul>Correct answers: ${correctAnswers}</ul>`;
 
   return result;
 };
@@ -151,13 +152,16 @@ export const checkAndFormatChordAnswers = (
       let answerString = userAnswers[i]
         .map((note) => note.split("/")[0])
         .join("");
+      let answerForEmail = userAnswers[i]
+        .map((note) => note.split("/")[0])
+        .join(", ");
       let isCorrect = correctAnswers[i].test(answerString);
 
       if (isCorrect) {
         score++;
-        actualStudentAnswers += `<li>${answerString}</li>`;
+        actualStudentAnswers += `<li>${answerForEmail}</li>`;
       } else {
-        actualStudentAnswers += `<li><b>${answerString}</b></li>`;
+        actualStudentAnswers += `<li><b>${answerForEmail}</b></li>`;
       }
     }
   }
