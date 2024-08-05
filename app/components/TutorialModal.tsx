@@ -27,7 +27,7 @@ export default function TutorialModal({
       <Button variant={"contained"} onClick={handleOpen} size="large">
         Need Help?
       </Button>
-      <Modal open={open} onClose={handleClose}>
+      <Modal open={open} onClose={handleClose} role="dialog">
         <Box
           width={600}
           height={456}

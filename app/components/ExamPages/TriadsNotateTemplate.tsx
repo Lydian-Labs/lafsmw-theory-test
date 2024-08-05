@@ -10,7 +10,6 @@ import { Box, Container, Grid, Typography } from "@mui/material";
 import { useCallback, useEffect, useRef, useState } from "react";
 import CardFooter from "../CardFooter";
 import NotateChord from "../NotateChord";
-import SnackbarToast from "../SnackbarToast";
 import TutorialModal from "../TutorialModal";
 
 export default function TriadsNotation({
@@ -21,8 +20,6 @@ export default function TriadsNotation({
 }: UserDataProps) {
   const [chords, setChords] = useState<string[]>([]);
   const currentUserDataRef = useRef(currentUserData);
-  const [open, setOpen] = useState<boolean>(false);
-  const [isReady, setIsReady] = useState<boolean>(false);
 
   const triadsPropName = `triads${page - 11}`;
 
@@ -37,21 +34,17 @@ export default function TriadsNotation({
     currentUserDataRef.current = currentUserData;
   }, [currentUserData]);
 
-  useEffect(() => {
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
     memoizedSetCurrentUserData({
       ...currentUserDataRef.current,
       [triadsPropName]: chords,
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chords, memoizedSetCurrentUserData]);
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    if (!isReady) {
-      setOpen(true);
-    } else {
-      nextViewState();
-    }
+    // console.log("object from TriadsNotateTemplate.tsx:", {
+    //   ...currentUserDataRef.current,
+    //   [triadsPropName]: chords,
+    // });
+    nextViewState();
   };
 
   const boxStyle = {
@@ -62,11 +55,6 @@ export default function TriadsNotation({
 
   return (
     <Container>
-      <SnackbarToast
-        open={open}
-        setOpen={setOpen}
-        message={"You must press Save before moving on."}
-      />
       <Box sx={boxStyle}>
         <Typography variant="h5" align="center" pb={2}>
           Section 4: Notate Triads
@@ -107,18 +95,10 @@ export default function TriadsNotation({
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <NotateChord
-                    setChords={setChords}
-                    setIsReady={setIsReady}
-                    isReady={isReady}
-                  />
+                  <NotateChord setChords={setChords} />
                 </Grid>
               </Grid>
-              <CardFooter
-                buttonText={"Continue >"}
-                pageNumber={13}
-                handleSubmit={handleSubmit}
-              />
+              <CardFooter pageNumber={13} handleSubmit={handleSubmit} />
             </Box>
           </Grid>
         </Grid>
