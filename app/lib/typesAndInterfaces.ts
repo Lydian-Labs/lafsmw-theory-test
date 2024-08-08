@@ -1,5 +1,5 @@
 import { Dispatch, RefObject, SetStateAction } from "react";
-import VexFlow, { IRenderContext } from "vexflow";
+import VexFlow, { RenderContext } from "vexflow";
 const VF = VexFlow.Flow;
 const { StaveNote, Stave, Renderer, Glyph, Note } = VF;
 
@@ -207,7 +207,7 @@ export interface RenderStavesAndChordParams {
 
 export interface CreateBlankStavesParams {
   numStaves: number;
-  context: IRenderContext;
+  context: RenderContext;
   firstStaveWidth: number;
   x: number;
   y: number;
