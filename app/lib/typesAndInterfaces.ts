@@ -1,5 +1,5 @@
 import { Dispatch, RefObject, SetStateAction } from "react";
-import VexFlow, { RenderContext } from "vexflow";
+import VexFlow, { RenderContext, StemmableNote } from "vexflow";
 const VF = VexFlow.Flow;
 const { StaveNote, Stave, Renderer, Glyph, Note } = VF;
 
@@ -16,7 +16,7 @@ export type InputData = {
 export type Chord = {
   keys: string[];
   duration: string;
-  staveNotes?: NoteType | null;
+  staveNotes?: StemmableNote | null;
   userClickY?: number;
   sharpIndexArray?: number[];
   flatIndexArray?: number[] | [];
