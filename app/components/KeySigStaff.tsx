@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef } from "react";
-import { Flow } from "vexflow";
+import * as Flow from "vexflow";
 import { useClef } from "../context/ClefContext";
 import { Chord } from "../lib/typesAndInterfaces";
 
@@ -32,7 +32,7 @@ export default function Staff({
 }: StaffProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const rendererRef = useRef<Flow.Renderer | null>(null);
-  const { chosenClef} = useClef();
+  const { chosenClef } = useClef();
 
   // Gather needed width info - slightly different calculations than other components.
   const fullWidth = width * 0.97;

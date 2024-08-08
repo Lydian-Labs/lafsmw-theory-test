@@ -2,6 +2,7 @@ import VexFlow from "vexflow";
 import createBlankStaves from "./createBlankStaves";
 import { RenderStavesAndNotesParams } from "./typesAndInterfaces";
 const { Formatter } = VexFlow.Flow;
+import type { StaveNote } from "vexflow";
 
 export const setupRendererAndDrawNotes = (
   params: RenderStavesAndNotesParams
@@ -46,7 +47,7 @@ export const setupRendererAndDrawNotes = (
     if (barOfNoteObjects) {
       const staveNotes = barOfNoteObjects
         .map(({ staveNote }) => staveNote)
-        .filter(Boolean) as VexFlow.Flow.StaveNote[];
+        .filter(Boolean) as StaveNote[];
       if (staveNotes.length > 0 && context && staves[index]) {
         Formatter.FormatAndDraw(context, staves[index], staveNotes);
       }

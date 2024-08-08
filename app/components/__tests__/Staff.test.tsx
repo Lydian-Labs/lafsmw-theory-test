@@ -1,6 +1,6 @@
 import { render, screen, cleanup } from "@testing-library/react";
 import Staff from "../Staff";
-import { Flow } from "vexflow";
+import * as Flow from "vexflow";
 
 jest.mock("vexflow");
 

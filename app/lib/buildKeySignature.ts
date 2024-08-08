@@ -1,4 +1,4 @@
-import VexFlow, { IRenderContext } from "vexflow";
+import VexFlow, { RenderContext } from "vexflow";
 import { GlyphProps, StaveType } from "./typesAndInterfaces";
 import { roundToNearest5 } from "./roundToNearest5";
 const VF = VexFlow.Flow;
@@ -7,7 +7,7 @@ const { Glyph } = VF;
 export const buildKeySignature = (
   glyphs: GlyphProps[],
   sizeOfGlyph: number,
-  context: IRenderContext,
+  context: RenderContext,
   stave: StaveType
 ) => {
   //to do: add error handling so user can't add duplicate accidentals
