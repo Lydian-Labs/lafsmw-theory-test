@@ -16,7 +16,7 @@ export type InputData = {
 export type Chord = {
   keys: string[];
   duration: string;
-  staveNotes?: StemmableNote | null;
+  staveNotes?: StaveType | null;
   userClickY?: number;
   sharpIndexArray?: number[];
   flatIndexArray?: number[] | [];
