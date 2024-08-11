@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef } from "react";
-import { Flow } from "vexflow";
+import * as Flow from "vexflow";
 import { Chord } from "../lib/typesAndInterfaces";
 
 type StaffProps = {
