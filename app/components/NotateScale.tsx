@@ -13,7 +13,7 @@ import React, {
   useState,
 } from "react";
 import VexFlow from "vexflow";
-import SimpleSnackbar from "./SnackbarToast";
+import SnackbarToast from "./SnackbarToast";
 import CheckIfNoteFound from "../components/CheckIfNoteFound";
 import { useClef } from "../context/ClefContext";
 import { modifyNotesActionTypes } from "../lib/actionTypes";
@@ -169,6 +169,10 @@ const NotateScale = ({
         return;
       }
 
+      if (scaleDataForGrading.length >= 7) {
+        setOpen(true);
+      }
+
       let scaleDataMatrixCopy = scaleDataMatrix.map((scaleData) => [
         ...scaleData,
       ]);
@@ -219,7 +223,7 @@ const NotateScale = ({
         noNoteFound={state.noNoteFound || false}
         openEnterNotes={dispatch}
       />
-      <SimpleSnackbar
+      <SnackbarToast
         open={open}
         setOpen={setOpen}
         message="You only need to write 7 notes for the major scale. Do not repeat the 1st note an octave above."
