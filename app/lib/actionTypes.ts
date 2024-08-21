@@ -19,3 +19,5 @@ export const modifyKeySigActionTypes = {
   isFlatActive: "Add Flat",
   isEraseAccidentalActive: "Delete Accidental",
 };
+
+

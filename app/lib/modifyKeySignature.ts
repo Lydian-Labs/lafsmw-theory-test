@@ -73,15 +73,9 @@ export const deleteAccidentalFromKeySigArray = (
   keySigArray: string[],
   setKeySigState: (newState: React.SetStateAction<string[]>) => void
 ) => {
-  console.log("foundNoteData: ", foundNoteData.note);
-  console.log("keySigArray: ", keySigArray);
   const noteBase = parseNote(foundNoteData.note).noteBase;
-  console.log("note base, ", noteBase);
   const newKeySig = [...keySigArray];
-
   const index = newKeySig.findIndex((note) => note[0] === noteBase);
   if (index > -1) newKeySig.splice(index, 1);
-
-  console.log("newkeySig ", newKeySig);
   setKeySigState(() => newKeySig);
 };

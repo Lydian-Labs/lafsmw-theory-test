@@ -14,7 +14,6 @@ import React, {
 } from "react";
 import VexFlow from "vexflow";
 import SnackbarToast from "./SnackbarToast";
-import CheckIfNoteFound from "../components/CheckIfNoteFound";
 import { useClef } from "../context/ClefContext";
 import { modifyNotesActionTypes } from "../lib/actionTypes";
 import { buttonGroup } from "../lib/buttonsAndButtonGroups";
@@ -32,9 +31,11 @@ import {
   noteInteractionInitialState,
 } from "../lib/initialStates";
 import { initializeRenderer } from "../lib/initializeRenderer";
+import { errorMessages } from "../lib/data/errorMessages";
 import { scaleReducer } from "../lib/reducer";
 import { setupRendererAndDrawNotes } from "../lib/setupRendererAndDrawNotes";
 import {
+  NoteInteractionState,
   NotesAndCoordinatesData,
   ScaleData,
   StaveType,
@@ -57,7 +58,7 @@ const NotateScale = ({
     noteInteractionInitialState
   );
   const [open, setOpen] = useState<boolean>(false);
-
+  const [message, setMessage] = useState<string>("");
   const [notesAndCoordinates, setNotesAndCoordinates] = useState<
     NotesAndCoordinatesData[]
   >([initialNotesAndCoordsState]);
@@ -65,10 +66,6 @@ const NotateScale = ({
   const { chosenClef } = useClef();
   const [staves, setStaves] = useState<StaveType[]>([]);
   const [scaleDataMatrix, setScaleDataMatrix] = useState<ScaleData[][]>([[]]);
-  const noNoteFound = () => dispatch({ type: "noNoteFound" });
-
-  const tooManyBeatsInMeasure = () =>
-    dispatch({ type: "tooManyBeatsInMeasure" });
 
   const modifyStaveNotesButtonGroup = useMemo(
     () => buttonGroup(dispatch, state, modifyNotesActionTypes),
@@ -151,8 +148,9 @@ const NotateScale = ({
         ({ yCoordinateMin, yCoordinateMax }) =>
           userClickY >= yCoordinateMin && userClickY <= yCoordinateMax
       );
-      console.log("userClickY: ", userClickY);
       if (!foundNoteData) {
+        setMessage(errorMessages.noNoteFound);
+        setOpen(true);
         return;
       }
 
@@ -164,13 +162,10 @@ const NotateScale = ({
 
       const barIndex = findBarIndex(staves, userClickX);
 
-      if (!foundNoteData) {
-        noNoteFound();
-        return;
-      }
-
       if (scaleDataForGrading.length >= 7) {
+        setMessage(errorMessages.tooManyNotesInMeasure);
         setOpen(true);
+        return;
       }
 
       let scaleDataMatrixCopy = scaleDataMatrix.map((scaleData) => [
@@ -193,9 +188,7 @@ const NotateScale = ({
         notesAndCoordinates: newNotesAndCoordinates,
       } = HandleScaleInteraction(
         foundNoteData,
-        tooManyBeatsInMeasure,
         notesAndCoordinatesCopy,
-        "tooManyBeatsInMeasure",
         barOfScaleData,
         scaleDataMatrixCopy,
         state,
@@ -218,16 +211,7 @@ const NotateScale = ({
   return (
     <>
       <div ref={container} onClick={handleClick} />
-
-      <CheckIfNoteFound
-        noNoteFound={state.noNoteFound || false}
-        openEnterNotes={dispatch}
-      />
-      <SnackbarToast
-        open={open}
-        setOpen={setOpen}
-        message="You only need to write 7 notes for the major scale. Do not repeat the 1st note an octave above."
-      />
+      <SnackbarToast open={open} setOpen={setOpen} message={message} />
 
       <Container
         sx={{

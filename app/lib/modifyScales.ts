@@ -174,3 +174,7 @@ export const removeNoteFromScale = (
     scaleData.splice(noteIndex, 1);
   }
 };
+
+export const errorMessages = (state: NoteInteractionState) => {
+
+}

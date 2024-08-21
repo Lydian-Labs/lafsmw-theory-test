@@ -45,7 +45,7 @@ export type NoteInteractionState = {
   isEnterNoteActive: boolean;
   isSharpActive: boolean;
   noNoteFound: boolean;
-  tooManyBeatsInMeasure?: boolean;
+  tooManyNotesInMeasure?: boolean;
   isFlatActive: boolean;
   [key: string]: boolean | undefined;
 };
