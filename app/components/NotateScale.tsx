@@ -13,11 +13,11 @@ import React, {
   useState,
 } from "react";
 import VexFlow from "vexflow";
-import SnackbarToast from "./SnackbarToast";
 import { useClef } from "../context/ClefContext";
 import { modifyNotesActionTypes } from "../lib/actionTypes";
 import { buttonGroup } from "../lib/buttonsAndButtonGroups";
 import calculateNotesAndCoordinates from "../lib/calculateNotesAndCoordinates";
+import { errorMessages } from "../lib/data/errorMessages";
 import {
   bassClefNotesArray,
   trebleClefNotesArray,
@@ -31,26 +31,19 @@ import {
   noteInteractionInitialState,
 } from "../lib/initialStates";
 import { initializeRenderer } from "../lib/initializeRenderer";
-import { errorMessages } from "../lib/data/errorMessages";
 import { scaleReducer } from "../lib/reducer";
 import { setupRendererAndDrawNotes } from "../lib/setupRendererAndDrawNotes";
 import {
-  NoteInteractionState,
   NotesAndCoordinatesData,
   ScaleData,
   StaveType,
 } from "../lib/typesAndInterfaces";
 import CustomButton from "./CustomButton";
+import SnackbarToast from "./SnackbarToast";
 
 const { Renderer } = VexFlow.Flow;
 
-const NotateScale = ({
-  scales,
-  setScales,
-}: {
-  scales: string[];
-  setScales: Dispatch<SetStateAction<Array<string>>>;
-}) => {
+const NotateScale = () => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
   const [state, dispatch] = useReducer(
@@ -192,11 +185,6 @@ const NotateScale = ({
       );
       setNotesAndCoordinates(() => newNotesAndCoordinates);
       setScaleDataMatrix(() => newScaleDataMatrix);
-      setScales(
-        newScaleDataMatrix[0].map((scaleDataMatrix) =>
-          scaleDataMatrix.keys.join(", ")
-        )
-      );
     },
 
     [scaleDataMatrix, notesAndCoordinates, staves, chosenClef]

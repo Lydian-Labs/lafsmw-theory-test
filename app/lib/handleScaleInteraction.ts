@@ -35,7 +35,7 @@ export const HandleScaleInteraction = (
 ) => {
   const scaleLength = scaleDataMatrix[0].map((scaleDataMatrix) =>
     scaleDataMatrix.keys.join(", ")
-  );
+  ).length;
   if (state.isSharpActive || state.isFlatActive) {
     notesAndCoordinates = updateNotesAndCoordsWithAccidental(
       state,
@@ -88,7 +88,7 @@ export const HandleScaleInteraction = (
       chosenClef
     );
     scaleDataMatrix[barIndex] = barOfScaleData;
-  } else if (scaleLength.length >= 7) {
+  } else if (scaleLength >= 7) {
     setOpen(true);
     setMessage(errorMessages.tooManyNotesInMeasure);
   } else {
