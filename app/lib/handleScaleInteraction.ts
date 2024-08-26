@@ -14,7 +14,9 @@ import {
   NotesAndCoordinatesData,
   ScaleData,
   StaveNoteType,
+  errorMessages,
 } from "./typesAndInterfaces";
+
 const { StaveNote } = VexFlow.Flow;
 
 export const HandleScaleInteraction = (
@@ -26,8 +28,14 @@ export const HandleScaleInteraction = (
   userClickX: number,
   userClickY: number,
   barIndex: number,
-  chosenClef: string
+  chosenClef: string,
+  setMessage: (newState: React.SetStateAction<string>) => void,
+  setOpen: (newState: React.SetStateAction<boolean>) => void,
+  errorMessages: errorMessages
 ) => {
+  const scaleLength = scaleDataMatrix[0].map((scaleDataMatrix) =>
+    scaleDataMatrix.keys.join(", ")
+  );
   if (state.isSharpActive || state.isFlatActive) {
     notesAndCoordinates = updateNotesAndCoordsWithAccidental(
       state,
@@ -80,6 +88,12 @@ export const HandleScaleInteraction = (
       chosenClef
     );
     scaleDataMatrix[barIndex] = barOfScaleData;
+  } else if (!foundNoteData) {
+    setOpen(true);
+    setMessage(errorMessages.noNoteFound);
+  } else if (scaleLength.length >= 7) {
+    setOpen(true);
+    setMessage(errorMessages.tooManyNotesInMeasure);
   } else {
     const newStaveNote: StaveNoteType = new StaveNote({
       keys: [foundNoteData.note],

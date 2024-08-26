@@ -92,6 +92,11 @@ export interface UserClickInfo {
   bottomStaveYCoord?: number;
 }
 
+export interface errorMessages {
+  tooManyNotesInMeasure: string;
+  noNoteFound: string;
+}
+
 export interface StaveNoteData {
   newStaveNote: StaveNoteType;
   staveNoteAbsoluteX: number;

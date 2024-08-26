@@ -98,10 +98,6 @@ const NotateScale = ({
         true
       );
   }, []);
-  //this is the array we will use for grading
-  const scaleDataForGrading = scaleDataMatrix[0].map((scaleDataMatrix) =>
-    scaleDataMatrix.keys.join(", ")
-  );
 
   useEffect(() => {
     const newStave: StaveType[] = renderStavesAndNotes();
@@ -148,11 +144,6 @@ const NotateScale = ({
         ({ yCoordinateMin, yCoordinateMax }) =>
           userClickY >= yCoordinateMin && userClickY <= yCoordinateMax
       );
-      if (!foundNoteData) {
-        setMessage(errorMessages.noNoteFound);
-        setOpen(true);
-        return;
-      }
 
       if (foundNoteData)
         foundNoteData = {
@@ -161,12 +152,6 @@ const NotateScale = ({
         };
 
       const barIndex = findBarIndex(staves, userClickX);
-
-      if (scaleDataForGrading.length >= 7) {
-        setMessage(errorMessages.tooManyNotesInMeasure);
-        setOpen(true);
-        return;
-      }
 
       let scaleDataMatrixCopy = scaleDataMatrix.map((scaleData) => [
         ...scaleData,
@@ -195,7 +180,10 @@ const NotateScale = ({
         userClickX,
         userClickY,
         barIndex,
-        chosenClef
+        chosenClef,
+        setMessage,
+        setOpen,
+        errorMessages
       );
       setNotesAndCoordinates(() => newNotesAndCoordinates);
       setScaleDataMatrix(() => newScaleDataMatrix);
@@ -205,6 +193,7 @@ const NotateScale = ({
         )
       );
     },
+
     [scaleDataMatrix, notesAndCoordinates, staves, chosenClef]
   );
 
