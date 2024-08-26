@@ -212,7 +212,6 @@ const NotateScale = ({
     <>
       <div ref={container} onClick={handleClick} />
       <SnackbarToast open={open} setOpen={setOpen} message={message} />
-
       <Container
         sx={{
           display: "grid",
