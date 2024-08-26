@@ -88,9 +88,6 @@ export const HandleScaleInteraction = (
       chosenClef
     );
     scaleDataMatrix[barIndex] = barOfScaleData;
-  } else if (!foundNoteData) {
-    setOpen(true);
-    setMessage(errorMessages.noNoteFound);
   } else if (scaleLength.length >= 7) {
     setOpen(true);
     setMessage(errorMessages.tooManyNotesInMeasure);
@@ -110,7 +107,6 @@ export const HandleScaleInteraction = (
         userClickY,
       },
     ];
-
     scaleDataMatrix[barIndex] = newNoteObject;
   }
   return {

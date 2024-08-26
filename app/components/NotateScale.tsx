@@ -145,11 +145,16 @@ const NotateScale = ({
           userClickY >= yCoordinateMin && userClickY <= yCoordinateMax
       );
 
-      if (foundNoteData)
+      if (foundNoteData) {
         foundNoteData = {
           ...foundNoteData,
-          userClickY: userClickY,
+          userClickY,
         };
+      } else {
+        setOpen(true);
+        setMessage(errorMessages.noNoteFound);
+        return;
+      }
 
       const barIndex = findBarIndex(staves, userClickX);
 
