@@ -43,7 +43,11 @@ import SnackbarToast from "./SnackbarToast";
 
 const { Renderer } = VexFlow.Flow;
 
-const NotateScale = () => {
+const NotateScale = ({
+  setScales,
+}: {
+  setScales: Dispatch<SetStateAction<Array<string>>>;
+}) => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
   const [state, dispatch] = useReducer(
@@ -185,6 +189,11 @@ const NotateScale = () => {
       );
       setNotesAndCoordinates(() => newNotesAndCoordinates);
       setScaleDataMatrix(() => newScaleDataMatrix);
+      setScales(
+        newScaleDataMatrix[0].map((scaleDataMatrix) =>
+          scaleDataMatrix.keys.join(", ")
+        )
+      );
     },
 
     [scaleDataMatrix, notesAndCoordinates, staves, chosenClef]
