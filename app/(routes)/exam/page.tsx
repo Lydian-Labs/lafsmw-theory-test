@@ -639,14 +639,14 @@ export default function ExamHomePage() {
               <Button onClick={incrementViewState}>
                 <Typography variant="h4">{">"}</Typography>
               </Button>
-              <Button onClick={() => setViewState(VIEW_STATES.TRIADS_NOTATE1)}>
+              {/* <Button onClick={() => setViewState(VIEW_STATES.TRIADS_NOTATE1)}>
                 <Typography>{"Go to Triads"}</Typography>
               </Button>
               <Button
                 onClick={() => setViewState(VIEW_STATES.WRITE_PROGRESSIONS)}
               >
                 <Typography>{"Go to Progressions"}</Typography>
-              </Button>
+              </Button> */}
             </Stack>
           )}
       </Stack>

@@ -110,7 +110,7 @@ const NotateScale = ({
         true
       );
     }
-  }, [scaleDataMatrix]);
+  }, [scaleDataMatrix, state]);
 
   const eraseMeasures = () => {
     setScaleDataMatrix([[]]);
@@ -136,7 +136,6 @@ const NotateScale = ({
         container,
         staves[0]
       );
-
       let foundNoteData = notesAndCoordinates.find(
         ({ yCoordinateMin, yCoordinateMax }) =>
           userClickY >= yCoordinateMin && userClickY <= yCoordinateMax
@@ -169,7 +168,6 @@ const NotateScale = ({
             : 0,
         })
       );
-
       const {
         scaleDataMatrix: newScaleDataMatrix,
         notesAndCoordinates: newNotesAndCoordinates,
