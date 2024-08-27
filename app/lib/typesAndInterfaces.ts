@@ -22,6 +22,16 @@ export type Chord = {
   flatIndexArray?: number[] | [];
 };
 
+export type StateInteraction =
+  | ChordInteractionState
+  | NoteInteractionState
+  | KeySigState;
+
+export type ActionType =
+  | NoteInteractionAction
+  | ChordInteractionAction
+  | KeySigAction;
+
 export type Level =
   | "advanced-theory"
   | "advanced-improvisation"

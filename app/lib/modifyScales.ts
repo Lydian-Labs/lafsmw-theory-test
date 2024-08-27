@@ -1,18 +1,18 @@
 import VexFlow from "vexflow";
 import { indexOfNoteToModify as indexOfNote } from "./indexOfNoteToModify";
 import {
+  appendAccidentalToNote,
+  getAccidentalType,
+  parseNote,
+  removeAccidentals,
+} from "./modifyNotesAndCoordinates";
+import {
   ModifyScaleData,
   NotesAndCoordinatesData,
   ScaleData,
+  StateInteraction,
   StaveNoteType,
 } from "./typesAndInterfaces";
-import { NoteInteractionState } from "./typesAndInterfaces";
-import {
-  getAccidentalType,
-  parseNote,
-  appendAccidentalToNote,
-  removeAccidentals,
-} from "./modifyNotesAndCoordinates";
 const { Accidental, StaveNote } = VexFlow.Flow;
 
 export const createStaveNoteFromScaleData = (
@@ -69,7 +69,7 @@ export const reconstructScale = (
 };
 
 export const addAccidentalToStaveNoteAndKeys = (
-  state: NoteInteractionState,
+  state: StateInteraction,
   scaleData: ScaleData[],
   userClickX: number,
   chosenClef: string
@@ -175,6 +175,4 @@ export const removeNoteFromScale = (
   }
 };
 
-export const errorMessages = (state: NoteInteractionState) => {
-
-}
+export const errorMessages = (state: StateInteraction) => {};

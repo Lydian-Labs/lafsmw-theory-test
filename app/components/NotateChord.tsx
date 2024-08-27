@@ -15,6 +15,7 @@ import VexFlow from "vexflow";
 import CheckIfNoteFound from "../components/CheckIfNoteFound";
 import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
 import { useClef } from "../context/ClefContext";
+import { useInitialRun } from "../context/initialNotesAndCoordsContext";
 import { modifyChordsActionTypes } from "../lib/actionTypes";
 import { buttonGroup } from "../lib/buttonsAndButtonGroups";
 import calculateNotesAndCoordinates from "../lib/calculateNotesAndCoordinates";
@@ -23,7 +24,6 @@ import {
   trebleClefNotesArray,
 } from "../lib/data/noteArray";
 import { staveData } from "../lib/data/stavesData";
-import { findBarIndex } from "../lib/findBar";
 import getUserClickInfo from "../lib/getUserClickInfo";
 import { handleChordInteraction } from "../lib/handleChordInteraction";
 import {
@@ -32,7 +32,7 @@ import {
   initialNotesAndCoordsState,
 } from "../lib/initialStates";
 import { initializeRenderer } from "../lib/initializeRenderer";
-import { chordReducer } from "../lib/reducer";
+import { reducer } from "../lib/reducer";
 import { setupRendererAndDrawChords } from "../lib/setUpRendererAndDrawChords";
 import {
   Chord,
@@ -40,7 +40,6 @@ import {
   StaveType,
 } from "../lib/typesAndInterfaces";
 import CustomButton from "./CustomButton";
-import { useInitialRun } from "../context/initialNotesAndCoordsContext";
 const { Renderer } = VexFlow.Flow;
 
 //dim is shit-option-8
@@ -61,10 +60,7 @@ const NotateChord = ({
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
   const [staves, setStaves] = useState<StaveType[]>([]);
-  const [state, dispatch] = useReducer(
-    chordReducer,
-    chordInteractionInitialState
-  );
+  const [state, dispatch] = useReducer(reducer, chordInteractionInitialState);
   const [barIndex, setBarIndex] = useState<number>(0);
   const [chordData, setChordData] = useState<Chord>(initialChordData);
   const { chosenClef } = useClef();

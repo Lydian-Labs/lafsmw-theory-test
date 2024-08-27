@@ -10,6 +10,8 @@ import {
   removeNoteFromScale,
 } from "./modifyScales";
 import {
+  ChordInteractionState,
+  KeySigState,
   NoteInteractionState,
   NotesAndCoordinatesData,
   ScaleData,
@@ -24,7 +26,7 @@ export const HandleScaleInteraction = (
   notesAndCoordinates: NotesAndCoordinatesData[],
   barOfScaleData: ScaleData[],
   scaleDataMatrix: ScaleData[][],
-  state: NoteInteractionState,
+  state: NoteInteractionState | ChordInteractionState | KeySigState,
   userClickX: number,
   userClickY: number,
   barIndex: number,

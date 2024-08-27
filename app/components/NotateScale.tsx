@@ -31,7 +31,7 @@ import {
   noteInteractionInitialState,
 } from "../lib/initialStates";
 import { initializeRenderer } from "../lib/initializeRenderer";
-import { scaleReducer } from "../lib/reducer";
+import { reducer } from "../lib/reducer";
 import { setupRendererAndDrawNotes } from "../lib/setupRendererAndDrawNotes";
 import {
   NotesAndCoordinatesData,
@@ -50,10 +50,7 @@ const NotateScale = ({
 }) => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
-  const [state, dispatch] = useReducer(
-    scaleReducer,
-    noteInteractionInitialState
-  );
+  const [state, dispatch] = useReducer(reducer, noteInteractionInitialState);
   const [open, setOpen] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
   const [notesAndCoordinates, setNotesAndCoordinates] = useState<

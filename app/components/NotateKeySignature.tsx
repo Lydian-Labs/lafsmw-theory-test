@@ -26,7 +26,7 @@ import {
 } from "../lib/initialStates";
 import { initializeRenderer } from "../lib/initializeRenderer";
 import isClickWithinStaveBounds from "../lib/isClickWithinStaveBounds";
-import { keySigReducer } from "../lib/reducer";
+import { reducer } from "../lib/reducer";
 import { setupRendererAndDrawGlyphs } from "../lib/setUpRendererAndDrawGlyphs";
 import {
   GlyphProps,
@@ -34,7 +34,6 @@ import {
   StaveType,
 } from "../lib/typesAndInterfaces";
 import CustomButton from "./CustomButton";
-import { Button, Stack, Typography } from "@mui/material";
 
 const VF = VexFlow.Flow;
 const { Renderer } = VF;
@@ -57,7 +56,7 @@ const NotateKeySignature = ({
   const [open, setOpen] = useState(false);
   const { chosenClef } = useClef();
   const [snackbarMessage, setSnackbarMessage] = useState("");
-  const [state, dispatch] = useReducer(keySigReducer, keySigInitialState);
+  const [state, dispatch] = useReducer(reducer, keySigInitialState);
   const [keySig, setKeySig] = useState<string[]>([]);
   const [notesAndCoordinates, setNotesAndCoordinates] = useState<
     NotesAndCoordinatesData[]

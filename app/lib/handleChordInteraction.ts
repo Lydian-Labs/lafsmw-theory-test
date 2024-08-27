@@ -1,22 +1,21 @@
 import {
   addAccidentalToChordKeys,
   addNewNoteToChord,
-  removeAccidentalFromNotesAndCoords,
   reconstructChord,
   removeAccidentalFromChord,
+  removeAccidentalFromNotesAndCoords,
   removeNoteFromChord,
-  updateNoteWithAccidental,
 } from "@/app/lib/modifyChords";
+import { updateNotesAndCoordsWithAccidental } from "./modifyNotesAndCoordinates";
 import {
   Chord,
-  ChordInteractionState,
+  StateInteraction,
   NotesAndCoordinatesData,
 } from "./typesAndInterfaces";
-import { updateNotesAndCoordsWithAccidental } from "./modifyNotesAndCoordinates";
 
 export const handleChordInteraction = (
   notesAndCoordinates: NotesAndCoordinatesData[],
-  state: ChordInteractionState,
+  state: StateInteraction,
   foundNoteData: NotesAndCoordinatesData,
   chordData: Chord,
 
