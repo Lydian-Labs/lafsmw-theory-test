@@ -33,10 +33,8 @@ export const HandleScaleInteraction = (
   setOpen: (newState: React.SetStateAction<boolean>) => void,
   errorMessages: errorMessages
 ) => {
-  const scaleLength = scaleDataMatrix[0].map((scaleDataMatrix) =>
-    scaleDataMatrix.keys.join(", ")
-  ).length;
-  
+  const scaleLength = scaleDataMatrix[0].length;
+
   if (state.isSharpActive || state.isFlatActive) {
     notesAndCoordinates = updateNotesAndCoordsWithAccidental(
       state,
