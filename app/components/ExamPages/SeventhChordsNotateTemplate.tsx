@@ -25,8 +25,8 @@ export default function NotateSeventhChords({
   const currentUserDataRef = useRef(currentUserData);
 
   const seventhChordsPropName = `seventhChords${page - 17}`;
-  const seventhChordDataPropName = `seventhChordData${page - 17}`;
-  const seventhChordStavesPropName = `seventhChordStaves${page - 17}`;
+  //const seventhChordDataPropName = `seventhChordData${page - 17}`;
+  //const seventhChordStavesPropName = `seventhChordStaves${page - 17}`;
 
   const memoizedSetCurrentUserData = useCallback(
     (data: InputState) => {
@@ -37,7 +37,7 @@ export default function NotateSeventhChords({
 
   useEffect(() => {
     currentUserDataRef.current = currentUserData;
-   // console.log("currentUserData: ", currentUserData);
+    // console.log("currentUserData: ", currentUserData);
   }, [currentUserData]);
 
   const handleSubmit = async (e: FormEvent) => {
@@ -45,8 +45,8 @@ export default function NotateSeventhChords({
     memoizedSetCurrentUserData({
       ...currentUserDataRef.current,
       [seventhChordsPropName]: seventhChords,
-      [seventhChordDataPropName]: seventhChordData,
-      [seventhChordStavesPropName]: seventhChordStaves,
+      //[seventhChordDataPropName]: seventhChordData,
+      //[seventhChordStavesPropName]: seventhChordStaves,
     });
     // console.log({
     //   ...currentUserDataRef.current,
@@ -105,7 +105,7 @@ export default function NotateSeventhChords({
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <NotateChord setChords={setChords} />
+                  <NotateChord setChords={setSeventhChords} />
                 </Grid>
               </Grid>
               <CardFooter pageNumber={page} handleSubmit={handleSubmit} />

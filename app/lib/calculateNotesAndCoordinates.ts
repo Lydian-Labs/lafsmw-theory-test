@@ -3,12 +3,13 @@ import { NotesAndCoordinatesData, StaveType } from "./typesAndInterfaces";
 import generateYMinAndYMaxForKeySig from "./generateYMinAndMaxForKeySig";
 
 const TOLERANCE: number = 2.5;
-const helperFunction = (
+
+const minimumTopLineCoordinate = (
   newStaves: StaveType[],
   index: number,
   clefLineNumber: number,
   spacingBetweenLines?: number
-) => {
+): number => {
   if (spacingBetweenLines) {
     spacingBetweenLines = spacingBetweenLines / 2;
     const topLineCoordinate = newStaves[index].getYForLine(clefLineNumber);
@@ -35,14 +36,14 @@ const calculateNotesAndCoordinates = (
       let minimumYCoordinate: number;
       const spacingBetweenLines = newStaves[index].getSpacingBetweenLines();
       if (clef === "bass") {
-        minimumYCoordinate = helperFunction(
+        minimumYCoordinate = minimumTopLineCoordinate(
           newStaves,
           index,
           bassClefLineNumber,
           spacingBetweenLines
         );
       } else if (clef === "treble") {
-        minimumYCoordinate = helperFunction(
+        minimumYCoordinate = minimumTopLineCoordinate(
           newStaves,
           index,
           trebleClefLineNumber,
@@ -55,13 +56,13 @@ const calculateNotesAndCoordinates = (
     } else {
       let minimumYCoordinate: number;
       if (clef === "bass") {
-        minimumYCoordinate = helperFunction(
+        minimumYCoordinate = minimumTopLineCoordinate(
           newStaves,
           index,
           bassClefLineNumber
         );
       } else if (clef === "treble") {
-        minimumYCoordinate = helperFunction(
+        minimumYCoordinate = minimumTopLineCoordinate(
           newStaves,
           index,
           trebleClefLineNumber

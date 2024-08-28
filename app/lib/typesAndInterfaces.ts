@@ -44,7 +44,6 @@ export type Level =
 
 export type RendererRef = RefObject<InstanceType<typeof Renderer>>;
 export type SetStaves = Dispatch<SetStateAction<StaveType[]>>;
-export type SetStavesForChords = Dispatch<SetStateAction<StaveType[]>>;
 export type BlankStaves = StaveType[];
 export type NoteData = StaveNoteData[][];
 

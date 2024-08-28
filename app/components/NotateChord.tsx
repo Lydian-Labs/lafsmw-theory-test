@@ -12,8 +12,6 @@ import React, {
   useState,
 } from "react";
 import VexFlow from "vexflow";
-import CheckIfNoteFound from "../components/CheckIfNoteFound";
-import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
 import { useClef } from "../context/ClefContext";
 import { useInitialRun } from "../context/initialNotesAndCoordsContext";
 import { modifyChordsActionTypes } from "../lib/actionTypes";
@@ -40,35 +38,36 @@ import {
   StaveType,
 } from "../lib/typesAndInterfaces";
 import CustomButton from "./CustomButton";
+import SnackbarToast from "./SnackbarToast";
+import { errorMessages } from "../lib/data/errorMessages";
 const { Renderer } = VexFlow.Flow;
 
 //dim is shit-option-8
 //fix regex G-maj7
 
 const NotateChord = ({
-  chordStaves,
-  setChordStaves,
   setChords,
 }: {
-  chords: string[];
-  chordData: Chord;
-  setChordData: Dispatch<SetStateAction<Chord>>;
-  chordStaves: StaveType[];
-  setChordStaves: Dispatch<SetStateAction<StaveType[]>>;
+  // chords: string[];
+  // chordData: Chord;
+  // setChordData: Dispatch<SetStateAction<Chord>>;
+  // chordStaves: StaveType[];
+  // setChordStaves: Dispatch<SetStateAction<StaveType[]>>;
   setChords: Dispatch<SetStateAction<Array<string>>>;
 }) => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
-  const [staves, setStaves] = useState<StaveType[]>([]);
   const [state, dispatch] = useReducer(reducer, chordInteractionInitialState);
   const [barIndex, setBarIndex] = useState<number>(0);
+  const [open, setOpen] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>("");
+  const [staves, setStaves] = useState<StaveType[]>([]);
   const [chordData, setChordData] = useState<Chord>(initialChordData);
   const { chosenClef } = useClef();
   const [notesAndCoordinates, setNotesAndCoordinates] = useState<
     NotesAndCoordinatesData[]
   >([initialNotesAndCoordsState]);
   const { initialRun, setInitialRun } = useInitialRun();
-  const noNoteFound = () => dispatch({ type: "noNoteFound" });
 
   const modifyChordsButtonGroup = useMemo(
     () => buttonGroup(dispatch, state, modifyChordsActionTypes),
@@ -80,13 +79,13 @@ const NotateChord = ({
       setupRendererAndDrawChords({
         rendererRef,
         ...staveData,
-        setStaves: setChordStaves,
+        setStaves,
         chordData,
-        staves: chordStaves,
+        staves,
         barIndex,
         chosenClef,
       }),
-    [rendererRef, setChordStaves, chordData, chordStaves]
+    [rendererRef, setStaves, chordData, staves]
   );
 
   useEffect(() => {
@@ -109,8 +108,18 @@ const NotateChord = ({
   }, []);
 
   useEffect(() => {
-    renderStavesAndChords();
-  }, [chordData]);
+    const newStave = renderStavesAndChords();
+    calculateNotesAndCoordinates(
+      chosenClef,
+      setNotesAndCoordinates,
+      newStave,
+      chosenClef === "bass" ? bassClefNotesArray : trebleClefNotesArray,
+      0,
+      -3,
+      -4,
+      true
+    );
+  }, [chordData, state]);
 
   const eraseChord = () => {
     setChordData(initialChordData);
@@ -132,8 +141,9 @@ const NotateChord = ({
     const { userClickY, userClickX } = getUserClickInfo(
       e,
       container,
-      chordStaves[0]
+      staves[0]
     );
+    console.log("userClickX: ", userClickX);
     console.log("notes and coords on click: ", notesAndCoordinates);
     let foundNoteData = notesAndCoordinates.find(
       ({ yCoordinateMin, yCoordinateMax }) =>
@@ -147,7 +157,8 @@ const NotateChord = ({
     );
 
     if (!foundNoteData) {
-      noNoteFound();
+      setOpen(true);
+      setMessage(errorMessages.noNoteFound);
       return;
     }
 
@@ -171,14 +182,7 @@ const NotateChord = ({
   return (
     <>
       <div ref={container} onClick={handleClick} />
-      <CheckNumBeatsInMeasure
-        tooManyBeatsInMeasure={state.tooManyBeatsInMeasure}
-        openEnterNotes={dispatch}
-      />
-      <CheckIfNoteFound
-        noNoteFound={state.noNoteFound || false}
-        openEnterNotes={dispatch}
-      />
+      <SnackbarToast open={open} setOpen={setOpen} message={message} />
       <Container
         sx={{
           display: "grid",

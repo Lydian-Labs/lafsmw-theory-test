@@ -12,9 +12,9 @@ import React, {
   useState,
 } from "react";
 import VexFlow from "vexflow";
-import CheckIfNoteFound from "../components/CheckIfNoteFound";
-import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
+
 import { useClef } from "../context/ClefContext";
+import { errorMessages } from "../lib/data/errorMessages";
 import { modifyChordsActionTypes } from "../lib/actionTypes";
 import { buttonGroup } from "../lib/buttonsAndButtonGroups";
 import calculateNotesAndCoordinates from "../lib/calculateNotesAndCoordinates";
@@ -32,7 +32,7 @@ import {
   initialNotesAndCoordsState,
 } from "../lib/initialStates";
 import { initializeRenderer } from "../lib/initializeRenderer";
-import { chordReducer } from "../lib/reducer";
+import { reducer } from "../lib/reducer";
 import { setupRendererAndDrawChords } from "../lib/setUpRendererAndDrawChords";
 import {
   Chord,
@@ -40,6 +40,7 @@ import {
   StaveType,
 } from "../lib/typesAndInterfaces";
 import CustomButton from "./CustomButton";
+import SnackbarToast from "./SnackbarToast";
 const { Renderer } = VexFlow.Flow;
 
 const NotateTriad = ({
@@ -66,16 +67,14 @@ const NotateTriad = ({
 }) => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
-  const [state, dispatch] = useReducer(
-    chordReducer,
-    chordInteractionInitialState
-  );
+  const [state, dispatch] = useReducer(reducer, chordInteractionInitialState);
+  const [open, setOpen] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>("");
   const [barIndex, setBarIndex] = useState<number>(0);
   const { chosenClef } = useClef();
   const [notesAndCoordinates, setNotesAndCoordinates] = useState<
     NotesAndCoordinatesData[]
   >([initialNotesAndCoordsState]);
-  const noNoteFound = () => dispatch({ type: "noNoteFound" });
 
   const modifyChordsButtonGroup = useMemo(
     () => buttonGroup(dispatch, state, modifyChordsActionTypes),
@@ -168,7 +167,8 @@ const NotateTriad = ({
     );
 
     if (!foundNoteData) {
-      noNoteFound();
+      setOpen(true);
+      setMessage(() => errorMessages.noNoteFound);
       return;
     }
 
@@ -191,14 +191,7 @@ const NotateTriad = ({
   return (
     <>
       <div ref={container} onClick={handleClick} />
-      <CheckNumBeatsInMeasure
-        tooManyBeatsInMeasure={state.tooManyBeatsInMeasure}
-        openEnterNotes={dispatch}
-      />
-      <CheckIfNoteFound
-        noNoteFound={state.noNoteFound || false}
-        openEnterNotes={dispatch}
-      />
+      <SnackbarToast open={open} setOpen={setOpen} message={message} />
       <Container
         sx={{
           display: "grid",

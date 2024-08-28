@@ -3,13 +3,12 @@ import { chordsNotationInstructions } from "@/app/lib/data/instructions";
 import triadsText from "@/app/lib/data/triadsText";
 import {
   FormEvent,
-  InputState,
   UserDataProps,
   Chord,
   StaveType,
 } from "@/app/lib/typesAndInterfaces";
 import { Box, Container, Grid, Typography } from "@mui/material";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CardFooter from "../CardFooter";
 import NotateChord from "../NotateChord";
 import TutorialModal from "../TutorialModal";
@@ -24,43 +23,44 @@ export default function TriadsNotation({
   nextViewState,
   page,
 }: UserDataProps) {
-  const [triadData, setTriadData] = useState<Chord>(
-    currentUserData[`triadData${page - 11}`] || initialChordData
-  );
-  const [triadDataWithOctave, setTriadDataWithOctave] = useState<Chord | {}>(
-    currentUserData[`triadDataWithOctave${page - 11}`] || {}
-  );
-  const [triadStaves, setTriadStaves] = useState<StaveType[]>(
-    currentUserData[`triadStaves${page - 11}`] || []
-  );
-  const [triads, setTriads] = useState<string[]>([]);
-  const [notesAndCoordinatesParent, setNotesAndCoordinatesParent] = useState(
-    currentUserData[`notesAndCoordinates${page - 11}`] ||
-      initialNotesAndCoordsState
-  );
+  // const [triadData, setTriadData] = useState<Chord>(
+  //   currentUserData[`triadData${page - 11}`] || initialChordData
+  // );
+  // const [triadDataWithOctave, setTriadDataWithOctave] = useState<Chord | {}>(
+  //   currentUserData[`triadDataWithOctave${page - 11}`] || {}
+  // );
+  // const [triadStaves, setTriadStaves] = useState<StaveType[]>(
+  //   currentUserData[`triadStaves${page - 11}`] || []
+  // );
+  //const [triads, setTriads] = useState<string[]>([]);
+  // const [notesAndCoordinatesParent, setNotesAndCoordinatesParent] = useState(
+  //   currentUserData[`notesAndCoordinates${page - 11}`] ||
+  //     initialNotesAndCoordsState
+  // );
 
   const [chords, setChords] = useState<string[]>([]);
+
   const currentUserDataRef = useRef(currentUserData);
 
   const triadsPropName = `triads${page - 11}`;
-  const triadsDataPropName = `triadData${page - 11}`;
-  const triadStavesPropName = `triadStaves${page - 11}`;
-  const triadDataWithOctavePropName = `triadDataWithOctave${page - 11}`;
-  const notesAndCoordinatesPropName = `notesAndCoordinates${page - 11}`;
+  // const triadsDataPropName = `triadData${page - 11}`;
+  // const triadStavesPropName = `triadStaves${page - 11}`;
+  // const triadDataWithOctavePropName = `triadDataWithOctave${page - 11}`;
+  // const notesAndCoordinatesPropName = `notesAndCoordinates${page - 11}`;
 
-  useEffect(() => {
-    const newTriadDataWithOctave = triadData.keys.map((key) => {
-      const [note, octave] = key.split("/");
-      console.log(`note: ${note}, octave: ${octave}`);
-      return octave ? key : `${note}/4`;
-    });
-    setTriadDataWithOctave({ ...triadData, keys: newTriadDataWithOctave });
-    console.log(currentUserData);
-  }, [triadData, currentUserData]);
+  // useEffect(() => {
+  //   const newTriadDataWithOctave = triadData.keys.map((key) => {
+  //     const [note, octave] = key.split("/");
+  //     console.log(`note: ${note}, octave: ${octave}`);
+  //     return octave ? key : `${note}/4`;
+  //   });
+  //   setTriadDataWithOctave({ ...triadData, keys: newTriadDataWithOctave });
+  //   console.log(currentUserData);
+  // }, [triadData, currentUserData]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    memoizedSetCurrentUserData({
+    setCurrentUserData({
       ...currentUserDataRef.current,
       [triadsPropName]: chords,
     });
