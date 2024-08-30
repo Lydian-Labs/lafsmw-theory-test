@@ -11,7 +11,7 @@ import {
   removeNoteFromScale,
 } from "./modifyScales";
 import {
-  NoteInteractionState,
+  StateInteraction,
   NotesAndCoordinatesData,
   ScaleData,
   StaveNoteType,
@@ -24,7 +24,7 @@ export const HandleScaleInteraction = (
   notesAndCoordinates: NotesAndCoordinatesData[],
   barOfScaleData: ScaleData[],
   scaleDataMatrix: ScaleData[][],
-  state: NoteInteractionState,
+  scaleInteractionState: StateInteraction,
   userClickX: number,
   userClickY: number,
   barIndex: number,
@@ -34,21 +34,21 @@ export const HandleScaleInteraction = (
   errorMessages: errorMessages
 ) => {
   const scaleLength = scaleDataMatrix[0].length;
-  if (state.isSharpActive || state.isFlatActive) {
+  if (scaleInteractionState.isSharpActive || scaleInteractionState.isFlatActive) {
     notesAndCoordinates = updateNotesAndCoordsWithAccidental(
-      state,
+      scaleInteractionState,
       foundNoteData,
       notesAndCoordinates
     );
     const { updatedNoteObject, noteIndex } = addAccidentalToStaveNoteAndKeys(
-      state,
+      scaleInteractionState,
       barOfScaleData,
       userClickX,
       chosenClef
     );
     barOfScaleData[noteIndex] = updatedNoteObject;
     scaleDataMatrix[barIndex] = barOfScaleData;
-  } else if (state.isEraseAccidentalActive) {
+  } else if (scaleInteractionState.isEraseAccidentalActive) {
     notesAndCoordinates = removeAccidentalFromNotesAndCoords(
       notesAndCoordinates,
       foundNoteData
@@ -60,14 +60,14 @@ export const HandleScaleInteraction = (
     );
     barOfScaleData[noteIndex] = updatedNoteObject;
     scaleDataMatrix[barIndex] = barOfScaleData;
-  } else if (state.isEraseNoteActive) {
+  } else if (scaleInteractionState.isEraseNoteActive) {
     notesAndCoordinates = removeAccidentalFromNotesAndCoords(
       notesAndCoordinates,
       foundNoteData
     );
     removeNoteFromScale(barOfScaleData, userClickX);
     scaleDataMatrix[barIndex] = barOfScaleData;
-  } else if (state.isChangeNoteActive) {
+  } else if (scaleInteractionState.isChangeNoteActive) {
     notesAndCoordinates = removeAccidentalFromNotesAndCoords(
       notesAndCoordinates,
       foundNoteData

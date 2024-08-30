@@ -25,7 +25,7 @@ import {
 } from "../lib/initialStates";
 import { initializeRenderer } from "../lib/initializeRenderer";
 import isClickWithinStaveBounds from "../lib/isClickWithinStaveBounds";
-import { keySigReducer } from "../lib/reducer";
+import { reducer } from "../lib/reducer";
 import { setupRendererAndDrawStaves } from "../lib/setUpRenderer";
 import {
   GlyphProps,
@@ -45,7 +45,7 @@ const NotateKeySignature = ({ handleNotes }: any) => {
   const [open, setOpen] = useState(false);
   const { chosenClef } = useClef();
   const [snackbarMessage, setSnackbarMessage] = useState("");
-  const [state, dispatch] = useReducer(keySigReducer, keySigInitialState);
+  const [state, dispatch] = useReducer(reducer, keySigInitialState);
   const [keySig, setKeySig] = useState<string[]>([]);
   const [notesAndCoordinates, setNotesAndCoordinates] = useState<
     NotesAndCoordinatesData[]

@@ -1,42 +1,18 @@
-import {
-  ChordInteractionAction,
-  ChordInteractionState,
-  KeySigAction,
-  KeySigState,
-  NoteInteractionAction,
-  NoteInteractionState,
-} from "./typesAndInterfaces";
+import { StateInteraction, ActionType } from "./typesAndInterfaces";
 
-export const keySigReducer = (state: KeySigState, action: KeySigAction) => {
-  const newState = Object.keys(state).reduce((acc, key) => {
-    acc[key] = false;
-    return acc;
-  }, {} as typeof state);
-
-  if ("type" in action && action.type in newState) newState[action.type] = true;
-  return newState;
-};
-export const scaleReducer = (
-  state: NoteInteractionState,
-  action: NoteInteractionAction
+export const reducer = (
+  noteInteractionState: StateInteraction,
+  action: ActionType
 ) => {
-  const newState = Object.keys(state).reduce((acc, key) => {
-    acc[key] = false;
-    return acc;
-  }, {} as typeof state);
+  const newNoteInteractionState = Object.keys(noteInteractionState).reduce(
+    (acc, key) => {
+      acc[key] = false;
+      return acc;
+    },
+    {} as typeof noteInteractionState
+  );
 
-  if ("type" in action && action.type in newState) newState[action.type] = true;
-  return newState;
-};
-export const chordReducer = (
-  state: ChordInteractionState,
-  action: ChordInteractionAction
-) => {
-  const newState = Object.keys(state).reduce((acc, key) => {
-    acc[key] = false;
-    return acc;
-  }, {} as typeof state);
-
-  if ("type" in action && action.type in newState) newState[action.type] = true;
-  return newState;
+  if ("type" in action && action.type in newNoteInteractionState)
+    newNoteInteractionState[action.type] = true;
+  return newNoteInteractionState;
 };

@@ -31,7 +31,7 @@ import {
   noteInteractionInitialState,
 } from "../lib/initialStates";
 import { initializeRenderer } from "../lib/initializeRenderer";
-import { scaleReducer } from "../lib/reducer";
+import { reducer } from "../lib/reducer";
 import { setupRendererAndDrawNotes } from "../lib/setupRendererAndDrawNotes";
 import {
   NotesAndCoordinatesData,
@@ -58,7 +58,7 @@ const NotateScale = ({
   >([initialNotesAndCoordsState]);
   const { chosenClef } = useClef();
   const [state, dispatch] = useReducer(
-    scaleReducer,
+    reducer,
     noteInteractionInitialState
   );
 

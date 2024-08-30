@@ -4,9 +4,9 @@ import {
   ModifyScaleData,
   NotesAndCoordinatesData,
   ScaleData,
+  StateInteraction,
   StaveNoteType,
 } from "./typesAndInterfaces";
-import { NoteInteractionState } from "./typesAndInterfaces";
 import {
   getAccidentalType,
   parseNote,
@@ -66,13 +66,13 @@ export const reconstructScale = (
 };
 
 export const addAccidentalToStaveNoteAndKeys = (
-  state: NoteInteractionState,
+  noteInteractionState: StateInteraction,
   scaleData: ScaleData[],
   userClickX: number,
   chosenClef: string
 ) => {
   let { noteDataObject, noteIndex } = getNoteData(scaleData, userClickX);
-  const accidental = state.isSharpActive ? "#" : "b";
+  const accidental = noteInteractionState.isSharpActive ? "#" : "b";
   noteDataObject.keys[0] = appendAccidentalToNote(
     accidental,
     noteDataObject.keys[0]

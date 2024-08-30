@@ -1,7 +1,7 @@
 import VexFlow from "vexflow";
 import {
   Chord,
-  ChordInteractionState,
+  StateInteraction,
   NoteStringData,
   NotesAndCoordinatesData,
   StaveNoteType,
@@ -64,7 +64,7 @@ const appendAccidentalToNote = (accidental: string, note: string) => {
 };
 
 export const updateNoteWithAccidental = (
-  state: ChordInteractionState,
+  state: StateInteraction,
   foundNoteData: NoteStringData,
   notesAndCoordinates: NotesAndCoordinatesData[]
 ) => {
@@ -123,7 +123,7 @@ export const removeAccidentalFromNotesAndCoords = (
 };
 
 export const addAccidentalToChordKeys = (
-  state: ChordInteractionState,
+  state: StateInteraction,
   chordData: Chord,
   foundNoteIndex: number,
   chosenClef: string

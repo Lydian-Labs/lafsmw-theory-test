@@ -9,13 +9,13 @@ import {
 } from "@/app/lib/modifyChords";
 import {
   Chord,
-  ChordInteractionState,
+  StateInteraction,
   NotesAndCoordinatesData,
 } from "./typesAndInterfaces";
 
 export const handleChordInteraction = (
   notesAndCoordinates: NotesAndCoordinatesData[],
-  state: ChordInteractionState,
+  chordInteractionState: StateInteraction,
   foundNoteData: NotesAndCoordinatesData,
   chordData: Chord,
   foundNoteIndex: number,
@@ -24,21 +24,21 @@ export const handleChordInteraction = (
   let updatedChordData = { ...chordData };
   let updatedNotesAndCoordinates = [...notesAndCoordinates];
 
-  if (state.isSharpActive || state.isFlatActive) {
+  if (chordInteractionState.isSharpActive || chordInteractionState.isFlatActive) {
     if (foundNoteIndex !== -1) {
       updatedNotesAndCoordinates = updateNoteWithAccidental(
-        state,
+        chordInteractionState,
         foundNoteData,
         notesAndCoordinates
       );
       updatedChordData = addAccidentalToChordKeys(
-        state,
+        chordInteractionState,
         chordData,
         foundNoteIndex,
         chosenClef
       );
     }
-  } else if (state.isEraseAccidentalActive) {
+  } else if (chordInteractionState.isEraseAccidentalActive) {
     if (foundNoteIndex !== -1) {
       updatedNotesAndCoordinates = removeAccidentalFromNotesAndCoords(
         notesAndCoordinates,
@@ -51,7 +51,7 @@ export const handleChordInteraction = (
       );
       updatedChordData = reconstructChord(chordData, chosenClef);
     }
-  } else if (state.isEraseNoteActive) {
+  } else if (chordInteractionState.isEraseNoteActive) {
     if (foundNoteIndex !== -1) {
       updatedChordData = removeNoteFromChord(
         chordData,
