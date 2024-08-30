@@ -101,7 +101,10 @@ export interface chosenClef {
   chosenClef: string;
   setChosenClef: Dispatch<SetStateAction<string>>;
 }
-
+export interface errorMessages {
+  tooManyNotesInMeasure: string;
+  noNoteFound: string;
+}
 export interface ScaleData {
   keys: string[];
   duration: string;

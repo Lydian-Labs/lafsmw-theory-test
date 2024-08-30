@@ -1,5 +1,5 @@
 import VexFlow from "vexflow";
-import { BEATS_IN_MEASURE } from "./data/stavesData";
+
 import {
   removeAccidentalFromNotesAndCoords,
   updateNotesAndCoordsWithAccidental,
@@ -11,34 +11,35 @@ import {
   removeNoteFromScale,
 } from "./modifyScales";
 import {
-  NoteInteractionAction,
   NoteInteractionState,
   NotesAndCoordinatesData,
   ScaleData,
   StaveNoteType,
+  errorMessages,
 } from "./typesAndInterfaces";
 const { StaveNote } = VexFlow.Flow;
 
 export const HandleScaleInteraction = (
   foundNoteData: NotesAndCoordinatesData,
-  checkBeatsInMeasure: React.Dispatch<NoteInteractionAction>,
   notesAndCoordinates: NotesAndCoordinatesData[],
-  beatsInMeasureAction: string,
   barOfScaleData: ScaleData[],
   scaleDataMatrix: ScaleData[][],
   state: NoteInteractionState,
   userClickX: number,
   userClickY: number,
   barIndex: number,
-  chosenClef: string
+  chosenClef: string,
+  setMessage: (newState: React.SetStateAction<string>) => void,
+  setOpen: (newState: React.SetStateAction<boolean>) => void,
+  errorMessages: errorMessages
 ) => {
+  const scaleLength = scaleDataMatrix[0].length;
   if (state.isSharpActive || state.isFlatActive) {
     notesAndCoordinates = updateNotesAndCoordsWithAccidental(
       state,
       foundNoteData,
       notesAndCoordinates
     );
-    console.log("add accidental to note and coords", notesAndCoordinates);
     const { updatedNoteObject, noteIndex } = addAccidentalToStaveNoteAndKeys(
       state,
       barOfScaleData,
@@ -57,7 +58,6 @@ export const HandleScaleInteraction = (
       userClickX,
       chosenClef
     );
-    console.log("remove accidental from note and coords", notesAndCoordinates);
     barOfScaleData[noteIndex] = updatedNoteObject;
     scaleDataMatrix[barIndex] = barOfScaleData;
   } else if (state.isEraseNoteActive) {
@@ -65,7 +65,6 @@ export const HandleScaleInteraction = (
       notesAndCoordinates,
       foundNoteData
     );
-    console.log("remove accidental from note and coords", notesAndCoordinates);
     removeNoteFromScale(barOfScaleData, userClickX);
     scaleDataMatrix[barIndex] = barOfScaleData;
   } else if (state.isChangeNoteActive) {
@@ -73,7 +72,6 @@ export const HandleScaleInteraction = (
       notesAndCoordinates,
       foundNoteData
     );
-    console.log("remove accidental from note and coords", notesAndCoordinates);
     changeNotePosition(
       barOfScaleData,
       userClickX,
@@ -82,8 +80,9 @@ export const HandleScaleInteraction = (
       chosenClef
     );
     scaleDataMatrix[barIndex] = barOfScaleData;
-  } else if (barOfScaleData && barOfScaleData.length >= BEATS_IN_MEASURE) {
-    checkBeatsInMeasure({ type: beatsInMeasureAction });
+  } else if (scaleLength >= 7) {
+    setOpen(true);
+    setMessage(errorMessages.tooManyNotesInMeasure);
   } else {
     const newStaveNote: StaveNoteType = new StaveNote({
       keys: [foundNoteData.note],
