@@ -12,8 +12,6 @@ import React, {
   useState,
 } from "react";
 import VexFlow from "vexflow";
-import CheckIfNoteFound from "../components/CheckIfNoteFound";
-import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
 import { useClef } from "../context/ClefContext";
 import { modifyChordsActionTypes } from "../lib/actionTypes";
 import { buttonGroup } from "../lib/buttonsAndButtonGroups";
@@ -40,6 +38,8 @@ import {
   StaveType,
 } from "../lib/typesAndInterfaces";
 import CustomButton from "./CustomButton";
+import SnackbarToast from "./SnackbarToast";
+import { errorMessages } from "../lib/data/errorMessages";
 const { Renderer } = VexFlow.Flow;
 
 const NotateChord = ({
@@ -57,6 +57,8 @@ const NotateChord = ({
   //not currently being used, but will be used in the future
   const [barIndex, setBarIndex] = useState<number>(0);
   const [chordData, setChordData] = useState<Chord>(initialChordData);
+  const [open, setOpen] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>("");
   const { chosenClef } = useClef();
   const [notesAndCoordinates, setNotesAndCoordinates] = useState<
     NotesAndCoordinatesData[]
@@ -146,7 +148,8 @@ const NotateChord = ({
     );
 
     if (!foundNoteData) {
-      noNoteFound();
+      setOpen(true);
+      setMessage(errorMessages.noNoteFound);
       return;
     }
 
@@ -170,14 +173,7 @@ const NotateChord = ({
   return (
     <>
       <div ref={container} onClick={handleClick} />
-      <CheckNumBeatsInMeasure
-        tooManyBeatsInMeasure={chordInteractionState.tooManyBeatsInMeasure}
-        openEnterNotes={dispatch}
-      />
-      <CheckIfNoteFound
-        noNoteFound={chordInteractionState.noNoteFound || false}
-        openEnterNotes={dispatch}
-      />
+      <SnackbarToast open={open} setOpen={setOpen} message={message} />
       <Container
         sx={{
           display: "grid",
