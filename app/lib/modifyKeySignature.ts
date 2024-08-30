@@ -1,7 +1,7 @@
 import { parseNote } from "./modifyNotesAndCoordinates";
 import {
+  StateInteraction,
   GlyphProps,
-  KeySigState,
   NotesAndCoordinatesData,
 } from "./typesAndInterfaces";
 import { roundToNearest5 } from "./roundToNearest5";
@@ -28,16 +28,16 @@ export const deleteGlyphFromStave = (
 export const addGlyphs = (
   userClickX: number,
   userClickY: number,
-  state: KeySigState,
+  keySigState: StateInteraction,
   glyphs: GlyphProps[],
   setGlyphState: (newState: React.SetStateAction<GlyphProps[]>) => void
 ) => {
   const newState = {
     xPosition: roundToNearest5(userClickX),
     yPosition: roundToNearest5(userClickY),
-    glyph: state.isSharpActive
+    glyph: keySigState.isSharpActive
       ? "accidentalSharp"
-      : state.isFlatActive
+      : keySigState.isFlatActive
       ? "accidentalFlat"
       : "",
   };
@@ -49,14 +49,14 @@ export const addGlyphs = (
 
 export const updateKeySigArrayForGrading = (
   foundNoteData: NotesAndCoordinatesData,
-  state: KeySigState,
+  keySigState: StateInteraction,
   setKeySigState: (newState: React.SetStateAction<string[]>) => void
 ) => {
   const noteBase = parseNote(foundNoteData.note).noteBase;
   if (noteBase.length > 1) {
     return;
   }
-  const noteWithAccidental = state.isSharpActive
+  const noteWithAccidental = keySigState.isSharpActive
     ? `${noteBase}` + "#"
     : `${noteBase}` + "b";
   setKeySigState((prevState: string[]) => {

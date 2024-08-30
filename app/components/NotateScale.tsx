@@ -13,12 +13,11 @@ import React, {
   useState,
 } from "react";
 import VexFlow from "vexflow";
-import CheckIfNoteFound from "../components/CheckIfNoteFound";
-import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
 import { useClef } from "../context/ClefContext";
 import { modifyNotesActionTypes } from "../lib/actionTypes";
 import { buttonGroup } from "../lib/buttonsAndButtonGroups";
 import calculateNotesAndCoordinates from "../lib/calculateNotesAndCoordinates";
+import { errorMessages } from "../lib/data/errorMessages";
 import {
   bassClefNotesArray,
   trebleClefNotesArray,
@@ -32,7 +31,7 @@ import {
   noteInteractionInitialState,
 } from "../lib/initialStates";
 import { initializeRenderer } from "../lib/initializeRenderer";
-import { scaleReducer } from "../lib/reducer";
+import { reducer } from "../lib/reducer";
 import { setupRendererAndDrawNotes } from "../lib/setupRendererAndDrawNotes";
 import {
   NotesAndCoordinatesData,
@@ -40,7 +39,7 @@ import {
   StaveType,
 } from "../lib/typesAndInterfaces";
 import CustomButton from "./CustomButton";
-
+import SnackbarToast from "./SnackbarToast";
 const { Renderer } = VexFlow.Flow;
 
 const NotateScale = ({
@@ -52,19 +51,16 @@ const NotateScale = ({
   const container = useRef<HTMLDivElement | null>(null);
   const [staves, setStaves] = useState<StaveType[]>([]);
   const [scaleDataMatrix, setScaleDataMatrix] = useState<ScaleData[][]>([[]]);
+  const [open, setOpen] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>("");
   const [notesAndCoordinates, setNotesAndCoordinates] = useState<
     NotesAndCoordinatesData[]
   >([initialNotesAndCoordsState]);
   const { chosenClef } = useClef();
   const [state, dispatch] = useReducer(
-    scaleReducer,
+    reducer,
     noteInteractionInitialState
   );
-
-  const noNoteFound = () => dispatch({ type: "noNoteFound" });
-
-  const tooManyBeatsInMeasure = () =>
-    dispatch({ type: "tooManyBeatsInMeasure" });
 
   const modifyStaveNotesButtonGroup = useMemo(
     () => buttonGroup(dispatch, state, modifyNotesActionTypes),
@@ -114,7 +110,7 @@ const NotateScale = ({
         true
       );
     }
-  }, [scaleDataMatrix]);
+  }, [scaleDataMatrix, state]);
 
   const eraseMeasures = () => {
     setScaleDataMatrix((): ScaleData[][] => {
@@ -147,23 +143,19 @@ const NotateScale = ({
         ({ yCoordinateMin, yCoordinateMax }) =>
           userClickY >= yCoordinateMin && userClickY <= yCoordinateMax
       );
-      console.log("userClickY: ", userClickY);
-      if (!foundNoteData) {
-        return;
-      }
 
-      if (foundNoteData)
+      if (foundNoteData) {
         foundNoteData = {
           ...foundNoteData,
-          userClickY: userClickY,
+          userClickY,
         };
-
-      const barIndex = findBarIndex(staves, userClickX);
-
-      if (!foundNoteData) {
-        noNoteFound();
+      } else {
+        setOpen(true);
+        setMessage(errorMessages.noNoteFound);
         return;
       }
+
+      const barIndex = findBarIndex(staves, userClickX);
 
       let scaleDataMatrixCopy = scaleDataMatrix.map((scaleData) => [
         ...scaleData,
@@ -185,16 +177,17 @@ const NotateScale = ({
         notesAndCoordinates: newNotesAndCoordinates,
       } = HandleScaleInteraction(
         foundNoteData,
-        tooManyBeatsInMeasure,
         notesAndCoordinatesCopy,
-        "tooManyBeatsInMeasure",
         barOfScaleData,
         scaleDataMatrixCopy,
         state,
         userClickX,
         userClickY,
         barIndex,
-        chosenClef
+        chosenClef,
+        setMessage,
+        setOpen,
+        errorMessages
       );
       setNotesAndCoordinates(() => newNotesAndCoordinates);
       setScaleDataMatrix(() => newScaleDataMatrix);
@@ -210,15 +203,7 @@ const NotateScale = ({
   return (
     <>
       <div ref={container} onClick={handleClick} />
-      <CheckNumBeatsInMeasure
-        tooManyBeatsInMeasure={state.tooManyBeatsInMeasure}
-        openEnterNotes={dispatch}
-      />
-      <CheckIfNoteFound
-        noNoteFound={state.noNoteFound || false}
-        openEnterNotes={dispatch}
-      />
-
+      <SnackbarToast open={open} setOpen={setOpen} message={message} />
       <Container
         sx={{
           display: "grid",
@@ -232,7 +217,9 @@ const NotateScale = ({
           return (
             <CustomButton
               key={button.text}
-              onClick={button.action}
+              onClick={() => {
+                button.action();
+              }}
               isEnabled={button.isEnabled}
             >
               {button.text}

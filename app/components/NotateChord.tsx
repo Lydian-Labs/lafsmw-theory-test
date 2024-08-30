@@ -12,8 +12,6 @@ import React, {
   useState,
 } from "react";
 import VexFlow from "vexflow";
-import CheckIfNoteFound from "../components/CheckIfNoteFound";
-import CheckNumBeatsInMeasure from "../components/CheckNumBeatsInMeasure";
 import { useClef } from "../context/ClefContext";
 import { modifyChordsActionTypes } from "../lib/actionTypes";
 import { buttonGroup } from "../lib/buttonsAndButtonGroups";
@@ -32,7 +30,7 @@ import {
   initialNotesAndCoordsState,
 } from "../lib/initialStates";
 import { initializeRenderer } from "../lib/initializeRenderer";
-import { chordReducer } from "../lib/reducer";
+import { reducer } from "../lib/reducer";
 import { setupRendererAndDrawChords } from "../lib/setUpRendererAndDrawChords";
 import {
   Chord,
@@ -40,6 +38,8 @@ import {
   StaveType,
 } from "../lib/typesAndInterfaces";
 import CustomButton from "./CustomButton";
+import SnackbarToast from "./SnackbarToast";
+import { errorMessages } from "../lib/data/errorMessages";
 const { Renderer } = VexFlow.Flow;
 
 const NotateChord = ({
@@ -50,13 +50,15 @@ const NotateChord = ({
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
   const [staves, setStaves] = useState<StaveType[]>([]);
-  const [state, dispatch] = useReducer(
-    chordReducer,
+  const [chordInteractionState, dispatch] = useReducer(
+    reducer,
     chordInteractionInitialState
   );
   //not currently being used, but will be used in the future
   const [barIndex, setBarIndex] = useState<number>(0);
   const [chordData, setChordData] = useState<Chord>(initialChordData);
+  const [open, setOpen] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>("");
   const { chosenClef } = useClef();
   const [notesAndCoordinates, setNotesAndCoordinates] = useState<
     NotesAndCoordinatesData[]
@@ -65,8 +67,8 @@ const NotateChord = ({
   const noNoteFound = () => dispatch({ type: "noNoteFound" });
 
   const modifyChordsButtonGroup = useMemo(
-    () => buttonGroup(dispatch, state, modifyChordsActionTypes),
-    [dispatch, state]
+    () => buttonGroup(dispatch, chordInteractionState, modifyChordsActionTypes),
+    [dispatch, chordInteractionState]
   );
 
   const renderStavesAndChords = useCallback(
@@ -146,7 +148,8 @@ const NotateChord = ({
     );
 
     if (!foundNoteData) {
-      noNoteFound();
+      setOpen(true);
+      setMessage(errorMessages.noNoteFound);
       return;
     }
 
@@ -155,7 +158,7 @@ const NotateChord = ({
       notesAndCoordinates: newNotesAndCoordinates,
     } = handleChordInteraction(
       notesAndCoordinatesCopy,
-      state,
+      chordInteractionState,
       foundNoteData,
       chordDataCopy,
       foundNoteIndex,
@@ -170,14 +173,7 @@ const NotateChord = ({
   return (
     <>
       <div ref={container} onClick={handleClick} />
-      <CheckNumBeatsInMeasure
-        tooManyBeatsInMeasure={state.tooManyBeatsInMeasure}
-        openEnterNotes={dispatch}
-      />
-      <CheckIfNoteFound
-        noNoteFound={state.noNoteFound || false}
-        openEnterNotes={dispatch}
-      />
+      <SnackbarToast open={open} setOpen={setOpen} message={message} />
       <Container
         sx={{
           display: "grid",
