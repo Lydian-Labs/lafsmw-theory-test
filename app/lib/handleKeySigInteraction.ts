@@ -10,8 +10,8 @@ import {
 } from "./modifyKeySignature";
 import {
   GlyphProps,
-  NotesAndCoordinatesData,
   StateInteraction,
+  NotesAndCoordinatesData,
 } from "./typesAndInterfaces";
 
 export const handleKeySigInteraction = (

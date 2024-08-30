@@ -146,6 +146,28 @@ export const removeAccidentalFromNotesAndCoords = (
   );
 };
 
+export const addAccidentalToChordKeys = (
+  state: StateInteraction,
+  chordData: Chord,
+  foundNoteIndex: number,
+  chosenClef: string
+) => {
+  const accidental = state.isSharpActive ? "#" : "b";
+  chordData.keys[foundNoteIndex] = appendAccidentalToNote(
+    accidental,
+    chordData.keys[foundNoteIndex]
+  );
+
+  const newChord = createStaveNoteFromChordData(chordData, chosenClef);
+
+  addAccidentalsToStaveNotes(chordData.keys, newChord);
+
+  return {
+    ...chordData,
+    staveNotes: newChord,
+  };
+};
+
 export const addNewNoteToChord = (
   chordData: Chord,
   foundNoteData: NoteStringData,

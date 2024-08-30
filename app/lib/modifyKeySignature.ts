@@ -28,16 +28,16 @@ export const deleteGlyphFromStave = (
 export const addGlyphs = (
   userClickX: number,
   userClickY: number,
-  state: StateInteraction,
+  keySigState: StateInteraction,
   glyphs: GlyphProps[],
   setGlyphState: (newState: React.SetStateAction<GlyphProps[]>) => void
 ) => {
   const newState = {
     xPosition: roundToNearest5(userClickX),
     yPosition: roundToNearest5(userClickY),
-    glyph: state.isSharpActive
+    glyph: keySigState.isSharpActive
       ? "accidentalSharp"
-      : state.isFlatActive
+      : keySigState.isFlatActive
       ? "accidentalFlat"
       : "",
   };
@@ -49,14 +49,14 @@ export const addGlyphs = (
 
 export const updateKeySigArrayForGrading = (
   foundNoteData: NotesAndCoordinatesData,
-  state: StateInteraction,
+  keySigState: StateInteraction,
   setKeySigState: (newState: React.SetStateAction<string[]>) => void
 ) => {
   const noteBase = parseNote(foundNoteData.note).noteBase;
   if (noteBase.length > 1) {
     return;
   }
-  const noteWithAccidental = state.isSharpActive
+  const noteWithAccidental = keySigState.isSharpActive
     ? `${noteBase}` + "#"
     : `${noteBase}` + "b";
   setKeySigState((prevState: string[]) => {

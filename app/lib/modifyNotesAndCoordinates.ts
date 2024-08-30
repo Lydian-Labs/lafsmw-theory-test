@@ -1,8 +1,6 @@
 import {
-  NoteInteractionState,
-  KeySigState,
+  StateInteraction,
   NotesAndCoordinatesData,
-  ChordInteractionState,
 } from "./typesAndInterfaces";
 
 export const parseNote = (note: string) => {
@@ -31,11 +29,11 @@ export const appendAccidentalToNote = (accidental: string, note: string) => {
 };
 
 export const updateNotesAndCoordsWithAccidental = (
-  state: NoteInteractionState | KeySigState | ChordInteractionState,
+  noteInteractionState: StateInteraction,
   foundNoteData: NotesAndCoordinatesData,
   notesAndCoordinates: NotesAndCoordinatesData[]
 ) => {
-  const accidental = state.isSharpActive ? "#" : "b";
+  const accidental = noteInteractionState.isSharpActive ? "#" : "b";
   const newNotesAndCoords = notesAndCoordinates.map((noteData) =>
     noteData.note === foundNoteData.note
       ? {

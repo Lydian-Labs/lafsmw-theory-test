@@ -15,29 +15,31 @@ import {
 
 export const handleChordInteraction = (
   notesAndCoordinates: NotesAndCoordinatesData[],
-  state: StateInteraction,
+  chordInteractionState: StateInteraction,
   foundNoteData: NotesAndCoordinatesData,
   chordData: Chord,
 
   foundNoteIndex: number,
   chosenClef: string
 ) => {
-  if (state.isSharpActive || state.isFlatActive) {
+  let updatedChordData = { ...chordData };
+  let updatedNotesAndCoordinates = [...notesAndCoordinates];
+
+  if (chordInteractionState.isSharpActive || chordInteractionState.isFlatActive) {
     if (foundNoteIndex !== -1) {
-      notesAndCoordinates = updateNotesAndCoordsWithAccidental(
-        state,
+      updatedNotesAndCoordinates = updateNoteWithAccidental(
+        chordInteractionState,
         foundNoteData,
         notesAndCoordinates
       );
-
-      chordData = addAccidentalToChordKeys(
-        state,
+      updatedChordData = addAccidentalToChordKeys(
+        chordInteractionState,
         chordData,
         foundNoteIndex,
         chosenClef
       );
     }
-  } else if (state.isEraseAccidentalActive) {
+  } else if (chordInteractionState.isEraseAccidentalActive) {
     if (foundNoteIndex !== -1) {
       notesAndCoordinates = removeAccidentalFromNotesAndCoords(
         notesAndCoordinates,
@@ -51,7 +53,7 @@ export const handleChordInteraction = (
 
       chordData = reconstructChord(chordData, chosenClef);
     }
-  } else if (state.isEraseNoteActive) {
+  } else if (chordInteractionState.isEraseNoteActive) {
     if (foundNoteIndex !== -1) {
       chordData = removeNoteFromChord(chordData, foundNoteIndex, chosenClef);
       notesAndCoordinates = removeAccidentalFromNotesAndCoords(

@@ -57,12 +57,17 @@ const NotateChord = ({
 }) => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
-  const [state, dispatch] = useReducer(reducer, chordInteractionInitialState);
+  const [staves, setStaves] = useState<StaveType[]>([]);
+  const [chordInteractionState, dispatch] = useReducer(
+    reducer,
+    chordInteractionInitialState
+  );
+  //not currently being used, but will be used in the future
   const [barIndex, setBarIndex] = useState<number>(0);
+
+  const [chordData, setChordData] = useState<Chord>(initialChordData);
   const [open, setOpen] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
-  const [staves, setStaves] = useState<StaveType[]>([]);
-  const [chordData, setChordData] = useState<Chord>(initialChordData);
   const { chosenClef } = useClef();
   const [notesAndCoordinates, setNotesAndCoordinates] = useState<
     NotesAndCoordinatesData[]
@@ -70,8 +75,8 @@ const NotateChord = ({
   const { initialRun, setInitialRun } = useInitialRun();
 
   const modifyChordsButtonGroup = useMemo(
-    () => buttonGroup(dispatch, state, modifyChordsActionTypes),
-    [dispatch, state]
+    () => buttonGroup(dispatch, chordInteractionState, modifyChordsActionTypes),
+    [dispatch, chordInteractionState]
   );
 
   const renderStavesAndChords = useCallback(
@@ -119,7 +124,7 @@ const NotateChord = ({
       -4,
       true
     );
-  }, [chordData, state]);
+  }, [chordData, chordInteractionState]);
 
   const eraseChord = () => {
     setChordData(initialChordData);
@@ -167,7 +172,7 @@ const NotateChord = ({
       notesAndCoordinates: newNotesAndCoordinates,
     } = handleChordInteraction(
       notesAndCoordinatesCopy,
-      state,
+      chordInteractionState,
       foundNoteData,
       chordDataCopy,
       foundNoteIndex,

@@ -1,4 +1,5 @@
 import VexFlow from "vexflow";
+
 import {
   removeAccidentalFromNotesAndCoords,
   updateNotesAndCoordsWithAccidental,
@@ -10,9 +11,7 @@ import {
   removeNoteFromScale,
 } from "./modifyScales";
 import {
-  ChordInteractionState,
-  KeySigState,
-  NoteInteractionState,
+  StateInteraction,
   NotesAndCoordinatesData,
   ScaleData,
   StaveNoteType,
@@ -26,7 +25,7 @@ export const HandleScaleInteraction = (
   notesAndCoordinates: NotesAndCoordinatesData[],
   barOfScaleData: ScaleData[],
   scaleDataMatrix: ScaleData[][],
-  state: NoteInteractionState | ChordInteractionState | KeySigState,
+  scaleInteractionState: StateInteraction,
   userClickX: number,
   userClickY: number,
   barIndex: number,
@@ -36,25 +35,21 @@ export const HandleScaleInteraction = (
   errorMessages: errorMessages
 ) => {
   const scaleLength = scaleDataMatrix[0].length;
-
-  if (state.isSharpActive || state.isFlatActive) {
+  if (scaleInteractionState.isSharpActive || scaleInteractionState.isFlatActive) {
     notesAndCoordinates = updateNotesAndCoordsWithAccidental(
-      state,
+      scaleInteractionState,
       foundNoteData,
       notesAndCoordinates
     );
-    const result = addAccidentalToStaveNoteAndKeys(
-      state,
+    const { updatedNoteObject, noteIndex } = addAccidentalToStaveNoteAndKeys(
+      scaleInteractionState,
       barOfScaleData,
       userClickX,
       chosenClef
     );
-    if (result) {
-      const { updatedNoteObject, noteIndex } = result;
-      barOfScaleData[noteIndex] = updatedNoteObject;
-      scaleDataMatrix[barIndex] = barOfScaleData;
-    }
-  } else if (state.isEraseAccidentalActive) {
+    barOfScaleData[noteIndex] = updatedNoteObject;
+    scaleDataMatrix[barIndex] = barOfScaleData;
+  } else if (scaleInteractionState.isEraseAccidentalActive) {
     notesAndCoordinates = removeAccidentalFromNotesAndCoords(
       notesAndCoordinates,
       foundNoteData
@@ -64,19 +59,16 @@ export const HandleScaleInteraction = (
       userClickX,
       chosenClef
     );
-    if (result) {
-      const { updatedNoteObject, noteIndex } = result;
-      barOfScaleData[noteIndex] = updatedNoteObject;
-      scaleDataMatrix[barIndex] = barOfScaleData;
-    }
-  } else if (state.isEraseNoteActive) {
+    barOfScaleData[noteIndex] = updatedNoteObject;
+    scaleDataMatrix[barIndex] = barOfScaleData;
+  } else if (scaleInteractionState.isEraseNoteActive) {
     notesAndCoordinates = removeAccidentalFromNotesAndCoords(
       notesAndCoordinates,
       foundNoteData
     );
     removeNoteFromScale(barOfScaleData, userClickX);
     scaleDataMatrix[barIndex] = barOfScaleData;
-  } else if (state.isChangeNoteActive) {
+  } else if (scaleInteractionState.isChangeNoteActive) {
     notesAndCoordinates = removeAccidentalFromNotesAndCoords(
       notesAndCoordinates,
       foundNoteData

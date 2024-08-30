@@ -13,6 +13,16 @@ export type InputData = {
   [key: string]: string;
 };
 
+export type StateInteraction =
+  | ChordInteractionState
+  | NoteInteractionState
+  | KeySigState;
+
+export type ActionType =
+  | NoteInteractionAction
+  | ChordInteractionAction
+  | KeySigAction;
+
 export type Chord = {
   keys: string[];
   duration: string;
@@ -115,7 +125,10 @@ export interface chosenClef {
   chosenClef: string;
   setChosenClef: Dispatch<SetStateAction<string>>;
 }
-
+export interface errorMessages {
+  tooManyNotesInMeasure: string;
+  noNoteFound: string;
+}
 export interface ScaleData {
   keys: string[];
   duration: string;

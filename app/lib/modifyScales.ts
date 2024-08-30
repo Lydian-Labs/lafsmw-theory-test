@@ -1,11 +1,6 @@
 import VexFlow from "vexflow";
 import { indexOfNoteToModify as indexOfNote } from "./indexOfNoteToModify";
-import {
-  appendAccidentalToNote,
-  getAccidentalType,
-  parseNote,
-  removeAccidentals,
-} from "./modifyNotesAndCoordinates";
+
 import {
   ModifyScaleData,
   NotesAndCoordinatesData,
@@ -13,6 +8,12 @@ import {
   StateInteraction,
   StaveNoteType,
 } from "./typesAndInterfaces";
+import {
+  getAccidentalType,
+  parseNote,
+  appendAccidentalToNote,
+  removeAccidentals,
+} from "./modifyNotesAndCoordinates";
 const { Accidental, StaveNote } = VexFlow.Flow;
 
 export const createStaveNoteFromScaleData = (
@@ -69,15 +70,12 @@ export const reconstructScale = (
 };
 
 export const addAccidentalToStaveNoteAndKeys = (
-  state: StateInteraction,
   scaleData: ScaleData[],
   userClickX: number,
   chosenClef: string
 ) => {
-  const noteData = getNoteData(scaleData, userClickX);
-  if (!noteData) return; // Return early if no valid note is found
-  let { noteDataObject, noteIndex } = noteData;
-  const accidental = state.isSharpActive ? "#" : "b";
+  let { noteDataObject, noteIndex } = getNoteData(scaleData, userClickX);
+  const accidental = noteInteractionState.isSharpActive ? "#" : "b";
   noteDataObject.keys[0] = appendAccidentalToNote(
     accidental,
     noteDataObject.keys[0]

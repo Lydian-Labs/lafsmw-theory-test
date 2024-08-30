@@ -50,7 +50,8 @@ const NotateScale = ({
 }) => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
-  const [state, dispatch] = useReducer(reducer, noteInteractionInitialState);
+  const [staves, setStaves] = useState<StaveType[]>([]);
+  const [scaleDataMatrix, setScaleDataMatrix] = useState<ScaleData[][]>([[]]);
   const [open, setOpen] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
   const [notesAndCoordinates, setNotesAndCoordinates] = useState<
@@ -58,8 +59,7 @@ const NotateScale = ({
   >([initialNotesAndCoordsState]);
 
   const { chosenClef } = useClef();
-  const [staves, setStaves] = useState<StaveType[]>([]);
-  const [scaleDataMatrix, setScaleDataMatrix] = useState<ScaleData[][]>([[]]);
+  const [state, dispatch] = useReducer(reducer, noteInteractionInitialState);
 
   const modifyStaveNotesButtonGroup = useMemo(
     () => buttonGroup(dispatch, state, modifyNotesActionTypes),
