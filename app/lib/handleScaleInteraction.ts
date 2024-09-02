@@ -17,7 +17,6 @@ import {
   StaveNoteType,
   errorMessages,
 } from "./typesAndInterfaces";
-
 const { StaveNote } = VexFlow.Flow;
 
 export const HandleScaleInteraction = (
@@ -54,7 +53,7 @@ export const HandleScaleInteraction = (
       notesAndCoordinates,
       foundNoteData
     );
-    const result = removeAccidentalFromStaveNote(
+    const { updatedNoteObject, noteIndex } = removeAccidentalFromStaveNote(
       barOfScaleData,
       userClickX,
       chosenClef
@@ -100,6 +99,7 @@ export const HandleScaleInteraction = (
         userClickY,
       },
     ];
+
     scaleDataMatrix[barIndex] = newNoteObject;
   }
   return {

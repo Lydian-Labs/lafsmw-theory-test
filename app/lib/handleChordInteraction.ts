@@ -1,12 +1,12 @@
 import {
   addAccidentalToChordKeys,
   addNewNoteToChord,
+  removeAccidentalFromNotesAndCoords,
   reconstructChord,
   removeAccidentalFromChord,
-  removeAccidentalFromNotesAndCoords,
   removeNoteFromChord,
+  updateNoteWithAccidental,
 } from "@/app/lib/modifyChords";
-import { updateNotesAndCoordsWithAccidental } from "./modifyNotesAndCoordinates";
 import {
   Chord,
   StateInteraction,
@@ -18,14 +18,16 @@ export const handleChordInteraction = (
   chordInteractionState: StateInteraction,
   foundNoteData: NotesAndCoordinatesData,
   chordData: Chord,
-
   foundNoteIndex: number,
   chosenClef: string
 ) => {
   let updatedChordData = { ...chordData };
   let updatedNotesAndCoordinates = [...notesAndCoordinates];
 
-  if (chordInteractionState.isSharpActive || chordInteractionState.isFlatActive) {
+  if (
+    chordInteractionState.isSharpActive ||
+    chordInteractionState.isFlatActive
+  ) {
     if (foundNoteIndex !== -1) {
       updatedNotesAndCoordinates = updateNoteWithAccidental(
         chordInteractionState,

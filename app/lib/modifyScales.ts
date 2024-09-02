@@ -1,6 +1,5 @@
 import VexFlow from "vexflow";
 import { indexOfNoteToModify as indexOfNote } from "./indexOfNoteToModify";
-
 import {
   ModifyScaleData,
   NotesAndCoordinatesData,
@@ -33,11 +32,8 @@ export const createStaveNoteFromScaleData = (
 export const getNoteData = (
   barOfScaleData: ScaleData[],
   userClickX: number
-): ModifyScaleData | null => {
+): ModifyScaleData => {
   const noteIndex = indexOfNote(barOfScaleData, userClickX);
-  if (noteIndex === -1) {
-    return null;
-  }
   return { noteDataObject: barOfScaleData[noteIndex], noteIndex };
 };
 
@@ -70,6 +66,7 @@ export const reconstructScale = (
 };
 
 export const addAccidentalToStaveNoteAndKeys = (
+  noteInteractionState: StateInteraction,
   scaleData: ScaleData[],
   userClickX: number,
   chosenClef: string
@@ -95,9 +92,7 @@ export const removeAccidentalFromStaveNote = (
   userClickX: number,
   chosenClef: string
 ) => {
-  const noteData = getNoteData(scaleData, userClickX);
-  if (!noteData) return; // Return early if no valid note is foun
-  const { noteDataObject, noteIndex } = noteData;
+  const { noteDataObject, noteIndex } = getNoteData(scaleData, userClickX);
 
   let { keys } = noteDataObject;
 
@@ -116,9 +111,7 @@ export const addNewNoteToScale = (
   userClickY: number,
   chosenClef: string
 ) => {
-  const noteData = getNoteData(scaleData, userClickX);
-  if (!noteData) return; // Return early if no valid note is foun
-  let { noteDataObject } = noteData;
+  let { noteDataObject } = getNoteData(scaleData, userClickX);
   const newNote = createStaveNoteFromScaleData(noteDataObject, chosenClef, [
     foundNoteData.note,
   ]);
@@ -140,9 +133,7 @@ export const changeNotePosition = (
   userClickY: number,
   chosenClef: string
 ) => {
-  const noteData = getNoteData(scaleData, userClickX);
-  if (!noteData) return; // Return early if no valid note is foun
-  const { noteDataObject, noteIndex } = noteData;
+  const { noteDataObject, noteIndex } = getNoteData(scaleData, userClickX);
   if (noteDataObject && noteDataObject.staveNote) {
     const staveNoteAbsoluteX = noteDataObject.staveNote.getAbsoluteX();
 
@@ -164,13 +155,9 @@ export const removeNoteFromScale = (
   scaleData: ScaleData[],
   userClickX: number
 ) => {
-  const noteData = getNoteData(scaleData, userClickX);
-  if (!noteData) return; // Return early if no valid note is foun
-  const { noteIndex } = noteData;
+  const { noteIndex } = getNoteData(scaleData, userClickX);
   //!= checks for both null and undefined
   if (noteIndex != null) {
     scaleData.splice(noteIndex, 1);
   }
 };
-
-export const errorMessages = (state: StateInteraction) => {};
