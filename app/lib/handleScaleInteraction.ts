@@ -34,7 +34,10 @@ export const HandleScaleInteraction = (
   errorMessages: errorMessages
 ) => {
   const scaleLength = scaleDataMatrix[0].length;
-  if (scaleInteractionState.isSharpActive || scaleInteractionState.isFlatActive) {
+  if (
+    scaleInteractionState.isSharpActive ||
+    scaleInteractionState.isFlatActive
+  ) {
     notesAndCoordinates = updateNotesAndCoordsWithAccidental(
       scaleInteractionState,
       foundNoteData,

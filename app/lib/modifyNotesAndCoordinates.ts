@@ -42,7 +42,7 @@ export const updateNotesAndCoordsWithAccidental = (
         }
       : noteData
   );
-  console.log(newNotesAndCoords)
+  console.log(newNotesAndCoords);
   return newNotesAndCoords;
 };
 
