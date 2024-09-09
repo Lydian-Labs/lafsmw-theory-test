@@ -50,6 +50,7 @@ const NotateKeySignature = ({ handleNotes }: any) => {
   const [notesAndCoordinates, setNotesAndCoordinates] = useState<
     NotesAndCoordinatesData[]
   >([initialNotesAndCoordsState]);
+
   const keySigButtonGroup = useMemo(
     () => buttonGroup(dispatch, state, modifyKeySigActionTypes),
     [dispatch, state]
@@ -94,17 +95,13 @@ const NotateKeySignature = ({ handleNotes }: any) => {
     context && buildKeySignature(glyphs, 40, context, staves[0]);
   }, [glyphs]);
 
-  //this is where the we will get the array to grade
   useEffect(() => {
     handleNotes(keySig);
-    // console.log("key sig: ", keySig);
-    // console.log("glyphs: ", glyphs);
   }, [keySig]);
 
   const clearKey = () => {
     clearKeySignature(setGlyphs, rendererRef, container), setKeySig(() => []);
     const newStaves = renderStaves();
-
     if (newStaves) {
       if (newStaves)
         calculateNotesAndCoordinates(
@@ -117,7 +114,8 @@ const NotateKeySignature = ({ handleNotes }: any) => {
           0
         );
     }
-    dispatch({ type: "" });
+
+    dispatch({ type: "CLEAR_ALL" });
   };
 
   const handleClick = (e: React.MouseEvent) => {

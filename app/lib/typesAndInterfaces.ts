@@ -23,14 +23,11 @@ export type StateInteraction =
   | NoteInteractionState
   | KeySigState;
 
-type ModifyNotesActionTypes = keyof typeof modifyNotesActionTypes;
-type ModifyChordsActionTypes = keyof typeof modifyChordsActionTypes;
-type ModifyKeySigActionTypes = keyof typeof modifyKeySigActionTypes;
-
 export type InteractionActionTypes =
-  | ModifyNotesActionTypes
-  | ModifyChordsActionTypes
-  | ModifyKeySigActionTypes;
+  | keyof typeof modifyNotesActionTypes
+  | keyof typeof modifyChordsActionTypes
+  | keyof typeof modifyKeySigActionTypes
+  | "CLEAR_ALL";
 
 export type Chord = {
   keys: string[];
