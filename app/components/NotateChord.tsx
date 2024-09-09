@@ -54,7 +54,6 @@ const NotateChord = ({
     reducer,
     chordInteractionInitialState
   );
-  //not currently being used, but will be used in the future
   const [barIndex, setBarIndex] = useState<number>(0);
   const [chordData, setChordData] = useState<Chord>(initialChordData);
   const [open, setOpen] = useState<boolean>(false);

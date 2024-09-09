@@ -110,7 +110,6 @@ const NotateKeySignature = ({ handleKeySig }: any) => {
           0
         );
     }
-
     dispatch({ type: "CLEAR_ALL" });
   };
 
