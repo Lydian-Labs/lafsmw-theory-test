@@ -1,5 +1,10 @@
 import { Dispatch, RefObject, SetStateAction } from "react";
 import VexFlow, { RenderContext, StemmableNote } from "vexflow";
+import {
+  modifyChordsActionTypes,
+  modifyKeySigActionTypes,
+  modifyNotesActionTypes,
+} from "./actionTypes";
 const VF = VexFlow.Flow;
 const { StaveNote, Stave, Renderer, Glyph, Note } = VF;
 
@@ -18,10 +23,14 @@ export type StateInteraction =
   | NoteInteractionState
   | KeySigState;
 
-export type ActionType =
-  | NoteInteractionAction
-  | ChordInteractionAction
-  | KeySigAction;
+type ModifyNotesActionTypes = keyof typeof modifyNotesActionTypes;
+type ModifyChordsActionTypes = keyof typeof modifyChordsActionTypes;
+type ModifyKeySigActionTypes = keyof typeof modifyKeySigActionTypes;
+
+export type InteractionActionTypes =
+  | ModifyNotesActionTypes
+  | ModifyChordsActionTypes
+  | ModifyKeySigActionTypes;
 
 export type Chord = {
   keys: string[];
@@ -59,6 +68,7 @@ export type NoteInteractionState = {
   isFlatActive: boolean;
   [key: string]: boolean | undefined;
 };
+
 export type ChordInteractionState = {
   isEraseNoteActive: boolean;
   isEraseAccidentalActive: boolean;
@@ -75,10 +85,6 @@ export type KeySigState = {
   isClearKeySigActive: boolean;
   [key: string]: boolean | undefined;
 };
-
-export type NoteInteractionAction = { type: keyof NoteInteractionState };
-export type KeySigAction = { type: keyof KeySigState };
-export type ChordInteractionAction = { type: keyof ChordInteractionState };
 
 export type BarMetrics = {
   barWidth: number;
@@ -151,14 +157,12 @@ export interface ModifyScaleData {
 
 export interface CheckNumBeatsInMeasureProps {
   tooManyBeatsInMeasure: boolean | undefined;
-  openEnterNotes: React.Dispatch<NoteInteractionAction>;
+  openEnterNotes: React.Dispatch<InteractionActionTypes>;
 }
 
 export interface CheckIfNoteFoundProps {
   noNoteFound: boolean;
-  openEnterNotes: React.Dispatch<
-    NoteInteractionAction | ChordInteractionAction
-  >;
+  openEnterNotes: React.Dispatch<InteractionActionTypes>;
 }
 
 export interface RenderStavesAndNotesParams {

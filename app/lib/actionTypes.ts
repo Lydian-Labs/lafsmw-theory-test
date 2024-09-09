@@ -6,6 +6,7 @@ export const modifyNotesActionTypes = {
   isFlatActive: "Add Flat",
   isEraseAccidentalActive: "Erase Accidental",
 };
+
 export const modifyChordsActionTypes = {
   isEnterNoteActive: "Enter Note",
   isEraseNoteActive: "Erase Note",
