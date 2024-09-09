@@ -44,7 +44,7 @@ const NotateKeySignature = ({ handleNotes }: any) => {
   const [glyphs, setGlyphs] = useState<GlyphProps[]>([]);
   const [open, setOpen] = useState(false);
   const { chosenClef } = useClef();
-  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [message, setMessage] = useState("");
   const [state, dispatch] = useReducer(reducer, keySigInitialState);
   const [keySig, setKeySig] = useState<string[]>([]);
   const [notesAndCoordinates, setNotesAndCoordinates] = useState<
@@ -135,7 +135,7 @@ const NotateKeySignature = ({ handleNotes }: any) => {
     );
 
     if (!foundNoteData) {
-      setSnackbarMessage("Click outside of stave bounds.");
+      setMessage("Click outside of stave bounds.");
       setOpen(true);
       return;
     } else {
@@ -155,7 +155,7 @@ const NotateKeySignature = ({ handleNotes }: any) => {
       userClickY < minTopClick ||
       userClickY > maxBottomClick
     ) {
-      setSnackbarMessage("Click outside of stave bounds.");
+      setMessage("Click outside of stave bounds.");
       setOpen(true);
       return;
     }
@@ -195,7 +195,7 @@ const NotateKeySignature = ({ handleNotes }: any) => {
         })}
         <CustomButton onClick={clearKey}>Erase Key Signature</CustomButton>
       </div>
-      <SnackbarToast open={open} setOpen={setOpen} message={snackbarMessage} />
+      <SnackbarToast open={open} setOpen={setOpen} message={message} />
     </>
   );
 };
