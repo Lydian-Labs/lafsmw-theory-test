@@ -90,7 +90,6 @@ const NotateKeySignature = ({ handleKeySig }: any) => {
   }, []);
 
   useEffect(() => {
-    initializeRenderer(rendererRef, container);
     renderStaves();
     context && buildKeySignature(glyphs, 40, context, staves[0]);
   }, [glyphs]);
