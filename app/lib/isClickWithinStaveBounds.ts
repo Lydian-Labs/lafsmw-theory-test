@@ -6,7 +6,7 @@ const isClickWithinStaveBounds = (
 ) => {
   const measureWidth = stave.getWidth();
   const maxRightClick = measureWidth * 0.6;
-  const minLeftClick = measureWidth * 0.05;
+  const minLeftClick = measureWidth * 0.08;
   const minTopClick = topStaveMaxYClick;
   const maxBottomClick = bottomStaveMaxYClick;
 
