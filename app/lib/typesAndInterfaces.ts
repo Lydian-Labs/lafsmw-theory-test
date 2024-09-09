@@ -54,6 +54,10 @@ export type SetStavesForChords = Dispatch<SetStateAction<StaveType[]>>;
 export type BlankStaves = StaveType[];
 export type NoteData = StaveNoteData[][];
 
+export interface ActionType {
+  type: InteractionActionTypes;
+}
+
 export type NoteInteractionState = {
   isEraseNoteActive: boolean;
   isEraseAccidentalActive: boolean;

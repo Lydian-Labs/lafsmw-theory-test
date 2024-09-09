@@ -1,16 +1,12 @@
 import {
   StateInteraction,
-  InteractionActionTypes,
   NoteInteractionState,
+  ActionType,
 } from "./typesAndInterfaces";
-
-interface Action {
-  type: InteractionActionTypes;
-}
 
 export const reducer = (
   noteInteractionState: StateInteraction,
-  action: Action
+  action: ActionType
 ) => {
   if (action.type === "CLEAR_ALL") {
     return Object.keys(noteInteractionState).reduce((state, key) => {

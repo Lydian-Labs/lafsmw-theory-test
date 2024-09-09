@@ -64,15 +64,13 @@ const NotateChord = ({
     NotesAndCoordinatesData[]
   >([initialNotesAndCoordsState]);
 
-  const noNoteFound = () => dispatch({ type: "noNoteFound" });
-
   const modifyChordsButtonGroup = useMemo(
     () => buttonGroup(dispatch, chordInteractionState, modifyChordsActionTypes),
     [dispatch, chordInteractionState]
   );
 
   const renderStavesAndChords = useCallback(
-    (): StaveType[] =>
+    (): StaveType[] | undefined =>
       setupRendererAndDrawChords({
         rendererRef,
         ...staveData,
@@ -87,7 +85,7 @@ const NotateChord = ({
 
   useEffect(() => {
     initializeRenderer(rendererRef, container);
-    const newStave: StaveType[] = renderStavesAndChords();
+    const newStave = renderStavesAndChords();
     if (newStave) {
       calculateNotesAndCoordinates(
         chosenClef,
@@ -104,7 +102,6 @@ const NotateChord = ({
 
   useEffect(() => {
     renderStavesAndChords();
-    //this is the array to use for grading
     const chordsArray = chordData.keys;
   }, [chordData]);
 

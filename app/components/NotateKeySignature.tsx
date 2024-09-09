@@ -37,7 +37,7 @@ import CustomButton from "./CustomButton";
 const VF = VexFlow.Flow;
 const { Renderer } = VF;
 
-const NotateKeySignature = ({ handleNotes }: any) => {
+const NotateKeySignature = ({ handleKeySig }: any) => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
   const [staves, setStaves] = useState<StaveType[]>([]);
@@ -94,10 +94,6 @@ const NotateKeySignature = ({ handleNotes }: any) => {
     renderStaves();
     context && buildKeySignature(glyphs, 40, context, staves[0]);
   }, [glyphs]);
-
-  useEffect(() => {
-    handleNotes(keySig);
-  }, [keySig]);
 
   const clearKey = () => {
     clearKeySignature(setGlyphs, rendererRef, container), setKeySig(() => []);
@@ -175,6 +171,7 @@ const NotateKeySignature = ({ handleNotes }: any) => {
       );
 
     setNotesAndCoordinates(() => newNotesAndCoordinates);
+    handleKeySig(keySig);
   };
 
   return (

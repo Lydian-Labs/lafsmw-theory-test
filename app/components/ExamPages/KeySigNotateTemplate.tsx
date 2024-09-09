@@ -26,7 +26,6 @@ export default function KeySignaturesNotation({
       ...currentUserData,
       [keySigPropName]: keySignatureNotation,
     });
-    // console.log({ ...currentUserData, [keySigPropName]: keySignatureNotation });
     nextViewState();
   };
 
@@ -84,7 +83,7 @@ export default function KeySignaturesNotation({
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <NotateKeySignature handleNotes={handleKeySigNotation} />
+                  <NotateKeySignature handleKeySig={handleKeySigNotation} />
                 </Grid>
               </Grid>
               <CardFooter pageNumber={page} handleSubmit={handleSubmit} />
