@@ -129,18 +129,10 @@ const NotateChord = ({
       container,
       staves[0]
     );
+
     let foundNoteData = notesAndCoordinates.find(
       ({ yCoordinateMin, yCoordinateMax }) =>
         userClickY >= yCoordinateMin && userClickY <= yCoordinateMax
-    );
-
-    let chordDataCopy = { ...chordData };
-    let notesAndCoordinatesCopy = [...notesAndCoordinates];
-    //not currently being used but will be used in the future
-    const barIndex = findBarIndex(staves, userClickX);
-
-    const foundNoteIndex: number = chordData.keys.findIndex(
-      (note) => note === foundNoteData?.note
     );
 
     if (!foundNoteData) {
@@ -148,6 +140,15 @@ const NotateChord = ({
       setMessage(errorMessages.noNoteFound);
       return;
     }
+
+    let chordDataCopy = { ...chordData };
+    let notesAndCoordinatesCopy = [...notesAndCoordinates];
+
+    const barIndex = findBarIndex(staves, userClickX);
+
+    const foundNoteIndex: number = chordData.keys.findIndex(
+      (note) => note === foundNoteData?.note
+    );
 
     const {
       chordData: newChordData,

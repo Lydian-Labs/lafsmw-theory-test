@@ -122,8 +122,6 @@ const NotateKeySignature = ({ handleKeySig }: any) => {
     );
 
     if (!foundNoteData) {
-      setMessage("Click outside of stave bounds.");
-      setOpen(true);
       return;
     } else {
       foundNoteData = {
@@ -132,20 +130,15 @@ const NotateKeySignature = ({ handleKeySig }: any) => {
       };
     }
 
-    const { maxRightClick, minLeftClick, minTopClick, maxBottomClick } =
-      isClickWithinStaveBounds(staves[0], topStaveYCoord, bottomStaveYCoord);
+    isClickWithinStaveBounds(
+      staves[0],
+      topStaveYCoord,
+      bottomStaveYCoord,
+      userClickX,
+      setMessage,
+      setOpen
+    );
 
-    if (
-      typeof maxBottomClick === "undefined" ||
-      userClickX < minLeftClick ||
-      userClickX > maxRightClick ||
-      userClickY < minTopClick ||
-      userClickY > maxBottomClick
-    ) {
-      setMessage("Click outside of stave bounds.");
-      setOpen(true);
-      return;
-    }
     let notesAndCoordinatesCopy = [...notesAndCoordinates];
 
     const { notesAndCoordinates: newNotesAndCoordinates } =
