@@ -113,13 +113,6 @@ const NotateKeySignature = ({ handleKeySig }: any) => {
   };
 
   const handleClick = (e: React.MouseEvent) => {
-    if (
-      !state.isSharpActive &&
-      !state.isFlatActive &&
-      !state.isEraseAccidentalActive
-    )
-      return;
-
     const { userClickY, userClickX, topStaveYCoord, bottomStaveYCoord } =
       getUserClickInfo(e, container, staves[0]);
 
