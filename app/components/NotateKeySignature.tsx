@@ -37,6 +37,8 @@ import CustomButton from "./CustomButton";
 const VF = VexFlow.Flow;
 const { Renderer } = VF;
 
+//weird glitch is still happening. Figure out why!
+
 const NotateKeySignature = ({ handleKeySig }: any) => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
