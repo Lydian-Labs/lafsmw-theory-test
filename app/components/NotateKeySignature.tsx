@@ -137,6 +137,7 @@ const NotateKeySignature = ({ handleKeySig }: any) => {
       topStaveYCoord,
       bottomStaveYCoord,
       userClickX,
+      userClickY,
       setMessage,
       setOpen
     );
