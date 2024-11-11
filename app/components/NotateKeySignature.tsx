@@ -52,6 +52,7 @@ const NotateKeySignature = ({ handleKeySig }: any) => {
   const [notesAndCoordinates, setNotesAndCoordinates] = useState<
     NotesAndCoordinatesData[]
   >([initialNotesAndCoordsState]);
+  const renderCount = useRef(0);
 
   const keySigButtonGroup = useMemo(
     () => buttonGroup(dispatch, state, modifyKeySigActionTypes),
@@ -73,7 +74,7 @@ const NotateKeySignature = ({ handleKeySig }: any) => {
         staves,
         setStaves,
       }),
-    [staves, setStaves]
+    [staves]
   );
 
   useEffect(() => {
@@ -115,6 +116,8 @@ const NotateKeySignature = ({ handleKeySig }: any) => {
   };
 
   const handleClick = (e: React.MouseEvent) => {
+    renderCount.current += 1;
+    console.log(`render count: ${renderCount.current}`);
     const { userClickY, userClickX, topStaveYCoord, bottomStaveYCoord } =
       getUserClickInfo(e, container, staves[0]);
 

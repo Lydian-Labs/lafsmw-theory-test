@@ -22,6 +22,7 @@ export const deleteGlyphFromStave = (
       )
   );
   setGlyphState(newState);
+  //this line returns true if any glyphs were deleted or false if no glyphs were deleted
   return newState.length < glyphState.length;
 };
 
