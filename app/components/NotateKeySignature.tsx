@@ -26,7 +26,7 @@ import {
 import { initializeRenderer } from "../lib/initializeRenderer";
 import isClickWithinStaveBounds from "../lib/isClickWithinStaveBounds";
 import { reducer } from "../lib/reducer";
-import { setupRendererAndDrawStaves } from "../lib/setUpRenderer";
+import { setupRendererAndDrawStaves } from "../lib/setUpRendererAndDrawStaves";
 import {
   GlyphProps,
   NotesAndCoordinatesData,
