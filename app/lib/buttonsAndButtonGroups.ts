@@ -3,12 +3,15 @@ import * as VexFlow from "vexflow";
 import { initializeRenderer } from "./initializeRenderer";
 import {
   GlyphProps,
-  NoteInteractionAction,
   ScaleData,
+  StateInteraction,
+  InteractionActionTypes,
 } from "./typesAndInterfaces";
 const { Renderer } = VexFlow.Flow;
 
-export const enterNote = (dispatch: React.Dispatch<NoteInteractionAction>) => {
+export const enterNote = (
+  dispatch: React.Dispatch<{ type: InteractionActionTypes }>
+) => {
   dispatch({ type: "isEnterNoteActive" });
 };
 
@@ -17,7 +20,7 @@ export const clearAllMeasures = (
   initialScale: ScaleData[][],
   renderer: React.MutableRefObject<InstanceType<typeof Renderer> | null>,
   container: React.MutableRefObject<HTMLDivElement | null>,
-  dispatch: React.Dispatch<NoteInteractionAction>,
+  dispatch: React.Dispatch<{ type: InteractionActionTypes }>,
   renderStavesAndStaveNotes: () => void
 ): void => {
   setScale(() => initialScale);
@@ -28,23 +31,22 @@ export const clearAllMeasures = (
 
 export const buttonGroup = <Action>(
   dispatch: React.Dispatch<Action>,
-  buttonState: { [key: string]: any },
-  actionTypes: { [key: string]: any }
+  buttonState: StateInteraction,
+  actionTypes: Record<string, string>
 ) => {
   return Object.entries(actionTypes).map(([stateKey, text]) => ({
     action: () => dispatch({ type: stateKey } as Action),
     text,
     stateKey,
-    isEnabled: buttonState[stateKey],
+    isEnabled: buttonState[stateKey as keyof StateInteraction],
   }));
 };
 
 export const clearKeySignature = (
   setGlyphs: React.Dispatch<React.SetStateAction<GlyphProps[]>>,
   renderer: React.MutableRefObject<InstanceType<typeof Renderer> | null>,
-  container: React.MutableRefObject<HTMLDivElement | null>,
+  container: React.MutableRefObject<HTMLDivElement | null>
 ): void => {
   setGlyphs(() => []);
   initializeRenderer(renderer, container);
-  
 };

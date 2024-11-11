@@ -1,5 +1,10 @@
 import { Dispatch, RefObject, SetStateAction } from "react";
 import VexFlow, { RenderContext, StemmableNote } from "vexflow";
+import {
+  modifyChordsActionTypes,
+  modifyKeySigActionTypes,
+  modifyNotesActionTypes,
+} from "./actionTypes";
 const VF = VexFlow.Flow;
 const { StaveNote, Stave, Renderer, Glyph, Note } = VF;
 
@@ -18,10 +23,11 @@ export type StateInteraction =
   | NoteInteractionState
   | KeySigState;
 
-export type ActionType =
-  | NoteInteractionAction
-  | ChordInteractionAction
-  | KeySigAction;
+export type InteractionActionTypes =
+  | keyof typeof modifyNotesActionTypes
+  | keyof typeof modifyChordsActionTypes
+  | keyof typeof modifyKeySigActionTypes
+  | "CLEAR_ALL";
 
 export type Chord = {
   keys: string[];
@@ -48,6 +54,10 @@ export type SetStavesForChords = Dispatch<SetStateAction<StaveType[]>>;
 export type BlankStaves = StaveType[];
 export type NoteData = StaveNoteData[][];
 
+export interface ActionType {
+  type: InteractionActionTypes;
+}
+
 export type NoteInteractionState = {
   isEraseNoteActive: boolean;
   isEraseAccidentalActive: boolean;
@@ -59,6 +69,7 @@ export type NoteInteractionState = {
   isFlatActive: boolean;
   [key: string]: boolean | undefined;
 };
+
 export type ChordInteractionState = {
   isEraseNoteActive: boolean;
   isEraseAccidentalActive: boolean;
@@ -75,10 +86,6 @@ export type KeySigState = {
   isClearKeySigActive: boolean;
   [key: string]: boolean | undefined;
 };
-
-export type NoteInteractionAction = { type: keyof NoteInteractionState };
-export type KeySigAction = { type: keyof KeySigState };
-export type ChordInteractionAction = { type: keyof ChordInteractionState };
 
 export type BarMetrics = {
   barWidth: number;
@@ -151,14 +158,12 @@ export interface ModifyScaleData {
 
 export interface CheckNumBeatsInMeasureProps {
   tooManyBeatsInMeasure: boolean | undefined;
-  openEnterNotes: React.Dispatch<NoteInteractionAction>;
+  openEnterNotes: React.Dispatch<InteractionActionTypes>;
 }
 
 export interface CheckIfNoteFoundProps {
   noNoteFound: boolean;
-  openEnterNotes: React.Dispatch<
-    NoteInteractionAction | ChordInteractionAction
-  >;
+  openEnterNotes: React.Dispatch<InteractionActionTypes>;
 }
 
 export interface RenderStavesAndNotesParams {

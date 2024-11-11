@@ -26,7 +26,7 @@ import {
 import { initializeRenderer } from "../lib/initializeRenderer";
 import isClickWithinStaveBounds from "../lib/isClickWithinStaveBounds";
 import { reducer } from "../lib/reducer";
-import { setupRendererAndDrawStaves } from "../lib/setUpRenderer";
+import { setupRendererAndDrawStaves } from "../lib/setUpRendererAndDrawStaves";
 import {
   GlyphProps,
   NotesAndCoordinatesData,
@@ -37,19 +37,23 @@ import CustomButton from "./CustomButton";
 const VF = VexFlow.Flow;
 const { Renderer } = VF;
 
-const NotateKeySignature = ({ handleNotes }: any) => {
+//weird glitch is still happening. Figure out why!
+
+const NotateKeySignature = ({ handleKeySig }: any) => {
   const rendererRef = useRef<InstanceType<typeof Renderer> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
   const [staves, setStaves] = useState<StaveType[]>([]);
   const [glyphs, setGlyphs] = useState<GlyphProps[]>([]);
   const [open, setOpen] = useState(false);
   const { chosenClef } = useClef();
-  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [message, setMessage] = useState("");
   const [state, dispatch] = useReducer(reducer, keySigInitialState);
   const [keySig, setKeySig] = useState<string[]>([]);
   const [notesAndCoordinates, setNotesAndCoordinates] = useState<
     NotesAndCoordinatesData[]
   >([initialNotesAndCoordsState]);
+  const renderCount = useRef(0);
+
   const keySigButtonGroup = useMemo(
     () => buttonGroup(dispatch, state, modifyKeySigActionTypes),
     [dispatch, state]
@@ -70,7 +74,7 @@ const NotateKeySignature = ({ handleNotes }: any) => {
         staves,
         setStaves,
       }),
-    [staves, setStaves]
+    [staves]
   );
 
   useEffect(() => {
@@ -89,22 +93,13 @@ const NotateKeySignature = ({ handleNotes }: any) => {
   }, []);
 
   useEffect(() => {
-    initializeRenderer(rendererRef, container);
     renderStaves();
     context && buildKeySignature(glyphs, 40, context, staves[0]);
   }, [glyphs]);
 
-  //this is where the we will get the array to grade
-  useEffect(() => {
-    handleNotes(keySig);
-    // console.log("key sig: ", keySig);
-    // console.log("glyphs: ", glyphs);
-  }, [keySig]);
-
   const clearKey = () => {
     clearKeySignature(setGlyphs, rendererRef, container), setKeySig(() => []);
     const newStaves = renderStaves();
-
     if (newStaves) {
       if (newStaves)
         calculateNotesAndCoordinates(
@@ -117,17 +112,12 @@ const NotateKeySignature = ({ handleNotes }: any) => {
           0
         );
     }
-    dispatch({ type: "" });
+    dispatch({ type: "CLEAR_ALL" });
   };
 
   const handleClick = (e: React.MouseEvent) => {
-    if (
-      !state.isSharpActive &&
-      !state.isFlatActive &&
-      !state.isEraseAccidentalActive
-    )
-      return;
-
+    renderCount.current += 1;
+    console.log(`render count: ${renderCount.current}`);
     const { userClickY, userClickX, topStaveYCoord, bottomStaveYCoord } =
       getUserClickInfo(e, container, staves[0]);
 
@@ -137,8 +127,6 @@ const NotateKeySignature = ({ handleNotes }: any) => {
     );
 
     if (!foundNoteData) {
-      setSnackbarMessage("Click outside of stave bounds.");
-      setOpen(true);
       return;
     } else {
       foundNoteData = {
@@ -147,20 +135,16 @@ const NotateKeySignature = ({ handleNotes }: any) => {
       };
     }
 
-    const { maxRightClick, minLeftClick, minTopClick, maxBottomClick } =
-      isClickWithinStaveBounds(staves[0], topStaveYCoord, bottomStaveYCoord);
+    isClickWithinStaveBounds(
+      staves[0],
+      topStaveYCoord,
+      bottomStaveYCoord,
+      userClickX,
+      userClickY,
+      setMessage,
+      setOpen
+    );
 
-    if (
-      typeof maxBottomClick === "undefined" ||
-      userClickX < minLeftClick ||
-      userClickX > maxRightClick ||
-      userClickY < minTopClick ||
-      userClickY > maxBottomClick
-    ) {
-      setSnackbarMessage("Click outside of stave bounds.");
-      setOpen(true);
-      return;
-    }
     let notesAndCoordinatesCopy = [...notesAndCoordinates];
 
     const { notesAndCoordinates: newNotesAndCoordinates } =
@@ -177,6 +161,7 @@ const NotateKeySignature = ({ handleNotes }: any) => {
       );
 
     setNotesAndCoordinates(() => newNotesAndCoordinates);
+    handleKeySig(keySig);
   };
 
   return (
@@ -197,7 +182,7 @@ const NotateKeySignature = ({ handleNotes }: any) => {
         })}
         <CustomButton onClick={clearKey}>Erase Key Signature</CustomButton>
       </div>
-      <SnackbarToast open={open} setOpen={setOpen} message={snackbarMessage} />
+      <SnackbarToast open={open} setOpen={setOpen} message={message} />
     </>
   );
 };

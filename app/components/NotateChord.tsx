@@ -54,7 +54,6 @@ const NotateChord = ({
     reducer,
     chordInteractionInitialState
   );
-  //not currently being used, but will be used in the future
   const [barIndex, setBarIndex] = useState<number>(0);
   const [chordData, setChordData] = useState<Chord>(initialChordData);
   const [open, setOpen] = useState<boolean>(false);
@@ -64,15 +63,13 @@ const NotateChord = ({
     NotesAndCoordinatesData[]
   >([initialNotesAndCoordsState]);
 
-  const noNoteFound = () => dispatch({ type: "noNoteFound" });
-
   const modifyChordsButtonGroup = useMemo(
     () => buttonGroup(dispatch, chordInteractionState, modifyChordsActionTypes),
     [dispatch, chordInteractionState]
   );
 
   const renderStavesAndChords = useCallback(
-    (): StaveType[] =>
+    (): StaveType[] | undefined =>
       setupRendererAndDrawChords({
         rendererRef,
         ...staveData,
@@ -87,7 +84,7 @@ const NotateChord = ({
 
   useEffect(() => {
     initializeRenderer(rendererRef, container);
-    const newStave: StaveType[] = renderStavesAndChords();
+    const newStave = renderStavesAndChords();
     if (newStave) {
       calculateNotesAndCoordinates(
         chosenClef,
@@ -104,7 +101,6 @@ const NotateChord = ({
 
   useEffect(() => {
     renderStavesAndChords();
-    //this is the array to use for grading
     const chordsArray = chordData.keys;
   }, [chordData]);
 
@@ -133,18 +129,10 @@ const NotateChord = ({
       container,
       staves[0]
     );
+
     let foundNoteData = notesAndCoordinates.find(
       ({ yCoordinateMin, yCoordinateMax }) =>
         userClickY >= yCoordinateMin && userClickY <= yCoordinateMax
-    );
-
-    let chordDataCopy = { ...chordData };
-    let notesAndCoordinatesCopy = [...notesAndCoordinates];
-    //not currently being used but will be used in the future
-    const barIndex = findBarIndex(staves, userClickX);
-
-    const foundNoteIndex: number = chordData.keys.findIndex(
-      (note) => note === foundNoteData?.note
     );
 
     if (!foundNoteData) {
@@ -152,6 +140,15 @@ const NotateChord = ({
       setMessage(errorMessages.noNoteFound);
       return;
     }
+
+    let chordDataCopy = { ...chordData };
+    let notesAndCoordinatesCopy = [...notesAndCoordinates];
+
+    const barIndex = findBarIndex(staves, userClickX);
+
+    const foundNoteIndex: number = chordData.keys.findIndex(
+      (note) => note === foundNoteData?.note
+    );
 
     const {
       chordData: newChordData,
