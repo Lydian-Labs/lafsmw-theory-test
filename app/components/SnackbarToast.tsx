@@ -9,6 +9,7 @@ export default function SimpleSnackbar({
   open,
   setOpen,
   message,
+  autoHideDuration = 3000,
 }: SimpleSnackbarProps) {
   const handleClose = (event: SyntheticEvent | Event, reason?: string) => {
     if (reason === "clickaway") {
@@ -31,7 +32,7 @@ export default function SimpleSnackbar({
   return (
     <Snackbar
       open={open}
-      autoHideDuration={3000}
+      autoHideDuration={autoHideDuration}
       anchorOrigin={{ vertical: "top", horizontal: "center" }}
       onClose={handleClose}
       TransitionComponent={Slide}

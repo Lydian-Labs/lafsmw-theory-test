@@ -1,9 +1,9 @@
 "use client";
 import { chordTextInstructions } from "@/app/lib/data/instructions";
 import { savePDF } from "@/app/lib/savePDF";
-import { InputData, UserDataBluesProps } from "@/app/lib/types";
+import { InputData, UserDataProps } from "@/app/lib/types";
 import { useAuthContext } from "@/firebase/authContext";
-import { Box, Button, Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import { useRef, useState } from "react";
 import CardFooter from "../CardFooter";
 import SnackbarToast from "../SnackbarToast";
@@ -14,24 +14,42 @@ export default function WriteBluesChanges({
   currentUserData,
   setCurrentUserData,
   nextViewState,
-  isPDFReady,
-  setIsPDFReady,
   page,
-}: UserDataBluesProps) {
+}: UserDataProps) {
   const { user } = useAuthContext();
-  const userName = user?.displayName?.split(" ").join("_");
   const writeBluesFormRef = useRef<HTMLFormElement | null>(null);
+  // Holds the most recent form submission so the save handler below can read
+  // it synchronously without waiting for a re-render.
+  const latestBluesRef = useRef<InputData | null>(null);
   const [open, setOpen] = useState<boolean>(false);
+  const [isSaving, setIsSaving] = useState(false);
 
   function handleBluesInput(input: InputData) {
+    latestBluesRef.current = input;
     setCurrentUserData({ ...currentUserData, blues: input });
   }
 
-  async function handlePDF() {
-    if (!isPDFReady) {
-      setIsPDFReady(true);
+  async function handleSaveAndContinue() {
+    if (isSaving) return;
+    if (!user?.uid) {
+      setOpen(true);
+      return;
     }
-    savePDF(userName, setCurrentUserData, currentUserData);
+    setIsSaving(true);
+    // requestSubmit fires the form's onSubmit synchronously, populating latestBluesRef
+    writeBluesFormRef.current?.requestSubmit();
+    try {
+      const url = await savePDF(user.uid, user.displayName);
+      await nextViewState({
+        ...currentUserData,
+        blues: latestBluesRef.current ?? currentUserData.blues,
+        bluesUrl: url,
+      });
+    } catch (error) {
+      console.error("Error saving blues PDF:", error);
+      setOpen(true);
+      setIsSaving(false);
+    }
   }
 
   const boxStyle = {
@@ -58,7 +76,10 @@ export default function WriteBluesChanges({
       <SnackbarToast
         open={open}
         setOpen={setOpen}
-        message={"You must save the PDF before moving on."}
+        autoHideDuration={6000}
+        message={
+          "We couldn't save your PDF. Please check your connection and try again."
+        }
       />
       <Box
         component="main"
@@ -101,29 +122,18 @@ export default function WriteBluesChanges({
                 width={1150}
               />
 
-              <Stack direction="row" spacing={2}>
-                <Typography marginTop={2} align="left">
-                  *Note: You can enter 1 to 4 chords per bar. You
-                  <b> MUST</b> press <em>Save PDF </em>before moving on.
-                </Typography>
-                <Button onClick={handlePDF}>
-                  {isPDFReady ? "Save new" : "Save PDF"}
-                </Button>
-              </Stack>
+              <Typography marginTop={2} align="left">
+                *Note: You can enter 1 to 4 chords per bar. Your chord chart
+                will be saved as a PDF when you continue.
+              </Typography>
             </Stack>
             <CardFooter
               width={1100}
               pageNumber={page}
-              buttonText="Continue >"
-              buttonForm="submit-form-blues"
-              handleSubmit={() => {
-                if (!isPDFReady) {
-                  setOpen(true);
-                } else {
-                  writeBluesFormRef.current?.requestSubmit();
-                  nextViewState();
-                }
-              }}
+              buttonText={isSaving ? "Saving..." : "Save PDF & Continue >"}
+              buttonType="button"
+              disabled={isSaving}
+              handleSubmit={handleSaveAndContinue}
             />
           </Box>
         </Stack>

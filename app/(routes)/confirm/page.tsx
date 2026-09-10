@@ -62,14 +62,9 @@ export default function ConfirmSignIn() {
           {error}
         </Typography>
         <Stack spacing={4} alignItems={"center"}>
-          <Link href="/login">
-            <Button variant="text" sx={{ width: "250px" }}>
-              Try login again
-            </Button>
-          </Link>
           <Link href="/">
             <Button variant="text" sx={{ width: "250px" }}>
-              Or log in or sign up here
+              Back to sign in / sign up
             </Button>
           </Link>
         </Stack>

@@ -18,11 +18,9 @@ const nextConfig = {
     NEXT_PUBLIC_FIREBASE_APP_ID: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
     NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID:
       process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
-    NEXT_PUBLIC_EMAIL: process.env.NEXT_PUBLIC_EMAIL,
-    NEXT_PUBLIC_EMAIL_PASS: process.env.NEXT_PUBLIC_EMAIL_PASS,
-    NEXT_PUBLIC_EMAIL_CAMP_DIRECTOR:
-      process.env.NEXT_PUBLIC_EMAIL_CAMP_DIRECTOR,
-    NEXT_PUBLIC_EMAIL_DEVELOPER: process.env.NEXT_PUBLIC_EMAIL_DEVELOPER,
+    // NOTE: email credentials/recipients (EMAIL_USER, EMAIL_PASS, EMAIL_DEVELOPER,
+    // EMAIL_CAMP_DIRECTOR) are intentionally NOT listed here. Anything in this
+    // block is inlined into the client bundle; those are read server-side only.
   },
 };
 

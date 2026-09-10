@@ -10,6 +10,7 @@ export default function CardFooter({
   buttonText = "Continue >",
   handleSubmit,
   buttonForm,
+  disabled = false,
 }: CardFooterProps) {
   return (
     <Box
@@ -40,6 +41,7 @@ export default function CardFooter({
           type={buttonType}
           onClick={handleSubmit}
           form={buttonForm}
+          disabled={disabled}
           sx={{ height: "33px", marginTop: "8px" }}
         >
           {buttonText}

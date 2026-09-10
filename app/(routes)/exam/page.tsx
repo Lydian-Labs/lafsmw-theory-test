@@ -20,6 +20,8 @@ import {
   checkAndFormatKeySigIdentifyAnswers,
 } from "@/app/lib/calculateAnswers";
 import convertObjectToArray from "@/app/lib/convertObjectToArray";
+import escapeHtml from "@/app/lib/escapeHtml";
+import { sendEmail } from "@/app/lib/sendEmail";
 import {
   correctKeySigAnswers,
   correctKeySigNotationAnswers,
@@ -94,7 +96,6 @@ export default function ExamHomePage() {
   const [correctedAnswers, setCorrectedAnswers] = useState<string[]>([]);
   const [viewState, setViewState] = useState(VIEW_STATES.START_TEST);
   const [timesUp, setTimesUp] = useState(false);
-  const [isPDFReady, setIsPDFReady] = useState(false);
   const [open, setOpen] = useState<boolean>(false);
   const [level, setLevel] = useState<Level>("select-here");
   const { chosenClef: clef, setChosenClef: setClef } = useClef();
@@ -130,7 +131,7 @@ export default function ExamHomePage() {
       currentUserData.keySignaturesNotation4,
     ];
     const userKeySigAnswers = convertObjectToArray(
-      currentUserData.keySignatures
+      currentUserData.keySignatures,
     );
     const userScales = [
       currentUserData.scales1,
@@ -159,45 +160,45 @@ export default function ExamHomePage() {
     ];
     const userChordAnswers = convertObjectToArray(currentUserData.chords);
     const userProgressionAnswers = convertObjectToArray(
-      currentUserData.progressions
+      currentUserData.progressions,
     );
 
     let keySigNotationAnswers = checkAndFormatArrOfArrsAnswers(
       userKeySigNotationAnswers,
       correctKeySigNotationAnswers,
-      "Key Signature Notation"
+      "Key Signature Notation",
     );
     let keySigAnswers = checkAndFormatKeySigIdentifyAnswers(
       userKeySigAnswers,
       correctKeySigAnswers,
-      "Key Signatures"
+      "Key Signatures",
     );
     let scalesAnswers = checkAndFormatArrOfArrsAnswers(
       userScales,
       correctScalesAnswers,
-      "Scales"
+      "Scales",
     );
     let triadsAnswers = checkAndFormatChordAnswers(
       userTriads,
       correctTriadNotes,
-      "Triads"
+      "Triads",
     );
     let seventhNotationAnswers = checkAndFormatChordAnswers(
       userSeventhChordAnswers,
       correctSeventhChordNotationNotesText,
-      "Seventh Chord Notation"
+      "Seventh Chord Notation",
     );
     let seventhIdentifyAnswers = checkAndFormatChordIdentifyAnswers(
       userChordAnswers,
       correctSeventhChordAnswers,
       correctSeventhChordNonRegexAnswers,
-      "Seventh Chords"
+      "Seventh Chords",
     );
     let progressionAnswers = checkAndFormat251Answers(
       userProgressionAnswers,
       correctProgressionAnswers,
       correctProgressionNonRegexAnswers,
-      "2-5-1 Progressions"
+      "2-5-1 Progressions",
     );
 
     setCorrectedAnswers([
@@ -231,11 +232,15 @@ export default function ExamHomePage() {
     }
   }, [viewState, userName, currentUserData]);
 
-  const incrementViewState = async () => {
+  const incrementViewState = async (dataOverride?: InputState) => {
+    // Pages that have fresher data than this closure (e.g. the blues page after
+    // its PDF upload) can pass it in so we save that instead of stale state.
+    const dataToSave = dataOverride ?? currentUserData;
+    if (dataOverride) setCurrentUserData(dataOverride);
     // Save data before moving to next page
     if (userName) {
       try {
-        await setOrUpdateStudentData(currentUserData);
+        await setOrUpdateStudentData(dataToSave);
       } catch (error) {
         console.error("[Page Navigation] Failed to save student data:", error);
       }
@@ -290,7 +295,7 @@ export default function ExamHomePage() {
   };
 
   const handleStartTest = (
-    handleLevelSubmit: (e: MouseEvent) => Promise<void>
+    handleLevelSubmit: (e: MouseEvent) => Promise<void>,
   ) => {
     return async (e: MouseEvent) => {
       if (level === "select-here") {
@@ -322,42 +327,36 @@ export default function ExamHomePage() {
           /\b([a-g])([b#]?)(\d*|[^a-zA-Z0-9<>]*)/g,
           (match, noteLetter, accidental, suffix) => {
             return noteLetter.toUpperCase() + accidental + suffix;
-          }
+          },
         );
       };
 
       // Apply capitalization to the relevant sections
       const capitalizedKeySigNotation = capitalizeNoteNames(
-        correctedAnswers[1]
+        correctedAnswers[1],
       );
       const capitalizedKeySigIdentify = capitalizeNoteNames(
-        correctedAnswers[2]
+        correctedAnswers[2],
       );
       const capitalizedScales = capitalizeNoteNames(correctedAnswers[3]);
       const capitalizedTriads = capitalizeNoteNames(correctedAnswers[4]);
       const capitalizedSeventhNotation = capitalizeNoteNames(
-        correctedAnswers[5]
+        correctedAnswers[5],
       );
       const capitalizedSeventhIdentify = capitalizeNoteNames(
-        correctedAnswers[6]
+        correctedAnswers[6],
       );
       const capitalizedProgressions = capitalizeNoteNames(correctedAnswers[7]);
 
-      // Send email with results using API route
-      const response = await fetch("/api/email", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: `${process.env.NEXT_PUBLIC_EMAIL_DEVELOPER}`,
-          // email: `${process.env.NEXT_PUBLIC_EMAIL_CAMP_DIRECTOR}, ${process.env.NEXT_PUBLIC_EMAIL_DEVELOPER}`,
-          subject: `Exam Results for ${userName}`,
-          text: `<p>Hello Kyle,</p>
+      const safeUserName = escapeHtml(userName);
+      // Send email with results using API route (recipients are set server-side)
+      const response = await sendEmail({
+        subject: `Exam Results for ${userName}`,
+        html: `<p>Hello Kyle,</p>
 
-          <p>Here are the results for ${userName} (${clef} clef):</p>
+          <p>Here are the results for ${safeUserName} (${escapeHtml(clef)} clef):</p>
           <ul>
-            <li>Level: ${correctedAnswers[0]}</li>
+            <li>Level: ${escapeHtml(correctedAnswers[0])}</li>
             <li>Key Signatures (notate): ${capitalizedKeySigNotation}</li>
             <li>Key Signatures (identify): ${capitalizedKeySigIdentify}</li>
             <li>Scales: ${capitalizedScales}</li>
@@ -365,17 +364,18 @@ export default function ExamHomePage() {
             <li>Seventh Chords (notate): ${capitalizedSeventhNotation}</li>
             <li>Seventh Chords (identify): ${capitalizedSeventhIdentify}</li>
             <li>2-5-1 Progressions: ${capitalizedProgressions}</li>
-            <li>Link to blues progression pdf: ${correctedAnswers[8]}</li>
+            <li>Link to blues progression pdf: ${escapeHtml(
+              correctedAnswers[8],
+            )}</li>
           </ul>
 
           <p>Thank you,<br>Team at Lydian Lab Music.</p>`,
-        }),
       });
       if (!response.ok) {
         const errorData = await response.json();
         setIsSubmitting(false);
         throw new Error(
-          `Failed to send email: ${errorData.error}, Details: ${errorData.details}`
+          `Failed to send email: ${errorData.error}, Details: ${errorData.details}`,
         );
       }
       return router.push("/sign-out");
@@ -682,8 +682,6 @@ export default function ExamHomePage() {
             currentUserData={currentUserData}
             setCurrentUserData={setCurrentUserData}
             nextViewState={incrementViewState}
-            isPDFReady={isPDFReady}
-            setIsPDFReady={setIsPDFReady}
             page={27}
           />
         )}

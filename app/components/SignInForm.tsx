@@ -5,20 +5,26 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FormEvent } from "../lib/types";
 
-export default function SignInForm() {
-  const [email, setEmail] = useState("");
+type SignInFormProps = {
+  initialEmail?: string;
+};
+
+export default function SignInForm({ initialEmail = "" }: SignInFormProps) {
+  const [email, setEmail] = useState(initialEmail);
   const [password, setPassword] = useState("");
   const [signingIn, setSigningIn] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const router = useRouter();
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
     setSigningIn(true);
-    let success = await signIn(email, password);
+    setError(null);
+    const success = await signIn(email.trim(), password);
     if (!success) {
       setSigningIn(false);
-      alert("Invalid email or password. Please try again.");
+      setError("Invalid email or password. Please try again.");
     } else {
       router.push("/exam");
     }
@@ -38,6 +44,7 @@ export default function SignInForm() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
+          autoFocus={!initialEmail}
         />
         <TextField
           margin="normal"
@@ -47,7 +54,13 @@ export default function SignInForm() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
+          autoFocus={!!initialEmail}
         />
+        {error && (
+          <Typography color="error" variant="body2" sx={{ mt: 1 }}>
+            {error}
+          </Typography>
+        )}
         <Button
           type="submit"
           fullWidth
@@ -68,7 +81,9 @@ export default function SignInForm() {
           ":hover": { color: "primary.main" },
         }}
       >
-        <Link href="/forgot-password">Forgot Password?</Link>
+        <Typography variant="caption" component={Link} href="/forgot-password">
+          Forgot your password?
+        </Typography>
       </Box>
     </Container>
   );
