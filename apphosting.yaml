@@ -15,11 +15,20 @@ env:
     secret: firebase-app-id
   - variable: NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
     secret: firebase-measurement-id
-  - variable: NEXT_PUBLIC_EMAIL
+  # Server-only (no NEXT_PUBLIC_ prefix so they never reach the browser)
+  - variable: EMAIL_USER
     secret: email
-  - variable: NEXT_PUBLIC_EMAIL_PASS
+    availability:
+      - RUNTIME
+  - variable: EMAIL_PASS
     secret: email-pass
-  - variable: NEXT_PUBLIC_EMAIL_CAMP_DIRECTOR
+    availability:
+      - RUNTIME
+  - variable: EMAIL_CAMP_DIRECTOR
     secret: email-camp-director
-  - variable: NEXT_PUBLIC_EMAIL_DEVELOPER
+    availability:
+      - RUNTIME
+  - variable: EMAIL_DEVELOPER
     secret: email-developer
+    availability:
+      - RUNTIME

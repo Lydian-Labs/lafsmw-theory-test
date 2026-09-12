@@ -1,8 +1,10 @@
+import escapeHtml from "./escapeHtml";
+
 export const checkAndFormat251Answers = (
   studentAnswers: string[],
   regexCorrectAnswers: RegExp[],
   nonRegexCorrectAnswers: string[],
-  questionType: string
+  questionType: string,
 ): string => {
   let score = 0;
   let formattedAnswers = "";
@@ -25,7 +27,10 @@ export const checkAndFormat251Answers = (
       if (i !== 0) formattedAnswers += "</li>";
       formattedAnswers += "<li>";
     }
-    formattedAnswers += isCorrect ? chord : `<b>${chord || "(No answer)"}</b>`;
+    const safeChord = escapeHtml(chord);
+    formattedAnswers += isCorrect
+      ? safeChord
+      : `<b>${safeChord || "(No answer)"}</b>`;
     if (i % 3 !== 2 && i < regexCorrectAnswers.length - 1)
       formattedAnswers += ", ";
   }
@@ -60,7 +65,7 @@ export const checkAndFormat251Answers = (
 export const checkAndFormatKeySigIdentifyAnswers = (
   answers: string[],
   correctAnswers: string[],
-  questionType: string
+  questionType: string,
 ): string => {
   let score = 0;
   let answersHTML = "";
@@ -70,13 +75,12 @@ export const checkAndFormatKeySigIdentifyAnswers = (
     let isCorrect =
       studentAnswer.toLowerCase() === correctAnswers[i].toLowerCase();
 
+    const safeAnswer = escapeHtml(studentAnswer);
     if (isCorrect) {
       score++;
-      answersHTML += `<li>${studentAnswer}</li>`;
+      answersHTML += `<li>${safeAnswer}</li>`;
     } else {
-      answersHTML += `<li><b>${
-        studentAnswer || "(No answer provided)"
-      }</b></li>`;
+      answersHTML += `<li><b>${safeAnswer || "(No answer provided)"}</b></li>`;
     }
   }
 
@@ -97,7 +101,7 @@ export const checkAndFormatChordIdentifyAnswers = (
   studentAnswers: string[],
   regexCorrectAnswers: RegExp[],
   nonRegexCorrectAnswers: string[],
-  questionType: string
+  questionType: string,
 ): string => {
   let score = 0;
   let studentAnswersHTML = "";
@@ -106,12 +110,13 @@ export const checkAndFormatChordIdentifyAnswers = (
     let chord = studentAnswers[i] || "";
     let isCorrect = regexCorrectAnswers[i].test(chord);
 
+    const safeChord = escapeHtml(chord);
     if (isCorrect) {
       score++;
-      studentAnswersHTML += `<li>${chord}</li>`;
+      studentAnswersHTML += `<li>${safeChord}</li>`;
     } else {
       studentAnswersHTML += `<li><b>${
-        chord || "(No answer provided)"
+        safeChord || "(No answer provided)"
       }</b></li>`;
     }
   }
@@ -132,7 +137,7 @@ export const checkAndFormatChordIdentifyAnswers = (
 export const checkAndFormatArrOfArrsAnswers = (
   userAnswers: string[][],
   correctAnswers: string[][],
-  questionType: string
+  questionType: string,
 ): string => {
   let score = 0;
   let actualStudentAnswers = "";
@@ -147,7 +152,7 @@ export const checkAndFormatArrOfArrsAnswers = (
       const currentCorrectAnswer = correctAnswers[i];
       const maxNotesLength = Math.max(
         currentUserAnswer.length,
-        currentCorrectAnswer.length
+        currentCorrectAnswer.length,
       );
 
       const formattedUserAnswer = Array.from(
@@ -172,7 +177,7 @@ export const checkAndFormatArrOfArrsAnswers = (
 
           // Required accidental/note is missing from student response.
           return `<b>(Missing ${correctNote})</b>`;
-        }
+        },
       ).join(", ");
 
       if (isCorrect) score++;
@@ -191,7 +196,7 @@ export const checkAndFormatArrOfArrsAnswers = (
 export const checkAndFormatChordAnswers = (
   userAnswers: string[][],
   correctAnswersText: string[],
-  questionType: string
+  questionType: string,
 ): string => {
   let score = 0;
   let actualStudentAnswers = "";
@@ -216,7 +221,7 @@ export const checkAndFormatChordAnswers = (
       const isCorrect =
         userAnswerNotes.length === correctAnswerNotes.length &&
         userAnswerNotes.every(
-          (note, index) => note === correctAnswerNotes[index]
+          (note, index) => note === correctAnswerNotes[index],
         );
 
       if (isCorrect) {

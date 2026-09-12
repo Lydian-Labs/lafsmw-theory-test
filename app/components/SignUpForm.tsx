@@ -1,9 +1,13 @@
-import { sendSignInEmail } from "@/firebase/authAPI";
+import { isExistingPasswordAccount, sendSignInEmail } from "@/firebase/authAPI";
 import { Button, Container, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { FormEvent } from "../lib/types";
 
-export default function SignUpForm() {
+type SignUpFormProps = {
+  onExistingAccount: (email: string) => void;
+};
+
+export default function SignUpForm({ onExistingAccount }: SignUpFormProps) {
   const [email, setEmail] = useState("");
   const [signingUp, setSigningUp] = useState(false);
   const [message, setMessage] = useState("");
@@ -13,16 +17,22 @@ export default function SignUpForm() {
     setSigningUp(true);
     setMessage("");
     try {
-      await sendSignInEmail(email);
+      const trimmedEmail = email.trim();
+      if (await isExistingPasswordAccount(trimmedEmail)) {
+        onExistingAccount(trimmedEmail);
+        return;
+      }
+      await sendSignInEmail(trimmedEmail);
       setMessage(
-        "Sign-up link sent! Please check your email to complete registration."
+        "Sign-up link sent! Please check your email (including your spam folder) to complete registration.",
       );
       setEmail("");
     } catch (error) {
       console.error("Error sending sign-in email:", error);
       setMessage("Failed to send sign-in link. Please try again.");
+    } finally {
+      setSigningUp(false);
     }
-    setSigningUp(false);
   };
 
   return (

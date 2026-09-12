@@ -1,5 +1,7 @@
 import {
   createUserWithEmailAndPassword,
+  EmailAuthProvider,
+  fetchSignInMethodsForEmail,
   isSignInWithEmailLink,
   sendPasswordResetEmail,
   sendSignInLinkToEmail,
@@ -24,6 +26,22 @@ export async function sendSignInEmail(email: string) {
     await sendSignInLinkToEmail(auth, email, actionCodeSettings);
   } catch (err) {
     console.error("sendSignInLinkToEmail error:", err);
+    throw err;
+  }
+}
+
+// Returns true if an account with a password already exists for this email.
+// Note: if "Email enumeration protection" is enabled in the Firebase Console,
+// fetchSignInMethodsForEmail always returns [] and this will return false.
+export async function isExistingPasswordAccount(
+  email: string,
+): Promise<boolean> {
+  try {
+    const methods = await fetchSignInMethodsForEmail(auth, email);
+    return methods.includes(EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD);
+  } catch (err) {
+    console.error("fetchSignInMethodsForEmail error:", err);
+    return false;
   }
 }
 
@@ -33,23 +51,23 @@ export async function completeSignIn(link: string): Promise<boolean> {
 
   if (!isSignInWithEmailLink(auth, link)) {
     console.warn(
-      "[authAPI:completeSignIn] Link is not a valid sign-in with email link."
+      "[authAPI:completeSignIn] Link is not a valid sign-in with email link.",
     );
     return false;
   }
 
   if (!emailForSignIn) {
     console.warn(
-      "[authAPI:completeSignIn] Email for sign-in not found in localStorage. Prompting user."
+      "[authAPI:completeSignIn] Email for sign-in not found in localStorage. Prompting user.",
     );
     emailForSignIn = window.prompt(
       "Please enter the email address you used to request the sign-in link:",
-      ""
+      "",
     );
     // If user cancels the prompt or doesn't enter an email
     if (!emailForSignIn) {
       console.error(
-        "[authAPI:completeSignIn] User did not provide an email address. Aborting."
+        "[authAPI:completeSignIn] User did not provide an email address. Aborting.",
       );
       return false;
     }
@@ -66,14 +84,14 @@ export async function completeSignIn(link: string): Promise<boolean> {
       "[authAPI:completeSignIn] CATCH BLOCK error:",
       err,
       "Code:",
-      err.code
+      err.code,
     );
 
     // Check if auth.currentUser became available despite the error (Firebase can be complex)
     // This is a critical check because onAuthStateChanged might have already fired and set the user.
     if (auth.currentUser) {
       console.warn(
-        "[authAPI:completeSignIn] auth.currentUser IS POPULATED in catch block. Proceeding as success."
+        "[authAPI:completeSignIn] auth.currentUser IS POPULATED in catch block. Proceeding as success.",
       );
       window.localStorage.removeItem("emailForSignIn");
       return true;
@@ -84,7 +102,7 @@ export async function completeSignIn(link: string): Promise<boolean> {
     // Firebase's behavior here can be tricky; sometimes it errors but still establishes a session.
     if (err.code === "auth/email-already-in-use") {
       console.warn(
-        "[authAPI:completeSignIn] Error 'auth/email-already-in-use' caught. Treating as successful sign-in for existing user."
+        "[authAPI:completeSignIn] Error 'auth/email-already-in-use' caught. Treating as successful sign-in for existing user.",
       );
       window.localStorage.removeItem("emailForSignIn");
       return true; // Proceed as if sign-in was successful.
@@ -92,7 +110,7 @@ export async function completeSignIn(link: string): Promise<boolean> {
 
     // For any other errors, consider it a failure.
     console.error(
-      "[authAPI:completeSignIn] Unhandled error or sign-in failed definitively."
+      "[authAPI:completeSignIn] Unhandled error or sign-in failed definitively.",
     );
     return false;
   }
@@ -106,7 +124,7 @@ export async function updateDisplayName(displayName: string) {
   try {
     if (auth.currentUser !== null) {
       await updateProfile(auth.currentUser, { displayName: displayName }).catch(
-        (err) => console.error("updateProfile error:", err)
+        (err) => console.error("updateProfile error:", err),
       );
     }
   } catch (err) {
@@ -117,7 +135,7 @@ export async function updateDisplayName(displayName: string) {
 export async function signUp(
   email: string,
   password: string,
-  displayName: string
+  displayName: string,
 ) {
   try {
     await createUserWithEmailAndPassword(auth, email, password).catch((err) => {
@@ -136,7 +154,7 @@ export async function signUp(
     if (auth.currentUser === null) throw new Error("User not created yet.");
 
     await updateProfile(auth.currentUser, { displayName: displayName }).catch(
-      (err) => console.error("updateProfile error:", err)
+      (err) => console.error("updateProfile error:", err),
     );
   } catch (err) {
     console.error("signUp error:", err);

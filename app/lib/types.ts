@@ -309,13 +309,8 @@ export interface InputState {
 export interface UserDataProps {
   currentUserData: InputState;
   setCurrentUserData: (userData: InputState) => void;
-  nextViewState: () => void;
+  nextViewState: (dataOverride?: InputState) => void | Promise<void>;
   page: number;
-}
-
-export interface UserDataBluesProps extends UserDataProps {
-  isPDFReady: boolean;
-  setIsPDFReady: React.Dispatch<SetStateAction<boolean>>;
 }
 
 export interface TextInput {
@@ -329,9 +324,8 @@ export type WriteProps = {
 };
 
 export interface EmailData {
-  email: string;
-  subject?: string;
-  text?: string;
+  subject: string;
+  html: string;
 }
 
 export interface ProgressionState {
@@ -346,6 +340,7 @@ export interface CardFooterProps {
   buttonText?: string;
   handleSubmit?: any;
   buttonForm?: string;
+  disabled?: boolean;
 }
 
 export interface CustomButtonProps {
@@ -410,6 +405,7 @@ export type SimpleSnackbarProps = {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
   message: string;
+  autoHideDuration?: number;
 };
 
 export type TutorialInstructions = {

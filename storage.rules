@@ -1,0 +1,21 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Blues chord-chart PDFs live under students/{uid}/. A student may only
+    // write to their own folder, and only PDFs of a reasonable size.
+    // Reads by the director happen via the tokenized download URL in the
+    // results email, which does not go through these rules.
+    match /students/{uid}/{fileName} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow write: if request.auth != null
+        && request.auth.uid == uid
+        && request.resource.contentType == 'application/pdf'
+        && request.resource.size < 20 * 1024 * 1024;
+    }
+
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

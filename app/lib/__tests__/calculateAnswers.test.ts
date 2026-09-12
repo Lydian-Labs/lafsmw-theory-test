@@ -252,3 +252,38 @@ describe("checkAndFormatChordAnswers", () => {
     );
   });
 });
+
+describe("HTML escaping of free-text student answers", () => {
+  test("checkAndFormatKeySigIdentifyAnswers escapes markup in student answers", () => {
+    const result = checkAndFormatKeySigIdentifyAnswers(
+      ["<img src=x onerror=alert(1)>", "G"],
+      ["C", "G"],
+      "Key Signatures"
+    );
+    expect(result).not.toContain("<img");
+    expect(result).toContain("&lt;img src=x onerror=alert(1)&gt;");
+    expect(result).toContain("<b>1/2</b>");
+  });
+
+  test("checkAndFormatChordIdentifyAnswers escapes markup in student answers", () => {
+    const result = checkAndFormatChordIdentifyAnswers(
+      ["<script>bad()</script>"],
+      [/Cmaj7/],
+      ["Cmaj7"],
+      "Seventh Chords"
+    );
+    expect(result).not.toContain("<script>");
+    expect(result).toContain("&lt;script&gt;");
+  });
+
+  test("checkAndFormat251Answers escapes markup but still grades raw input", () => {
+    const result = checkAndFormat251Answers(
+      ["Cmaj7", "D7", "G7", "<b>x</b>", "Bb7", "Ebmaj7"],
+      [/x/, /Bb7/, /Ebmaj7/],
+      ["x Bb7 Ebmaj7"],
+      "251"
+    );
+    expect(result).toContain("<b>3/3</b>");
+    expect(result).toContain("&lt;b&gt;x&lt;/b&gt;");
+  });
+});
